@@ -18,7 +18,6 @@
 package com.phloc.scopes.nonweb.mgr;
 
 import javax.annotation.Nonnull;
-import javax.annotation.OverridingMethodsMustInvokeSuper;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import org.slf4j.Logger;
@@ -93,7 +92,11 @@ public final class ScopeManager
     setGlobalScope (MetaScopeFactory.getScopeFactory ().createGlobalScope (sScopeID));
   }
 
-  @OverridingMethodsMustInvokeSuper
+  public static boolean isGlobalScopePresent ()
+  {
+    return s_aGlobalScope != null;
+  }
+
   @Nonnull
   public static IGlobalScope getGlobalScope ()
   {
@@ -105,7 +108,6 @@ public final class ScopeManager
   /**
    * To be called when the singleton global context is to be destroyed.
    */
-  @OverridingMethodsMustInvokeSuper
   public static void onGlobalEnd ()
   {
     /**
@@ -198,7 +200,11 @@ public final class ScopeManager
     setRequestScope (sApplicationID, MetaScopeFactory.getScopeFactory ().createRequestScope (sScopeID));
   }
 
-  @OverridingMethodsMustInvokeSuper
+  public static boolean isRequestScopePresent ()
+  {
+    return s_aRequestScope.get () != null;
+  }
+
   @Nonnull
   public static IRequestScope getRequestScope ()
   {
