@@ -44,7 +44,7 @@ public final class GlobalWebSingletonTest extends AbstractWebScopeAwareTestCase
   /**
    * Default use case example.
    * 
-   * @author philip
+   * @author
    */
   public static final class MockGlobalSingleton extends GlobalSingleton
   {
