@@ -38,6 +38,11 @@ import com.phloc.scopes.web.mgr.WebScopeManager;
 
 /**
  * Abstract HTTP servlet filter implementation using the correct scope handling.
+ * The scope initialization happens before the main action is executed, and the
+ * scope destruction happens after <b>all</b> the whole filter chain finished!
+ * If more than one scope aware filter are present in the filter chain, only the
+ * filter invoked first creates the request scope. Succeeding scope aeware
+ * filters wont create a request scope.
  * 
  * @author philip
  */
@@ -97,7 +102,12 @@ public abstract class AbstractScopeAwareFilter implements Filter
   {
     final HttpServletRequest aHttpRequest = (HttpServletRequest) aRequest;
     final HttpServletResponse aHttpResponse = (HttpServletResponse) aResponse;
-    WebScopeManager.onRequestBegin (m_sApplicationID, aHttpRequest, aHttpResponse);
+
+    // Check if a scope needs to be created
+    final boolean bCreateScope = !WebScopeManager.isRequestScopePresent ();
+    if (bCreateScope)
+      WebScopeManager.onRequestBegin (m_sApplicationID, aHttpRequest, aHttpResponse);
+
     try
     {
       if (doFilter (aHttpRequest, aHttpResponse).isContinue ())
@@ -108,8 +118,12 @@ public abstract class AbstractScopeAwareFilter implements Filter
     }
     finally
     {
-      // End the scope after the complete filtering process
-      WebScopeManager.onRequestEnd ();
+      if (bCreateScope)
+      {
+        // End the scope after the complete filtering process (if it was
+        // created)
+        WebScopeManager.onRequestEnd ();
+      }
     }
   }
 

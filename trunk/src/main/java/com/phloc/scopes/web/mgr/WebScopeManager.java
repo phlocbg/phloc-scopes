@@ -54,6 +54,11 @@ public final class WebScopeManager
     return aGlobalScope;
   }
 
+  public static boolean isGlobalScopePresent ()
+  {
+    return ScopeManager.isGlobalScopePresent ();
+  }
+
   @Nonnull
   public static IGlobalWebScope getGlobalScope ()
   {
@@ -143,6 +148,11 @@ public final class WebScopeManager
                                                                                                       aHttpResponse);
     ScopeManager.setRequestScope (sApplicationID, aRequestScope);
     return aRequestScope;
+  }
+
+  public static boolean isRequestScopePresent ()
+  {
+    return ScopeManager.isRequestScopePresent ();
   }
 
   @Nonnull
