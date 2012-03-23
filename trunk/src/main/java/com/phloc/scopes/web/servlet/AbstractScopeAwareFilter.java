@@ -34,7 +34,7 @@ import com.phloc.commons.exceptions.InitializationException;
 import com.phloc.commons.lang.CGStringHelper;
 import com.phloc.commons.state.EContinue;
 import com.phloc.commons.string.StringHelper;
-import com.phloc.scopes.web.mgr.WebScopeManager;
+import com.phloc.scopes.web.domain.IRequestWebScope;
 
 /**
  * Abstract HTTP servlet filter implementation using the correct scope handling.
@@ -88,14 +88,16 @@ public abstract class AbstractScopeAwareFilter implements Filter
    *        The HTTP request. Never <code>null</code>.
    * @param aHttpResponse
    *        The HTTP response. Never <code>null</code>.
+   * @param aRequestScope
+   *        The request scope to be used.
    * @return {@link EContinue#CONTINUE} to indicate that the next filter is to
    *         be called or {@link EContinue#BREAK} to indicate that the next
    *         filter does not need to be called! Never return <code>null</code>!
    */
   @Nonnull
   protected abstract EContinue doFilter (@Nonnull HttpServletRequest aHttpRequest,
-                                         @Nonnull HttpServletResponse aHttpResponse) throws IOException,
-                                                                                    ServletException;
+                                         @Nonnull HttpServletResponse aHttpResponse,
+                                         @Nonnull IRequestWebScope aRequestScope) throws IOException, ServletException;
 
   public final void doFilter (final ServletRequest aRequest, final ServletResponse aResponse, final FilterChain aChain) throws IOException,
                                                                                                                        ServletException
@@ -104,13 +106,13 @@ public abstract class AbstractScopeAwareFilter implements Filter
     final HttpServletResponse aHttpResponse = (HttpServletResponse) aResponse;
 
     // Check if a scope needs to be created
-    final boolean bCreateScope = !WebScopeManager.isRequestScopePresent ();
-    if (bCreateScope)
-      WebScopeManager.onRequestBegin (m_sApplicationID, aHttpRequest, aHttpResponse);
+    final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.create (m_sApplicationID,
+                                                                                             aHttpRequest,
+                                                                                             aHttpResponse);
 
     try
     {
-      if (doFilter (aHttpRequest, aHttpResponse).isContinue ())
+      if (doFilter (aHttpRequest, aHttpResponse, aRequestScopeInitializer.getRequestScope ()).isContinue ())
       {
         // Continue as usual
         aChain.doFilter (aRequest, aResponse);
@@ -118,12 +120,7 @@ public abstract class AbstractScopeAwareFilter implements Filter
     }
     finally
     {
-      if (bCreateScope)
-      {
-        // End the scope after the complete filtering process (if it was
-        // created)
-        WebScopeManager.onRequestEnd ();
-      }
+      aRequestScopeInitializer.destroyScope ();
     }
   }
 
