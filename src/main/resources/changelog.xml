@@ -20,6 +20,11 @@
 -->
 <changelog xmlns="http://www.phloc.com/ns/changelog/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.phloc.com/ns/changelog/1.0 schemas/changelog-1.0.xsd" version="1.0" component="phloc-scopes">
+  <entry date="2012-03-23" category="api" action="add">
+    <change>
+      <text locale="en">Added new class RequestScopeInitializer to consistently handle nested request scopes.</text>
+    </change>      
+  </entry>
   <entry date="2012-03-23" category="tech" action="fix">
     <change>
       <text locale="en">AbstractScopeAwareFilter can now handle multiple scope aware filters within a servlet filter chain</text>

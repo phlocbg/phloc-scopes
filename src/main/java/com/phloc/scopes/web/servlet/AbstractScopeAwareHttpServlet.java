@@ -39,7 +39,6 @@ import com.phloc.commons.string.StringHelper;
 import com.phloc.commons.timing.StopWatch;
 import com.phloc.commons.xml.serialize.AbstractXMLWriterSettings;
 import com.phloc.scopes.web.domain.IRequestWebScope;
-import com.phloc.scopes.web.mgr.WebScopeManager;
 
 /**
  * A thin wrapper around an {@link HttpServlet} that encapsulates the correct
@@ -147,15 +146,13 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
    */
   @OverrideOnDemand
   @OverridingMethodsMustInvokeSuper
-  protected IRequestWebScope beforeRequest (@Nonnull final HttpServletRequest aHttpRequest,
-                                            @Nonnull final HttpServletResponse aHttpResponse)
+  protected RequestScopeInitializer beforeRequest (@Nonnull final HttpServletRequest aHttpRequest,
+                                                   @Nonnull final HttpServletResponse aHttpResponse)
   {
-    final IRequestWebScope aRequestScope = WebScopeManager.onRequestBegin (m_sApplicationID,
-                                                                           aHttpRequest,
-                                                                           aHttpResponse);
+    final RequestScopeInitializer ret = RequestScopeInitializer.create (m_sApplicationID, aHttpRequest, aHttpResponse);
     _ensureResponseCharset (aHttpResponse);
     s_aCounterRequests.increment ();
-    return aRequestScope;
+    return ret;
   }
 
   /**
@@ -184,16 +181,16 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   protected final void doDelete (@Nonnull final HttpServletRequest aHttpRequest,
                                  @Nonnull final HttpServletResponse aHttpResponse) throws ServletException, IOException
   {
-    final IRequestWebScope aRequestScope = beforeRequest (aHttpRequest, aHttpResponse);
+    final RequestScopeInitializer aRequestScopeInitializer = beforeRequest (aHttpRequest, aHttpResponse);
     final StopWatch aSW = new StopWatch (true);
     try
     {
-      onDelete (aHttpRequest, aHttpResponse, aRequestScope);
+      onDelete (aHttpRequest, aHttpResponse, aRequestScopeInitializer.getRequestScope ());
     }
     finally
     {
       s_aTimerHdlDelete.addTime (aSW.stopAndGetMillis ());
-      WebScopeManager.onRequestEnd ();
+      aRequestScopeInitializer.destroyScope ();
     }
   }
 
@@ -223,16 +220,16 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   protected final void doGet (@Nonnull final HttpServletRequest aHttpRequest,
                               @Nonnull final HttpServletResponse aHttpResponse) throws ServletException, IOException
   {
-    final IRequestWebScope aRequestScope = beforeRequest (aHttpRequest, aHttpResponse);
+    final RequestScopeInitializer aRequestScopeInitializer = beforeRequest (aHttpRequest, aHttpResponse);
     final StopWatch aSW = new StopWatch (true);
     try
     {
-      onGet (aHttpRequest, aHttpResponse, aRequestScope);
+      onGet (aHttpRequest, aHttpResponse, aRequestScopeInitializer.getRequestScope ());
     }
     finally
     {
       s_aTimerHdlGet.addTime (aSW.stopAndGetMillis ());
-      WebScopeManager.onRequestEnd ();
+      aRequestScopeInitializer.destroyScope ();
     }
   }
 
@@ -262,16 +259,16 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   protected final void doHead (@Nonnull final HttpServletRequest aHttpRequest,
                                @Nonnull final HttpServletResponse aHttpResponse) throws ServletException, IOException
   {
-    final IRequestWebScope aRequestScope = beforeRequest (aHttpRequest, aHttpResponse);
+    final RequestScopeInitializer aRequestScopeInitializer = beforeRequest (aHttpRequest, aHttpResponse);
     final StopWatch aSW = new StopWatch (true);
     try
     {
-      onHead (aHttpRequest, aHttpResponse, aRequestScope);
+      onHead (aHttpRequest, aHttpResponse, aRequestScopeInitializer.getRequestScope ());
     }
     finally
     {
       s_aTimerHdlHead.addTime (aSW.stopAndGetMillis ());
-      WebScopeManager.onRequestEnd ();
+      aRequestScopeInitializer.destroyScope ();
     }
   }
 
@@ -302,16 +299,16 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
                                   @Nonnull final HttpServletResponse aHttpResponse) throws ServletException,
                                                                                    IOException
   {
-    final IRequestWebScope aRequestScope = beforeRequest (aHttpRequest, aHttpResponse);
+    final RequestScopeInitializer aRequestScopeInitializer = beforeRequest (aHttpRequest, aHttpResponse);
     final StopWatch aSW = new StopWatch (true);
     try
     {
-      onOptions (aHttpRequest, aHttpResponse, aRequestScope);
+      onOptions (aHttpRequest, aHttpResponse, aRequestScopeInitializer.getRequestScope ());
     }
     finally
     {
       s_aTimerHdlOptions.addTime (aSW.stopAndGetMillis ());
-      WebScopeManager.onRequestEnd ();
+      aRequestScopeInitializer.destroyScope ();
     }
   }
 
@@ -341,16 +338,16 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   protected final void doPost (@Nonnull final HttpServletRequest aHttpRequest,
                                @Nonnull final HttpServletResponse aHttpResponse) throws ServletException, IOException
   {
-    final IRequestWebScope aRequestScope = beforeRequest (aHttpRequest, aHttpResponse);
+    final RequestScopeInitializer aRequestScopeInitializer = beforeRequest (aHttpRequest, aHttpResponse);
     final StopWatch aSW = new StopWatch (true);
     try
     {
-      onPost (aHttpRequest, aHttpResponse, aRequestScope);
+      onPost (aHttpRequest, aHttpResponse, aRequestScopeInitializer.getRequestScope ());
     }
     finally
     {
       s_aTimerHdlPost.addTime (aSW.stopAndGetMillis ());
-      WebScopeManager.onRequestEnd ();
+      aRequestScopeInitializer.destroyScope ();
     }
   }
 
@@ -380,16 +377,16 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   protected final void doPut (@Nonnull final HttpServletRequest aHttpRequest,
                               @Nonnull final HttpServletResponse aHttpResponse) throws ServletException, IOException
   {
-    final IRequestWebScope aRequestScope = beforeRequest (aHttpRequest, aHttpResponse);
+    final RequestScopeInitializer aRequestScopeInitializer = beforeRequest (aHttpRequest, aHttpResponse);
     final StopWatch aSW = new StopWatch (true);
     try
     {
-      onPut (aHttpRequest, aHttpResponse, aRequestScope);
+      onPut (aHttpRequest, aHttpResponse, aRequestScopeInitializer.getRequestScope ());
     }
     finally
     {
       s_aTimerHdlPut.addTime (aSW.stopAndGetMillis ());
-      WebScopeManager.onRequestEnd ();
+      aRequestScopeInitializer.destroyScope ();
     }
   }
 
@@ -419,16 +416,16 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   protected final void doTrace (@Nonnull final HttpServletRequest aHttpRequest,
                                 @Nonnull final HttpServletResponse aHttpResponse) throws ServletException, IOException
   {
-    final IRequestWebScope aRequestScope = beforeRequest (aHttpRequest, aHttpResponse);
+    final RequestScopeInitializer aRequestScopeInitializer = beforeRequest (aHttpRequest, aHttpResponse);
     final StopWatch aSW = new StopWatch (true);
     try
     {
-      onTrace (aHttpRequest, aHttpResponse, aRequestScope);
+      onTrace (aHttpRequest, aHttpResponse, aRequestScopeInitializer.getRequestScope ());
     }
     finally
     {
       s_aTimerHdlTrace.addTime (aSW.stopAndGetMillis ());
-      WebScopeManager.onRequestEnd ();
+      aRequestScopeInitializer.destroyScope ();
     }
   }
 }
