@@ -18,7 +18,6 @@
 package com.phloc.scopes.web.mock;
 
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -41,6 +40,7 @@ import com.phloc.commons.collections.multimap.MultiHashMapLinkedHashSetBased;
 import com.phloc.commons.io.streams.NonBlockingByteArrayOutputStream;
 import com.phloc.commons.io.streams.StreamUtils;
 import com.phloc.commons.mime.CMimeType;
+import com.phloc.commons.system.SystemHelper;
 
 /**
  * Mock implementation of {@link HttpServletResponse}.
@@ -152,9 +152,10 @@ public final class MockHttpServletResponse implements HttpServletResponse, IHasL
 
     if (m_aWriter == null)
     {
-      final Writer aWriter = (m_sCharacterEncoding != null
-                                                          ? StreamUtils.createWriter (m_aContent, m_sCharacterEncoding)
-                                                          : new OutputStreamWriter (m_aContent));
+      final Writer aWriter = m_sCharacterEncoding != null
+                                                         ? StreamUtils.createWriter (m_aContent, m_sCharacterEncoding)
+                                                         : StreamUtils.createWriter (m_aContent,
+                                                                                     SystemHelper.getSystemCharsetName ());
       m_aWriter = new ResponsePrintWriter (aWriter);
     }
     return m_aWriter;

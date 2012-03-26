@@ -20,7 +20,6 @@ package com.phloc.scopes.web.mock;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.Reader;
 import java.security.Principal;
 import java.util.ArrayList;
@@ -58,6 +57,7 @@ import com.phloc.commons.collections.multimap.MultiHashMapLinkedHashSetBased;
 import com.phloc.commons.io.streams.NonBlockingByteArrayInputStream;
 import com.phloc.commons.io.streams.StreamUtils;
 import com.phloc.commons.lang.CGStringHelper;
+import com.phloc.commons.system.SystemHelper;
 
 /**
  * Mock implementation of {@link HttpServletRequest}.
@@ -538,8 +538,10 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
       return null;
 
     final InputStream aIS = new NonBlockingByteArrayInputStream (m_aContent);
-    final Reader aReader = m_sCharacterEncoding != null ? StreamUtils.createReader (aIS, m_sCharacterEncoding)
-                                                       : new InputStreamReader (aIS);
+    final Reader aReader = m_sCharacterEncoding != null
+                                                       ? StreamUtils.createReader (aIS, m_sCharacterEncoding)
+                                                       : StreamUtils.createReader (aIS,
+                                                                                   SystemHelper.getSystemCharsetName ());
     return new BufferedReader (aReader);
   }
 
