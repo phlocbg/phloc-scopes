@@ -36,6 +36,7 @@ import com.phloc.commons.annotations.Nonempty;
 import com.phloc.commons.annotations.UnsupportedOperation;
 import com.phloc.commons.collections.ArrayHelper;
 import com.phloc.commons.collections.ContainerHelper;
+import com.phloc.commons.idfactory.GlobalIDFactory;
 import com.phloc.commons.string.StringHelper;
 
 /**
@@ -48,7 +49,6 @@ public class MockHttpSession implements HttpSession
 {
   public static final String SESSION_COOKIE_NAME = "JSESSIONID";
 
-  private static int s_nNextId = 1;
   private final String m_sID;
   private final long m_nCreationTime = System.currentTimeMillis ();
   private int m_nMaxInactiveInterval = -1; // indefinite
@@ -90,7 +90,7 @@ public class MockHttpSession implements HttpSession
   public MockHttpSession (@Nullable final ServletContext aServletContext, @Nullable final String sID)
   {
     m_aServletContext = aServletContext;
-    m_sID = StringHelper.hasText (sID) ? sID : Integer.toString (s_nNextId++);
+    m_sID = StringHelper.hasText (sID) ? sID : GlobalIDFactory.getNewStringID ();
 
     final HttpSessionEvent aHSE = new HttpSessionEvent (this);
     for (final HttpSessionListener aListener : MockHttpListener.getAllHttpSessionListeners ())
