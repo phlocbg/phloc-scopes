@@ -152,9 +152,7 @@ public class RequestWebScope extends AbstractReadonlyAttributeContainer implemen
    * Check if the parsed request is a multi part request, potentially containing
    * uploaded files.
    * 
-   * @param aHttpRequest
-   *        The non-<code>null</code> HTTP request.
-   * @return <code>true</code> if the passed request is a multi part request
+   * @return <code>true</code> if the current request is a multi part request
    */
   private boolean _isMultipartContent ()
   {
