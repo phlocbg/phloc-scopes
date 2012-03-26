@@ -18,9 +18,9 @@ package com.phloc.scopes.web.fileupload.io;
 
 import java.io.File;
 
+import com.phloc.commons.annotations.VisibleForTesting;
 import com.phloc.scopes.web.fileupload.FileItem;
 import com.phloc.scopes.web.fileupload.FileItemFactory;
-
 
 /**
  * <p>
@@ -49,9 +49,9 @@ import com.phloc.scopes.web.fileupload.FileItemFactory;
  * when the corresponding instance of {@link java.io.File} is garbage
  * collected.) This is done by the so-called reaper thread, which is started
  * automatically when the class
- * {@link com.phloc.scopes.web.fileupload.io.FileCleaningTracker} is loaded. It might make
- * sense to terminate that thread, for example, if your web application ends.
- * See the section on "Resource cleanup" in the users guide of
+ * {@link com.phloc.scopes.web.fileupload.io.FileCleaningTracker} is loaded. It
+ * might make sense to terminate that thread, for example, if your web
+ * application ends. See the section on "Resource cleanup" in the users guide of
  * commons-fileupload.
  * </p>
  * 
@@ -83,6 +83,17 @@ public class DiskFileItemFactory implements FileItemFactory
   private final FileCleaningTracker fileCleaningTracker;
 
   // ----------------------------------------------------------- Constructors
+
+  @VisibleForTesting
+  public DiskFileItemFactory ()
+  {
+    this (10240, null);
+  }
+
+  public DiskFileItemFactory (final int sizeThreshold, final File repository)
+  {
+    this (sizeThreshold, repository, null);
+  }
 
   /**
    * Constructs a preconfigured instance of this class.
