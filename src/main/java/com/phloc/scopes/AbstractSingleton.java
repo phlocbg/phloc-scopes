@@ -238,7 +238,6 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
 
       aScope.runAtomic (new INonThrowingRunnableWithParameter <IScope> ()
       {
-        @edu.umd.cs.findbugs.annotations.SuppressWarnings ("NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE")
         public void run (@Nonnull final IScope aInnerScope)
         {
           // try to resolve again in case it was set in the meantime
