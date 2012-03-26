@@ -19,8 +19,8 @@ package com.phloc.scopes.web.impl;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -39,13 +39,20 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.phloc.commons.CGlobal;
 import com.phloc.commons.annotations.OverrideOnDemand;
 import com.phloc.commons.annotations.ReturnsMutableCopy;
+import com.phloc.commons.annotations.UsedViaReflection;
 import com.phloc.commons.callback.INonThrowingRunnableWithParameter;
+import com.phloc.commons.charset.CCharset;
+import com.phloc.commons.collections.ArrayHelper;
 import com.phloc.commons.collections.ContainerHelper;
 import com.phloc.commons.collections.attrs.AbstractReadonlyAttributeContainer;
+import com.phloc.commons.collections.multimap.IMultiMapListBased;
+import com.phloc.commons.collections.multimap.MultiHashMapArrayListBased;
 import com.phloc.commons.compare.EqualsUtils;
 import com.phloc.commons.idfactory.GlobalIDFactory;
+import com.phloc.commons.io.streams.StreamUtils;
 import com.phloc.commons.lang.GenericReflection;
 import com.phloc.commons.state.EChange;
 import com.phloc.commons.string.StringHelper;
@@ -53,13 +60,68 @@ import com.phloc.commons.string.ToStringGenerator;
 import com.phloc.scopes.IScope;
 import com.phloc.scopes.IScopeDestructionAware;
 import com.phloc.scopes.ScopeUtils;
+import com.phloc.scopes.nonweb.singleton.GlobalSingleton;
 import com.phloc.scopes.web.domain.IRequestWebScope;
+import com.phloc.scopes.web.fileupload.FileItem;
+import com.phloc.scopes.web.fileupload.FileUploadException;
+import com.phloc.scopes.web.fileupload.io.DiskFileItemFactory;
+import com.phloc.scopes.web.fileupload.io.FileCleaningTracker;
+import com.phloc.scopes.web.fileupload.servlet.ServletFileUpload;
+import com.phloc.scopes.web.mock.MockHttpServletRequest;
 
 public class RequestWebScope extends AbstractReadonlyAttributeContainer implements IRequestWebScope
 {
+  /**
+   * Wrapper around a file cleaning tracker, that is correctly cleaning up, when
+   * the servlet context is destroyed.
+   * 
+   * @author philip
+   */
+  public static final class GlobalFileCleaningTracker extends GlobalSingleton
+  {
+    private final FileCleaningTracker m_aTracker = new FileCleaningTracker ();
+
+    @UsedViaReflection
+    @Deprecated
+    public GlobalFileCleaningTracker ()
+    {}
+
+    @Nonnull
+    public static GlobalFileCleaningTracker getInstance ()
+    {
+      return getGlobalSingleton (GlobalFileCleaningTracker.class);
+    }
+
+    @Nonnull
+    public FileCleaningTracker getTracker ()
+    {
+      return m_aTracker;
+    }
+
+    @Override
+    protected void onDestroy ()
+    {
+      m_aTracker.exitWhenFinished ();
+    }
+  }
+
   private static final Logger s_aLogger = LoggerFactory.getLogger (RequestWebScope.class);
   private static final String REQUEST_SCOPED_INITED = "$request.scope.inited";
-  private static final boolean REQUEST_PARAMETER_DEBUG = false;
+
+  /** Create a factory for disk-based file items. */
+  private static final DiskFileItemFactory s_aFactory;
+
+  /**
+   * The maximum size of a single file (in bytes) that will be handled
+   */
+  private static final long MAX_REQUEST_SIZE = 5 * CGlobal.BYTES_PER_GIGABYTE;
+
+  static
+  {
+    // Set the default file item factory
+    s_aFactory = new DiskFileItemFactory (CGlobal.BYTES_PER_MEGABYTE, null, GlobalFileCleaningTracker.getInstance ()
+                                                                                                     .getTracker ());
+  }
 
   protected final ReadWriteLock m_aRWLock = new ReentrantReadWriteLock ();
   private final String m_sScopeID;
@@ -86,10 +148,95 @@ public class RequestWebScope extends AbstractReadonlyAttributeContainer implemen
       s_aLogger.info ("Created web request scope '" + getID () + "'");
   }
 
+  /**
+   * Check if the parsed request is a multi part request, potentially containing
+   * uploaded files.
+   * 
+   * @param aHttpRequest
+   *        The non-<code>null</code> HTTP request.
+   * @return <code>true</code> if the passed request is a multi part request
+   */
+  private boolean _isMultipartContent ()
+  {
+    return !(m_aHttpRequest instanceof MockHttpServletRequest) && ServletFileUpload.isMultipartContent (m_aHttpRequest);
+  }
+
   @OverrideOnDemand
   protected boolean addSpecialRequestAttributes ()
   {
-    return false;
+    // check file uploads
+    // Note: this handles only POST parameters!
+    boolean bAddedFileUploadItems = false;
+    if (_isMultipartContent ())
+    {
+      try
+      {
+        // Setup the ServletFileUpload....
+        final ServletFileUpload aUpload = new ServletFileUpload (s_aFactory);
+        aUpload.setSizeMax (MAX_REQUEST_SIZE);
+        aUpload.setHeaderEncoding (CCharset.CHARSET_UTF_8);
+        try
+        {
+          m_aHttpRequest.setCharacterEncoding (CCharset.CHARSET_UTF_8);
+        }
+        catch (final UnsupportedEncodingException ex)
+        {
+          s_aLogger.error ("Failed to set request character encoding to '" + CCharset.CHARSET_UTF_8 + "'", ex);
+        }
+
+        // Parse and write to temporary directory
+        final IMultiMapListBased <String, String> aFormFields = new MultiHashMapArrayListBased <String, String> ();
+        final IMultiMapListBased <String, FileItem> aFormFiles = new MultiHashMapArrayListBased <String, FileItem> ();
+        for (final FileItem aFileItem : aUpload.parseRequest (m_aHttpRequest))
+        {
+          if (aFileItem.isFormField ())
+          {
+            try
+            {
+              // We need to explicitly use the charset, as by default only the
+              // charset from the content type is used!
+              aFormFields.putSingle (aFileItem.getFieldName (), aFileItem.getString (CCharset.CHARSET_UTF_8));
+            }
+            catch (final UnsupportedEncodingException ex)
+            {
+              throw new IllegalStateException ("Failed to use multipart charset!", ex);
+            }
+          }
+          else
+            aFormFiles.putSingle (aFileItem.getFieldName (), aFileItem);
+        }
+
+        // set all form fields
+        for (final Map.Entry <String, List <String>> aEntry : aFormFields.entrySet ())
+        {
+          // Convert list of String to value (String or array of String)
+          final List <String> aValues = aEntry.getValue ();
+          final Object aValue = aValues.size () == 1 ? ContainerHelper.getFirstElement (aValues)
+                                                    : ArrayHelper.newArray (aValues, String.class);
+          setAttribute (aEntry.getKey (), aValue);
+        }
+
+        // set all form files
+        for (final Map.Entry <String, List <FileItem>> aEntry : aFormFiles.entrySet ())
+        {
+          // Convert list of String to value (String or array of String)
+          final List <FileItem> aValues = aEntry.getValue ();
+          final Object aValue = aValues.size () == 1 ? ContainerHelper.getFirstElement (aValues)
+                                                    : ArrayHelper.newArray (aValues, FileItem.class);
+          setAttribute (aEntry.getKey (), aValue);
+        }
+
+        // Parsing complex file upload succeeded -> do not use standard scan for
+        // parameters
+        bAddedFileUploadItems = true;
+      }
+      catch (final FileUploadException ex)
+      {
+        if (!StreamUtils.isKnownEOFException (ex.getCause ()))
+          s_aLogger.error ("Error parsing multipart request content", ex);
+      }
+    }
+    return bAddedFileUploadItems;
   }
 
   @OverrideOnDemand
@@ -122,17 +269,9 @@ public class RequestWebScope extends AbstractReadonlyAttributeContainer implemen
       // Check if it is a single value or not
       final String [] aParamValues = m_aHttpRequest.getParameterValues (sParamName);
       if (aParamValues.length == 1)
-      {
-        if (REQUEST_PARAMETER_DEBUG)
-          s_aLogger.info ("Adding parameter '" + sParamName + "'='" + aParamValues[0] + "'");
         setAttribute (sParamName, aParamValues[0]);
-      }
       else
-      {
-        if (REQUEST_PARAMETER_DEBUG)
-          s_aLogger.info ("Adding parameter array '" + sParamName + "'='" + Arrays.toString (aParamValues) + "'");
         setAttribute (sParamName, aParamValues);
-      }
     }
 
     postAttributeInit ();
