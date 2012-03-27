@@ -29,6 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.phloc.commons.annotations.DevelopersNote;
+import com.phloc.commons.string.StringHelper;
 import com.phloc.scopes.IScopeRenewalAware;
 import com.phloc.scopes.web.domain.ISessionApplicationWebScope;
 import com.phloc.scopes.web.domain.ISessionWebScope;
@@ -106,7 +107,11 @@ public final class WebScopeSessionHelper
       {
         final Map <String, IScopeRenewalAware> aSurviving = aEntry.getValue ().getAllScopeRenewalAwareAttributes ();
         if (!aSurviving.isEmpty ())
-          aSessionApplicationScopeValues.put (aEntry.getKey (), aSurviving);
+        {
+          // Remove the leading session ID
+          final String sScopeApplicationID = StringHelper.trimStart (aEntry.getKey (), aOldSessionScope.getID () + '.');
+          aSessionApplicationScopeValues.put (sScopeApplicationID, aSurviving);
+        }
       }
 
       // renew the session
