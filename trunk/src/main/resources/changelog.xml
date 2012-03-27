@@ -25,6 +25,16 @@
       <text locale="en">Added new method ISessionWebScope.getAllSessionApplicationScopes ()</text>
     </change>      
   </entry>
+  <entry date="2012-03-27" category="api" action="add">
+    <change>
+      <text locale="en">Added new method IGlobalScope.getAllApplicationScopes ()</text>
+    </change>      
+  </entry>
+  <entry date="2012-03-27" category="api" action="add">
+    <change>
+      <text locale="en">Extended WebScopeSessionManager API with retrieval methods</text>
+    </change>      
+  </entry>
   <entry date="2012-03-27" category="tech" action="fix">
     <change>
       <text locale="en">Tried to add support for Servlet API 2.4 (no ServletContext.getContextPath method)</text>

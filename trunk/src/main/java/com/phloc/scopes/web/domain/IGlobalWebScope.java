@@ -18,6 +18,7 @@
 package com.phloc.scopes.web.domain;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.servlet.ServletContext;
 
 import com.phloc.scopes.IWebScope;
@@ -30,6 +31,9 @@ import com.phloc.scopes.nonweb.domain.IGlobalScope;
  */
 public interface IGlobalWebScope extends IGlobalScope, IWebScope
 {
+  @Nullable
+  IApplicationWebScope getApplicationScope (String sAppID, boolean bCreateIfNotExisting);
+
   /**
    * @return The underlying servlet context. Never <code>null</code>.
    */
