@@ -33,7 +33,6 @@ import org.slf4j.LoggerFactory;
 import com.phloc.commons.annotations.Nonempty;
 import com.phloc.commons.annotations.ReturnsMutableCopy;
 import com.phloc.commons.collections.ContainerHelper;
-import com.phloc.commons.lang.CGStringHelper;
 import com.phloc.commons.state.EChange;
 import com.phloc.commons.string.StringHelper;
 import com.phloc.commons.string.ToStringGenerator;
@@ -78,12 +77,8 @@ public class SessionWebScope extends AbstractMapBasedScope implements ISessionWe
   @Nonnull
   public EChange setAttribute (@Nonnull final String sName, @Nonnull final Object aNewValue)
   {
-    if (!(aNewValue instanceof Serializable))
-      s_aLogger.warn ("Value of class " +
-                      CGStringHelper.getSafeClassName (aNewValue) +
-                      " should implement " +
-                      Serializable.class +
-                      "!");
+    if (aNewValue != null && !(aNewValue instanceof Serializable))
+      s_aLogger.warn ("Value of class " + aNewValue.getClass ().getName () + " should implement Serializable!");
 
     return super.setAttribute (sName, aNewValue);
   }

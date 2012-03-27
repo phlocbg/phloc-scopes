@@ -56,14 +56,12 @@ public class SessionApplicationWebScope extends AbstractMapBasedScope implements
 
   @Override
   @Nonnull
-  public EChange setAttribute (@Nonnull final String sName, @Nonnull final Object aValue)
+  public EChange setAttribute (@Nonnull final String sName, @Nonnull final Object aNewValueValue)
   {
-    if (!(aValue instanceof Serializable))
-      s_aLogger.warn ("Value of class " +
-                      (aValue == null ? "null" : aValue.getClass ().getName ()) +
-                      " should implement Serializable!");
+    if (aNewValueValue != null && !(aNewValueValue instanceof Serializable))
+      s_aLogger.warn ("Value of class " + aNewValueValue.getClass ().getName () + " should implement Serializable!");
 
-    return super.setAttribute (sName, aValue);
+    return super.setAttribute (sName, aNewValueValue);
   }
 
   @Override
