@@ -119,7 +119,7 @@ public class SessionWebScope extends AbstractMapBasedScope implements ISessionWe
     if (StringHelper.hasNoText (sApplicationID))
       throw new IllegalArgumentException ("applicationID");
 
-    final String sAppScopeID = sApplicationID + '.' + getID ();
+    final String sAppScopeID = sApplicationID;
     ISessionApplicationWebScope aSessionAppScope;
 
     // Try with read-lock only

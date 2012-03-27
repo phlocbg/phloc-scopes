@@ -38,20 +38,20 @@ public final class WebScopeAwareTestSetup
 
   public static void setupScopeTests ()
   {
-    // Start global scope
+    // Start global scope -> triggers events
     s_aServletContext = new MockServletContext (MOCK_CONTEXT);
 
-    // Start request scope
+    // Start request scope -> triggers events
     s_aRequest = new MockHttpServletRequest (s_aServletContext);
   }
 
   public static void shutdownScopeTests ()
   {
-    // end request
+    // end request -> triggers events
     s_aRequest.invalidate ();
     s_aRequest = null;
 
-    // shutdown global context
+    // shutdown global context -> triggers events
     s_aServletContext.invalidate ();
     s_aServletContext = null;
   }
