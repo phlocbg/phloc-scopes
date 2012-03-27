@@ -95,6 +95,8 @@ public class WebScopeSessionHelperTest extends AbstractWebScopeAwareTestSuite
     aAWS2 = aWS.getSessionApplicationScope ("app2", false);
     assertNotNull (aAWS2);
     assertEquals (2, aAWS2.getAllAttributes ().size ());
+    assertNotNull (aAWS2.getAttributeObject ("a5"));
+    assertEquals ("session6", ((MockScopeRenewalAware) aAWS2.getAttributeObject ("a6")).getString ());
 
     // Had no scope renewal aware attrs:
     aAWS3 = aWS.getSessionApplicationScope ("app3", false);
