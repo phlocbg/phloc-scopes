@@ -61,16 +61,18 @@ public class DefaultWebScopeFactory implements IWebScopeFactory
       throw new NullPointerException ("servletContext");
 
     IContextPathProvider aContextPathProvider = null;
-    if (aServletContext.getMajorVersion () >= 2 && aServletContext.getMinorVersion () >= 5)
+    if ((aServletContext.getMajorVersion () == 2 && aServletContext.getMinorVersion () >= 5) ||
+        aServletContext.getMajorVersion () > 2)
     {
       try
       {
-        final Method m = aServletContext.getClass ().getDeclaredMethod ("getContextPath");
-        // Servlet API >= 2.5
-        // -> Invoke once and store in member
+        final Method m = aServletContext.getClass ().getMethod ("getContextPath");
+        // Servlet API >= 2.5 -> invoke once and store in member
         final String sContextPath = (String) m.invoke (aServletContext);
+
+        // May not be null, but maybe an empty String!
         if (sContextPath == null)
-          s_aLogger.error ("getContextPath returned an illegal object!");
+          s_aLogger.error ("getContextPath returned an illegal null object!");
 
         aContextPathProvider = new IContextPathProvider ()
         {
@@ -83,6 +85,11 @@ public class DefaultWebScopeFactory implements IWebScopeFactory
             return m_sContextPath;
           }
         };
+      }
+      catch (final NoSuchMethodException ex)
+      {
+        // Ignore
+        s_aLogger.error ("Failed to find Method getContextPath on " + aServletContext);
       }
       catch (final Exception ex)
       {
