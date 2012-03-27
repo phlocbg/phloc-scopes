@@ -31,6 +31,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.phloc.commons.annotations.Nonempty;
+import com.phloc.commons.annotations.ReturnsMutableCopy;
+import com.phloc.commons.collections.ContainerHelper;
 import com.phloc.commons.lang.CGStringHelper;
 import com.phloc.commons.state.EChange;
 import com.phloc.commons.string.StringHelper;
@@ -112,7 +114,7 @@ public class SessionWebScope extends AbstractMapBasedScope implements ISessionWe
 
   @Nullable
   public ISessionApplicationWebScope getSessionApplicationScope (@Nonnull @Nonempty final String sApplicationID,
-                                                              final boolean bCreateIfNotExisting)
+                                                                 final boolean bCreateIfNotExisting)
   {
     if (StringHelper.hasNoText (sApplicationID))
       throw new IllegalArgumentException ("applicationID");
@@ -152,6 +154,21 @@ public class SessionWebScope extends AbstractMapBasedScope implements ISessionWe
       }
     }
     return aSessionAppScope;
+  }
+
+  @Nonnull
+  @ReturnsMutableCopy
+  public Map <String, ISessionApplicationWebScope> getAllSessionApplicationScopes ()
+  {
+    m_aRWLock.readLock ().lock ();
+    try
+    {
+      return ContainerHelper.newMap (m_aSessionAppScopes);
+    }
+    finally
+    {
+      m_aRWLock.readLock ().unlock ();
+    }
   }
 
   @Nonnull

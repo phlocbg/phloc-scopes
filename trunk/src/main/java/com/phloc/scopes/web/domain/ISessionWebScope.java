@@ -17,6 +17,8 @@
  */
 package com.phloc.scopes.web.domain;
 
+import java.util.Map;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpSession;
@@ -81,4 +83,11 @@ public interface ISessionWebScope extends IWebScope
   @Nullable
   ISessionApplicationWebScope getSessionApplicationScope (@Nonnull @Nonempty String sApplicationID,
                                                           boolean bCreateIfNotExisting);
+
+  /**
+   * @return A non-<code>null</code> map with all available session application
+   *         scopes. The key is the application ID and the value is the scope.
+   */
+  @Nonnull
+  Map <String, ISessionApplicationWebScope> getAllSessionApplicationScopes ();
 }
