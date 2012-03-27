@@ -29,8 +29,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.phloc.commons.annotations.DevelopersNote;
-import com.phloc.scopes.ISurvivingSessionRenewal;
+import com.phloc.scopes.IScopeRenewalAware;
 import com.phloc.scopes.web.domain.ISessionApplicationWebScope;
+import com.phloc.scopes.web.domain.ISessionWebScope;
 
 @Immutable
 public final class WebScopeSessionHelper
@@ -49,18 +50,10 @@ public final class WebScopeSessionHelper
       throw new NullPointerException ("request");
 
     // Get all attributes to be copied
-    final Map <String, Object> aSurvivingAttributes = new HashMap <String, Object> ();
     final ISessionApplicationWebScope aScope = WebScopeManager.getSessionApplicationScope (false);
-    if (aScope != null)
-    {
-      // collect all attributes that should survive the session renewal
-      for (final Map.Entry <String, Object> aEntry : aScope.getAllAttributes ().entrySet ())
-      {
-        final Object aValue = aEntry.getValue ();
-        if (aValue instanceof ISurvivingSessionRenewal)
-          aSurvivingAttributes.put (aEntry.getKey (), aValue);
-      }
-    }
+    final Map <String, IScopeRenewalAware> aSurvivingAttributes = aScope == null
+                                                                                      ? new HashMap <String, IScopeRenewalAware> ()
+                                                                                      : aScope.getAllAttributesSurvivingScopeDestruction ();
 
     // Main renew the session:
 
@@ -87,12 +80,66 @@ public final class WebScopeSessionHelper
       // Set all surviving attributes in the new session application scope
       // Note: don't use the above scope object - get a new one!
       final ISessionApplicationWebScope aNewScope = WebScopeManager.getSessionApplicationScope (true);
-      for (final Map.Entry <String, Object> aEntry : aSurvivingAttributes.entrySet ())
+      for (final Map.Entry <String, IScopeRenewalAware> aEntry : aSurvivingAttributes.entrySet ())
         aNewScope.setAttribute (aEntry.getKey (), aEntry.getValue ());
 
       s_aLogger.info ("Attributes which survived session renewal: " + aSurvivingAttributes.keySet ());
     }
 
     return aSession;
+  }
+
+  public final static void renewSessionScope ()
+  {
+    final ISessionWebScope aOldSessionScope = WebScopeManager.getSessionScope (false);
+    if (aOldSessionScope != null)
+    {
+      // OK, we have a session scope to renew
+
+      // Save all values from session scopes
+      final Map <String, IScopeRenewalAware> aSessionScopeValues = aOldSessionScope.getAllAttributesSurvivingScopeDestruction ();
+
+      // Save all values from all session application scopes
+      final Map <String, Map <String, IScopeRenewalAware>> aSessionApplicationScopeValues = new HashMap <String, Map <String, IScopeRenewalAware>> ();
+      for (final Map.Entry <String, ISessionApplicationWebScope> aEntry : aOldSessionScope.getAllSessionApplicationScopes ()
+                                                                                          .entrySet ())
+      {
+        final Map <String, IScopeRenewalAware> aSurviving = aEntry.getValue ()
+                                                                        .getAllAttributesSurvivingScopeDestruction ();
+        if (!aSurviving.isEmpty ())
+          aSessionApplicationScopeValues.put (aEntry.getKey (), aSurviving);
+      }
+
+      // renew the session
+      try
+      {
+        s_aLogger.info ("Invalidating session " + aOldSessionScope.getID ());
+        aOldSessionScope.getSession ().invalidate ();
+      }
+      catch (final Exception ex)
+      {
+        // session already invalidated???
+        s_aLogger.warn ("Failed to invalidate session", ex);
+      }
+
+      // Ensure that we get a new session!
+      final ISessionWebScope aNewSessionScope = WebScopeManager.getSessionScope (true);
+
+      // restore the session scope attributes
+      for (final Map.Entry <String, IScopeRenewalAware> aEntry : aSessionScopeValues.entrySet ())
+        aNewSessionScope.setAttribute (aEntry.getKey (), aEntry.getValue ());
+
+      // restore the session application scope attributes
+      for (final Map.Entry <String, Map <String, IScopeRenewalAware>> aEntry : aSessionApplicationScopeValues.entrySet ())
+      {
+        // Create the session application scope in the new session scope
+        final ISessionApplicationWebScope aNewSessionApplicationScope = aNewSessionScope.getSessionApplicationScope (aEntry.getKey (),
+                                                                                                                     true);
+
+        // Put all attributes in
+        for (final Map.Entry <String, IScopeRenewalAware> aInnerEntry : aEntry.getValue ().entrySet ())
+          aNewSessionApplicationScope.setAttribute (aInnerEntry.getKey (), aInnerEntry.getValue ());
+      }
+    }
   }
 }

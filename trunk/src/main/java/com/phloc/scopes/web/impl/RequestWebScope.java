@@ -59,6 +59,7 @@ import com.phloc.commons.string.StringHelper;
 import com.phloc.commons.string.ToStringGenerator;
 import com.phloc.scopes.IScope;
 import com.phloc.scopes.IScopeDestructionAware;
+import com.phloc.scopes.IScopeRenewalAware;
 import com.phloc.scopes.ScopeUtils;
 import com.phloc.scopes.nonweb.singleton.GlobalSingleton;
 import com.phloc.scopes.web.domain.IRequestWebScope;
@@ -749,6 +750,20 @@ public class RequestWebScope extends AbstractReadonlyAttributeContainer implemen
   public OutputStream getOutputStream () throws IOException
   {
     return m_aHttpResponse.getOutputStream ();
+  }
+
+  @Nonnull
+  @ReturnsMutableCopy
+  public final Map <String, IScopeRenewalAware> getAllAttributesSurvivingScopeDestruction ()
+  {
+    final Map <String, IScopeRenewalAware> ret = new HashMap <String, IScopeRenewalAware> ();
+    for (final Map.Entry <String, Object> aEntry : getAllAttributes ().entrySet ())
+    {
+      final Object aValue = aEntry.getValue ();
+      if (aValue instanceof IScopeRenewalAware)
+        ret.put (aEntry.getKey (), (IScopeRenewalAware) aValue);
+    }
+    return ret;
   }
 
   @Override

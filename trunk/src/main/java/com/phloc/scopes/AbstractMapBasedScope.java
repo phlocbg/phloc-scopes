@@ -17,6 +17,9 @@
  */
 package com.phloc.scopes;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
 
@@ -25,6 +28,7 @@ import org.slf4j.LoggerFactory;
 
 import com.phloc.commons.annotations.Nonempty;
 import com.phloc.commons.annotations.OverrideOnDemand;
+import com.phloc.commons.annotations.ReturnsMutableCopy;
 import com.phloc.commons.callback.INonThrowingRunnableWithParameter;
 import com.phloc.commons.collections.attrs.MapBasedAttributeContainerThreadSafe;
 import com.phloc.commons.hash.HashCodeGenerator;
@@ -171,6 +175,20 @@ public abstract class AbstractMapBasedScope extends MapBasedAttributeContainerTh
     {
       m_aRWLock.writeLock ().unlock ();
     }
+  }
+
+  @Nonnull
+  @ReturnsMutableCopy
+  public final Map <String, IScopeRenewalAware> getAllAttributesSurvivingScopeDestruction ()
+  {
+    final Map <String, IScopeRenewalAware> ret = new HashMap <String, IScopeRenewalAware> ();
+    for (final Map.Entry <String, Object> aEntry : getAllAttributes ().entrySet ())
+    {
+      final Object aValue = aEntry.getValue ();
+      if (aValue instanceof IScopeRenewalAware)
+        ret.put (aEntry.getKey (), (IScopeRenewalAware) aValue);
+    }
+    return ret;
   }
 
   @Override

@@ -26,7 +26,7 @@ package com.phloc.scopes;
  * 
  * @author Boris Gregorcic
  */
-public interface ISurvivingSessionRenewal
+public interface IScopeRenewalAware
 {
   /* empty */
 }
