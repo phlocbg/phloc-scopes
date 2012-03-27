@@ -17,8 +17,11 @@
  */
 package com.phloc.scopes;
 
+import java.util.Map;
+
 import javax.annotation.Nonnull;
 
+import com.phloc.commons.annotations.ReturnsMutableCopy;
 import com.phloc.commons.callback.INonThrowingRunnableWithParameter;
 import com.phloc.commons.collections.attrs.IAttributeContainer;
 import com.phloc.commons.id.IHasID;
@@ -82,4 +85,13 @@ public interface IScope extends IAttributeContainer, IHasID <String>
    *        The action to be executed. May not be <code>null</code>.
    */
   void runAtomic (@Nonnull INonThrowingRunnableWithParameter <IScope> aAction);
+
+  /**
+   * @return The non-<code>null</code> map with all contained attributes that
+   *         implement the {@link IScopeRenewalAware} interface. May be
+   *         empty.
+   */
+  @Nonnull
+  @ReturnsMutableCopy
+  Map <String, IScopeRenewalAware> getAllAttributesSurvivingScopeDestruction ();
 }
