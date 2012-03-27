@@ -17,7 +17,6 @@
  */
 package com.phloc.scopes;
 
-
 /**
  * This is a marker interface for all objects that should survive a session
  * renewal. When renewing a session, all existing attributes will be checked for

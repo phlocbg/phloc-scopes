@@ -93,5 +93,5 @@ public interface IScope extends IAttributeContainer, IHasID <String>
    */
   @Nonnull
   @ReturnsMutableCopy
-  Map <String, IScopeRenewalAware> getAllAttributesSurvivingScopeDestruction ();
+  Map <String, IScopeRenewalAware> getAllScopeRenewalAwareAttributes ();
 }

@@ -53,7 +53,7 @@ public final class WebScopeSessionHelper
     final ISessionApplicationWebScope aScope = WebScopeManager.getSessionApplicationScope (false);
     final Map <String, IScopeRenewalAware> aSurvivingAttributes = aScope == null
                                                                                       ? new HashMap <String, IScopeRenewalAware> ()
-                                                                                      : aScope.getAllAttributesSurvivingScopeDestruction ();
+                                                                                      : aScope.getAllScopeRenewalAwareAttributes ();
 
     // Main renew the session:
 
@@ -97,7 +97,7 @@ public final class WebScopeSessionHelper
       // OK, we have a session scope to renew
 
       // Save all values from session scopes
-      final Map <String, IScopeRenewalAware> aSessionScopeValues = aOldSessionScope.getAllAttributesSurvivingScopeDestruction ();
+      final Map <String, IScopeRenewalAware> aSessionScopeValues = aOldSessionScope.getAllScopeRenewalAwareAttributes ();
 
       // Save all values from all session application scopes
       final Map <String, Map <String, IScopeRenewalAware>> aSessionApplicationScopeValues = new HashMap <String, Map <String, IScopeRenewalAware>> ();
@@ -105,7 +105,7 @@ public final class WebScopeSessionHelper
                                                                                           .entrySet ())
       {
         final Map <String, IScopeRenewalAware> aSurviving = aEntry.getValue ()
-                                                                        .getAllAttributesSurvivingScopeDestruction ();
+                                                                        .getAllScopeRenewalAwareAttributes ();
         if (!aSurviving.isEmpty ())
           aSessionApplicationScopeValues.put (aEntry.getKey (), aSurviving);
       }
