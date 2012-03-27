@@ -28,6 +28,7 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.phloc.commons.annotations.DevelopersNote;
 import com.phloc.scopes.ISurvivingSessionRenewal;
 import com.phloc.scopes.web.domain.ISessionApplicationWebScope;
 
@@ -40,6 +41,8 @@ public final class WebScopeSessionHelper
   {}
 
   @Nonnull
+  @Deprecated
+  @DevelopersNote ("This method is incorrect, as it only takes the current session application scopes, but invalidates all session application scopes by invalidating the session!")
   public final static HttpSession renewSessionApplicationScope (@Nonnull final HttpServletRequest aHttpRequest)
   {
     if (aHttpRequest == null)

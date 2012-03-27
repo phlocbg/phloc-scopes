@@ -17,6 +17,7 @@
  */
 package com.phloc.scopes.web.mgr;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -24,12 +25,14 @@ import java.util.Set;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.phloc.commons.annotations.ReturnsMutableCopy;
 import com.phloc.commons.annotations.UsedViaReflection;
 import com.phloc.commons.collections.ContainerHelper;
 import com.phloc.commons.stats.IStatisticsHandlerCounter;
@@ -181,6 +184,35 @@ public final class WebScopeSessionManager extends GlobalWebSingleton
     finally
     {
       m_aRWLock.writeLock ().unlock ();
+    }
+  }
+
+  @Nonnegative
+  public int getSessionCount ()
+  {
+    m_aRWLock.readLock ().lock ();
+    try
+    {
+      return m_aSessionScopes.size ();
+    }
+    finally
+    {
+      m_aRWLock.readLock ().unlock ();
+    }
+  }
+
+  @Nonnull
+  @ReturnsMutableCopy
+  public Collection <? extends ISessionWebScope> getAllSessionScopes ()
+  {
+    m_aRWLock.readLock ().lock ();
+    try
+    {
+      return ContainerHelper.newList (m_aSessionScopes.values ());
+    }
+    finally
+    {
+      m_aRWLock.readLock ().unlock ();
     }
   }
 
