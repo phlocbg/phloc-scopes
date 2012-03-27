@@ -18,13 +18,16 @@
 package com.phloc.scopes.web.impl;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
 import javax.servlet.ServletContext;
 
+import com.phloc.commons.annotations.Nonempty;
 import com.phloc.commons.hash.HashCodeGenerator;
 import com.phloc.commons.string.ToStringGenerator;
 import com.phloc.scopes.nonweb.domain.IGlobalScope;
 import com.phloc.scopes.nonweb.impl.GlobalScope;
+import com.phloc.scopes.web.domain.IApplicationWebScope;
 import com.phloc.scopes.web.domain.IGlobalWebScope;
 
 /**
@@ -66,6 +69,14 @@ public final class GlobalWebScope extends GlobalScope implements IGlobalWebScope
 
     m_aSC = aServletContext;
     m_aContextPathProvider = aContextPathProvider;
+  }
+
+  @Override
+  @Nullable
+  public IApplicationWebScope getApplicationScope (@Nonnull @Nonempty final String sApplicationID,
+                                                   final boolean bCreateIfNotExisting)
+  {
+    return (IApplicationWebScope) super.getApplicationScope (sApplicationID, bCreateIfNotExisting);
   }
 
   @Nonnull

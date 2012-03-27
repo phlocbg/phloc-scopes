@@ -28,6 +28,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.phloc.commons.annotations.Nonempty;
+import com.phloc.commons.annotations.ReturnsMutableCopy;
+import com.phloc.commons.collections.ContainerHelper;
 import com.phloc.commons.hash.HashCodeGenerator;
 import com.phloc.commons.string.ToStringGenerator;
 import com.phloc.scopes.AbstractMapBasedScope;
@@ -124,9 +126,18 @@ public class GlobalScope extends AbstractMapBasedScope implements IGlobalScope
   }
 
   @Nonnull
-  public String getContextPath ()
+  @ReturnsMutableCopy
+  public Map <String, IApplicationScope> getAllApplicationScopes ()
   {
-    return "";
+    m_aRWLock.readLock ().lock ();
+    try
+    {
+      return ContainerHelper.newMap (m_aAppScopes);
+    }
+    finally
+    {
+      m_aRWLock.readLock ().unlock ();
+    }
   }
 
   @Override
