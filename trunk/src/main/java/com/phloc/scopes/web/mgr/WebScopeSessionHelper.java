@@ -52,8 +52,8 @@ public final class WebScopeSessionHelper
     // Get all attributes to be copied
     final ISessionApplicationWebScope aScope = WebScopeManager.getSessionApplicationScope (false);
     final Map <String, IScopeRenewalAware> aSurvivingAttributes = aScope == null
-                                                                                      ? new HashMap <String, IScopeRenewalAware> ()
-                                                                                      : aScope.getAllScopeRenewalAwareAttributes ();
+                                                                                ? new HashMap <String, IScopeRenewalAware> ()
+                                                                                : aScope.getAllScopeRenewalAwareAttributes ();
 
     // Main renew the session:
 
@@ -104,8 +104,7 @@ public final class WebScopeSessionHelper
       for (final Map.Entry <String, ISessionApplicationWebScope> aEntry : aOldSessionScope.getAllSessionApplicationScopes ()
                                                                                           .entrySet ())
       {
-        final Map <String, IScopeRenewalAware> aSurviving = aEntry.getValue ()
-                                                                        .getAllScopeRenewalAwareAttributes ();
+        final Map <String, IScopeRenewalAware> aSurviving = aEntry.getValue ().getAllScopeRenewalAwareAttributes ();
         if (!aSurviving.isEmpty ())
           aSessionApplicationScopeValues.put (aEntry.getKey (), aSurviving);
       }
