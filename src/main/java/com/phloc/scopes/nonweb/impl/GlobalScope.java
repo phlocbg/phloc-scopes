@@ -28,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.phloc.commons.annotations.Nonempty;
+import com.phloc.commons.annotations.OverrideOnDemand;
 import com.phloc.commons.annotations.ReturnsMutableCopy;
 import com.phloc.commons.collections.ContainerHelper;
 import com.phloc.commons.hash.HashCodeGenerator;
@@ -86,6 +87,21 @@ public class GlobalScope extends AbstractMapBasedScope implements IGlobalScope
       s_aLogger.info ("Destroyed global scope '" + getID () + "'");
   }
 
+  /**
+   * This method creates a new application scope. Override in WebScopeManager to
+   * create an IApplicationWebScope!
+   * 
+   * @param sApplicationID
+   *        The application ID to use
+   * @return Never <code>null</code>.
+   */
+  @Nonnull
+  @OverrideOnDemand
+  protected IApplicationScope createApplicationScope (@Nonnull @Nonempty final String sApplicationID)
+  {
+    return MetaScopeFactory.getScopeFactory ().createApplicationScope (sApplicationID);
+  }
+
   @Nullable
   public IApplicationScope getApplicationScope (@Nonnull @Nonempty final String sApplicationID,
                                                 final boolean bCreateIfNotExisting)
@@ -112,7 +128,7 @@ public class GlobalScope extends AbstractMapBasedScope implements IGlobalScope
         aAppScope = m_aAppScopes.get (sApplicationID);
         if (aAppScope == null)
         {
-          aAppScope = MetaScopeFactory.getScopeFactory ().createApplicationScope (sApplicationID);
+          aAppScope = createApplicationScope (sApplicationID);
           m_aAppScopes.put (sApplicationID, aAppScope);
           aAppScope.initScope ();
         }

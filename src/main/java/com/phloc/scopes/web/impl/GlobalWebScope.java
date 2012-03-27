@@ -25,6 +25,7 @@ import javax.servlet.ServletContext;
 import com.phloc.commons.annotations.Nonempty;
 import com.phloc.commons.hash.HashCodeGenerator;
 import com.phloc.commons.string.ToStringGenerator;
+import com.phloc.scopes.MetaScopeFactory;
 import com.phloc.scopes.nonweb.domain.IGlobalScope;
 import com.phloc.scopes.nonweb.impl.GlobalScope;
 import com.phloc.scopes.web.domain.IApplicationWebScope;
@@ -69,6 +70,13 @@ public final class GlobalWebScope extends GlobalScope implements IGlobalWebScope
 
     m_aSC = aServletContext;
     m_aContextPathProvider = aContextPathProvider;
+  }
+
+  @Override
+  @Nonnull
+  protected IApplicationWebScope createApplicationScope (@Nonnull @Nonempty final String sApplicationID)
+  {
+    return MetaScopeFactory.getWebScopeFactory ().createApplicationScope (sApplicationID);
   }
 
   @Override
