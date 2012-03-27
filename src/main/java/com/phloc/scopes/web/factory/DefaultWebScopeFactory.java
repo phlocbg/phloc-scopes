@@ -17,11 +17,16 @@
  */
 package com.phloc.scopes.web.factory;
 
+import java.lang.reflect.Method;
+
 import javax.annotation.Nonnull;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.phloc.commons.annotations.Nonempty;
 import com.phloc.scopes.web.domain.IApplicationWebScope;
@@ -31,9 +36,11 @@ import com.phloc.scopes.web.domain.ISessionApplicationWebScope;
 import com.phloc.scopes.web.domain.ISessionWebScope;
 import com.phloc.scopes.web.impl.ApplicationWebScope;
 import com.phloc.scopes.web.impl.GlobalWebScope;
+import com.phloc.scopes.web.impl.GlobalWebScope.IContextPathProvider;
 import com.phloc.scopes.web.impl.RequestWebScope;
 import com.phloc.scopes.web.impl.SessionApplicationWebScope;
 import com.phloc.scopes.web.impl.SessionWebScope;
+import com.phloc.scopes.web.mgr.WebScopeManager;
 
 /**
  * Standalone version of the scope factory. No dependencies to Web components.
@@ -42,13 +49,70 @@ import com.phloc.scopes.web.impl.SessionWebScope;
  */
 public class DefaultWebScopeFactory implements IWebScopeFactory
 {
+  private static final Logger s_aLogger = LoggerFactory.getLogger (DefaultWebScopeFactory.class);
+
   public DefaultWebScopeFactory ()
   {}
 
   @Nonnull
   public IGlobalWebScope createGlobalScope (@Nonnull final ServletContext aServletContext)
   {
-    return new GlobalWebScope (aServletContext);
+    if (aServletContext == null)
+      throw new NullPointerException ("servletContext");
+
+    IContextPathProvider aContextPathProvider = null;
+    if (aServletContext.getMajorVersion () >= 2 && aServletContext.getMinorVersion () >= 5)
+    {
+      try
+      {
+        final Method m = aServletContext.getClass ().getDeclaredMethod ("getContextPath");
+        // Servlet API >= 2.5
+        // -> Invoke once and store in member
+        final String sContextPath = (String) m.invoke (aServletContext);
+        if (sContextPath == null)
+          s_aLogger.error ("getContextPath returned an illegal object!");
+
+        aContextPathProvider = new IContextPathProvider ()
+        {
+          // Store in member to avoid dependency to outer method
+          private final String m_sContextPath = sContextPath;
+
+          @Nonnull
+          public String getContextPath ()
+          {
+            return m_sContextPath;
+          }
+        };
+      }
+      catch (final Exception ex)
+      {
+        // Ignore
+        s_aLogger.error ("Failed to invoke getContextPath on " + aServletContext, ex);
+      }
+    }
+
+    if (aContextPathProvider == null)
+    {
+      // e.g. Servlet API < 2.5
+      // -> Take from request scope on first call
+      aContextPathProvider = new IContextPathProvider ()
+      {
+        private String m_sContextPath;
+
+        public String getContextPath ()
+        {
+          if (m_sContextPath == null)
+          {
+            // Get the context path from the request scope
+            // May throw an exception if no request scope is present so far
+            m_sContextPath = WebScopeManager.getRequestScope ().getRequest ().getContextPath ();
+          }
+          return m_sContextPath;
+        }
+      };
+    }
+
+    return new GlobalWebScope (aServletContext, aContextPathProvider);
   }
 
   @Nonnull

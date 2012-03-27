@@ -21,7 +21,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
 import javax.servlet.ServletContext;
 
-import com.phloc.commons.compare.EqualsUtils;
 import com.phloc.commons.hash.HashCodeGenerator;
 import com.phloc.commons.string.ToStringGenerator;
 import com.phloc.scopes.nonweb.domain.IGlobalScope;
@@ -38,22 +37,35 @@ import com.phloc.scopes.web.domain.IGlobalWebScope;
 @ThreadSafe
 public final class GlobalWebScope extends GlobalScope implements IGlobalWebScope
 {
+  public static interface IContextPathProvider
+  {
+    @Nonnull
+    String getContextPath ();
+  }
+
   private final ServletContext m_aSC;
-  private final String m_sContextPath;
+  private final IContextPathProvider m_aContextPathProvider;
 
   /**
    * Create a new {@link GlobalWebScope}. No objects are copied from the passed
    * {@link ServletContext} so this must be one of the very first action
    * 
    * @param aServletContext
-   *        The servlet context to use
+   *        The servlet context to use. May not be <code>null</code>.
+   * @param aContextPathProvider
+   *        The context path provider. This is so weird, because the method
+   *        <code>aServletContext.getContextPath ()</code> is only available in
+   *        Servlet API &ge; 2.5. May not be <code>null</code>.
    */
-  public GlobalWebScope (@Nonnull final ServletContext aServletContext)
+  public GlobalWebScope (@Nonnull final ServletContext aServletContext,
+                         @Nonnull final IContextPathProvider aContextPathProvider)
   {
     super (aServletContext.getServletContextName ());
+    if (aContextPathProvider == null)
+      throw new NullPointerException ("contextPathProvider");
 
     m_aSC = aServletContext;
-    m_sContextPath = m_aSC.getContextPath ();
+    m_aContextPathProvider = aContextPathProvider;
   }
 
   @Nonnull
@@ -66,7 +78,10 @@ public final class GlobalWebScope extends GlobalScope implements IGlobalWebScope
   @Nonnull
   public String getContextPath ()
   {
-    return m_sContextPath;
+    // Must invoke the provider on demand, because with servlet-api < 2.5 there
+    // is no method ServletContext.getContextPath and therefore it must be tken
+    // from the request!!
+    return m_aContextPathProvider.getContextPath ();
   }
 
   @Override
@@ -77,13 +92,13 @@ public final class GlobalWebScope extends GlobalScope implements IGlobalWebScope
     if (!super.equals (o))
       return false;
     final GlobalWebScope rhs = (GlobalWebScope) o;
-    return EqualsUtils.nullSafeEquals (m_sContextPath, rhs.m_sContextPath);
+    return getContextPath ().equals (rhs.getContextPath ());
   }
 
   @Override
   public int hashCode ()
   {
-    return HashCodeGenerator.getDerived (super.hashCode ()).append (m_sContextPath).getHashCode ();
+    return HashCodeGenerator.getDerived (super.hashCode ()).append (getContextPath ()).getHashCode ();
   }
 
   @Override
@@ -91,7 +106,7 @@ public final class GlobalWebScope extends GlobalScope implements IGlobalWebScope
   {
     return ToStringGenerator.getDerived (super.toString ())
                             .append ("servletContext", m_aSC)
-                            .append ("contextPath", m_sContextPath)
+                            .append ("contextPath", getContextPath ())
                             .toString ();
   }
 }
