@@ -754,7 +754,7 @@ public class RequestWebScope extends AbstractReadonlyAttributeContainer implemen
 
   @Nonnull
   @ReturnsMutableCopy
-  public final Map <String, IScopeRenewalAware> getAllAttributesSurvivingScopeDestruction ()
+  public final Map <String, IScopeRenewalAware> getAllScopeRenewalAwareAttributes ()
   {
     final Map <String, IScopeRenewalAware> ret = new HashMap <String, IScopeRenewalAware> ();
     for (final Map.Entry <String, Object> aEntry : getAllAttributes ().entrySet ())

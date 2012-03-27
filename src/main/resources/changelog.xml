@@ -23,6 +23,11 @@
   <release date="2012-03-27" version="3.7.0" />
   <entry date="2012-03-27" category="api" action="add">
     <change>
+      <text locale="en">Added the method IScope.getAllScopeRenewalAwareAttributes ()</text>
+    </change>      
+  </entry>
+  <entry date="2012-03-27" category="api" action="add">
+    <change>
       <text locale="en">Added the method WebScopeSessionHelper.renewSessionScope that correctly handles all session application scopes</text>
     </change>      
   </entry>
