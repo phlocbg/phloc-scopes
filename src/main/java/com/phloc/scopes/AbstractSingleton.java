@@ -176,13 +176,14 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
   protected final void registerSingletonAfterRead (final boolean bAllowOverwrite)
   {
     final String sSingletonScopeKey = _getSingletonScopeKey (getClass ());
-    getScope ().runAtomic (new INonThrowingRunnableWithParameter <IScope> ()
+    final IScope aScope = getScope ();
+    aScope.runAtomic (new INonThrowingRunnableWithParameter <IScope> ()
     {
-      public void run (@Nonnull final IScope aInnerScope)
+      public void run (@Nullable final IScope aInnerScope)
       {
-        if (aInnerScope.containsAttribute (sSingletonScopeKey))
+        if (aScope.containsAttribute (sSingletonScopeKey))
         {
-          final String sMsg = "The scope " + aInnerScope.getID () + " already has a singleton of class " + getClass ();
+          final String sMsg = "The scope " + aScope.getID () + " already has a singleton of class " + getClass ();
           if (bAllowOverwrite)
             s_aLogger.warn (sMsg + " - overwriting it!");
           else
@@ -190,7 +191,7 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
         }
 
         // Set the abstract singleton in the scope and not this runnable...
-        aInnerScope.setAttribute (sSingletonScopeKey, AbstractSingleton.this);
+        aScope.setAttribute (sSingletonScopeKey, AbstractSingleton.this);
       }
     });
   }
@@ -242,11 +243,11 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
         public void run (@Nullable final IScope aInnerScope)
         {
           // try to resolve again in case it was set in the meantime
-          T aInnerInstance = aClass.cast (aInnerScope.getCastedAttribute (sSingletonScopeKey));
+          T aInnerInstance = aClass.cast (aScope.getCastedAttribute (sSingletonScopeKey));
           if (aInnerInstance == null)
           {
-            aInnerInstance = _instantiateSingleton (aClass, aInnerScope);
-            aInnerScope.setAttribute (sSingletonScopeKey, aInnerInstance);
+            aInnerInstance = _instantiateSingleton (aClass, aScope);
+            aScope.setAttribute (sSingletonScopeKey, aInnerInstance);
             aFinalWasInstantiated.set (true);
             s_aStatsCounterInstantiate.increment (sSingletonScopeKey);
           }
