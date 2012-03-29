@@ -222,20 +222,24 @@ public final class WebScopeSessionManager extends GlobalWebSingleton
     m_aRWLock.writeLock ().lock ();
     try
     {
-      // destroy all session scopes
+      // destroy all session scopes (make a copy, because we're invalidating the
+      // sessions!)
       for (final ISessionWebScope aSessionScope : ContainerHelper.newList (m_aSessionScopes.values ()))
       {
         // Since the session is still open when we're shutting down the global
         // context, the session must also be invalidated!
         try
         {
+          // Should implicitly trigger a call to onSessionEnd
           aSessionScope.getSession ().invalidate ();
         }
-        catch (final IllegalArgumentException ex)
+        catch (final IllegalStateException ex)
         {
           s_aLogger.warn ("Session '" +
                           aSessionScope.getID () +
                           "' was already invalidated, but still in the session map!");
+
+          // Destroy the scope so that all nested scopes are destroyed
           aSessionScope.destroyScope ();
         }
       }
