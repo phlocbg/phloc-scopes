@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -238,7 +239,7 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
 
       aScope.runAtomic (new INonThrowingRunnableWithParameter <IScope> ()
       {
-        public void run (@Nonnull final IScope aInnerScope)
+        public void run (@Nullable final IScope aInnerScope)
         {
           // try to resolve again in case it was set in the meantime
           T aInnerInstance = aClass.cast (aInnerScope.getCastedAttribute (sSingletonScopeKey));

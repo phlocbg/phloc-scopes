@@ -17,12 +17,12 @@
  */
 package com.phloc.scopes.web.fileupload;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 
+import com.phloc.commons.io.streams.NonBlockingByteArrayOutputStream;
+import com.phloc.commons.system.SystemHelper;
 import com.phloc.scopes.web.fileupload.util.Closeable;
 import com.phloc.scopes.web.fileupload.util.Streams;
 
@@ -484,7 +484,7 @@ public class MultipartStream
     int i = 0;
     byte b;
     // to support multi-byte characters
-    final ByteArrayOutputStream baos = new ByteArrayOutputStream ();
+    final NonBlockingByteArrayOutputStream baos = new NonBlockingByteArrayOutputStream ();
     int size = 0;
     while (i < HEADER_SEPARATOR.length)
     {
@@ -516,20 +516,11 @@ public class MultipartStream
     String headers = null;
     if (headerEncoding != null)
     {
-      try
-      {
-        headers = baos.toString (headerEncoding);
-      }
-      catch (final UnsupportedEncodingException e)
-      {
-        // Fall back to platform default if specified encoding is not
-        // supported.
-        headers = baos.toString ();
-      }
+      headers = baos.getAsString (headerEncoding);
     }
     else
     {
-      headers = baos.toString ();
+      headers = baos.getAsString (SystemHelper.getSystemCharsetName ());
     }
 
     return headers;
