@@ -485,45 +485,52 @@ public class MultipartStream
     byte b;
     // to support multi-byte characters
     final NonBlockingByteArrayOutputStream baos = new NonBlockingByteArrayOutputStream ();
-    int size = 0;
-    while (i < HEADER_SEPARATOR.length)
+    try
     {
-      try
+      int size = 0;
+      while (i < HEADER_SEPARATOR.length)
       {
-        b = readByte ();
+        try
+        {
+          b = readByte ();
+        }
+        catch (final IOException e)
+        {
+          throw new MalformedStreamException ("Stream ended unexpectedly");
+        }
+        if (++size > HEADER_PART_SIZE_MAX)
+        {
+          throw new MalformedStreamException ("Header section has more than " +
+                                              HEADER_PART_SIZE_MAX +
+                                              " bytes (maybe it is not properly terminated)");
+        }
+        if (b == HEADER_SEPARATOR[i])
+        {
+          i++;
+        }
+        else
+        {
+          i = 0;
+        }
+        baos.write (b);
       }
-      catch (final IOException e)
+
+      String headers = null;
+      if (headerEncoding != null)
       {
-        throw new MalformedStreamException ("Stream ended unexpectedly");
-      }
-      if (++size > HEADER_PART_SIZE_MAX)
-      {
-        throw new MalformedStreamException ("Header section has more than " +
-                                            HEADER_PART_SIZE_MAX +
-                                            " bytes (maybe it is not properly terminated)");
-      }
-      if (b == HEADER_SEPARATOR[i])
-      {
-        i++;
+        headers = baos.getAsString (headerEncoding);
       }
       else
       {
-        i = 0;
+        headers = baos.getAsString (SystemHelper.getSystemCharsetName ());
       }
-      baos.write (b);
-    }
 
-    String headers = null;
-    if (headerEncoding != null)
-    {
-      headers = baos.getAsString (headerEncoding);
+      return headers;
     }
-    else
+    finally
     {
-      headers = baos.getAsString (SystemHelper.getSystemCharsetName ());
+      baos.close ();
     }
-
-    return headers;
   }
 
   /**
