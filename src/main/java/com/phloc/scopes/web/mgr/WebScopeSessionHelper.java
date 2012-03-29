@@ -120,7 +120,7 @@ public final class WebScopeSessionHelper
         s_aLogger.info ("Invalidating session " + aOldSessionScope.getID ());
         aOldSessionScope.getSession ().invalidate ();
       }
-      catch (final Exception ex)
+      catch (final IllegalStateException ex)
       {
         // session already invalidated???
         s_aLogger.warn ("Failed to invalidate session", ex);
