@@ -32,8 +32,8 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
-
 import com.phloc.commons.annotations.ReturnsMutableObject;
+import com.phloc.commons.charset.CharsetManager;
 import com.phloc.commons.io.file.FileOperations;
 import com.phloc.commons.io.file.SimpleFileIO;
 import com.phloc.commons.io.streams.NonBlockingByteArrayInputStream;
@@ -64,9 +64,9 @@ import com.phloc.scopes.web.fileupload.util.Streams;
  * when the corresponding instance of {@link java.io.File} is garbage
  * collected.) This is done by the so-called reaper thread, which is started
  * automatically when the class
- * {@link com.phloc.scopes.web.fileupload.io.FileCleaningTracker} is loaded. It might make
- * sense to terminate that thread, for example, if your web application ends.
- * See the section on "Resource cleanup" in the users guide of
+ * {@link com.phloc.scopes.web.fileupload.io.FileCleaningTracker} is loaded. It
+ * might make sense to terminate that thread, for example, if your web
+ * application ends. See the section on "Resource cleanup" in the users guide of
  * commons-fileupload.
  * </p>
  * 
@@ -357,14 +357,7 @@ public class DiskFileItem implements FileItem, FileItemHeadersSupport
     {
       charset = DEFAULT_CHARSET;
     }
-    try
-    {
-      return new String (rawdata, charset);
-    }
-    catch (final UnsupportedEncodingException e)
-    {
-      return new String (rawdata);
-    }
+    return CharsetManager.getAsString (rawdata, charset);
   }
 
   /**

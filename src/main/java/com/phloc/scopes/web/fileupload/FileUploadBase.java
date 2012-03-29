@@ -19,18 +19,17 @@ package com.phloc.scopes.web.fileupload;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import com.phloc.commons.charset.CharsetManager;
 import com.phloc.scopes.web.fileupload.MultipartStream.ItemInputStream;
 import com.phloc.scopes.web.fileupload.util.Closeable;
 import com.phloc.scopes.web.fileupload.util.FileItemHeadersImpl;
 import com.phloc.scopes.web.fileupload.util.LimitedInputStream;
 import com.phloc.scopes.web.fileupload.util.Streams;
-
 
 /**
  * <p>
@@ -380,16 +379,7 @@ public abstract class FileUploadBase
     {
       return null;
     }
-    byte [] boundary;
-    try
-    {
-      boundary = boundaryStr.getBytes ("ISO-8859-1");
-    }
-    catch (final UnsupportedEncodingException e)
-    {
-      boundary = boundaryStr.getBytes ();
-    }
-    return boundary;
+    return CharsetManager.getAsBytes (boundaryStr, "ISO-8859-1");
   }
 
   /**

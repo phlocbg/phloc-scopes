@@ -117,10 +117,19 @@ public class DeferredFileOutputStream extends ThresholdingOutputStream
   @Override
   protected void thresholdReached () throws IOException
   {
-    final FileOutputStream fos = new FileOutputStream (m_aOutputFile);
-    memoryOutputStream.writeTo (fos);
-    currentOutputStream = fos;
-    memoryOutputStream = null;
+    FileOutputStream fos = null;
+    try
+    {
+      fos = new FileOutputStream (m_aOutputFile);
+      memoryOutputStream.writeTo (fos);
+      currentOutputStream = fos;
+      memoryOutputStream = null;
+    }
+    catch (final IOException ex)
+    {
+      StreamUtils.close (fos);
+      throw ex;
+    }
   }
 
   // --------------------------------------------------------- Public methods
