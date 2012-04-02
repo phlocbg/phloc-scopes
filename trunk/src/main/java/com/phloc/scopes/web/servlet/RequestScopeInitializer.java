@@ -37,6 +37,15 @@ public final class RequestScopeInitializer
   private final IRequestWebScope m_aRequestScope;
   private final boolean m_bCreatedIt;
 
+  /**
+   * Ctor.
+   * 
+   * @param aRequestScope
+   *        The request scope to be used. May not be <code>null</code>.
+   * @param bCreatedIt
+   *        <code>true</code> if the request scope was newly created,
+   *        <code>false</code> if an existing request web scope is reused.
+   */
   private RequestScopeInitializer (@Nonnull final IRequestWebScope aRequestScope, final boolean bCreatedIt)
   {
     if (aRequestScope == null)

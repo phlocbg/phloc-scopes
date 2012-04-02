@@ -20,6 +20,17 @@
 -->
 <changelog xmlns="http://www.phloc.com/ns/changelog/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.phloc.com/ns/changelog/1.0 schemas/changelog-1.0.xsd" version="1.0" component="phloc-scopes">
+  <release date="2012-04-02" version="3.7.3" />
+  <entry date="2012-04-02" category="tech" action="add">
+    <change>
+      <text locale="en">Added a new class WebScopeListener that solely handles global and session scope initialization an destruction</text>
+    </change>      
+  </entry>
+  <entry date="2012-04-02" category="api" action="add">
+    <change>
+      <text locale="en">Added a new method WebScopeSessionManager.getSessionScopeOfID</text>
+    </change>      
+  </entry>
   <entry date="2012-04-02" category="tech" action="add">
     <change>
       <text locale="en">Added the possibility to dynamically enable/disable scope lifecycle debugging via ScopeUtils class</text>
