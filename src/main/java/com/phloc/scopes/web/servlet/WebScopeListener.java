@@ -15,23 +15,46 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.phloc.scopes.web.mock;
+package com.phloc.scopes.web.servlet;
 
 import javax.annotation.Nonnull;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import javax.servlet.http.HttpSessionEvent;
+import javax.servlet.http.HttpSessionListener;
 
 import com.phloc.scopes.web.mgr.WebScopeManager;
 
-public final class MockServletContextListener implements ServletContextListener
+/**
+ * A default implementation of a web scope aware {@link ServletContextListener}
+ * and {@link HttpSessionListener}. Manages global web scopes and session web
+ * scopes.
+ * 
+ * @author philip
+ */
+public final class WebScopeListener implements ServletContextListener, HttpSessionListener
 {
   public void contextInitialized (@Nonnull final ServletContextEvent aEvent)
   {
+    // Init the global scope
     WebScopeManager.onGlobalBegin (aEvent.getServletContext ());
   }
 
   public void contextDestroyed (@Nonnull final ServletContextEvent aEvent)
   {
+    // End the global scope
     WebScopeManager.onGlobalEnd ();
+  }
+
+  public void sessionCreated (@Nonnull final HttpSessionEvent aEvent)
+  {
+    // Create a new session
+    WebScopeManager.onSessionBegin (aEvent.getSession ());
+  }
+
+  public void sessionDestroyed (@Nonnull final HttpSessionEvent aEvent)
+  {
+    // End an existing session
+    WebScopeManager.onSessionEnd (aEvent.getSession ());
   }
 }

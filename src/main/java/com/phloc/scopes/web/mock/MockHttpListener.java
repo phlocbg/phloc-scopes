@@ -30,6 +30,7 @@ import javax.servlet.http.HttpSessionListener;
 
 import com.phloc.commons.annotations.ReturnsMutableCopy;
 import com.phloc.commons.collections.ContainerHelper;
+import com.phloc.scopes.web.servlet.WebScopeListener;
 
 @NotThreadSafe
 public final class MockHttpListener
@@ -42,8 +43,7 @@ public final class MockHttpListener
   public static void setToDefault ()
   {
     s_aListener.clear ();
-    s_aListener.add (new MockServletContextListener ());
-    s_aListener.add (new MockHttpSessionListener ());
+    s_aListener.add (new WebScopeListener ());
     s_aListener.add (new MockServletRequestListener ());
   }
 

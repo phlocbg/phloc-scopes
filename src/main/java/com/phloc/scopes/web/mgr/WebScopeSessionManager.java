@@ -27,6 +27,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -69,6 +70,37 @@ public final class WebScopeSessionManager extends GlobalWebSingleton
     return getGlobalSingleton (WebScopeSessionManager.class);
   }
 
+  /**
+   * Get the session scope with the specified ID. If no such scope exists, no
+   * further actions are taken.
+   * 
+   * @param sScopeID
+   *        The ID to be resolved.
+   * @return <code>null</code> if no such scope exists.
+   */
+  @Nullable
+  public ISessionWebScope getSessionScopeOfID (@Nullable final String sScopeID)
+  {
+    m_aRWLock.readLock ().lock ();
+    try
+    {
+      return m_aSessionScopes.get (sScopeID);
+    }
+    finally
+    {
+      m_aRWLock.readLock ().unlock ();
+    }
+  }
+
+  /**
+   * Get the session scope matching the passed HTTP session. If no such session
+   * scope exists, it is created, even though this indicates, that your
+   * HttpSessionListener is not working correctly!
+   * 
+   * @param aHttpSession
+   *        The HTTP session for which the session scope is used.
+   * @return The matching session web scope and never <code>null</code>.
+   */
   @Nonnull
   public ISessionWebScope getSessionScope (@Nonnull final HttpSession aHttpSession)
   {
@@ -77,18 +109,7 @@ public final class WebScopeSessionManager extends GlobalWebSingleton
 
     // Check if a matching session scope is present
     final String sSessionID = aHttpSession.getId ();
-
-    ISessionWebScope aScope;
-    m_aRWLock.readLock ().lock ();
-    try
-    {
-      aScope = m_aSessionScopes.get (sSessionID);
-    }
-    finally
-    {
-      m_aRWLock.readLock ().unlock ();
-    }
-
+    ISessionWebScope aScope = getSessionScopeOfID (sSessionID);
     if (aScope == null)
     {
       // create new scope
@@ -101,7 +122,9 @@ public final class WebScopeSessionManager extends GlobalWebSingleton
         {
           // This can e.g. happen in tests, when there are no registered
           // listeners for session events!
-          s_aLogger.warn ("Creating a new session for ID '" + sSessionID + "' but there should already be one!");
+          s_aLogger.warn ("Creating a new session for ID '" +
+                          sSessionID +
+                          "' but there should already be one! Check your HttpSessionListener implementation.");
           aScope = MetaScopeFactory.getWebScopeFactory ().createSessionScope (aHttpSession);
           m_aSessionScopes.put (sSessionID, aScope);
           aScope.initScope ();
@@ -187,6 +210,9 @@ public final class WebScopeSessionManager extends GlobalWebSingleton
     }
   }
 
+  /**
+   * @return The number of managed session scopes. Always &ge; 0.
+   */
   @Nonnegative
   public int getSessionCount ()
   {
@@ -201,6 +227,10 @@ public final class WebScopeSessionManager extends GlobalWebSingleton
     }
   }
 
+  /**
+   * @return A non-<code>null</code>, mutable copy of all managed session
+   *         scopes.
+   */
   @Nonnull
   @ReturnsMutableCopy
   public Collection <? extends ISessionWebScope> getAllSessionScopes ()
@@ -230,7 +260,8 @@ public final class WebScopeSessionManager extends GlobalWebSingleton
         // context, the session must also be invalidated!
         try
         {
-          // Should implicitly trigger a call to onSessionEnd
+          // Should implicitly trigger a call to onSessionEnd, which in case
+          // triggers a call to aSessionScope.destroyScope
           aSessionScope.getSession ().invalidate ();
         }
         catch (final IllegalStateException ex)
@@ -239,7 +270,7 @@ public final class WebScopeSessionManager extends GlobalWebSingleton
                           aSessionScope.getID () +
                           "' was already invalidated, but still in the session map!");
 
-          // Destroy the scope so that all nested scopes are destroyed
+          // Destroy the scope manually so that all nested scopes are destroyed
           aSessionScope.destroyScope ();
         }
       }
