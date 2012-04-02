@@ -17,7 +17,11 @@
  */
 package com.phloc.scopes;
 
-import javax.annotation.concurrent.Immutable;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
+import javax.annotation.Nonnull;
+import javax.annotation.concurrent.ThreadSafe;
 
 import org.slf4j.Logger;
 
@@ -26,13 +30,54 @@ import org.slf4j.Logger;
  * 
  * @author philip
  */
-@Immutable
+@ThreadSafe
 public final class ScopeUtils
 {
-  private static final boolean DEBUG_SCOPE_LIFE_CYCLE = false;
+  private static final boolean DEFAULT_DEBUG_LIFE_CYCLE = false;
+
+  private static final ReadWriteLock s_aRWLock = new ReentrantReadWriteLock ();
+  private static boolean s_bLifeCycleDebugging = DEFAULT_DEBUG_LIFE_CYCLE;
 
   private ScopeUtils ()
   {}
+
+  /**
+   * Enable or disable scope life cycle debugging.
+   * 
+   * @param bDebugLifeCycle
+   *        <code>true</code> if the scope life cycle should be debugged,
+   *        <code>false</code> to disable it. By default is is disabled.
+   */
+  public static void setLifeCycleDebuggingEnabled (final boolean bDebugLifeCycle)
+  {
+    s_aRWLock.writeLock ().lock ();
+    try
+    {
+      s_bLifeCycleDebugging = bDebugLifeCycle;
+    }
+    finally
+    {
+      s_aRWLock.writeLock ().unlock ();
+    }
+  }
+
+  /**
+   * @return <code>true</code> if scope life cycle debugging is enabled,
+   *         <code>false</code> if it is disabled. The default value is
+   *         disabled.
+   */
+  public static boolean isLifeCycleDebuggingEnabled ()
+  {
+    s_aRWLock.readLock ().lock ();
+    try
+    {
+      return s_bLifeCycleDebugging;
+    }
+    finally
+    {
+      s_aRWLock.readLock ().unlock ();
+    }
+  }
 
   /**
    * This is a just a helper method to determine whether scope creation/deletion
@@ -43,8 +88,8 @@ public final class ScopeUtils
    * @return <code>true</code> if scope creation/deletion should be logged,
    *         <code>false</code> otherwise.
    */
-  public static boolean debugScopeLifeCycle (final Logger aLogger)
+  public static boolean debugScopeLifeCycle (@Nonnull final Logger aLogger)
   {
-    return DEBUG_SCOPE_LIFE_CYCLE && aLogger.isInfoEnabled ();
+    return isLifeCycleDebuggingEnabled () && aLogger.isInfoEnabled ();
   }
 }

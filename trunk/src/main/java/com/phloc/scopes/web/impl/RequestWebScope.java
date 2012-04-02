@@ -146,7 +146,7 @@ public class RequestWebScope extends AbstractReadonlyAttributeContainer implemen
 
     // done initialization
     if (ScopeUtils.debugScopeLifeCycle (s_aLogger))
-      s_aLogger.info ("Created web request scope '" + getID () + "'");
+      s_aLogger.info ("Created request web scope '" + getID () + "'");
   }
 
   /**
@@ -277,7 +277,7 @@ public class RequestWebScope extends AbstractReadonlyAttributeContainer implemen
 
     // done initialization
     if (ScopeUtils.debugScopeLifeCycle (s_aLogger))
-      s_aLogger.info ("Initialized web request scope '" + m_sScopeID + "'");
+      s_aLogger.info ("Initialized request web scope '" + getID () + "'");
   }
 
   public String getID ()
@@ -395,7 +395,7 @@ public class RequestWebScope extends AbstractReadonlyAttributeContainer implemen
     }
 
     if (ScopeUtils.debugScopeLifeCycle (s_aLogger))
-      s_aLogger.info ("Destroyed request scope '" + getID () + "'");
+      s_aLogger.info ("Destroyed request web scope '" + getID () + "'");
   }
 
   public boolean containsAttribute (final String sName)
