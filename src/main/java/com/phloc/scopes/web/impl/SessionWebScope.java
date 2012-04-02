@@ -57,7 +57,7 @@ public class SessionWebScope extends AbstractMapBasedScope implements ISessionWe
 
     // Sessions are always displayed to see what's happening
     if (ScopeUtils.debugScopeLifeCycle (s_aLogger))
-      s_aLogger.info ("Created session scope '" + getID () + "'");
+      s_aLogger.info ("Created session web scope '" + getID () + "'");
   }
 
   public void initScope ()
@@ -104,7 +104,7 @@ public class SessionWebScope extends AbstractMapBasedScope implements ISessionWe
   protected void postDestroy ()
   {
     if (ScopeUtils.debugScopeLifeCycle (s_aLogger))
-      s_aLogger.info ("Destroyed session scope '" + getID () + "'");
+      s_aLogger.info ("Destroyed session web scope '" + getID () + "'");
   }
 
   @Nullable

@@ -48,7 +48,7 @@ public class SessionApplicationWebScope extends AbstractMapBasedScope implements
     super (sScopeID);
 
     if (ScopeUtils.debugScopeLifeCycle (s_aLogger))
-      s_aLogger.info ("Created session application scope '" + sScopeID + "'");
+      s_aLogger.info ("Created session application web scope '" + sScopeID + "'");
   }
 
   public void initScope ()
@@ -68,6 +68,6 @@ public class SessionApplicationWebScope extends AbstractMapBasedScope implements
   protected void postDestroy ()
   {
     if (ScopeUtils.debugScopeLifeCycle (s_aLogger))
-      s_aLogger.info ("Destroyed session application scope '" + getID () + "'");
+      s_aLogger.info ("Destroyed session application web scope '" + getID () + "'");
   }
 }

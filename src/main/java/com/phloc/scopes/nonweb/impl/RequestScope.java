@@ -53,6 +53,13 @@ public final class RequestScope extends AbstractMapBasedScope implements IReques
   public void initScope ()
   {}
 
+  @Override
+  protected void postDestroy ()
+  {
+    if (ScopeUtils.debugScopeLifeCycle (s_aLogger))
+      s_aLogger.info ("Destroyed request scope '" + getID () + "'");
+  }
+
   @Nullable
   public List <String> getAttributeValues (final String sName)
   {
