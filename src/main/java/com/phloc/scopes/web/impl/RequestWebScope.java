@@ -62,7 +62,6 @@ import com.phloc.scopes.IScope;
 import com.phloc.scopes.IScopeDestructionAware;
 import com.phloc.scopes.IScopeRenewalAware;
 import com.phloc.scopes.ScopeUtils;
-import com.phloc.scopes.nonweb.singleton.GlobalSingleton;
 import com.phloc.scopes.web.domain.IRequestWebScope;
 import com.phloc.scopes.web.fileupload.FileItem;
 import com.phloc.scopes.web.fileupload.FileUploadException;
@@ -70,6 +69,7 @@ import com.phloc.scopes.web.fileupload.IFileItemFactory;
 import com.phloc.scopes.web.fileupload.io.DiskFileItemFactory;
 import com.phloc.scopes.web.fileupload.servlet.ServletFileUpload;
 import com.phloc.scopes.web.mock.MockHttpServletRequest;
+import com.phloc.scopes.web.singleton.GlobalWebSingleton;
 
 public class RequestWebScope extends AbstractReadonlyAttributeContainer implements IRequestWebScope
 {
@@ -79,7 +79,7 @@ public class RequestWebScope extends AbstractReadonlyAttributeContainer implemen
    * 
    * @author philip
    */
-  public static final class GlobalDiskFileItemFactory extends GlobalSingleton implements IFileItemFactory
+  public static final class GlobalDiskFileItemFactory extends GlobalWebSingleton implements IFileItemFactory
   {
     private final DiskFileItemFactory m_aFactory = new DiskFileItemFactory (CGlobal.BYTES_PER_MEGABYTE, null);
 
@@ -98,6 +98,11 @@ public class RequestWebScope extends AbstractReadonlyAttributeContainer implemen
     protected void onDestroy ()
     {
       m_aFactory.deleteAllTemporaryFiles ();
+    }
+
+    public void setRepository (@Nullable final File aRepository)
+    {
+      m_aFactory.setRepository (aRepository);
     }
 
     @Nonnull
