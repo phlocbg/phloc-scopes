@@ -29,19 +29,21 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
 import com.phloc.commons.annotations.ReturnsMutableObject;
+import com.phloc.commons.charset.CCharset;
 import com.phloc.commons.charset.CharsetManager;
 import com.phloc.commons.io.file.FileOperations;
 import com.phloc.commons.io.file.SimpleFileIO;
 import com.phloc.commons.io.streams.NonBlockingByteArrayInputStream;
 import com.phloc.commons.io.streams.StreamUtils;
-import com.phloc.scopes.web.fileupload.FileItem;
-import com.phloc.scopes.web.fileupload.FileItemHeaders;
-import com.phloc.scopes.web.fileupload.FileItemHeadersSupport;
 import com.phloc.scopes.web.fileupload.FileUploadException;
+import com.phloc.scopes.web.fileupload.FileItem;
+import com.phloc.scopes.web.fileupload.IFileItemHeaders;
+import com.phloc.scopes.web.fileupload.IFileItemHeadersSupport;
 import com.phloc.scopes.web.fileupload.InvalidFileNameException;
 import com.phloc.scopes.web.fileupload.ParameterParser;
 import com.phloc.scopes.web.fileupload.util.Streams;
@@ -55,20 +57,6 @@ import com.phloc.scopes.web.fileupload.util.Streams;
  * once using {@link #get()} or request an {@link java.io.InputStream
  * InputStream} with {@link #getInputStream()} and process the file without
  * attempting to load it into memory, which may come handy with large files.
- * <p>
- * Temporary files, which are created for file items, should be deleted later
- * on. The best way to do this is using a {@link FileCleaningTracker}, which you
- * can set on the {@link DiskFileItemFactory}. However, if you do use such a
- * tracker, then you must consider the following: Temporary files are
- * automatically deleted as soon as they are no longer needed. (More precisely,
- * when the corresponding instance of {@link java.io.File} is garbage
- * collected.) This is done by the so-called reaper thread, which is started
- * automatically when the class
- * {@link com.phloc.scopes.web.fileupload.io.FileCleaningTracker} is loaded. It
- * might make sense to terminate that thread, for example, if your web
- * application ends. See the section on "Resource cleanup" in the users guide of
- * commons-fileupload.
- * </p>
  * 
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @author <a href="mailto:sean@informage.net">Sean Legassick</a>
@@ -79,29 +67,19 @@ import com.phloc.scopes.web.fileupload.util.Streams;
  * @since FileUpload 1.1
  * @version $Id: DiskFileItem.java 963609 2010-07-13 06:56:47Z jochen $
  */
-public class DiskFileItem implements FileItem, FileItemHeadersSupport
+public class DiskFileItem implements FileItem, IFileItemHeadersSupport
 {
-
-  // ----------------------------------------------------- Manifest constants
-
-  /**
-   * The UID to use when serializing this instance.
-   */
-  private static final long serialVersionUID = 2237570099615271025L;
-
   /**
    * Default content charset to be used when no explicit charset parameter is
    * provided by the sender. Media subtypes of the "text" type are defined to
    * have a default charset value of "ISO-8859-1" when received via HTTP.
    */
-  public static final String DEFAULT_CHARSET = "ISO-8859-1";
-
-  // ----------------------------------------------------------- Data members
+  public static final String DEFAULT_CHARSET = CCharset.CHARSET_ISO_8859_1;
 
   /**
    * UID used in unique file name generation.
    */
-  private static final String UID = new java.rmi.server.UID ().toString ().replace (':', '_').replace ('-', '_');
+  private static final String UID = UUID.randomUUID ().toString ().replace (':', '_').replace ('-', '_');
 
   /**
    * Counter used in unique identifier generation.
@@ -168,7 +146,7 @@ public class DiskFileItem implements FileItem, FileItemHeadersSupport
   /**
    * The file items headers.
    */
-  private FileItemHeaders headers;
+  private IFileItemHeaders headers;
 
   // ----------------------------------------------------------- Constructors
 
@@ -551,18 +529,15 @@ public class DiskFileItem implements FileItem, FileItemHeadersSupport
    * 
    * @return The {@link java.io.File File} to be used for temporary storage.
    */
-  protected File getTempFile ()
+  File getTempFile ()
   {
     if (tempFile == null)
     {
       File tempDir = _repository;
       if (tempDir == null)
-      {
         tempDir = new File (System.getProperty ("java.io.tmpdir"));
-      }
 
       final String tempFileName = "upload_" + UID + "_" + getUniqueId () + ".tmp";
-
       tempFile = new File (tempDir, tempFileName);
     }
     return tempFile;
@@ -680,7 +655,7 @@ public class DiskFileItem implements FileItem, FileItemHeadersSupport
    * 
    * @return The file items headers.
    */
-  public FileItemHeaders getHeaders ()
+  public IFileItemHeaders getHeaders ()
   {
     return headers;
   }
@@ -691,7 +666,7 @@ public class DiskFileItem implements FileItem, FileItemHeadersSupport
    * @param pHeaders
    *        The file items headers.
    */
-  public void setHeaders (final FileItemHeaders pHeaders)
+  public void setHeaders (final IFileItemHeaders pHeaders)
   {
     headers = pHeaders;
   }

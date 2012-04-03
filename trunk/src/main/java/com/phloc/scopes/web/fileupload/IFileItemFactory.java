@@ -17,6 +17,11 @@
  */
 package com.phloc.scopes.web.fileupload;
 
+import java.io.File;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 /**
  * <p>
  * A factory interface for creating {@link FileItem} instances. Factories can
@@ -27,24 +32,27 @@ package com.phloc.scopes.web.fileupload;
  * @author <a href="mailto:martinc@apache.org">Martin Cooper</a>
  * @version $Id: FileItemFactory.java 479262 2006-11-26 03:09:24Z niallp $
  */
-public interface FileItemFactory
+public interface IFileItemFactory
 {
-
   /**
    * Create a new {@link FileItem} instance from the supplied parameters and any
    * local factory configuration.
    * 
-   * @param fieldName
+   * @param sFieldName
    *        The name of the form field.
-   * @param contentType
+   * @param sContentType
    *        The content type of the form field.
-   * @param isFormField
+   * @param bIsFormField
    *        <code>true</code> if this is a plain form field; <code>false</code>
    *        otherwise.
-   * @param fileName
+   * @param sFileName
    *        The name of the uploaded file, if any, as supplied by the browser or
    *        other client.
    * @return The newly created file item.
    */
-  FileItem createItem (String fieldName, String contentType, boolean isFormField, String fileName);
+  @Nonnull
+  FileItem createItem (String sFieldName, String sContentType, boolean bIsFormField, String sFileName);
+
+  @Nonnull
+  List <File> getAllTemporaryFiles ();
 }

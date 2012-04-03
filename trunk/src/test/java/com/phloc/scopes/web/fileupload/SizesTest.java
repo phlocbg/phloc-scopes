@@ -24,6 +24,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.phloc.commons.charset.CCharset;
 import com.phloc.scopes.web.fileupload.io.DiskFileItemFactory;
 import com.phloc.scopes.web.fileupload.servlet.ServletFileUpload;
 import com.phloc.scopes.web.mock.MockHttpServletRequest;
@@ -96,31 +97,32 @@ public class SizesTest extends FileUploadTestCase
                            + "\r\n"
                            + "-----1234--\r\n";
 
-    ServletFileUpload upload = new ServletFileUpload (new DiskFileItemFactory ());
+    ServletFileUpload upload = new ServletFileUpload (new DiskFileItemFactory (10240));
     upload.setFileSizeMax (-1);
-    HttpServletRequest req = MockHttpServletRequest.createWithContent (request.getBytes ("US-ASCII"), CONTENT_TYPE);
+    HttpServletRequest req = MockHttpServletRequest.createWithContent (request.getBytes (CCharset.CHARSET_US_ASCII),
+                                                                       CONTENT_TYPE);
     List <FileItem> fileItems = upload.parseRequest (req);
     assertEquals (1, fileItems.size ());
     FileItem item = fileItems.get (0);
     assertEquals ("This is the content of the file\n", new String (item.get ()));
 
-    upload = new ServletFileUpload (new DiskFileItemFactory ());
+    upload = new ServletFileUpload (new DiskFileItemFactory (10240));
     upload.setFileSizeMax (40);
-    req = MockHttpServletRequest.createWithContent (request.getBytes ("US-ASCII"), CONTENT_TYPE);
+    req = MockHttpServletRequest.createWithContent (request.getBytes (CCharset.CHARSET_US_ASCII), CONTENT_TYPE);
     fileItems = upload.parseRequest (req);
     assertEquals (1, fileItems.size ());
     item = fileItems.get (0);
     assertEquals ("This is the content of the file\n", new String (item.get ()));
 
-    upload = new ServletFileUpload (new DiskFileItemFactory ());
+    upload = new ServletFileUpload (new DiskFileItemFactory (10240));
     upload.setFileSizeMax (30);
-    req = MockHttpServletRequest.createWithContent (request.getBytes ("US-ASCII"), CONTENT_TYPE);
+    req = MockHttpServletRequest.createWithContent (request.getBytes (CCharset.CHARSET_US_ASCII), CONTENT_TYPE);
     try
     {
       upload.parseRequest (req);
       fail ("Expected exception.");
     }
-    catch (final FileUploadBase.FileSizeLimitExceededException e)
+    catch (final AbstractFileUploadBase.FileSizeLimitExceededException e)
     {
       assertEquals (30, e.getPermittedSize ());
     }

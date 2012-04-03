@@ -21,12 +21,12 @@ import java.io.IOException;
 
 /**
  * An iterator, as returned by
- * {@link FileUploadBase#getItemIterator(RequestContext)}.
+ * {@link AbstractFileUploadBase#getItemIterator(IRequestContext)}.
  */
-public interface FileItemIterator
+public interface IFileItemIterator
 {
   /**
-   * Returns, whether another instance of {@link FileItemStream} is available.
+   * Returns, whether another instance of {@link IFileItemStream} is available.
    * 
    * @throws FileUploadException
    *         Parsing or processing the file item failed.
@@ -38,7 +38,7 @@ public interface FileItemIterator
   boolean hasNext () throws FileUploadException, IOException;
 
   /**
-   * Returns the next available {@link FileItemStream}.
+   * Returns the next available {@link IFileItemStream}.
    * 
    * @throws java.util.NoSuchElementException
    *         No more items are available. Use {@link #hasNext()} to prevent this
@@ -50,5 +50,5 @@ public interface FileItemIterator
    * @return FileItemStream instance, which provides access to the next file
    *         item.
    */
-  FileItemStream next () throws FileUploadException, IOException;
+  IFileItemStream next () throws FileUploadException, IOException;
 }

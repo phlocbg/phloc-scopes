@@ -53,7 +53,7 @@ import com.phloc.scopes.web.fileupload.util.Streams;
  * @author Sean C. Sullivan
  * @version $Id: FileUploadBase.java 963609 2010-07-13 06:56:47Z jochen $
  */
-public abstract class FileUploadBase
+public abstract class AbstractFileUploadBase
 {
 
   // ---------------------------------------------------------- Class methods
@@ -75,17 +75,13 @@ public abstract class FileUploadBase
    * @return <code>true</code> if the request is multipart; <code>false</code>
    *         otherwise.
    */
-  public static final boolean isMultipartContent (final RequestContext ctx)
+  public static final boolean isMultipartContent (final IRequestContext ctx)
   {
     final String contentType = ctx.getContentType ();
     if (contentType == null)
-    {
       return false;
-    }
     if (contentType.toLowerCase ().startsWith (MULTIPART))
-    {
       return true;
-    }
     return false;
   }
 
@@ -153,7 +149,7 @@ public abstract class FileUploadBase
   /**
    * The progress listener.
    */
-  private ProgressListener listener;
+  private IProgressListener listener;
 
   // ----------------------------------------------------- Property accessors
 
@@ -162,15 +158,7 @@ public abstract class FileUploadBase
    * 
    * @return The factory class for new file items.
    */
-  public abstract FileItemFactory getFileItemFactory ();
-
-  /**
-   * Sets the factory class to use when creating file items.
-   * 
-   * @param factory
-   *        The factory class for new file items.
-   */
-  public abstract void setFileItemFactory (FileItemFactory factory);
+  public abstract IFileItemFactory getFileItemFactory ();
 
   /**
    * Returns the maximum allowed size of a complete request, as opposed to
@@ -268,7 +256,7 @@ public abstract class FileUploadBase
    *         communicating with the client or a problem while storing the
    *         uploaded content.
    */
-  public FileItemIterator getItemIterator (final RequestContext ctx) throws FileUploadException, IOException
+  public IFileItemIterator getItemIterator (final IRequestContext ctx) throws FileUploadException, IOException
   {
     return new FileItemIteratorImpl (ctx);
   }
@@ -284,23 +272,23 @@ public abstract class FileUploadBase
    * @throws FileUploadException
    *         if there are problems reading/parsing the request or storing files.
    */
-  public List <FileItem> parseRequest (final RequestContext ctx) throws FileUploadException
+  public List <FileItem> parseRequest (final IRequestContext ctx) throws FileUploadException
   {
     final List <FileItem> items = new ArrayList <FileItem> ();
     boolean successful = false;
     try
     {
-      final FileItemIterator iter = getItemIterator (ctx);
-      final FileItemFactory fac = getFileItemFactory ();
+      final IFileItemIterator iter = getItemIterator (ctx);
+      final IFileItemFactory fac = getFileItemFactory ();
       if (fac == null)
       {
         throw new NullPointerException ("No FileItemFactory has been set.");
       }
       while (iter.hasNext ())
       {
-        final FileItemStream item = iter.next ();
+        final IFileItemStream item = iter.next ();
         // Don't use getName() here to prevent an InvalidFileNameException.
-        final String fileName = ((FileUploadBase.FileItemIteratorImpl.FileItemStreamImpl) item).name;
+        final String fileName = ((AbstractFileUploadBase.FileItemIteratorImpl.FileItemStreamImpl) item).name;
         final FileItem fileItem = fac.createItem (item.getFieldName (),
                                                   item.getContentType (),
                                                   item.isFormField (),
@@ -321,10 +309,10 @@ public abstract class FileUploadBase
                                            " request failed. " +
                                            e.getMessage (), e);
         }
-        if (fileItem instanceof FileItemHeadersSupport)
+        if (fileItem instanceof IFileItemHeadersSupport)
         {
-          final FileItemHeaders fih = item.getHeaders ();
-          ((FileItemHeadersSupport) fileItem).setHeaders (fih);
+          final IFileItemHeaders fih = item.getHeaders ();
+          ((IFileItemHeadersSupport) fileItem).setHeaders (fih);
         }
       }
       successful = true;
@@ -389,7 +377,7 @@ public abstract class FileUploadBase
    *        The HTTP headers object.
    * @return The file name for the current <code>encapsulation</code>.
    */
-  protected String getFileName (final FileItemHeaders headers)
+  protected String getFileName (final IFileItemHeaders headers)
   {
     return getFileName (headers.getHeader (CONTENT_DISPOSITION));
   }
@@ -440,7 +428,7 @@ public abstract class FileUploadBase
    *        A <code>Map</code> containing the HTTP request headers.
    * @return The field name for the current <code>encapsulation</code>.
    */
-  protected String getFieldName (final FileItemHeaders headers)
+  protected String getFieldName (final IFileItemHeaders headers)
   {
     return getFieldName (headers.getHeader (CONTENT_DISPOSITION));
   }
@@ -482,7 +470,7 @@ public abstract class FileUploadBase
    *        <code>encapsulation</code>.
    * @return A <code>Map</code> containing the parsed HTTP request headers.
    */
-  protected FileItemHeaders getParsedHeaders (final String headerPart)
+  protected IFileItemHeaders getParsedHeaders (final String headerPart)
   {
     final int len = headerPart.length ();
     final FileItemHeadersImpl headers = newFileItemHeaders ();
@@ -524,7 +512,7 @@ public abstract class FileUploadBase
   }
 
   /**
-   * Creates a new instance of {@link FileItemHeaders}.
+   * Creates a new instance of {@link IFileItemHeaders}.
    * 
    * @return The new instance.
    */
@@ -583,14 +571,14 @@ public abstract class FileUploadBase
 
   /**
    * The iterator, which is returned by
-   * {@link FileUploadBase#getItemIterator(RequestContext)}.
+   * {@link AbstractFileUploadBase#getItemIterator(IRequestContext)}.
    */
-  private class FileItemIteratorImpl implements FileItemIterator
+  private class FileItemIteratorImpl implements IFileItemIterator
   {
     /**
-     * Default implementation of {@link FileItemStream}.
+     * Default implementation of {@link IFileItemStream}.
      */
-    class FileItemStreamImpl implements FileItemStream
+    class FileItemStreamImpl implements IFileItemStream
     {
       /**
        * The file items content type.
@@ -619,7 +607,7 @@ public abstract class FileUploadBase
       /**
        * The headers, if any.
        */
-      private FileItemHeaders headers;
+      private IFileItemHeaders headers;
 
       /**
        * Creates a new instance.
@@ -748,7 +736,7 @@ public abstract class FileUploadBase
         }
         if (((Closeable) stream).isClosed ())
         {
-          throw new FileItemStream.ItemSkippedException ();
+          throw new IFileItemStream.ItemSkippedException ();
         }
         return stream;
       }
@@ -769,7 +757,7 @@ public abstract class FileUploadBase
        * 
        * @return The items header object
        */
-      public FileItemHeaders getHeaders ()
+      public IFileItemHeaders getHeaders ()
       {
         return headers;
       }
@@ -780,7 +768,7 @@ public abstract class FileUploadBase
        * @param pHeaders
        *        The items header object
        */
-      public void setHeaders (final FileItemHeaders pHeaders)
+      public void setHeaders (final IFileItemHeaders pHeaders)
       {
         headers = pHeaders;
       }
@@ -791,7 +779,7 @@ public abstract class FileUploadBase
      */
     private final MultipartStream multi;
     /**
-     * The notifier, which used for triggering the {@link ProgressListener}.
+     * The notifier, which used for triggering the {@link IProgressListener}.
      */
     private final MultipartStream.ProgressNotifier notifier;
     /**
@@ -829,7 +817,7 @@ public abstract class FileUploadBase
      * @throws IOException
      *         An I/O error occurred.
      */
-    FileItemIteratorImpl (final RequestContext ctx) throws FileUploadException, IOException
+    FileItemIteratorImpl (final IRequestContext ctx) throws FileUploadException, IOException
     {
       if (ctx == null)
       {
@@ -945,7 +933,7 @@ public abstract class FileUploadBase
           currentFieldName = null;
           continue;
         }
-        final FileItemHeaders headers = getParsedHeaders (multi.readHeaders ());
+        final IFileItemHeaders headers = getParsedHeaders (multi.readHeaders ());
         if (currentFieldName == null)
         {
           // We're parsing the outer multipart
@@ -992,7 +980,7 @@ public abstract class FileUploadBase
       }
     }
 
-    private long getContentLength (final FileItemHeaders pHeaders)
+    private long getContentLength (final IFileItemHeaders pHeaders)
     {
       try
       {
@@ -1005,7 +993,8 @@ public abstract class FileUploadBase
     }
 
     /**
-     * Returns, whether another instance of {@link FileItemStream} is available.
+     * Returns, whether another instance of {@link IFileItemStream} is
+     * available.
      * 
      * @throws FileUploadException
      *         Parsing or processing the file item failed.
@@ -1028,7 +1017,7 @@ public abstract class FileUploadBase
     }
 
     /**
-     * Returns the next available {@link FileItemStream}.
+     * Returns the next available {@link IFileItemStream}.
      * 
      * @throws java.util.NoSuchElementException
      *         No more items are available. Use {@link #hasNext()} to prevent
@@ -1040,7 +1029,7 @@ public abstract class FileUploadBase
      * @return FileItemStream instance, which provides access to the next file
      *         item.
      */
-    public FileItemStream next () throws FileUploadException, IOException
+    public IFileItemStream next () throws FileUploadException, IOException
     {
       if (eof || (!itemValid && !hasNext ()))
       {
@@ -1324,7 +1313,7 @@ public abstract class FileUploadBase
    * 
    * @return The progress listener, if any, or null.
    */
-  public ProgressListener getProgressListener ()
+  public IProgressListener getProgressListener ()
   {
     return listener;
   }
@@ -1335,7 +1324,7 @@ public abstract class FileUploadBase
    * @param pListener
    *        The progress listener, if any. Defaults to null.
    */
-  public void setProgressListener (final ProgressListener pListener)
+  public void setProgressListener (final IProgressListener pListener)
   {
     listener = pListener;
   }

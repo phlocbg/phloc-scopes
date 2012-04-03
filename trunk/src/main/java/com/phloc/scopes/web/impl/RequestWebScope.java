@@ -17,6 +17,7 @@
  */
 package com.phloc.scopes.web.impl;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
@@ -65,64 +66,63 @@ import com.phloc.scopes.nonweb.singleton.GlobalSingleton;
 import com.phloc.scopes.web.domain.IRequestWebScope;
 import com.phloc.scopes.web.fileupload.FileItem;
 import com.phloc.scopes.web.fileupload.FileUploadException;
+import com.phloc.scopes.web.fileupload.IFileItemFactory;
 import com.phloc.scopes.web.fileupload.io.DiskFileItemFactory;
-import com.phloc.scopes.web.fileupload.io.FileCleaningTracker;
 import com.phloc.scopes.web.fileupload.servlet.ServletFileUpload;
 import com.phloc.scopes.web.mock.MockHttpServletRequest;
 
 public class RequestWebScope extends AbstractReadonlyAttributeContainer implements IRequestWebScope
 {
   /**
-   * Wrapper around a file cleaning tracker, that is correctly cleaning up, when
-   * the servlet context is destroyed.
+   * Wrapper around a {@link DiskFileItemFactory}, that is correctly cleaning
+   * up, when the servlet context is destroyed.
    * 
    * @author philip
    */
-  public static final class GlobalFileCleaningTracker extends GlobalSingleton
+  public static final class GlobalDiskFileItemFactory extends GlobalSingleton implements IFileItemFactory
   {
-    private final FileCleaningTracker m_aTracker = new FileCleaningTracker ();
+    private final DiskFileItemFactory m_aFactory = new DiskFileItemFactory (CGlobal.BYTES_PER_MEGABYTE, null);
 
     @UsedViaReflection
     @Deprecated
-    public GlobalFileCleaningTracker ()
+    public GlobalDiskFileItemFactory ()
     {}
 
     @Nonnull
-    public static GlobalFileCleaningTracker getInstance ()
+    public static GlobalDiskFileItemFactory getInstance ()
     {
-      return getGlobalSingleton (GlobalFileCleaningTracker.class);
-    }
-
-    @Nonnull
-    public FileCleaningTracker getTracker ()
-    {
-      return m_aTracker;
+      return getGlobalSingleton (GlobalDiskFileItemFactory.class);
     }
 
     @Override
     protected void onDestroy ()
     {
-      m_aTracker.exitWhenFinished ();
+      m_aFactory.deleteAllTemporaryFiles ();
+    }
+
+    @Nonnull
+    public FileItem createItem (final String sFieldName,
+                                final String sContentType,
+                                final boolean bIsFormField,
+                                final String sFileName)
+    {
+      return m_aFactory.createItem (sFieldName, sContentType, bIsFormField, sFileName);
+    }
+
+    @Nonnull
+    public List <File> getAllTemporaryFiles ()
+    {
+      return m_aFactory.getAllTemporaryFiles ();
     }
   }
 
   private static final Logger s_aLogger = LoggerFactory.getLogger (RequestWebScope.class);
   private static final String REQUEST_SCOPED_INITED = "$request.scope.inited";
 
-  /** Create a factory for disk-based file items. */
-  private static final DiskFileItemFactory s_aFactory;
-
   /**
    * The maximum size of a single file (in bytes) that will be handled
    */
   private static final long MAX_REQUEST_SIZE = 5 * CGlobal.BYTES_PER_GIGABYTE;
-
-  static
-  {
-    // Set the default file item factory
-    s_aFactory = new DiskFileItemFactory (CGlobal.BYTES_PER_MEGABYTE, null, GlobalFileCleaningTracker.getInstance ()
-                                                                                                     .getTracker ());
-  }
 
   protected final ReadWriteLock m_aRWLock = new ReentrantReadWriteLock ();
   private final String m_sScopeID;
@@ -171,7 +171,7 @@ public class RequestWebScope extends AbstractReadonlyAttributeContainer implemen
       try
       {
         // Setup the ServletFileUpload....
-        final ServletFileUpload aUpload = new ServletFileUpload (s_aFactory);
+        final ServletFileUpload aUpload = new ServletFileUpload (GlobalDiskFileItemFactory.getInstance ());
         aUpload.setSizeMax (MAX_REQUEST_SIZE);
         aUpload.setHeaderEncoding (CCharset.CHARSET_UTF_8);
         try

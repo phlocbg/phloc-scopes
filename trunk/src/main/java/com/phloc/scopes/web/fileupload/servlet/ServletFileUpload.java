@@ -23,11 +23,10 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import com.phloc.scopes.web.fileupload.FileItem;
-import com.phloc.scopes.web.fileupload.FileItemFactory;
-import com.phloc.scopes.web.fileupload.FileItemIterator;
 import com.phloc.scopes.web.fileupload.FileUpload;
 import com.phloc.scopes.web.fileupload.FileUploadException;
-
+import com.phloc.scopes.web.fileupload.IFileItemFactory;
+import com.phloc.scopes.web.fileupload.IFileItemIterator;
 
 /**
  * <p>
@@ -38,8 +37,8 @@ import com.phloc.scopes.web.fileupload.FileUploadException;
  * <code>multipart/mixed</code> encoding type, as specified by <a
  * href="http://www.ietf.org/rfc/rfc1867.txt">RFC 1867</a>. Use
  * {@link #parseRequest(HttpServletRequest)} to acquire a list of
- * {@link com.phloc.scopes.web.fileupload.FileItem}s associated with a given HTML
- * widget.
+ * {@link com.phloc.scopes.web.fileupload.FileItem}s associated with a given
+ * HTML widget.
  * </p>
  * <p>
  * How the data for individual parts is stored is determined by the factory used
@@ -92,11 +91,10 @@ public class ServletFileUpload extends FileUpload
    * Constructs an instance of this class which uses the supplied factory to
    * create <code>FileItem</code> instances.
    * 
-   * @see FileUpload#FileUpload()
    * @param fileItemFactory
    *        The factory to use for creating file items.
    */
-  public ServletFileUpload (final FileItemFactory fileItemFactory)
+  public ServletFileUpload (final IFileItemFactory fileItemFactory)
   {
     super (fileItemFactory);
   }
@@ -134,7 +132,7 @@ public class ServletFileUpload extends FileUpload
    *         communicating with the client or a problem while storing the
    *         uploaded content.
    */
-  public FileItemIterator getItemIterator (final HttpServletRequest request) throws FileUploadException, IOException
+  public IFileItemIterator getItemIterator (final HttpServletRequest request) throws FileUploadException, IOException
   {
     return super.getItemIterator (new ServletRequestContext (request));
   }

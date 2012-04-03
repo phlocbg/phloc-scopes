@@ -31,9 +31,8 @@ import java.io.InputStream;
  * @since FileUpload 1.1
  * @version $Id: RequestContext.java 479262 2006-11-26 03:09:24Z niallp $
  */
-public interface RequestContext
+public interface IRequestContext
 {
-
   /**
    * Retrieve the character encoding for the request.
    * 

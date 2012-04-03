@@ -39,39 +39,21 @@ package com.phloc.scopes.web.fileupload;
  * @author Sean C. Sullivan
  * @version $Id: FileUpload.java 479484 2006-11-27 01:06:53Z jochen $
  */
-public class FileUpload extends FileUploadBase
+public class FileUpload extends AbstractFileUploadBase
 {
-
-  // ----------------------------------------------------------- Data members
-
   /**
    * The factory to use to create new form items.
    */
-  private FileItemFactory _fileItemFactory;
-
-  // ----------------------------------------------------------- Constructors
-
-  /**
-   * Constructs an uninitialised instance of this class. A factory must be
-   * configured, using <code>setFileItemFactory()</code>, before attempting to
-   * parse requests.
-   * 
-   * @see #FileUpload(FileItemFactory)
-   */
-  public FileUpload ()
-  {
-    super ();
-  }
+  private final IFileItemFactory _fileItemFactory;
 
   /**
    * Constructs an instance of this class which uses the supplied factory to
    * create <code>FileItem</code> instances.
    * 
-   * @see #FileUpload()
    * @param fileItemFactory
    *        The factory to use for creating file items.
    */
-  public FileUpload (final FileItemFactory fileItemFactory)
+  public FileUpload (final IFileItemFactory fileItemFactory)
   {
     super ();
     this._fileItemFactory = fileItemFactory;
@@ -85,21 +67,8 @@ public class FileUpload extends FileUploadBase
    * @return The factory class for new file items.
    */
   @Override
-  public FileItemFactory getFileItemFactory ()
+  public IFileItemFactory getFileItemFactory ()
   {
     return _fileItemFactory;
   }
-
-  /**
-   * Sets the factory class to use when creating file items.
-   * 
-   * @param factory
-   *        The factory class for new file items.
-   */
-  @Override
-  public void setFileItemFactory (final FileItemFactory factory)
-  {
-    this._fileItemFactory = factory;
-  }
-
 }

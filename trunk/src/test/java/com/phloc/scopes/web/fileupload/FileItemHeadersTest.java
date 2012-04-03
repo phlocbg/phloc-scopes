@@ -24,7 +24,7 @@ import junit.framework.TestCase;
 import com.phloc.scopes.web.fileupload.util.FileItemHeadersImpl;
 
 /**
- * Unit tests {@link FileItemHeaders} and {@link FileItemHeadersImpl}.
+ * Unit tests {@link IFileItemHeaders} and {@link FileItemHeadersImpl}.
  * 
  * @author Michael C. Macaluso
  */

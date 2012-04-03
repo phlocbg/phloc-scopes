@@ -28,7 +28,7 @@ import java.util.Iterator;
  * @author Michael C. Macaluso
  * @since 1.3
  */
-public interface FileItemHeaders
+public interface IFileItemHeaders
 {
   /**
    * Returns the value of the specified part header as a <code>String</code>. If

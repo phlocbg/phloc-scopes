@@ -18,10 +18,10 @@
 package com.phloc.scopes.web.fileupload;
 
 /**
- * The {@link ProgressListener} may be used to display a progress bar or do
+ * The {@link IProgressListener} may be used to display a progress bar or do
  * stuff like that.
  */
-public interface ProgressListener
+public interface IProgressListener
 {
   /**
    * Updates the listeners status information.
