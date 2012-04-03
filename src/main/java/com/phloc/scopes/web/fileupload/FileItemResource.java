@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2006-2010 phloc systems
+ * Copyright (C) 2006-2012 phloc systems
  * http://www.phloc.com
  * office[at]phloc[dot]com
  *
@@ -15,7 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.phloc.scopes.web.fileupload;
 
 import java.io.File;
