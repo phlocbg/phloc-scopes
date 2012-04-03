@@ -43,7 +43,8 @@ import com.phloc.commons.string.ToStringGenerator;
 public final class ScopeRenewalAwareWrapper <DATATYPE extends Serializable> implements
                                                                             IWrapper <DATATYPE>,
                                                                             ICloneable <ScopeRenewalAwareWrapper <DATATYPE>>,
-                                                                            IScopeRenewalAware
+                                                                            IScopeRenewalAware,
+                                                                            Serializable
 {
   private DATATYPE m_aObj;
 
