@@ -35,21 +35,21 @@ public abstract class FileUploadTestCase extends TestCase
 {
   protected static final String CONTENT_TYPE = "multipart/form-data; boundary=---1234";
 
-  protected List <FileItem> parseUpload (final byte [] bytes) throws FileUploadException
+  protected List <IFileItem> parseUpload (final byte [] bytes) throws FileUploadException
   {
     return parseUpload (bytes, CONTENT_TYPE);
   }
 
-  protected List <FileItem> parseUpload (final byte [] bytes, final String contentType) throws FileUploadException
+  protected List <IFileItem> parseUpload (final byte [] bytes, final String contentType) throws FileUploadException
   {
     final ServletFileUpload upload = new ServletFileUpload (new DiskFileItemFactory (10240));
     final HttpServletRequest request = MockHttpServletRequest.createWithContent (bytes, contentType);
 
-    final List <FileItem> fileItems = upload.parseRequest (request);
+    final List <IFileItem> fileItems = upload.parseRequest (request);
     return fileItems;
   }
 
-  protected List <FileItem> parseUpload (final String content) throws UnsupportedEncodingException, FileUploadException
+  protected List <IFileItem> parseUpload (final String content) throws UnsupportedEncodingException, FileUploadException
   {
     final byte [] bytes = content.getBytes ("US-ASCII");
     return parseUpload (bytes, CONTENT_TYPE);

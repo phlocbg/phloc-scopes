@@ -42,8 +42,8 @@ import com.phloc.commons.io.file.FileOperations;
 import com.phloc.commons.io.file.SimpleFileIO;
 import com.phloc.commons.io.streams.NonBlockingByteArrayInputStream;
 import com.phloc.commons.io.streams.StreamUtils;
-import com.phloc.scopes.web.fileupload.FileItem;
 import com.phloc.scopes.web.fileupload.FileUploadException;
+import com.phloc.scopes.web.fileupload.IFileItem;
 import com.phloc.scopes.web.fileupload.IFileItemHeaders;
 import com.phloc.scopes.web.fileupload.IFileItemHeadersSupport;
 import com.phloc.scopes.web.fileupload.InvalidFileNameException;
@@ -52,8 +52,7 @@ import com.phloc.scopes.web.fileupload.util.Streams;
 
 /**
  * <p>
- * The default implementation of the
- * {@link com.phloc.scopes.web.fileupload.FileItem FileItem} interface.
+ * The default implementation of the {@link IFileItem} interface.
  * <p>
  * After retrieving an instance you may either request all contents of file at
  * once using {@link #get()} or request an {@link java.io.InputStream
@@ -69,7 +68,7 @@ import com.phloc.scopes.web.fileupload.util.Streams;
  * @since FileUpload 1.1
  * @version $Id: DiskFileItem.java 963609 2010-07-13 06:56:47Z jochen $
  */
-public class DiskFileItem implements FileItem, IFileItemHeadersSupport
+public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
 {
   /**
    * Default content charset to be used when no explicit charset parameter is

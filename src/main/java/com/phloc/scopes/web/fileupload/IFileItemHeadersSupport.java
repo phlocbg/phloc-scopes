@@ -18,12 +18,13 @@
 package com.phloc.scopes.web.fileupload;
 
 /**
- * Interface that will indicate that {@link FileItem} or {@link IFileItemStream}
- * implementations will accept the headers read for the item.
+ * Interface that will indicate that {@link IFileItem} or
+ * {@link IFileItemStream} implementations will accept the headers read for the
+ * item.
  * 
  * @author Michael C. Macaluso
  * @since 1.3
- * @see FileItem
+ * @see IFileItem
  * @see IFileItemStream
  */
 public interface IFileItemHeadersSupport
@@ -37,8 +38,9 @@ public interface IFileItemHeadersSupport
 
   /**
    * Sets the headers read from within an item. Implementations of
-   * {@link FileItem} or {@link IFileItemStream} should implement this interface
-   * to be able to get the raw headers found within the item header block.
+   * {@link IFileItem} or {@link IFileItemStream} should implement this
+   * interface to be able to get the raw headers found within the item header
+   * block.
    * 
    * @param headers
    *        the instance that holds onto the headers for this instance.

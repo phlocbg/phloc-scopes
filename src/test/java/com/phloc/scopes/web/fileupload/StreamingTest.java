@@ -48,8 +48,8 @@ public class StreamingTest extends TestCase
   public void testFileUpload () throws IOException, FileUploadException
   {
     final byte [] request = newRequest ();
-    final List <FileItem> fileItems = parseUploadToList (request);
-    final Iterator <FileItem> fileIter = fileItems.iterator ();
+    final List <IFileItem> fileItems = parseUploadToList (request);
+    final Iterator <IFileItem> fileIter = fileItems.iterator ();
     int add = 16;
     int num = 0;
     for (int i = 0; i < 16384; i += add)
@@ -58,7 +58,7 @@ public class StreamingTest extends TestCase
       {
         add = 16;
       }
-      final FileItem item = fileIter.next ();
+      final IFileItem item = fileIter.next ();
       assertEquals ("field" + (num++), item.getFieldName ());
       final byte [] bytes = item.get ();
       assertEquals (i, bytes.length);
@@ -143,7 +143,7 @@ public class StreamingTest extends TestCase
   {
     final byte [] request = newShortRequest ();
     final ByteArrayInputStream bais = new ByteArrayInputStream (request);
-    final List <FileItem> fileItems = parseUploadToList (new InputStream ()
+    final List <IFileItem> fileItems = parseUploadToList (new InputStream ()
     {
       @Override
       public int read () throws IOException
@@ -158,9 +158,9 @@ public class StreamingTest extends TestCase
       }
 
     }, request.length);
-    final Iterator <FileItem> fileIter = fileItems.iterator ();
+    final Iterator <IFileItem> fileIter = fileItems.iterator ();
     assertTrue (fileIter.hasNext ());
-    final FileItem item = fileIter.next ();
+    final IFileItem item = fileIter.next ();
     assertEquals ("field", item.getFieldName ());
     final byte [] bytes = item.get ();
     assertEquals (3, bytes.length);
@@ -180,12 +180,12 @@ public class StreamingTest extends TestCase
     return upload.getItemIterator (new ServletRequestContext (request));
   }
 
-  private List <FileItem> parseUploadToList (final byte [] bytes) throws FileUploadException
+  private List <IFileItem> parseUploadToList (final byte [] bytes) throws FileUploadException
   {
     return parseUploadToList (new ByteArrayInputStream (bytes), bytes.length);
   }
 
-  private List <FileItem> parseUploadToList (final InputStream pStream, final int pLength) throws FileUploadException
+  private List <IFileItem> parseUploadToList (final InputStream pStream, final int pLength) throws FileUploadException
   {
     final String contentType = "multipart/form-data; boundary=---1234";
 
@@ -307,8 +307,8 @@ public class StreamingTest extends TestCase
       assertTrue (e.getMessage ().indexOf ("foo.exe\\0.png") != -1);
     }
 
-    final List <FileItem> fileItems = parseUploadToList (reqBytes);
-    final FileItem fileItem = fileItems.get (0);
+    final List <IFileItem> fileItems = parseUploadToList (reqBytes);
+    final IFileItem fileItem = fileItems.get (0);
     try
     {
       fileItem.getName ();

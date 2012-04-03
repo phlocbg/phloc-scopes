@@ -36,18 +36,16 @@ import com.phloc.commons.annotations.VisibleForTesting;
 import com.phloc.commons.collections.ContainerHelper;
 import com.phloc.commons.io.file.FileIOError;
 import com.phloc.commons.io.file.FileOperations;
-import com.phloc.scopes.web.fileupload.FileItem;
 import com.phloc.scopes.web.fileupload.IFileItemFactory;
 
 /**
  * <p>
  * The default {@link com.phloc.scopes.web.fileupload.IFileItemFactory}
- * implementation. This implementation creates
- * {@link com.phloc.scopes.web.fileupload.FileItem} instances which keep their
- * content either in memory, for smaller items, or in a temporary file on disk,
- * for larger items. The size threshold, above which content will be stored on
- * disk, is configurable, as is the directory in which temporary files will be
- * created.
+ * implementation. This implementation creates {@link DiskFileItem} instances
+ * which keep their content either in memory, for smaller items, or in a
+ * temporary file on disk, for larger items. The size threshold, above which
+ * content will be stored on disk, is configurable, as is the directory in which
+ * temporary files will be created.
  * </p>
  * <p>
  * If not otherwise configured, the default configuration values are as follows:
@@ -128,10 +126,10 @@ public class DiskFileItemFactory implements IFileItemFactory
    * @return The newly created file item.
    */
   @Nonnull
-  public FileItem createItem (final String sFieldName,
-                              final String sContentType,
-                              final boolean bIsFormField,
-                              final String sFileName)
+  public DiskFileItem createItem (final String sFieldName,
+                                  final String sContentType,
+                                  final boolean bIsFormField,
+                                  final String sFileName)
   {
     final DiskFileItem result = new DiskFileItem (sFieldName,
                                                   sContentType,

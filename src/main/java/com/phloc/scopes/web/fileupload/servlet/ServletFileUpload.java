@@ -22,9 +22,9 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.phloc.scopes.web.fileupload.FileItem;
 import com.phloc.scopes.web.fileupload.FileUpload;
 import com.phloc.scopes.web.fileupload.FileUploadException;
+import com.phloc.scopes.web.fileupload.IFileItem;
 import com.phloc.scopes.web.fileupload.IFileItemFactory;
 import com.phloc.scopes.web.fileupload.IFileItemIterator;
 
@@ -37,7 +37,7 @@ import com.phloc.scopes.web.fileupload.IFileItemIterator;
  * <code>multipart/mixed</code> encoding type, as specified by <a
  * href="http://www.ietf.org/rfc/rfc1867.txt">RFC 1867</a>. Use
  * {@link #parseRequest(HttpServletRequest)} to acquire a list of
- * {@link com.phloc.scopes.web.fileupload.FileItem}s associated with a given
+ * {@link com.phloc.scopes.web.fileupload.IFileItem}s associated with a given
  * HTML widget.
  * </p>
  * <p>
@@ -112,7 +112,7 @@ public class ServletFileUpload extends FileUpload
    * @throws FileUploadException
    *         if there are problems reading/parsing the request or storing files.
    */
-  public List <FileItem> parseRequest (final HttpServletRequest request) throws FileUploadException
+  public List <IFileItem> parseRequest (final HttpServletRequest request) throws FileUploadException
   {
     return parseRequest (new ServletRequestContext (request));
   }
