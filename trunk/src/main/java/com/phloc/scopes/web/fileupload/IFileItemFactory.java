@@ -21,6 +21,7 @@ import java.io.File;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * <p>
@@ -34,6 +35,14 @@ import javax.annotation.Nonnull;
  */
 public interface IFileItemFactory
 {
+  /**
+   * Define where to store files
+   * 
+   * @param aRepository
+   *        The directory to use. May be <code>null</code>.
+   */
+  void setRepository (@Nullable File aRepository);
+
   /**
    * Create a new {@link FileItem} instance from the supplied parameters and any
    * local factory configuration.

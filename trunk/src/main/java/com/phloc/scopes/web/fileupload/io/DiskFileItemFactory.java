@@ -36,6 +36,7 @@ import com.phloc.commons.annotations.VisibleForTesting;
 import com.phloc.commons.collections.ContainerHelper;
 import com.phloc.commons.io.file.FileIOError;
 import com.phloc.commons.io.file.FileOperations;
+import com.phloc.scopes.web.fileupload.FileItem;
 import com.phloc.scopes.web.fileupload.IFileItemFactory;
 
 /**
@@ -74,7 +75,7 @@ public class DiskFileItemFactory implements IFileItemFactory
   /**
    * The directory in which uploaded files will be stored, if stored on disk.
    */
-  private final File m_aRepository;
+  private File m_aRepository;
 
   /**
    * The threshold above which uploads will be stored on disk.
@@ -105,6 +106,11 @@ public class DiskFileItemFactory implements IFileItemFactory
     m_aRepository = repository;
   }
 
+  public void setRepository (@Nullable final File aRepository)
+  {
+    m_aRepository = aRepository;
+  }
+
   /**
    * Create a new {@link com.phloc.scopes.web.fileupload.io.DiskFileItem}
    * instance from the supplied parameters and the local factory configuration.
@@ -122,10 +128,10 @@ public class DiskFileItemFactory implements IFileItemFactory
    * @return The newly created file item.
    */
   @Nonnull
-  public DiskFileItem createItem (final String sFieldName,
-                                  final String sContentType,
-                                  final boolean bIsFormField,
-                                  final String sFileName)
+  public FileItem createItem (final String sFieldName,
+                              final String sContentType,
+                              final boolean bIsFormField,
+                              final String sFileName)
   {
     final DiskFileItem result = new DiskFileItem (sFieldName,
                                                   sContentType,
