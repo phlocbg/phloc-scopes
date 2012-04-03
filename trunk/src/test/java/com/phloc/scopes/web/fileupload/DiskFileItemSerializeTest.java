@@ -65,7 +65,7 @@ public class DiskFileItemSerializeTest extends TestCase
 
     // Create the FileItem
     final byte [] testFieldValueBytes = createContentBytes (threshold - 1);
-    final FileItem item = createFileItem (testFieldValueBytes);
+    final IFileItem item = createFileItem (testFieldValueBytes);
 
     // Check state is as expected
     assertTrue ("Initial: in memory", item.isInMemory ());
@@ -75,7 +75,7 @@ public class DiskFileItemSerializeTest extends TestCase
     // Serialize & Deserialize
     try
     {
-      final FileItem newItem = (FileItem) serializeDeserialize (item);
+      final IFileItem newItem = (IFileItem) serializeDeserialize (item);
 
       // Test deserialized content is as expected
       assertTrue ("Check in memory", newItem.isInMemory ());
@@ -100,7 +100,7 @@ public class DiskFileItemSerializeTest extends TestCase
   {
     // Create the FileItem
     final byte [] testFieldValueBytes = createContentBytes (threshold);
-    final FileItem item = createFileItem (testFieldValueBytes);
+    final IFileItem item = createFileItem (testFieldValueBytes);
 
     // Check state is as expected
     assertTrue ("Initial: in memory", item.isInMemory ());
@@ -110,7 +110,7 @@ public class DiskFileItemSerializeTest extends TestCase
     // Serialize & Deserialize
     try
     {
-      final FileItem newItem = (FileItem) serializeDeserialize (item);
+      final IFileItem newItem = (IFileItem) serializeDeserialize (item);
 
       // Test deserialized content is as expected
       assertTrue ("Check in memory", newItem.isInMemory ());
@@ -135,7 +135,7 @@ public class DiskFileItemSerializeTest extends TestCase
 
     // Create the FileItem
     final byte [] testFieldValueBytes = createContentBytes (threshold + 1);
-    final FileItem item = createFileItem (testFieldValueBytes);
+    final IFileItem item = createFileItem (testFieldValueBytes);
 
     // Check state is as expected
     assertFalse ("Initial: in memory", item.isInMemory ());
@@ -145,7 +145,7 @@ public class DiskFileItemSerializeTest extends TestCase
     // Serialize & Deserialize
     try
     {
-      final FileItem newItem = (FileItem) serializeDeserialize (item);
+      final IFileItem newItem = (IFileItem) serializeDeserialize (item);
 
       // Test deserialized content is as expected
       assertFalse ("Check in memory", newItem.isInMemory ());
@@ -164,7 +164,7 @@ public class DiskFileItemSerializeTest extends TestCase
   /**
    * Compare FileItem's (except the byte[] content)
    */
-  private void compareFileItems (final FileItem origItem, final FileItem newItem)
+  private void compareFileItems (final IFileItem origItem, final IFileItem newItem)
   {
     assertTrue ("Compare: is in Memory", origItem.isInMemory () == newItem.isInMemory ());
     assertTrue ("Compare: is Form Field", origItem.isFormField () == newItem.isFormField ());
@@ -209,12 +209,12 @@ public class DiskFileItemSerializeTest extends TestCase
   /**
    * Create a FileItem with the specfied content bytes.
    */
-  private FileItem createFileItem (final byte [] contentBytes)
+  private IFileItem createFileItem (final byte [] contentBytes)
   {
     final IFileItemFactory factory = new DiskFileItemFactory (threshold);
     final String textFieldName = "textField";
 
-    final FileItem item = factory.createItem (textFieldName, textContentType, true, "My File Name");
+    final IFileItem item = factory.createItem (textFieldName, textContentType, true, "My File Name");
     try
     {
       final OutputStream os = item.getOutputStream ();

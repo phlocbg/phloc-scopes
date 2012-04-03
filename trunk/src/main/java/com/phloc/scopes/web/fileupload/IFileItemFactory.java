@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
 
 /**
  * <p>
- * A factory interface for creating {@link FileItem} instances. Factories can
+ * A factory interface for creating {@link IFileItem} instances. Factories can
  * provide their own custom configuration, over and above that provided by the
  * default file upload implementation.
  * </p>
@@ -44,8 +44,8 @@ public interface IFileItemFactory
   void setRepository (@Nullable File aRepository);
 
   /**
-   * Create a new {@link FileItem} instance from the supplied parameters and any
-   * local factory configuration.
+   * Create a new {@link IFileItem} instance from the supplied parameters and
+   * any local factory configuration.
    * 
    * @param sFieldName
    *        The name of the form field.
@@ -60,7 +60,7 @@ public interface IFileItemFactory
    * @return The newly created file item.
    */
   @Nonnull
-  FileItem createItem (String sFieldName, String sContentType, boolean bIsFormField, String sFileName);
+  IFileItem createItem (String sFieldName, String sContentType, boolean bIsFormField, String sFileName);
 
   @Nonnull
   List <File> getAllTemporaryFiles ();

@@ -62,8 +62,8 @@ public class SizesTest extends FileUploadTestCase
     }
     baos.write ("-----1234--\r\n".getBytes ("US-ASCII"));
 
-    final List <FileItem> fileItems = parseUpload (baos.toByteArray ());
-    final Iterator <FileItem> fileIter = fileItems.iterator ();
+    final List <IFileItem> fileItems = parseUpload (baos.toByteArray ());
+    final Iterator <IFileItem> fileIter = fileItems.iterator ();
     add = 16;
     num = 0;
     for (int i = 0; i < 16384; i += add)
@@ -72,7 +72,7 @@ public class SizesTest extends FileUploadTestCase
       {
         add = 16;
       }
-      final FileItem item = fileIter.next ();
+      final IFileItem item = fileIter.next ();
       assertEquals ("field" + (num++), item.getFieldName ());
       final byte [] bytes = item.get ();
       assertEquals (i, bytes.length);
@@ -101,9 +101,9 @@ public class SizesTest extends FileUploadTestCase
     upload.setFileSizeMax (-1);
     HttpServletRequest req = MockHttpServletRequest.createWithContent (request.getBytes (CCharset.CHARSET_US_ASCII),
                                                                        CONTENT_TYPE);
-    List <FileItem> fileItems = upload.parseRequest (req);
+    List <IFileItem> fileItems = upload.parseRequest (req);
     assertEquals (1, fileItems.size ());
-    FileItem item = fileItems.get (0);
+    IFileItem item = fileItems.get (0);
     assertEquals ("This is the content of the file\n", new String (item.get ()));
 
     upload = new ServletFileUpload (new DiskFileItemFactory (10240));

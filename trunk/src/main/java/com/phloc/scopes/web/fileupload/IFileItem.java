@@ -24,6 +24,8 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 
+import javax.activation.DataSource;
+
 /**
  * <p>
  * This class represents a file or form item that was received within a
@@ -49,9 +51,8 @@ import java.io.UnsupportedEncodingException;
  * @author <a href="mailto:martinc@apache.org">Martin Cooper</a>
  * @version $Id: FileItem.java 963609 2010-07-13 06:56:47Z jochen $
  */
-public interface FileItem extends Serializable
+public interface IFileItem extends Serializable, DataSource
 {
-
   // ------------------------------- Methods from javax.activation.DataSource
 
   /**
@@ -64,6 +65,17 @@ public interface FileItem extends Serializable
    *         if an error occurs.
    */
   InputStream getInputStream () throws IOException;
+
+  /**
+   * Returns an {@link java.io.OutputStream OutputStream} that can be used for
+   * storing the contents of the file.
+   * 
+   * @return An {@link java.io.OutputStream OutputStream} that can be used for
+   *         storing the contensts of the file.
+   * @throws IOException
+   *         if an error occurs.
+   */
+  OutputStream getOutputStream () throws IOException;
 
   /**
    * Returns the content type passed by the browser or <code>null</code> if not
@@ -196,16 +208,4 @@ public interface FileItem extends Serializable
    *        <code>false</code> if it represents an uploaded file.
    */
   void setFormField (boolean state);
-
-  /**
-   * Returns an {@link java.io.OutputStream OutputStream} that can be used for
-   * storing the contents of the file.
-   * 
-   * @return An {@link java.io.OutputStream OutputStream} that can be used for
-   *         storing the contensts of the file.
-   * @throws IOException
-   *         if an error occurs.
-   */
-  OutputStream getOutputStream () throws IOException;
-
 }

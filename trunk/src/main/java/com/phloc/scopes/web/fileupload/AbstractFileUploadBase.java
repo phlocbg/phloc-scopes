@@ -272,9 +272,9 @@ public abstract class AbstractFileUploadBase
    * @throws FileUploadException
    *         if there are problems reading/parsing the request or storing files.
    */
-  public List <FileItem> parseRequest (final IRequestContext ctx) throws FileUploadException
+  public List <IFileItem> parseRequest (final IRequestContext ctx) throws FileUploadException
   {
-    final List <FileItem> items = new ArrayList <FileItem> ();
+    final List <IFileItem> items = new ArrayList <IFileItem> ();
     boolean successful = false;
     try
     {
@@ -289,10 +289,10 @@ public abstract class AbstractFileUploadBase
         final IFileItemStream item = iter.next ();
         // Don't use getName() here to prevent an InvalidFileNameException.
         final String fileName = ((AbstractFileUploadBase.FileItemIteratorImpl.FileItemStreamImpl) item).name;
-        final FileItem fileItem = fac.createItem (item.getFieldName (),
-                                                  item.getContentType (),
-                                                  item.isFormField (),
-                                                  fileName);
+        final IFileItem fileItem = fac.createItem (item.getFieldName (),
+                                                   item.getContentType (),
+                                                   item.isFormField (),
+                                                   fileName);
         items.add (fileItem);
         try
         {
@@ -330,7 +330,7 @@ public abstract class AbstractFileUploadBase
     {
       if (!successful)
       {
-        for (final FileItem fileItem : items)
+        for (final IFileItem fileItem : items)
         {
           try
           {

@@ -63,9 +63,10 @@ import com.phloc.scopes.IScopeDestructionAware;
 import com.phloc.scopes.IScopeRenewalAware;
 import com.phloc.scopes.ScopeUtils;
 import com.phloc.scopes.web.domain.IRequestWebScope;
-import com.phloc.scopes.web.fileupload.FileItem;
 import com.phloc.scopes.web.fileupload.FileUploadException;
+import com.phloc.scopes.web.fileupload.IFileItem;
 import com.phloc.scopes.web.fileupload.IFileItemFactory;
+import com.phloc.scopes.web.fileupload.io.DiskFileItem;
 import com.phloc.scopes.web.fileupload.io.DiskFileItemFactory;
 import com.phloc.scopes.web.fileupload.servlet.ServletFileUpload;
 import com.phloc.scopes.web.mock.MockHttpServletRequest;
@@ -106,10 +107,10 @@ public class RequestWebScope extends AbstractReadonlyAttributeContainer implemen
     }
 
     @Nonnull
-    public FileItem createItem (final String sFieldName,
-                                final String sContentType,
-                                final boolean bIsFormField,
-                                final String sFileName)
+    public DiskFileItem createItem (final String sFieldName,
+                                    final String sContentType,
+                                    final boolean bIsFormField,
+                                    final String sFileName)
     {
       return m_aFactory.createItem (sFieldName, sContentType, bIsFormField, sFileName);
     }
@@ -190,8 +191,8 @@ public class RequestWebScope extends AbstractReadonlyAttributeContainer implemen
 
         // Parse and write to temporary directory
         final IMultiMapListBased <String, String> aFormFields = new MultiHashMapArrayListBased <String, String> ();
-        final IMultiMapListBased <String, FileItem> aFormFiles = new MultiHashMapArrayListBased <String, FileItem> ();
-        for (final FileItem aFileItem : aUpload.parseRequest (m_aHttpRequest))
+        final IMultiMapListBased <String, IFileItem> aFormFiles = new MultiHashMapArrayListBased <String, IFileItem> ();
+        for (final IFileItem aFileItem : aUpload.parseRequest (m_aHttpRequest))
         {
           if (aFileItem.isFormField ())
           {
@@ -221,12 +222,12 @@ public class RequestWebScope extends AbstractReadonlyAttributeContainer implemen
         }
 
         // set all form files
-        for (final Map.Entry <String, List <FileItem>> aEntry : aFormFiles.entrySet ())
+        for (final Map.Entry <String, List <IFileItem>> aEntry : aFormFiles.entrySet ())
         {
           // Convert list of String to value (String or array of String)
-          final List <FileItem> aValues = aEntry.getValue ();
+          final List <IFileItem> aValues = aEntry.getValue ();
           final Object aValue = aValues.size () == 1 ? ContainerHelper.getFirstElement (aValues)
-                                                    : ArrayHelper.newArray (aValues, FileItem.class);
+                                                    : ArrayHelper.newArray (aValues, IFileItem.class);
           setAttribute (aEntry.getKey (), aValue);
         }
 
