@@ -68,6 +68,7 @@ import com.phloc.scopes.web.fileupload.util.Streams;
  * @since FileUpload 1.1
  * @version $Id: DiskFileItem.java 963609 2010-07-13 06:56:47Z jochen $
  */
+@edu.umd.cs.findbugs.annotations.SuppressWarnings ("SE_NO_SERIALVERSIONID")
 public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
 {
   /**
