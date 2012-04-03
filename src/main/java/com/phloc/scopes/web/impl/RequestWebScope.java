@@ -32,6 +32,7 @@ import org.slf4j.LoggerFactory;
 
 import com.phloc.commons.CGlobal;
 import com.phloc.commons.annotations.OverrideOnDemand;
+import com.phloc.commons.annotations.ReturnsMutableCopy;
 import com.phloc.commons.annotations.UsedViaReflection;
 import com.phloc.commons.charset.CCharset;
 import com.phloc.commons.collections.ArrayHelper;
@@ -39,6 +40,7 @@ import com.phloc.commons.collections.ContainerHelper;
 import com.phloc.commons.collections.multimap.IMultiMapListBased;
 import com.phloc.commons.collections.multimap.MultiHashMapArrayListBased;
 import com.phloc.commons.io.streams.StreamUtils;
+import com.phloc.scopes.web.fileupload.FileUploadException;
 import com.phloc.scopes.web.fileupload.IFileItem;
 import com.phloc.scopes.web.fileupload.IFileItemFactory;
 import com.phloc.scopes.web.fileupload.io.DiskFileItem;
@@ -96,6 +98,7 @@ public class RequestWebScope extends RequestWebScopeNoFileItems
     }
 
     @Nonnull
+    @ReturnsMutableCopy
     public List <File> getAllTemporaryFiles ()
     {
       return m_aFactory.getAllTemporaryFiles ();
@@ -197,10 +200,14 @@ public class RequestWebScope extends RequestWebScopeNoFileItems
         // parameters
         bAddedFileUploadItems = true;
       }
-      catch (final Exception ex)
+      catch (final FileUploadException ex)
       {
         if (!StreamUtils.isKnownEOFException (ex.getCause ()))
           s_aLogger.error ("Error parsing multipart request content", ex);
+      }
+      catch (final RuntimeException ex)
+      {
+        s_aLogger.error ("Error parsing multipart request content", ex);
       }
     }
     return bAddedFileUploadItems;
