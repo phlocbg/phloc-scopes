@@ -149,7 +149,7 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
    * @return The non-<code>null</code> key.
    */
   @Nonnull
-  private static String _getSingletonScopeKey (@Nonnull final Class <?> aClass)
+  public static String getSingletonScopeKey (@Nonnull final Class <? extends AbstractSingleton> aClass)
   {
     // Preallocate some bytes
     return new StringBuilder (255).append ("singleton.").append (aClass.getName ()).toString ();
@@ -175,7 +175,7 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
    */
   protected final void registerSingletonAfterRead (final boolean bAllowOverwrite)
   {
-    final String sSingletonScopeKey = _getSingletonScopeKey (getClass ());
+    final String sSingletonScopeKey = getSingletonScopeKey (getClass ());
     final IScope aScope = getScope ();
     aScope.runAtomic (new INonThrowingRunnableWithParameter <IScope> ()
     {
@@ -229,7 +229,7 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
   protected static <T extends AbstractSingleton> T getSingleton (@Nonnull final IScope aScope,
                                                                  @Nonnull final Class <T> aClass)
   {
-    final String sSingletonScopeKey = _getSingletonScopeKey (aClass);
+    final String sSingletonScopeKey = getSingletonScopeKey (aClass);
 
     // check if contained in passed scope
     T aInstance = aClass.cast (aScope.getCastedAttribute (sSingletonScopeKey));
