@@ -42,7 +42,7 @@ public abstract class FileUploadTestCase extends TestCase
 
   protected List <FileItem> parseUpload (final byte [] bytes, final String contentType) throws FileUploadException
   {
-    final ServletFileUpload upload = new ServletFileUpload (new DiskFileItemFactory ());
+    final ServletFileUpload upload = new ServletFileUpload (new DiskFileItemFactory (10240));
     final HttpServletRequest request = MockHttpServletRequest.createWithContent (bytes, contentType);
 
     final List <FileItem> fileItems = upload.parseRequest (request);

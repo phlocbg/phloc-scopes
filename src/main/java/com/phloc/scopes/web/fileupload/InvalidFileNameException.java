@@ -26,7 +26,7 @@ package com.phloc.scopes.web.fileupload;
  * library, it might create a file named "foo.exe", as the NUL character is the
  * string terminator in C.
  */
-public class InvalidFileNameException extends RuntimeException
+public final class InvalidFileNameException extends RuntimeException
 {
   private static final long serialVersionUID = 7922042602454350470L;
   private final String name;
@@ -39,7 +39,7 @@ public class InvalidFileNameException extends RuntimeException
    * @param pMessage
    *        A human readable error message.
    */
-  public InvalidFileNameException (String pName, String pMessage)
+  public InvalidFileNameException (final String pName, final String pMessage)
   {
     super (pMessage);
     name = pName;

@@ -45,12 +45,12 @@ final class HttpServletRequestFactory
     byte [] requestData = null;
     requestData = sbRequestData.toString ().getBytes ();
 
-    return MockHttpServletRequest.createWithContent (requestData, FileUploadBase.MULTIPART_FORM_DATA);
+    return MockHttpServletRequest.createWithContent (requestData, AbstractFileUploadBase.MULTIPART_FORM_DATA);
   }
 
   public static HttpServletRequest createInvalidHttpServletRequest ()
   {
     final byte [] requestData = "foobar".getBytes ();
-    return MockHttpServletRequest.createWithContent (requestData, FileUploadBase.MULTIPART_FORM_DATA);
+    return MockHttpServletRequest.createWithContent (requestData, AbstractFileUploadBase.MULTIPART_FORM_DATA);
   }
 }

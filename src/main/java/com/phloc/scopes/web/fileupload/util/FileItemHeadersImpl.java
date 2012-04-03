@@ -27,15 +27,15 @@ import java.util.Map;
 
 
 import com.phloc.commons.collections.ContainerHelper;
-import com.phloc.scopes.web.fileupload.FileItemHeaders;
+import com.phloc.scopes.web.fileupload.IFileItemHeaders;
 
 /**
- * Default implementation of the {@link FileItemHeaders} interface.
+ * Default implementation of the {@link IFileItemHeaders} interface.
  * 
  * @author Michael C. Macaluso
  * @since 1.3
  */
-public class FileItemHeadersImpl implements FileItemHeaders, Serializable
+public class FileItemHeadersImpl implements IFileItemHeaders, Serializable
 {
   private static final long serialVersionUID = -4455695752627032559L;
 

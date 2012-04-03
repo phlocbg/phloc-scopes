@@ -88,17 +88,17 @@ import com.phloc.scopes.web.fileupload.util.Streams;
  * @author Sean C. Sullivan
  * @version $Id: MultipartStream.java 735374 2009-01-18 02:18:45Z jochen $
  */
-public class MultipartStream
+public final class MultipartStream
 {
   /**
-   * Internal class, which is used to invoke the {@link ProgressListener}.
+   * Internal class, which is used to invoke the {@link IProgressListener}.
    */
-  public static class ProgressNotifier
+  public static final class ProgressNotifier
   {
     /**
      * The listener to invoke.
      */
-    private final ProgressListener listener;
+    private final IProgressListener listener;
     /**
      * Number of expected bytes, if known, or -1.
      */
@@ -120,7 +120,7 @@ public class MultipartStream
      * @param pContentLength
      *        The expected content length.
      */
-    ProgressNotifier (final ProgressListener pListener, final long pContentLength)
+    ProgressNotifier (final IProgressListener pListener, final long pContentLength)
     {
       listener = pListener;
       contentLength = pContentLength;
@@ -709,7 +709,7 @@ public class MultipartStream
    * Thrown to indicate that the input stream fails to follow the required
    * syntax.
    */
-  public static class MalformedStreamException extends IOException
+  public static final class MalformedStreamException extends IOException
   {
     /**
      * Constructs a <code>MalformedStreamException</code> with no detail
@@ -736,7 +736,7 @@ public class MultipartStream
   /**
    * Thrown upon attempt of setting an invalid boundary token.
    */
-  public static class IllegalBoundaryException extends IOException
+  public static final class IllegalBoundaryException extends IOException
   {
     /**
      * Constructs an <code>IllegalBoundaryException</code> with no detail
@@ -763,7 +763,7 @@ public class MultipartStream
   /**
    * An {@link InputStream} for reading an items contents.
    */
-  public class ItemInputStream extends InputStream implements Closeable
+  public final class ItemInputStream extends InputStream implements Closeable
   {
     /**
      * The number of bytes, which have been read so far.
@@ -856,7 +856,7 @@ public class MultipartStream
     {
       if (closed)
       {
-        throw new FileItemStream.ItemSkippedException ();
+        throw new IFileItemStream.ItemSkippedException ();
       }
       if (available () == 0)
       {
@@ -892,7 +892,7 @@ public class MultipartStream
     {
       if (closed)
       {
-        throw new FileItemStream.ItemSkippedException ();
+        throw new IFileItemStream.ItemSkippedException ();
       }
       if (len == 0)
       {
@@ -978,7 +978,7 @@ public class MultipartStream
     {
       if (closed)
       {
-        throw new FileItemStream.ItemSkippedException ();
+        throw new IFileItemStream.ItemSkippedException ();
       }
       int av = available ();
       if (av == 0)

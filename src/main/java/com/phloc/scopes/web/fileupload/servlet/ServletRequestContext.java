@@ -22,8 +22,7 @@ import java.io.InputStream;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.phloc.scopes.web.fileupload.RequestContext;
-
+import com.phloc.scopes.web.fileupload.IRequestContext;
 
 /**
  * <p>
@@ -35,7 +34,7 @@ import com.phloc.scopes.web.fileupload.RequestContext;
  * @since FileUpload 1.1
  * @version $Id: ServletRequestContext.java 479262 2006-11-26 03:09:24Z niallp $
  */
-public class ServletRequestContext implements RequestContext
+public final class ServletRequestContext implements IRequestContext
 {
 
   // ----------------------------------------------------- Instance Variables

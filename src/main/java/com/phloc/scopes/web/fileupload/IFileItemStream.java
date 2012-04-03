@@ -28,23 +28,23 @@ import java.io.InputStream;
  * </p>
  * <p>
  * Instances of this class are created by accessing the iterator, returned by
- * {@link FileUploadBase#getItemIterator(RequestContext)}.
+ * {@link AbstractFileUploadBase#getItemIterator(IRequestContext)}.
  * </p>
  * <p>
  * <em>Note</em>: There is an interaction between the iterator and its
- * associated instances of {@link FileItemStream}: By invoking
+ * associated instances of {@link IFileItemStream}: By invoking
  * {@link java.util.Iterator#hasNext()} on the iterator, you discard all data,
  * which hasn't been read so far from the previous data.
  * </p>
  */
-public interface FileItemStream extends FileItemHeadersSupport
+public interface IFileItemStream extends IFileItemHeadersSupport
 {
   /**
    * This exception is thrown, if an attempt is made to read data from the
    * {@link InputStream}, which has been returned by
-   * {@link FileItemStream#openStream()}, after
+   * {@link IFileItemStream#openStream()}, after
    * {@link java.util.Iterator#hasNext()} has been invoked on the iterator,
-   * which created the {@link FileItemStream}.
+   * which created the {@link IFileItemStream}.
    */
   public static class ItemSkippedException extends IOException
   {

@@ -211,7 +211,7 @@ public class DiskFileItemSerializeTest extends TestCase
    */
   private FileItem createFileItem (final byte [] contentBytes)
   {
-    final FileItemFactory factory = new DiskFileItemFactory (threshold, null);
+    final IFileItemFactory factory = new DiskFileItemFactory (threshold);
     final String textFieldName = "textField";
 
     final FileItem item = factory.createItem (textFieldName, textContentType, true, "My File Name");

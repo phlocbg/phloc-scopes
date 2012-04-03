@@ -18,14 +18,29 @@
 package com.phloc.scopes.web.fileupload.io;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+import javax.annotation.Nonnegative;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.annotation.concurrent.ThreadSafe;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.phloc.commons.annotations.ReturnsMutableCopy;
 import com.phloc.commons.annotations.VisibleForTesting;
-import com.phloc.scopes.web.fileupload.FileItem;
-import com.phloc.scopes.web.fileupload.FileItemFactory;
+import com.phloc.commons.collections.ContainerHelper;
+import com.phloc.commons.io.file.FileIOError;
+import com.phloc.commons.io.file.FileOperations;
+import com.phloc.scopes.web.fileupload.IFileItemFactory;
 
 /**
  * <p>
- * The default {@link com.phloc.scopes.web.fileupload.FileItemFactory}
+ * The default {@link com.phloc.scopes.web.fileupload.IFileItemFactory}
  * implementation. This implementation creates
  * {@link com.phloc.scopes.web.fileupload.FileItem} instances which keep their
  * content either in memory, for smaller items, or in a temporary file on disk,
@@ -43,57 +58,35 @@ import com.phloc.scopes.web.fileupload.FileItemFactory;
  * </p>
  * <p>
  * Temporary files, which are created for file items, should be deleted later
- * on. The best way to do this is using a {@link FileCleaningTracker}, which you
- * can set on the {@link DiskFileItemFactory}. However, if you do use such a
- * tracker, then you must consider the following: Temporary files are
- * automatically deleted as soon as they are no longer needed. (More precisely,
- * when the corresponding instance of {@link java.io.File} is garbage
- * collected.) This is done by the so-called reaper thread, which is started
- * automatically when the class
- * {@link com.phloc.scopes.web.fileupload.io.FileCleaningTracker} is loaded. It
- * might make sense to terminate that thread, for example, if your web
- * application ends. See the section on "Resource cleanup" in the users guide of
- * commons-fileupload.
+ * on.
  * </p>
  * 
  * @author <a href="mailto:martinc@apache.org">Martin Cooper</a>
- * @since FileUpload 1.1
- * @version $Id: DiskFileItemFactory.java 735374 2009-01-18 02:18:45Z jochen $
+ * @author philip
  */
-public class DiskFileItemFactory implements FileItemFactory
+@ThreadSafe
+public class DiskFileItemFactory implements IFileItemFactory
 {
+  private static final Logger s_aLogger = LoggerFactory.getLogger (DiskFileItemFactory.class);
+
+  private final ReadWriteLock m_aRWLock = new ReentrantReadWriteLock ();
+
   /**
    * The directory in which uploaded files will be stored, if stored on disk.
    */
-  private File _repository;
+  private final File m_aRepository;
 
   /**
    * The threshold above which uploads will be stored on disk.
    */
-  private int _sizeThreshold;
+  private final int m_nSizeThreshold;
 
-  /**
-   * <p>
-   * The instance of {@link FileCleaningTracker}, which is responsible for
-   * deleting temporary files.
-   * </p>
-   * <p>
-   * May be null, if tracking files is not required.
-   * </p>
-   */
-  private final FileCleaningTracker fileCleaningTracker;
-
-  // ----------------------------------------------------------- Constructors
+  private final List <File> m_aTempFiles = new ArrayList <File> ();
 
   @VisibleForTesting
-  public DiskFileItemFactory ()
+  public DiskFileItemFactory (@Nonnegative final int sizeThreshold)
   {
-    this (10240, null);
-  }
-
-  public DiskFileItemFactory (final int sizeThreshold, final File repository)
-  {
-    this (sizeThreshold, repository, null);
+    this (sizeThreshold, null);
   }
 
   /**
@@ -106,98 +99,89 @@ public class DiskFileItemFactory implements FileItemFactory
    *        The data repository, which is the directory in which files will be
    *        created, should the item size exceed the threshold.
    */
-  public DiskFileItemFactory (final int sizeThreshold, final File repository, final FileCleaningTracker aTracker)
+  public DiskFileItemFactory (@Nonnegative final int sizeThreshold, @Nullable final File repository)
   {
-    this._sizeThreshold = sizeThreshold;
-    this._repository = repository;
-    fileCleaningTracker = aTracker;
+    m_nSizeThreshold = sizeThreshold;
+    m_aRepository = repository;
   }
-
-  // ------------------------------------------------------------- Properties
-
-  /**
-   * Returns the directory used to temporarily store files that are larger than
-   * the configured size threshold.
-   * 
-   * @return The directory in which temporary files will be located.
-   * @see #setRepository(java.io.File)
-   */
-  public File getRepository ()
-  {
-    return _repository;
-  }
-
-  /**
-   * Sets the directory used to temporarily store files that are larger than the
-   * configured size threshold.
-   * 
-   * @param repository
-   *        The directory in which temporary files will be located.
-   * @see #getRepository()
-   */
-  public void setRepository (final File repository)
-  {
-    this._repository = repository;
-  }
-
-  /**
-   * Returns the size threshold beyond which files are written directly to disk.
-   * The default value is 10240 bytes.
-   * 
-   * @return The size threshold, in bytes.
-   * @see #setSizeThreshold(int)
-   */
-  public int getSizeThreshold ()
-  {
-    return _sizeThreshold;
-  }
-
-  /**
-   * Sets the size threshold beyond which files are written directly to disk.
-   * 
-   * @param sizeThreshold
-   *        The size threshold, in bytes.
-   * @see #getSizeThreshold()
-   */
-  public void setSizeThreshold (final int sizeThreshold)
-  {
-    this._sizeThreshold = sizeThreshold;
-  }
-
-  // --------------------------------------------------------- Public Methods
 
   /**
    * Create a new {@link com.phloc.scopes.web.fileupload.io.DiskFileItem}
    * instance from the supplied parameters and the local factory configuration.
    * 
-   * @param fieldName
+   * @param sFieldName
    *        The name of the form field.
-   * @param contentType
+   * @param sContentType
    *        The content type of the form field.
-   * @param isFormField
+   * @param bIsFormField
    *        <code>true</code> if this is a plain form field; <code>false</code>
    *        otherwise.
-   * @param fileName
+   * @param sFileName
    *        The name of the uploaded file, if any, as supplied by the browser or
    *        other client.
    * @return The newly created file item.
    */
-  public FileItem createItem (final String fieldName,
-                              final String contentType,
-                              final boolean isFormField,
-                              final String fileName)
+  @Nonnull
+  public DiskFileItem createItem (final String sFieldName,
+                                  final String sContentType,
+                                  final boolean bIsFormField,
+                                  final String sFileName)
   {
-    final DiskFileItem result = new DiskFileItem (fieldName,
-                                                  contentType,
-                                                  isFormField,
-                                                  fileName,
-                                                  _sizeThreshold,
-                                                  _repository);
-    final FileCleaningTracker tracker = fileCleaningTracker;
-    if (tracker != null)
+    final DiskFileItem result = new DiskFileItem (sFieldName,
+                                                  sContentType,
+                                                  bIsFormField,
+                                                  sFileName,
+                                                  m_nSizeThreshold,
+                                                  m_aRepository);
+    m_aRWLock.writeLock ().lock ();
+    try
     {
-      tracker.track (result.getTempFile (), this);
+      // Add the temp file - may be non-existing if the size is below the
+      // threshold
+      m_aTempFiles.add (result.getTempFile ());
+    }
+    finally
+    {
+      m_aRWLock.writeLock ().unlock ();
     }
     return result;
+  }
+
+  @Nonnull
+  @ReturnsMutableCopy
+  public List <File> getAllTemporaryFiles ()
+  {
+    m_aRWLock.readLock ().lock ();
+    try
+    {
+      return ContainerHelper.newList (m_aTempFiles);
+    }
+    finally
+    {
+      m_aRWLock.readLock ().unlock ();
+    }
+  }
+
+  public void deleteAllTemporaryFiles ()
+  {
+    List <File> aTempFiles;
+    m_aRWLock.writeLock ().lock ();
+    try
+    {
+      aTempFiles = ContainerHelper.newList (m_aTempFiles);
+      m_aTempFiles.clear ();
+    }
+    finally
+    {
+      m_aRWLock.writeLock ().unlock ();
+    }
+
+    for (final File aFile : aTempFiles)
+      if (aFile.exists ())
+      {
+        final FileIOError aIOError = FileOperations.deleteFile (aFile);
+        if (aIOError.isFailure ())
+          s_aLogger.error ("Failed to delete temporary file " + aFile + " with error " + aIOError.toString ());
+      }
   }
 }

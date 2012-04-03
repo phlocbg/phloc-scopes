@@ -17,13 +17,13 @@
  */
 package com.phloc.scopes.web.fileupload.io;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
 import com.phloc.commons.io.file.FileUtils;
+import com.phloc.commons.io.streams.NonBlockingByteArrayOutputStream;
 import com.phloc.commons.io.streams.StreamUtils;
 
 /**
@@ -41,16 +41,13 @@ import com.phloc.commons.io.streams.StreamUtils;
  * @version $Id: DeferredFileOutputStream.java 736890 2009-01-23 02:02:22Z
  *          niallp $
  */
-public class DeferredFileOutputStream extends ThresholdingOutputStream
+public final class DeferredFileOutputStream extends ThresholdingOutputStream
 {
-
-  // ----------------------------------------------------------- Data members
-
   /**
    * The output stream to which data will be written prior to the theshold being
    * reached.
    */
-  private ByteArrayOutputStream memoryOutputStream;
+  private NonBlockingByteArrayOutputStream memoryOutputStream;
 
   /**
    * The output stream to which data will be written at any given time. This
@@ -85,7 +82,7 @@ public class DeferredFileOutputStream extends ThresholdingOutputStream
     super (threshold);
     this.m_aOutputFile = outputFile;
 
-    memoryOutputStream = new ByteArrayOutputStream ();
+    memoryOutputStream = new NonBlockingByteArrayOutputStream ();
     currentOutputStream = memoryOutputStream;
   }
 

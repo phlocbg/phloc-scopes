@@ -29,7 +29,7 @@ import com.phloc.scopes.web.mock.MockHttpServletRequest;
  */
 public class ProgressListenerTest extends FileUploadTestCase
 {
-  private class ProgressListenerImpl implements ProgressListener
+  private class ProgressListenerImpl implements IProgressListener
   {
     private final long expectedContentLength;
     private final int expectedItems;
@@ -107,10 +107,10 @@ public class ProgressListenerTest extends FileUploadTestCase
     final ServletFileUpload upload = new ServletFileUpload (null);
     final ProgressListenerImpl listener = new ProgressListenerImpl (pContentLength, NUM_ITEMS);
     upload.setProgressListener (listener);
-    final FileItemIterator iter = upload.getItemIterator (request);
+    final IFileItemIterator iter = upload.getItemIterator (request);
     for (int i = 0; i < NUM_ITEMS; i++)
     {
-      final FileItemStream stream = iter.next ();
+      final IFileItemStream stream = iter.next ();
       final InputStream istream = stream.openStream ();
       for (int j = 0; j < 16384 + i; j++)
       {

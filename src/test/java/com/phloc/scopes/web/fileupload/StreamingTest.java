@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import junit.framework.TestCase;
 
-import com.phloc.scopes.web.fileupload.FileUploadBase.IOFileUploadException;
+import com.phloc.scopes.web.fileupload.AbstractFileUploadBase.IOFileUploadException;
 import com.phloc.scopes.web.fileupload.io.DiskFileItemFactory;
 import com.phloc.scopes.web.fileupload.servlet.ServletFileUpload;
 import com.phloc.scopes.web.fileupload.servlet.ServletRequestContext;
@@ -170,11 +170,11 @@ public class StreamingTest extends TestCase
     assertTrue (!fileIter.hasNext ());
   }
 
-  private FileItemIterator parseUploadToIterator (final byte [] aContent) throws FileUploadException, IOException
+  private IFileItemIterator parseUploadToIterator (final byte [] aContent) throws FileUploadException, IOException
   {
     final String contentType = "multipart/form-data; boundary=---1234";
 
-    final FileUploadBase upload = new ServletFileUpload (new DiskFileItemFactory ());
+    final AbstractFileUploadBase upload = new ServletFileUpload (new DiskFileItemFactory (10240));
     final HttpServletRequest request = MockHttpServletRequest.createWithContent (aContent, contentType);
 
     return upload.getItemIterator (new ServletRequestContext (request));
@@ -189,7 +189,7 @@ public class StreamingTest extends TestCase
   {
     final String contentType = "multipart/form-data; boundary=---1234";
 
-    final FileUploadBase upload = new ServletFileUpload (new DiskFileItemFactory ());
+    final AbstractFileUploadBase upload = new ServletFileUpload (new DiskFileItemFactory (10240));
     final MockHttpServletRequest request = new MockHttpServletRequest ()
     {
       @Override
@@ -293,8 +293,8 @@ public class StreamingTest extends TestCase
                            "-----1234--\r\n";
     final byte [] reqBytes = request.getBytes ("US-ASCII");
 
-    final FileItemIterator fileItemIter = parseUploadToIterator (reqBytes);
-    final FileItemStream fileItemStream = fileItemIter.next ();
+    final IFileItemIterator fileItemIter = parseUploadToIterator (reqBytes);
+    final IFileItemStream fileItemStream = fileItemIter.next ();
     try
     {
       fileItemStream.getName ();
