@@ -69,7 +69,7 @@ public class DiskFileItemFactory implements IFileItemFactory
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (DiskFileItemFactory.class);
 
-  private final ReadWriteLock m_aRWLock = new ReentrantReadWriteLock ();
+  protected final ReadWriteLock m_aRWLock = new ReentrantReadWriteLock ();
 
   /**
    * The directory in which uploaded files will be stored, if stored on disk.

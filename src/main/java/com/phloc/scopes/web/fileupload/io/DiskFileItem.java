@@ -31,7 +31,9 @@ import java.io.UnsupportedEncodingException;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.phloc.commons.annotations.ReturnsMutableObject;
 import com.phloc.commons.charset.CCharset;
@@ -40,8 +42,8 @@ import com.phloc.commons.io.file.FileOperations;
 import com.phloc.commons.io.file.SimpleFileIO;
 import com.phloc.commons.io.streams.NonBlockingByteArrayInputStream;
 import com.phloc.commons.io.streams.StreamUtils;
-import com.phloc.scopes.web.fileupload.FileUploadException;
 import com.phloc.scopes.web.fileupload.FileItem;
+import com.phloc.scopes.web.fileupload.FileUploadException;
 import com.phloc.scopes.web.fileupload.IFileItemHeaders;
 import com.phloc.scopes.web.fileupload.IFileItemHeadersSupport;
 import com.phloc.scopes.web.fileupload.InvalidFileNameException;
@@ -172,11 +174,11 @@ public class DiskFileItem implements FileItem, IFileItemHeadersSupport
    *        created, should the item size exceed the threshold.
    */
   public DiskFileItem (final String fieldName,
-                       final String contentType,
+                       @Nullable final String contentType,
                        final boolean isFormField,
-                       final String fileName,
+                       @Nullable final String fileName,
                        final int sizeThreshold,
-                       final File repository)
+                       @Nullable final File repository)
   {
     this._fieldName = fieldName;
     this._contentType = contentType;
@@ -197,17 +199,15 @@ public class DiskFileItem implements FileItem, IFileItemHeadersSupport
    * @throws IOException
    *         if an error occurs.
    */
+  @Nonnull
   public InputStream getInputStream () throws IOException
   {
     if (!isInMemory ())
-    {
       return new FileInputStream (dfos.getFile ());
-    }
 
     if (cachedContent == null)
-    {
       cachedContent = dfos.getData ();
-    }
+
     return new NonBlockingByteArrayInputStream (cachedContent);
   }
 
@@ -218,6 +218,7 @@ public class DiskFileItem implements FileItem, IFileItemHeadersSupport
    * @return The content type passed by the agent or <code>null</code> if not
    *         defined.
    */
+  @Nullable
   public String getContentType ()
   {
     return _contentType;
@@ -230,6 +231,7 @@ public class DiskFileItem implements FileItem, IFileItemHeadersSupport
    * @return The content charset passed by the agent or <code>null</code> if not
    *         defined.
    */
+  @Nullable
   public String getCharSet ()
   {
     final ParameterParser parser = new ParameterParser ();
@@ -248,12 +250,11 @@ public class DiskFileItem implements FileItem, IFileItemHeadersSupport
    *         of a security attack. If you intend to use the file name anyways,
    *         catch the exception and use InvalidFileNameException#getName().
    */
+  @Nullable
   public String getName ()
   {
     return Streams.checkFileName (_fileName);
   }
-
-  // ------------------------------------------------------- FileItem methods
 
   /**
    * Provides a hint as to whether or not the file contents will be read from
@@ -272,6 +273,7 @@ public class DiskFileItem implements FileItem, IFileItemHeadersSupport
    * 
    * @return The size of the file, in bytes.
    */
+  @Nonnegative
   public long getSize ()
   {
     if (size >= 0)
@@ -292,6 +294,7 @@ public class DiskFileItem implements FileItem, IFileItemHeadersSupport
    */
   @ReturnsMutableObject (reason = "Speed")
   @edu.umd.cs.findbugs.annotations.SuppressWarnings ("EI_EXPOSE_REP")
+  @Nullable
   public byte [] get ()
   {
     if (isInMemory ())
@@ -314,6 +317,7 @@ public class DiskFileItem implements FileItem, IFileItemHeadersSupport
    * @throws UnsupportedEncodingException
    *         if the requested character encoding is not available.
    */
+  @Nonnull
   public String getString (final String charset) throws UnsupportedEncodingException
   {
     return new String (get (), charset);
@@ -325,8 +329,8 @@ public class DiskFileItem implements FileItem, IFileItemHeadersSupport
    * file.
    * 
    * @return The contents of the file, as a string.
-   * @todo Consider making this method throw UnsupportedEncodingException.
    */
+  @Nonnull
   public String getString ()
   {
     final byte [] rawdata = get ();
@@ -478,7 +482,7 @@ public class DiskFileItem implements FileItem, IFileItemHeadersSupport
    *         if an error occurs.
    */
   @Nonnull
-  public OutputStream getOutputStream () throws IOException
+  public DeferredFileOutputStream getOutputStream () throws IOException
   {
     if (dfos == null)
     {
@@ -502,6 +506,7 @@ public class DiskFileItem implements FileItem, IFileItemHeadersSupport
    * @return The data file, or <code>null</code> if the data is stored in
    *         memory.
    */
+  @Nullable
   public File getStoreLocation ()
   {
     return dfos == null ? null : dfos.getFile ();
@@ -529,7 +534,8 @@ public class DiskFileItem implements FileItem, IFileItemHeadersSupport
    * 
    * @return The {@link java.io.File File} to be used for temporary storage.
    */
-  File getTempFile ()
+  @Nonnull
+  protected File getTempFile ()
   {
     if (tempFile == null)
     {

@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-
+import javax.annotation.Nullable;
 
 import com.phloc.commons.io.streams.StreamUtils;
 import com.phloc.scopes.web.fileupload.InvalidFileNameException;
@@ -70,7 +70,7 @@ public final class Streams
    */
   public static long copy (final InputStream pInputStream, final OutputStream pOutputStream, final boolean pClose) throws IOException
   {
-    byte [] pBuffer = new byte [DEFAULT_BUFFER_SIZE];
+    final byte [] pBuffer = new byte [DEFAULT_BUFFER_SIZE];
     OutputStream out = pOutputStream;
     InputStream in = pInputStream;
     try
@@ -126,7 +126,8 @@ public final class Streams
    * @throws InvalidFileNameException
    *         The file name was found to be invalid.
    */
-  public static String checkFileName (final String pFileName)
+  @Nullable
+  public static String checkFileName (@Nullable final String pFileName)
   {
     if (pFileName != null && pFileName.indexOf ('\u0000') != -1)
     {
