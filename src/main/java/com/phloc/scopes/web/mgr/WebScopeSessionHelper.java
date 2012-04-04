@@ -92,6 +92,7 @@ public final class WebScopeSessionHelper
 
   public final static void renewSessionScope ()
   {
+    // Get the old session scope
     final ISessionWebScope aOldSessionScope = WebScopeManager.getSessionScope (false);
     if (aOldSessionScope != null)
     {
