@@ -29,6 +29,7 @@ import java.util.Set;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
@@ -622,6 +623,24 @@ public class RequestWebScopeNoMultipart extends AbstractReadonlyAttributeContain
       final Object aValue = aEntry.getValue ();
       if (aValue instanceof IScopeRenewalAware)
         ret.put (aEntry.getKey (), (IScopeRenewalAware) aValue);
+    }
+    return ret;
+  }
+
+  public boolean isEmpty ()
+  {
+    return !getAttributeNames ().hasMoreElements ();
+  }
+
+  @Nonnegative
+  public int size ()
+  {
+    int ret = 0;
+    final Enumeration <String> aEnum = getAttributeNames ();
+    while (aEnum.hasMoreElements ())
+    {
+      aEnum.nextElement ();
+      ++ret;
     }
     return ret;
   }
