@@ -54,7 +54,7 @@ import com.phloc.scopes.web.singleton.GlobalWebSingleton;
  * 
  * @author philip
  */
-public class RequestWebScope extends RequestWebScopeNoFileItems
+public class RequestWebScope extends RequestWebScopeNoMultipart
 {
   /**
    * Wrapper around a {@link DiskFileItemFactory}, that is correctly cleaning

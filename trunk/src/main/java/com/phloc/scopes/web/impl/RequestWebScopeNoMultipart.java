@@ -38,6 +38,7 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.phloc.commons.annotations.Nonempty;
 import com.phloc.commons.annotations.OverrideOnDemand;
 import com.phloc.commons.annotations.ReturnsMutableCopy;
 import com.phloc.commons.callback.INonThrowingRunnableWithParameter;
@@ -60,20 +61,19 @@ import com.phloc.scopes.web.domain.IRequestWebScope;
  * 
  * @author philip
  */
-public class RequestWebScopeNoFileItems extends AbstractReadonlyAttributeContainer implements IRequestWebScope
+public class RequestWebScopeNoMultipart extends AbstractReadonlyAttributeContainer implements IRequestWebScope
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (RequestWebScopeNoFileItems.class);
-  private static final String REQUEST_SCOPED_INITED = "$request.scope.inited";
+  private static final Logger s_aLogger = LoggerFactory.getLogger (RequestWebScopeNoMultipart.class);
+  private static final String REQUEST_ATTR_SCOPE_INITED = "$request.scope.inited";
 
   protected final ReadWriteLock m_aRWLock = new ReentrantReadWriteLock ();
   private final String m_sScopeID;
   protected final HttpServletRequest m_aHttpRequest;
   protected final HttpServletResponse m_aHttpResponse;
-
   private boolean m_bInDestruction = false;
   private boolean m_bDestroyed = false;
 
-  public RequestWebScopeNoFileItems (@Nonnull final HttpServletRequest aHttpRequest,
+  public RequestWebScopeNoMultipart (@Nonnull final HttpServletRequest aHttpRequest,
                                      @Nonnull final HttpServletResponse aHttpResponse)
   {
     if (aHttpRequest == null)
@@ -106,9 +106,9 @@ public class RequestWebScopeNoFileItems extends AbstractReadonlyAttributeContain
     // parameters can only be extracted once!
     // As the parameters are stored directly in the HTTP request, we're not
     // loosing any data here!
-    if (getAttributeObject (REQUEST_SCOPED_INITED) != null)
+    if (getAttributeObject (REQUEST_ATTR_SCOPE_INITED) != null)
       return;
-    setAttribute (REQUEST_SCOPED_INITED, Boolean.TRUE);
+    setAttribute (REQUEST_ATTR_SCOPE_INITED, Boolean.TRUE);
 
     // where some extra items (like file items) handled?
     final boolean bAddedSpecialRequestAttrs = addSpecialRequestAttributes ();
@@ -138,7 +138,9 @@ public class RequestWebScopeNoFileItems extends AbstractReadonlyAttributeContain
       s_aLogger.info ("Initialized request web scope '" + getID () + "'");
   }
 
-  public String getID ()
+  @Nonnull
+  @Nonempty
+  public final String getID ()
   {
     return m_sScopeID;
   }

@@ -22,7 +22,11 @@ import javax.annotation.concurrent.Immutable;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.phloc.commons.annotations.Nonempty;
+import com.phloc.scopes.nonweb.mgr.ScopeManager;
 import com.phloc.scopes.web.domain.IRequestWebScope;
 import com.phloc.scopes.web.mgr.WebScopeManager;
 
@@ -34,6 +38,8 @@ import com.phloc.scopes.web.mgr.WebScopeManager;
 @Immutable
 public final class RequestScopeInitializer
 {
+  private static final Logger s_aLogger = LoggerFactory.getLogger (RequestScopeInitializer.class);
+
   private final IRequestWebScope m_aRequestScope;
   private final boolean m_bCreatedIt;
 
@@ -84,7 +90,20 @@ public final class RequestScopeInitializer
     if (WebScopeManager.isRequestScopePresent ())
     {
       // A scope is already present - e.g. from a scope aware filter
-      return new RequestScopeInitializer (WebScopeManager.getRequestScope (), false);
+      final IRequestWebScope aExistingRequestScope = WebScopeManager.getRequestScope ();
+      final String sExistingApplicationID = ScopeManager.getRequestApplicationID (aExistingRequestScope);
+      if (!sApplicationID.equals (sExistingApplicationID))
+      {
+        // Application ID mismatch!
+        s_aLogger.warn ("The existing request scope has the application ID '" +
+                        sExistingApplicationID +
+                        "' but now the application ID '" +
+                        sApplicationID +
+                        "' should be used. The old application ID '" +
+                        sExistingApplicationID +
+                        "' is continued to be used!!!");
+      }
+      return new RequestScopeInitializer (aExistingRequestScope, false);
     }
 
     // No scope present

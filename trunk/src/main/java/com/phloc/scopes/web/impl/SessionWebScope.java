@@ -42,6 +42,11 @@ import com.phloc.scopes.ScopeUtils;
 import com.phloc.scopes.web.domain.ISessionApplicationWebScope;
 import com.phloc.scopes.web.domain.ISessionWebScope;
 
+/**
+ * Default implementation of the {@link ISessionWebScope} interface
+ * 
+ * @author philip
+ */
 @ThreadSafe
 public class SessionWebScope extends AbstractMapBasedScope implements ISessionWebScope
 {

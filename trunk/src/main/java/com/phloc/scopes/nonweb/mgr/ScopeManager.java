@@ -18,6 +18,7 @@
 package com.phloc.scopes.nonweb.mgr;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import org.slf4j.Logger;
@@ -130,10 +131,30 @@ public final class ScopeManager
 
   // --- application scope ---
 
+  /**
+   * Get the application ID associated to the passed request scope
+   * 
+   * @param aRequestScope
+   *        The request scope to use. May not be <code>null</code>.
+   * @return <code>null</code> if no application ID is present
+   */
+  @Nullable
+  public static String getRequestApplicationID (@Nonnull final IRequestScope aRequestScope)
+  {
+    return aRequestScope.getAttributeAsString (REQ_APPLICATION_ID);
+  }
+
+  /**
+   * Get the application ID associated to the current request scope
+   * 
+   * @return Never <code>null</code>
+   * @throws IllegalStateException
+   *         if no application ID is present
+   */
   @Nonnull
   public static String getRequestApplicationID ()
   {
-    final String ret = getRequestScope ().getCastedAttribute (REQ_APPLICATION_ID);
+    final String ret = getRequestApplicationID (getRequestScope ());
     if (ret == null)
       throw new IllegalStateException ("Weird state - no appid!");
     return ret;
@@ -145,13 +166,13 @@ public final class ScopeManager
     return getApplicationScope (true);
   }
 
-  @Nonnull
+  @Nullable
   public static IApplicationScope getApplicationScope (final boolean bCreateIfNotExisting)
   {
     return getApplicationScope (getRequestApplicationID (), bCreateIfNotExisting);
   }
 
-  @Nonnull
+  @Nullable
   public static IApplicationScope getApplicationScope (@Nonnull @Nonempty final String sApplicationID,
                                                        final boolean bCreateIfNotExisting)
   {
