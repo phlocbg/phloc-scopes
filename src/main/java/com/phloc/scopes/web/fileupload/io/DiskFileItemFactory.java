@@ -109,6 +109,19 @@ public class DiskFileItemFactory implements IFileItemFactory
     m_aRepository = aRepository;
   }
 
+  private void _addTempFile (@Nonnull final File aFile)
+  {
+    m_aRWLock.writeLock ().lock ();
+    try
+    {
+      m_aTempFiles.add (aFile);
+    }
+    finally
+    {
+      m_aRWLock.writeLock ().unlock ();
+    }
+  }
+
   /**
    * Create a new {@link com.phloc.scopes.web.fileupload.io.DiskFileItem}
    * instance from the supplied parameters and the local factory configuration.
@@ -137,17 +150,9 @@ public class DiskFileItemFactory implements IFileItemFactory
                                                   sFileName,
                                                   m_nSizeThreshold,
                                                   m_aRepository);
-    m_aRWLock.writeLock ().lock ();
-    try
-    {
-      // Add the temp file - may be non-existing if the size is below the
-      // threshold
-      m_aTempFiles.add (result.getTempFile ());
-    }
-    finally
-    {
-      m_aRWLock.writeLock ().unlock ();
-    }
+    // Add the temp file - may be non-existing if the size is below the
+    // threshold
+    _addTempFile (result.getTempFile ());
     return result;
   }
 
@@ -181,11 +186,13 @@ public class DiskFileItemFactory implements IFileItemFactory
     }
 
     for (final File aFile : aTempFiles)
-      if (aFile.exists ())
+    {
+      final FileIOError aIOError = FileOperations.deleteFileIfExisting (aFile);
+      if (aIOError.isFailure ())
       {
-        final FileIOError aIOError = FileOperations.deleteFile (aFile);
-        if (aIOError.isFailure ())
-          s_aLogger.error ("Failed to delete temporary file " + aFile + " with error " + aIOError.toString ());
+        s_aLogger.error ("Failed to delete temporary file " + aFile + " with error " + aIOError.toString ());
+        _addTempFile (aFile);
       }
+    }
   }
 }
