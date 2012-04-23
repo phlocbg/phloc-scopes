@@ -37,7 +37,7 @@ import com.phloc.commons.stats.IStatisticsHandlerTimer;
 import com.phloc.commons.stats.StatisticsManager;
 import com.phloc.commons.string.StringHelper;
 import com.phloc.commons.timing.StopWatch;
-import com.phloc.commons.xml.serialize.AbstractXMLWriterSettings;
+import com.phloc.commons.xml.serialize.XMLWriterSettings;
 import com.phloc.scopes.web.domain.IRequestWebScope;
 
 /**
@@ -130,8 +130,8 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   {
     if (aHttpResponse.getCharacterEncoding () == null)
     {
-      s_aLogger.info ("Setting response charset to " + AbstractXMLWriterSettings.DEFAULT_XML_CHARSET);
-      aHttpResponse.setCharacterEncoding (AbstractXMLWriterSettings.DEFAULT_XML_CHARSET);
+      s_aLogger.info ("Setting response charset to " + XMLWriterSettings.DEFAULT_XML_CHARSET);
+      aHttpResponse.setCharacterEncoding (XMLWriterSettings.DEFAULT_XML_CHARSET);
     }
   }
 
@@ -149,7 +149,9 @@ public abstract class AbstractScopeAwareHttpServlet extends HttpServlet
   protected RequestScopeInitializer beforeRequest (@Nonnull final HttpServletRequest aHttpRequest,
                                                    @Nonnull final HttpServletResponse aHttpResponse)
   {
-    final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.create (m_sApplicationID, aHttpRequest, aHttpResponse);
+    final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.create (m_sApplicationID,
+                                                                                             aHttpRequest,
+                                                                                             aHttpResponse);
     _ensureResponseCharset (aHttpResponse);
     s_aCounterRequests.increment ();
     return aRequestScopeInitializer;

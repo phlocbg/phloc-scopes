@@ -25,7 +25,7 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 import com.phloc.commons.ICloneable;
 import com.phloc.commons.annotations.ReturnsMutableCopy;
-import com.phloc.commons.compare.EqualsUtils;
+import com.phloc.commons.equals.EqualsUtils;
 import com.phloc.commons.hash.HashCodeGenerator;
 import com.phloc.commons.mutable.IReadonlyWrapper;
 import com.phloc.commons.mutable.IWrapper;
@@ -87,7 +87,7 @@ public final class ScopeRenewalAwareWrapper <DATATYPE extends Serializable> impl
   @Nonnull
   public EChange set (@Nullable final DATATYPE aObj)
   {
-    if (EqualsUtils.nullSafeEquals (m_aObj, aObj))
+    if (EqualsUtils.equals (m_aObj, aObj))
       return EChange.UNCHANGED;
     m_aObj = aObj;
     return EChange.CHANGED;
@@ -108,7 +108,7 @@ public final class ScopeRenewalAwareWrapper <DATATYPE extends Serializable> impl
     if (!(o instanceof ScopeRenewalAwareWrapper <?>))
       return false;
     final ScopeRenewalAwareWrapper <?> rhs = (ScopeRenewalAwareWrapper <?>) o;
-    return EqualsUtils.nullSafeEquals (m_aObj, rhs.m_aObj);
+    return EqualsUtils.equals (m_aObj, rhs.m_aObj);
   }
 
   @Override
