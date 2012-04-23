@@ -186,7 +186,7 @@ public final class ScopeManager
    * 
    * @param sApplicationID
    *        The application ID to use. May neither be <code>null</code> nor
-   *        emptry.
+   *        empty.
    * @param aRequestScope
    *        The request scope to use. May not be <code>null</code>.
    */
