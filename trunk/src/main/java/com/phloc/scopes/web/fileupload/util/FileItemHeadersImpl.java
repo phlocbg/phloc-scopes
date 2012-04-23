@@ -24,8 +24,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-
-
 import com.phloc.commons.collections.ContainerHelper;
 import com.phloc.scopes.web.fileupload.IFileItemHeaders;
 

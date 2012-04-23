@@ -45,7 +45,7 @@ import com.phloc.commons.annotations.ReturnsMutableCopy;
 import com.phloc.commons.callback.INonThrowingRunnableWithParameter;
 import com.phloc.commons.collections.ContainerHelper;
 import com.phloc.commons.collections.attrs.AbstractReadonlyAttributeContainer;
-import com.phloc.commons.compare.EqualsUtils;
+import com.phloc.commons.equals.EqualsUtils;
 import com.phloc.commons.idfactory.GlobalIDFactory;
 import com.phloc.commons.lang.GenericReflection;
 import com.phloc.commons.state.EChange;
@@ -325,13 +325,13 @@ public class RequestWebScopeNoMultipart extends AbstractReadonlyAttributeContain
 
   public boolean hasAttributeValue (final String sName, @Nullable final String sDesiredValue)
   {
-    return EqualsUtils.nullSafeEquals (getAttributeAsString (sName), sDesiredValue);
+    return EqualsUtils.equals (getAttributeAsString (sName), sDesiredValue);
   }
 
   public boolean hasAttributeValue (final String sName, final String sDesiredValue, final boolean bDefault)
   {
     final String sValue = getAttributeAsString (sName);
-    return sValue == null ? bDefault : EqualsUtils.nullSafeEquals (sValue, sDesiredValue);
+    return sValue == null ? bDefault : EqualsUtils.equals (sValue, sDesiredValue);
   }
 
   public String getCharacterEncoding ()
@@ -366,7 +366,7 @@ public class RequestWebScopeNoMultipart extends AbstractReadonlyAttributeContain
     try
     {
       final Object aOldValue = m_aHttpRequest.getAttribute (sName);
-      if (EqualsUtils.nullSafeEquals (aOldValue, aNewValue))
+      if (EqualsUtils.equals (aOldValue, aNewValue))
         return EChange.UNCHANGED;
 
       m_aHttpRequest.setAttribute (sName, aNewValue);
