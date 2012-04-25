@@ -44,7 +44,7 @@ public class FileUpload extends AbstractFileUploadBase
   /**
    * The factory to use to create new form items.
    */
-  private final IFileItemFactory _fileItemFactory;
+  private final IFileItemFactory m_aFileItemFactory;
 
   /**
    * Constructs an instance of this class which uses the supplied factory to
@@ -56,7 +56,7 @@ public class FileUpload extends AbstractFileUploadBase
   public FileUpload (final IFileItemFactory fileItemFactory)
   {
     super ();
-    this._fileItemFactory = fileItemFactory;
+    m_aFileItemFactory = fileItemFactory;
   }
 
   // ----------------------------------------------------- Property accessors
@@ -69,6 +69,6 @@ public class FileUpload extends AbstractFileUploadBase
   @Override
   public IFileItemFactory getFileItemFactory ()
   {
-    return _fileItemFactory;
+    return m_aFileItemFactory;
   }
 }

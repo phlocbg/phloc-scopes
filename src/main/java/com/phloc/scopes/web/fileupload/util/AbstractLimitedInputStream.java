@@ -25,20 +25,20 @@ import java.io.InputStream;
  * An input stream, which limits its data size. This stream is used, if the
  * content length is unknown.
  */
-public abstract class LimitedInputStream extends FilterInputStream implements Closeable
+public abstract class AbstractLimitedInputStream extends FilterInputStream implements ICloseable
 {
   /**
    * The maximum size of an item, in bytes.
    */
-  private final long sizeMax;
+  private final long m_nSizeMax;
   /**
    * The current number of bytes.
    */
-  private long count;
+  private long m_nCount;
   /**
    * Whether this stream is already closed.
    */
-  private boolean closed;
+  private boolean m_bClosed;
 
   /**
    * Creates a new instance.
@@ -49,10 +49,10 @@ public abstract class LimitedInputStream extends FilterInputStream implements Cl
    *        The limit; no more than this number of bytes shall be returned by
    *        the source stream.
    */
-  public LimitedInputStream (final InputStream pIn, final long pSizeMax)
+  public AbstractLimitedInputStream (final InputStream pIn, final long pSizeMax)
   {
     super (pIn);
-    sizeMax = pSizeMax;
+    m_nSizeMax = pSizeMax;
   }
 
   /**
@@ -73,11 +73,11 @@ public abstract class LimitedInputStream extends FilterInputStream implements Cl
    * @throws IOException
    *         The given limit is exceeded.
    */
-  private void checkLimit () throws IOException
+  private void _checkLimit () throws IOException
   {
-    if (count > sizeMax)
+    if (m_nCount > m_nSizeMax)
     {
-      raiseError (sizeMax, count);
+      raiseError (m_nSizeMax, m_nCount);
     }
   }
 
@@ -103,8 +103,8 @@ public abstract class LimitedInputStream extends FilterInputStream implements Cl
     final int res = super.read ();
     if (res != -1)
     {
-      count++;
-      checkLimit ();
+      m_nCount++;
+      _checkLimit ();
     }
     return res;
   }
@@ -142,8 +142,8 @@ public abstract class LimitedInputStream extends FilterInputStream implements Cl
     final int res = super.read (b, off, len);
     if (res > 0)
     {
-      count += res;
-      checkLimit ();
+      m_nCount += res;
+      _checkLimit ();
     }
     return res;
   }
@@ -157,7 +157,7 @@ public abstract class LimitedInputStream extends FilterInputStream implements Cl
    */
   public boolean isClosed () throws IOException
   {
-    return closed;
+    return m_bClosed;
   }
 
   /**
@@ -171,7 +171,7 @@ public abstract class LimitedInputStream extends FilterInputStream implements Cl
   @Override
   public void close () throws IOException
   {
-    closed = true;
+    m_bClosed = true;
     super.close ();
   }
 }

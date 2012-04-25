@@ -42,7 +42,7 @@ public final class ServletRequestContext implements IRequestContext
   /**
    * The request for which the context is being provided.
    */
-  private final HttpServletRequest _request;
+  private final HttpServletRequest m_aHttpRequest;
 
   // ----------------------------------------------------------- Constructors
 
@@ -54,7 +54,7 @@ public final class ServletRequestContext implements IRequestContext
    */
   public ServletRequestContext (final HttpServletRequest request)
   {
-    this._request = request;
+    this.m_aHttpRequest = request;
   }
 
   // --------------------------------------------------------- Public Methods
@@ -66,7 +66,7 @@ public final class ServletRequestContext implements IRequestContext
    */
   public String getCharacterEncoding ()
   {
-    return _request.getCharacterEncoding ();
+    return m_aHttpRequest.getCharacterEncoding ();
   }
 
   /**
@@ -76,7 +76,7 @@ public final class ServletRequestContext implements IRequestContext
    */
   public String getContentType ()
   {
-    return _request.getContentType ();
+    return m_aHttpRequest.getContentType ();
   }
 
   /**
@@ -86,7 +86,7 @@ public final class ServletRequestContext implements IRequestContext
    */
   public int getContentLength ()
   {
-    return _request.getContentLength ();
+    return m_aHttpRequest.getContentLength ();
   }
 
   /**
@@ -98,7 +98,7 @@ public final class ServletRequestContext implements IRequestContext
    */
   public InputStream getInputStream () throws IOException
   {
-    return _request.getInputStream ();
+    return m_aHttpRequest.getInputStream ();
   }
 
   /**

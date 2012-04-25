@@ -36,32 +36,32 @@ public final class ParameterParser
   /**
    * String to be parsed.
    */
-  private char [] _chars = null;
+  private char [] m_aChars = null;
 
   /**
    * Current position in the string.
    */
-  private int pos = 0;
+  private int m_nPos = 0;
 
   /**
    * Maximum position in the string.
    */
-  private int len = 0;
+  private int m_nLen = 0;
 
   /**
    * Start of a token.
    */
-  private int i1 = 0;
+  private int m_nIndex1 = 0;
 
   /**
    * End of a token.
    */
-  private int i2 = 0;
+  private int m_nIndex2 = 0;
 
   /**
    * Whether names stored in the map should be converted to lower case.
    */
-  private boolean lowerCaseNames = false;
+  private boolean m_bLowerCaseNames = false;
 
   /**
    * Default ParameterParser constructor.
@@ -77,9 +77,9 @@ public final class ParameterParser
    * @return <tt>true</tt> if there are unparsed characters, <tt>false</tt>
    *         otherwise.
    */
-  private boolean hasChar ()
+  private boolean _hasChar ()
   {
-    return this.pos < this.len;
+    return this.m_nPos < this.m_nLen;
   }
 
   /**
@@ -91,31 +91,31 @@ public final class ParameterParser
    *        otherwise.
    * @return the token
    */
-  private String getToken (final boolean quoted)
+  private String _getToken (final boolean quoted)
   {
     // Trim leading white spaces
-    while ((i1 < i2) && (Character.isWhitespace (_chars[i1])))
+    while ((m_nIndex1 < m_nIndex2) && (Character.isWhitespace (m_aChars[m_nIndex1])))
     {
-      i1++;
+      m_nIndex1++;
     }
     // Trim trailing white spaces
-    while ((i2 > i1) && (Character.isWhitespace (_chars[i2 - 1])))
+    while ((m_nIndex2 > m_nIndex1) && (Character.isWhitespace (m_aChars[m_nIndex2 - 1])))
     {
-      i2--;
+      m_nIndex2--;
     }
     // Strip away quotation marks if necessary
     if (quoted)
     {
-      if (((i2 - i1) >= 2) && (_chars[i1] == '"') && (_chars[i2 - 1] == '"'))
+      if (((m_nIndex2 - m_nIndex1) >= 2) && (m_aChars[m_nIndex1] == '"') && (m_aChars[m_nIndex2 - 1] == '"'))
       {
-        i1++;
-        i2--;
+        m_nIndex1++;
+        m_nIndex2--;
       }
     }
     String result = null;
-    if (i2 > i1)
+    if (m_nIndex2 > m_nIndex1)
     {
-      result = new String (_chars, i1, i2 - i1);
+      result = new String (m_aChars, m_nIndex1, m_nIndex2 - m_nIndex1);
     }
     return result;
   }
@@ -130,7 +130,7 @@ public final class ParameterParser
    * @return <tt>true</tt> if the character is present in the array of
    *         characters, <tt>false</tt> otherwise.
    */
-  private boolean isOneOf (final char ch, final char [] charray)
+  private boolean _isOneOf (final char ch, final char [] charray)
   {
     boolean result = false;
     for (final char element : charray)
@@ -152,22 +152,22 @@ public final class ParameterParser
    *        encountered signify the end of the token
    * @return the token
    */
-  private String parseToken (final char [] terminators)
+  private String _parseToken (final char [] terminators)
   {
     char ch;
-    i1 = pos;
-    i2 = pos;
-    while (hasChar ())
+    m_nIndex1 = m_nPos;
+    m_nIndex2 = m_nPos;
+    while (_hasChar ())
     {
-      ch = _chars[pos];
-      if (isOneOf (ch, terminators))
+      ch = m_aChars[m_nPos];
+      if (_isOneOf (ch, terminators))
       {
         break;
       }
-      i2++;
-      pos++;
+      m_nIndex2++;
+      m_nPos++;
     }
-    return getToken (false);
+    return _getToken (false);
   }
 
   /**
@@ -179,17 +179,17 @@ public final class ParameterParser
    *        encountered outside the quotation marks signify the end of the token
    * @return the token
    */
-  private String parseQuotedToken (final char [] terminators)
+  private String _parseQuotedToken (final char [] terminators)
   {
     char ch;
-    i1 = pos;
-    i2 = pos;
+    m_nIndex1 = m_nPos;
+    m_nIndex2 = m_nPos;
     boolean quoted = false;
     boolean charEscaped = false;
-    while (hasChar ())
+    while (_hasChar ())
     {
-      ch = _chars[pos];
-      if (!quoted && isOneOf (ch, terminators))
+      ch = m_aChars[m_nPos];
+      if (!quoted && _isOneOf (ch, terminators))
       {
         break;
       }
@@ -198,11 +198,11 @@ public final class ParameterParser
         quoted = !quoted;
       }
       charEscaped = (!charEscaped && ch == '\\');
-      i2++;
-      pos++;
+      m_nIndex2++;
+      m_nPos++;
 
     }
-    return getToken (true);
+    return _getToken (true);
   }
 
   /**
@@ -214,7 +214,7 @@ public final class ParameterParser
    */
   public boolean isLowerCaseNames ()
   {
-    return this.lowerCaseNames;
+    return this.m_bLowerCaseNames;
   }
 
   /**
@@ -227,7 +227,7 @@ public final class ParameterParser
    */
   public void setLowerCaseNames (final boolean b)
   {
-    this.lowerCaseNames = b;
+    this.m_bLowerCaseNames = b;
   }
 
   /**
@@ -327,28 +327,28 @@ public final class ParameterParser
       return new HashMap <String, String> ();
     }
     final HashMap <String, String> params = new HashMap <String, String> ();
-    this._chars = chars;
-    this.pos = offset;
-    this.len = length;
+    this.m_aChars = chars;
+    this.m_nPos = offset;
+    this.m_nLen = length;
 
     String paramName = null;
     String paramValue = null;
-    while (hasChar ())
+    while (_hasChar ())
     {
-      paramName = parseToken (new char [] { '=', separator });
+      paramName = _parseToken (new char [] { '=', separator });
       paramValue = null;
-      if (hasChar () && (chars[pos] == '='))
+      if (_hasChar () && (chars[m_nPos] == '='))
       {
-        pos++; // skip '='
-        paramValue = parseQuotedToken (new char [] { separator });
+        m_nPos++; // skip '='
+        paramValue = _parseQuotedToken (new char [] { separator });
       }
-      if (hasChar () && (chars[pos] == separator))
+      if (_hasChar () && (chars[m_nPos] == separator))
       {
-        pos++; // skip separator
+        m_nPos++; // skip separator
       }
       if ((paramName != null) && (paramName.length () > 0))
       {
-        if (this.lowerCaseNames)
+        if (this.m_bLowerCaseNames)
         {
           paramName = paramName.toLowerCase ();
         }

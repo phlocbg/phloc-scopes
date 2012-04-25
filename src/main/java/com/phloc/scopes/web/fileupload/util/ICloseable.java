@@ -22,7 +22,7 @@ import java.io.IOException;
 /**
  * Interface of an object, which may be closed.
  */
-public interface Closeable
+public interface ICloseable
 {
   /**
    * Closes the object.

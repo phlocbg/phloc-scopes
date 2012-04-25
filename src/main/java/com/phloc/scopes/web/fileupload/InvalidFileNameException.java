@@ -28,8 +28,7 @@ package com.phloc.scopes.web.fileupload;
  */
 public final class InvalidFileNameException extends RuntimeException
 {
-  private static final long serialVersionUID = 7922042602454350470L;
-  private final String name;
+  private final String m_sName;
 
   /**
    * Creates a new instance.
@@ -42,7 +41,7 @@ public final class InvalidFileNameException extends RuntimeException
   public InvalidFileNameException (final String pName, final String pMessage)
   {
     super (pMessage);
-    name = pName;
+    m_sName = pName;
   }
 
   /**
@@ -50,6 +49,6 @@ public final class InvalidFileNameException extends RuntimeException
    */
   public String getName ()
   {
-    return name;
+    return m_sName;
   }
 }

@@ -26,9 +26,9 @@ import java.util.NoSuchElementException;
 
 import com.phloc.commons.charset.CharsetManager;
 import com.phloc.scopes.web.fileupload.MultipartStream.ItemInputStream;
-import com.phloc.scopes.web.fileupload.util.Closeable;
+import com.phloc.scopes.web.fileupload.util.ICloseable;
 import com.phloc.scopes.web.fileupload.util.FileItemHeadersImpl;
-import com.phloc.scopes.web.fileupload.util.LimitedInputStream;
+import com.phloc.scopes.web.fileupload.util.AbstractLimitedInputStream;
 import com.phloc.scopes.web.fileupload.util.Streams;
 
 /**
@@ -131,25 +131,25 @@ public abstract class AbstractFileUploadBase
 
   /**
    * The maximum size permitted for the complete request, as opposed to
-   * {@link #_fileSizeMax}. A value of -1 indicates no maximum.
+   * {@link #m_nFileSizeMax}. A value of -1 indicates no maximum.
    */
-  private long _sizeMax = -1;
+  private long m_nSizeMax = -1;
 
   /**
    * The maximum size permitted for a single uploaded file, as opposed to
-   * {@link #_sizeMax}. A value of -1 indicates no maximum.
+   * {@link #m_nSizeMax}. A value of -1 indicates no maximum.
    */
-  private long _fileSizeMax = -1;
+  private long m_nFileSizeMax = -1;
 
   /**
    * The content encoding to use when reading part headers.
    */
-  private String headerEncoding;
+  private String m_sHeaderEncoding;
 
   /**
    * The progress listener.
    */
-  private IProgressListener listener;
+  private IProgressListener m_aListener;
 
   // ----------------------------------------------------- Property accessors
 
@@ -170,7 +170,7 @@ public abstract class AbstractFileUploadBase
    */
   public long getSizeMax ()
   {
-    return _sizeMax;
+    return m_nSizeMax;
   }
 
   /**
@@ -184,7 +184,7 @@ public abstract class AbstractFileUploadBase
    */
   public void setSizeMax (final long sizeMax)
   {
-    this._sizeMax = sizeMax;
+    this.m_nSizeMax = sizeMax;
   }
 
   /**
@@ -196,7 +196,7 @@ public abstract class AbstractFileUploadBase
    */
   public long getFileSizeMax ()
   {
-    return _fileSizeMax;
+    return m_nFileSizeMax;
   }
 
   /**
@@ -209,7 +209,7 @@ public abstract class AbstractFileUploadBase
    */
   public void setFileSizeMax (final long fileSizeMax)
   {
-    this._fileSizeMax = fileSizeMax;
+    this.m_nFileSizeMax = fileSizeMax;
   }
 
   /**
@@ -222,7 +222,7 @@ public abstract class AbstractFileUploadBase
    */
   public String getHeaderEncoding ()
   {
-    return headerEncoding;
+    return m_sHeaderEncoding;
   }
 
   /**
@@ -236,7 +236,7 @@ public abstract class AbstractFileUploadBase
    */
   public void setHeaderEncoding (final String encoding)
   {
-    headerEncoding = encoding;
+    m_sHeaderEncoding = encoding;
   }
 
   // --------------------------------------------------------- Public methods
@@ -379,7 +379,7 @@ public abstract class AbstractFileUploadBase
    */
   protected String getFileName (final IFileItemHeaders headers)
   {
-    return getFileName (headers.getHeader (CONTENT_DISPOSITION));
+    return _getFileName (headers.getHeader (CONTENT_DISPOSITION));
   }
 
   /**
@@ -389,7 +389,7 @@ public abstract class AbstractFileUploadBase
    *        The content-disposition headers value.
    * @return The file name
    */
-  private String getFileName (final String pContentDisposition)
+  private String _getFileName (final String pContentDisposition)
   {
     String fileName = null;
     if (pContentDisposition != null)
@@ -430,7 +430,7 @@ public abstract class AbstractFileUploadBase
    */
   protected String getFieldName (final IFileItemHeaders headers)
   {
-    return getFieldName (headers.getHeader (CONTENT_DISPOSITION));
+    return _getFieldName (headers.getHeader (CONTENT_DISPOSITION));
   }
 
   /**
@@ -440,7 +440,7 @@ public abstract class AbstractFileUploadBase
    *        The content-dispositions header value.
    * @return The field jake
    */
-  private String getFieldName (final String pContentDisposition)
+  private String _getFieldName (final String pContentDisposition)
   {
     String fieldName = null;
     if (pContentDisposition != null && pContentDisposition.toLowerCase ().startsWith (FORM_DATA))
@@ -477,7 +477,7 @@ public abstract class AbstractFileUploadBase
     int start = 0;
     for (;;)
     {
-      int end = parseEndOfLine (headerPart, start);
+      int end = _parseEndOfLine (headerPart, start);
       if (start == end)
       {
         break;
@@ -501,12 +501,12 @@ public abstract class AbstractFileUploadBase
           break;
         }
         // Continuation line found
-        end = parseEndOfLine (headerPart, nonWs);
+        end = _parseEndOfLine (headerPart, nonWs);
         header.append (' ').append (headerPart.substring (nonWs, end));
 
         start = end + 2;
       }
-      parseHeaderLine (headers, header.toString ());
+      _parseHeaderLine (headers, header.toString ());
     }
     return headers;
   }
@@ -530,7 +530,7 @@ public abstract class AbstractFileUploadBase
    *        Index of the last byte, which has yet been processed.
    * @return Index of the \r\n sequence, which indicates end of line.
    */
-  private int parseEndOfLine (final String headerPart, final int end)
+  private int _parseEndOfLine (final String headerPart, final int end)
   {
     int index = end;
     for (;;)
@@ -556,7 +556,7 @@ public abstract class AbstractFileUploadBase
    * @param header
    *        Map where to store the current header.
    */
-  private void parseHeaderLine (final FileItemHeadersImpl headers, final String header)
+  private void _parseHeaderLine (final FileItemHeadersImpl headers, final String header)
   {
     final int colonOffset = header.indexOf (':');
     if (colonOffset == -1)
@@ -637,23 +637,23 @@ public abstract class AbstractFileUploadBase
         formField = pFormField;
         final ItemInputStream itemStream = multi.newInputStream ();
         InputStream istream = itemStream;
-        if (_fileSizeMax != -1)
+        if (m_nFileSizeMax != -1)
         {
-          if (pContentLength != -1 && pContentLength > _fileSizeMax)
+          if (pContentLength != -1 && pContentLength > m_nFileSizeMax)
           {
             final FileSizeLimitExceededException e = new FileSizeLimitExceededException ("The field " +
                                                                                              fieldName +
                                                                                              " exceeds its maximum permitted " +
                                                                                              " size of " +
-                                                                                             _fileSizeMax +
+                                                                                             m_nFileSizeMax +
                                                                                              " bytes.",
                                                                                          pContentLength,
-                                                                                         _fileSizeMax);
+                                                                                         m_nFileSizeMax);
             e.setFileName (pName);
             e.setFieldName (pFieldName);
             throw new FileUploadIOException (e);
           }
-          istream = new LimitedInputStream (istream, _fileSizeMax)
+          istream = new AbstractLimitedInputStream (istream, m_nFileSizeMax)
           {
             @Override
             protected void raiseError (final long pSizeMax, final long pCount) throws IOException
@@ -734,7 +734,7 @@ public abstract class AbstractFileUploadBase
         {
           throw new IllegalStateException ("The stream was already opened.");
         }
-        if (((Closeable) stream).isClosed ())
+        if (((ICloseable) stream).isClosed ())
         {
           throw new IFileItemStream.ItemSkippedException ();
         }
@@ -837,12 +837,12 @@ public abstract class AbstractFileUploadBase
 
       InputStream input = ctx.getInputStream ();
 
-      if (_sizeMax >= 0)
+      if (m_nSizeMax >= 0)
       {
         final int requestSize = ctx.getContentLength ();
         if (requestSize == -1)
         {
-          input = new LimitedInputStream (input, _sizeMax)
+          input = new AbstractLimitedInputStream (input, m_nSizeMax)
           {
             @Override
             protected void raiseError (final long pSizeMax, final long pCount) throws IOException
@@ -860,18 +860,18 @@ public abstract class AbstractFileUploadBase
         }
         else
         {
-          if (_sizeMax >= 0 && requestSize > _sizeMax)
+          if (m_nSizeMax >= 0 && requestSize > m_nSizeMax)
           {
             throw new SizeLimitExceededException ("the request was rejected because its size (" +
                                                   requestSize +
                                                   ") exceeds the configured maximum (" +
-                                                  _sizeMax +
-                                                  ")", requestSize, _sizeMax);
+                                                  m_nSizeMax +
+                                                  ")", requestSize, m_nSizeMax);
           }
         }
       }
 
-      String charEncoding = headerEncoding;
+      String charEncoding = m_sHeaderEncoding;
       if (charEncoding == null)
       {
         charEncoding = ctx.getCharacterEncoding ();
@@ -883,7 +883,7 @@ public abstract class AbstractFileUploadBase
         throw new FileUploadException ("the request was rejected because " + "no multipart boundary was found");
       }
 
-      notifier = new MultipartStream.ProgressNotifier (listener, ctx.getContentLength ());
+      notifier = new MultipartStream.ProgressNotifier (m_aListener, ctx.getContentLength ());
       multi = new MultipartStream (input, boundary, notifier);
       multi.setHeaderEncoding (charEncoding);
 
@@ -1315,7 +1315,7 @@ public abstract class AbstractFileUploadBase
    */
   public IProgressListener getProgressListener ()
   {
-    return listener;
+    return m_aListener;
   }
 
   /**
@@ -1326,6 +1326,6 @@ public abstract class AbstractFileUploadBase
    */
   public void setProgressListener (final IProgressListener pListener)
   {
-    listener = pListener;
+    m_aListener = pListener;
   }
 }

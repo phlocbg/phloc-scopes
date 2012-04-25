@@ -23,6 +23,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.phloc.commons.collections.ContainerHelper;
 import com.phloc.scopes.web.fileupload.IFileItemHeaders;
@@ -35,45 +40,65 @@ import com.phloc.scopes.web.fileupload.IFileItemHeaders;
  */
 public class FileItemHeadersImpl implements IFileItemHeaders, Serializable
 {
-  private static final long serialVersionUID = -4455695752627032559L;
-
+  private final ReadWriteLock m_aRWLock = new ReentrantReadWriteLock ();
   /**
    * Map of <code>String</code> keys to a <code>List</code> of
    * <code>String</code> instances.
    */
-  private final Map <String, List <String>> headerNameToValueListMap = new HashMap <String, List <String>> ();
+  private final Map <String, List <String>> m_aHeaderNameToValueListMap = new HashMap <String, List <String>> ();
 
   /**
    * List to preserve order of headers as added. This would not be needed if a
    * <code>LinkedHashMap</code> could be used, but don't want to depend on 1.4.
    */
-  private final List <String> headerNameList = new ArrayList <String> ();
+  private final List <String> m_aHeaderNameList = new ArrayList <String> ();
 
-  public String getHeader (final String name)
+  @Nullable
+  public String getHeader (@Nonnull final String name)
   {
-    final String nameLower = name.toLowerCase ();
-    final List <String> headerValueList = headerNameToValueListMap.get (nameLower);
-    if (null == headerValueList)
+    m_aRWLock.readLock ().lock ();
+    try
     {
-      return null;
+      final String nameLower = name.toLowerCase ();
+      final List <String> headerValueList = m_aHeaderNameToValueListMap.get (nameLower);
+      if (null == headerValueList)
+        return null;
+      return headerValueList.get (0);
     }
-    return headerValueList.get (0);
+    finally
+    {
+      m_aRWLock.readLock ().unlock ();
+    }
   }
 
   public Iterator <String> getHeaderNames ()
   {
-    return headerNameList.iterator ();
+    m_aRWLock.readLock ().lock ();
+    try
+    {
+      return m_aHeaderNameList.iterator ();
+    }
+    finally
+    {
+      m_aRWLock.readLock ().unlock ();
+    }
   }
 
-  public Iterator <String> getHeaders (final String name)
+  public Iterator <String> getHeaders (@Nonnull final String name)
   {
-    final String nameLower = name.toLowerCase ();
-    final List <String> headerValueList = headerNameToValueListMap.get (nameLower);
-    if (null == headerValueList)
+    m_aRWLock.readLock ().lock ();
+    try
     {
-      return ContainerHelper.<String> getEmptyIterator ();
+      final String nameLower = name.toLowerCase ();
+      final List <String> headerValueList = m_aHeaderNameToValueListMap.get (nameLower);
+      if (headerValueList == null)
+        return ContainerHelper.<String> getEmptyIterator ();
+      return headerValueList.iterator ();
     }
-    return headerValueList.iterator ();
+    finally
+    {
+      m_aRWLock.readLock ().unlock ();
+    }
   }
 
   /**
@@ -84,16 +109,24 @@ public class FileItemHeadersImpl implements IFileItemHeaders, Serializable
    * @param value
    *        value of this header
    */
-  public synchronized void addHeader (final String name, final String value)
+  public void addHeader (@Nonnull final String name, @Nullable final String value)
   {
-    final String nameLower = name.toLowerCase ();
-    List <String> headerValueList = headerNameToValueListMap.get (nameLower);
-    if (null == headerValueList)
+    m_aRWLock.writeLock ().lock ();
+    try
     {
-      headerValueList = new ArrayList <String> ();
-      headerNameToValueListMap.put (nameLower, headerValueList);
-      headerNameList.add (nameLower);
+      final String nameLower = name.toLowerCase ();
+      List <String> headerValueList = m_aHeaderNameToValueListMap.get (nameLower);
+      if (null == headerValueList)
+      {
+        headerValueList = new ArrayList <String> ();
+        m_aHeaderNameToValueListMap.put (nameLower, headerValueList);
+        m_aHeaderNameList.add (nameLower);
+      }
+      headerValueList.add (value);
     }
-    headerValueList.add (value);
+    finally
+    {
+      m_aRWLock.writeLock ().unlock ();
+    }
   }
 }
