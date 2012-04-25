@@ -19,6 +19,8 @@ package com.phloc.scopes.nonweb.domain;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.phloc.scopes.IScope;
 
 /**
@@ -35,9 +37,11 @@ public interface IRequestScope extends IScope
    *        The name of the attribute to query.
    * @return <code>null</code> if no such attribute value exists
    */
-  List <String> getAttributeValues (String sName);
+  @Nullable
+  List <String> getAttributeValues (@Nullable String sName);
 
-  List <String> getAttributeValues (String sName, List <String> aDefault);
+  @Nullable
+  List <String> getAttributeValues (@Nullable String sName, @Nullable List <String> aDefault);
 
   /**
    * Check if a attribute with the given name is present in the request and has
@@ -50,7 +54,7 @@ public interface IRequestScope extends IScope
    * @return <code>true</code> if an attribute with the given name is present
    *         and has the desired value
    */
-  boolean hasAttributeValue (String sName, String sDesiredValue);
+  boolean hasAttributeValue (@Nullable String sName, @Nullable String sDesiredValue);
 
   /**
    * Check if a attribute with the given name is present in the request and has
@@ -69,5 +73,5 @@ public interface IRequestScope extends IScope
    *         present but has a different value. If the attribute is not present,
    *         the default value is returned.
    */
-  boolean hasAttributeValue (String sName, String sDesiredValue, boolean bDefault);
+  boolean hasAttributeValue (@Nullable String sName, @Nullable String sDesiredValue, boolean bDefault);
 }
