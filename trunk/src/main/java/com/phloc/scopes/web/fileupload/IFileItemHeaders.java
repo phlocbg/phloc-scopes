@@ -19,6 +19,9 @@ package com.phloc.scopes.web.fileupload;
 
 import java.util.Iterator;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * <p>
  * This class provides support for accessing the headers for a file or form item
@@ -43,7 +46,8 @@ public interface IFileItemHeaders
    *         or <code>null</code> if the item does not have a header of that
    *         name
    */
-  String getHeader (String name);
+  @Nullable
+  String getHeader (@Nonnull String name);
 
   /**
    * <p>
@@ -62,7 +66,8 @@ public interface IFileItemHeaders
    *         header. If the item does not have any headers of that name, return
    *         an empty <code>Enumeration</code>
    */
-  Iterator <String> getHeaders (String name);
+  @Nonnull
+  Iterator <String> getHeaders (@Nonnull String name);
 
   /**
    * <p>
@@ -78,5 +83,6 @@ public interface IFileItemHeaders
    *         header. If the item does not have any headers of that name return
    *         an empty <code>Enumeration</code>
    */
+  @Nonnull
   Iterator <String> getHeaderNames ();
 }

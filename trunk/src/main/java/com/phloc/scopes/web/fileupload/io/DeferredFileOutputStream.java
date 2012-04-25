@@ -41,20 +41,20 @@ import com.phloc.commons.io.streams.StreamUtils;
  * @version $Id: DeferredFileOutputStream.java 736890 2009-01-23 02:02:22Z
  *          niallp $
  */
-public final class DeferredFileOutputStream extends ThresholdingOutputStream
+public final class DeferredFileOutputStream extends AbstractThresholdingOutputStream
 {
   /**
    * The output stream to which data will be written prior to the theshold being
    * reached.
    */
-  private NonBlockingByteArrayOutputStream memoryOutputStream;
+  private NonBlockingByteArrayOutputStream m_aMemoryOutputStream;
 
   /**
    * The output stream to which data will be written at any given time. This
    * will always be one of <code>memoryOutputStream</code> or
    * <code>diskOutputStream</code>.
    */
-  private OutputStream currentOutputStream;
+  private OutputStream m_aCurrentOutputStream;
 
   /**
    * The file to which output will be directed if the threshold is exceeded.
@@ -64,7 +64,7 @@ public final class DeferredFileOutputStream extends ThresholdingOutputStream
   /**
    * True when close() has been called successfully.
    */
-  private boolean closed = false;
+  private boolean m_bClosed = false;
 
   // ----------------------------------------------------------- Constructors
 
@@ -82,8 +82,8 @@ public final class DeferredFileOutputStream extends ThresholdingOutputStream
     super (threshold);
     this.m_aOutputFile = outputFile;
 
-    memoryOutputStream = new NonBlockingByteArrayOutputStream ();
-    currentOutputStream = memoryOutputStream;
+    m_aMemoryOutputStream = new NonBlockingByteArrayOutputStream ();
+    m_aCurrentOutputStream = m_aMemoryOutputStream;
   }
 
   // --------------------------------------- ThresholdingOutputStream methods
@@ -99,7 +99,7 @@ public final class DeferredFileOutputStream extends ThresholdingOutputStream
   @Override
   protected OutputStream getStream () throws IOException
   {
-    return currentOutputStream;
+    return m_aCurrentOutputStream;
   }
 
   /**
@@ -118,9 +118,9 @@ public final class DeferredFileOutputStream extends ThresholdingOutputStream
     try
     {
       fos = new FileOutputStream (m_aOutputFile);
-      memoryOutputStream.writeTo (fos);
-      currentOutputStream = fos;
-      memoryOutputStream = null;
+      m_aMemoryOutputStream.writeTo (fos);
+      m_aCurrentOutputStream = fos;
+      m_aMemoryOutputStream = null;
     }
     catch (final IOException ex)
     {
@@ -153,9 +153,9 @@ public final class DeferredFileOutputStream extends ThresholdingOutputStream
    */
   public byte [] getData ()
   {
-    if (memoryOutputStream != null)
+    if (m_aMemoryOutputStream != null)
     {
-      return memoryOutputStream.toByteArray ();
+      return m_aMemoryOutputStream.toByteArray ();
     }
     return null;
   }
@@ -189,7 +189,7 @@ public final class DeferredFileOutputStream extends ThresholdingOutputStream
   public void close () throws IOException
   {
     super.close ();
-    closed = true;
+    m_bClosed = true;
   }
 
   /**
@@ -206,12 +206,12 @@ public final class DeferredFileOutputStream extends ThresholdingOutputStream
     // we may only need to check if this is closed if we are working with a file
     // but we should force the habit of closing wether we are working with
     // a file or memory.
-    if (!closed)
+    if (!m_bClosed)
       throw new IOException ("Stream not closed");
 
     if (isInMemory ())
     {
-      memoryOutputStream.writeTo (out);
+      m_aMemoryOutputStream.writeTo (out);
     }
     else
     {

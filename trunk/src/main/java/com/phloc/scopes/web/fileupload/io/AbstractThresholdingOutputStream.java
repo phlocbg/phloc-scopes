@@ -38,7 +38,7 @@ import java.io.OutputStream;
  * @version $Id: ThresholdingOutputStream.java 736890 2009-01-23 02:02:22Z niallp
  *          $
  */
-public abstract class ThresholdingOutputStream extends OutputStream
+public abstract class AbstractThresholdingOutputStream extends OutputStream
 {
 
   // ----------------------------------------------------------- Data members
@@ -51,12 +51,12 @@ public abstract class ThresholdingOutputStream extends OutputStream
   /**
    * The number of bytes written to the output stream.
    */
-  private long written;
+  private long m_nWritten;
 
   /**
    * Whether or not the configured threshold has been exceeded.
    */
-  private boolean thresholdExceeded;
+  private boolean m_bThresholdExceeded;
 
   // ----------------------------------------------------------- Constructors
 
@@ -67,7 +67,7 @@ public abstract class ThresholdingOutputStream extends OutputStream
    * @param threshold
    *        The number of bytes at which to trigger an event.
    */
-  public ThresholdingOutputStream (final int threshold)
+  public AbstractThresholdingOutputStream (final int threshold)
   {
     this.m_nThreshold = threshold;
   }
@@ -87,7 +87,7 @@ public abstract class ThresholdingOutputStream extends OutputStream
   {
     checkThreshold (1);
     getStream ().write (b);
-    written++;
+    m_nWritten++;
   }
 
   /**
@@ -104,7 +104,7 @@ public abstract class ThresholdingOutputStream extends OutputStream
   {
     checkThreshold (b.length);
     getStream ().write (b);
-    written += b.length;
+    m_nWritten += b.length;
   }
 
   /**
@@ -125,7 +125,7 @@ public abstract class ThresholdingOutputStream extends OutputStream
   {
     checkThreshold (len);
     getStream ().write (b, off, len);
-    written += len;
+    m_nWritten += len;
   }
 
   /**
@@ -181,7 +181,7 @@ public abstract class ThresholdingOutputStream extends OutputStream
    */
   public long getByteCount ()
   {
-    return written;
+    return m_nWritten;
   }
 
   /**
@@ -193,7 +193,7 @@ public abstract class ThresholdingOutputStream extends OutputStream
    */
   public boolean isThresholdExceeded ()
   {
-    return (written > m_nThreshold);
+    return (m_nWritten > m_nThreshold);
   }
 
   // ------------------------------------------------------ Protected methods
@@ -211,9 +211,9 @@ public abstract class ThresholdingOutputStream extends OutputStream
    */
   protected void checkThreshold (final int count) throws IOException
   {
-    if (!thresholdExceeded && (written + count > m_nThreshold))
+    if (!m_bThresholdExceeded && (m_nWritten + count > m_nThreshold))
     {
-      thresholdExceeded = true;
+      m_bThresholdExceeded = true;
       thresholdReached ();
     }
   }
@@ -224,8 +224,8 @@ public abstract class ThresholdingOutputStream extends OutputStream
    */
   protected void resetByteCount ()
   {
-    this.thresholdExceeded = false;
-    this.written = 0;
+    this.m_bThresholdExceeded = false;
+    this.m_nWritten = 0;
   }
 
   // ------------------------------------------------------- Abstract methods
