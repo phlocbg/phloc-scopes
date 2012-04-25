@@ -56,6 +56,7 @@ import com.phloc.scopes.IScopeDestructionAware;
 import com.phloc.scopes.IScopeRenewalAware;
 import com.phloc.scopes.ScopeUtils;
 import com.phloc.scopes.web.domain.IRequestWebScope;
+import com.phloc.scopes.web.fileupload.IFileItem;
 
 /**
  * A request web scopes that does not parse multipart requests.
@@ -404,6 +405,17 @@ public class RequestWebScopeNoMultipart extends AbstractReadonlyAttributeContain
     {
       m_aRWLock.readLock ().unlock ();
     }
+  }
+
+  @Nonnull
+  @ReturnsMutableCopy
+  public Map <String, IFileItem> getAllUploadedFileItems ()
+  {
+    final Map <String, IFileItem> ret = new HashMap <String, IFileItem> ();
+    for (final Map.Entry <String, Object> aEntry : getAllAttributes ().entrySet ())
+      if (aEntry.getValue () instanceof IFileItem)
+        ret.put (aEntry.getKey (), (IFileItem) aEntry.getValue ());
+    return ret;
   }
 
   public String getScheme ()

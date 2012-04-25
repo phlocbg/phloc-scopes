@@ -61,13 +61,13 @@ public final class RequestScope extends AbstractMapBasedScope implements IReques
   }
 
   @Nullable
-  public List <String> getAttributeValues (final String sName)
+  public List <String> getAttributeValues (@Nullable final String sName)
   {
     return getAttributeValues (sName, null);
   }
 
   @Nullable
-  public List <String> getAttributeValues (final String sName, @Nullable final List <String> aDefault)
+  public List <String> getAttributeValues (@Nullable final String sName, @Nullable final List <String> aDefault)
   {
     final Object aValue = getAttributeObject (sName);
     if (aValue instanceof String [])
@@ -83,12 +83,14 @@ public final class RequestScope extends AbstractMapBasedScope implements IReques
     return aDefault;
   }
 
-  public boolean hasAttributeValue (final String sName, @Nullable final String sDesiredValue)
+  public boolean hasAttributeValue (@Nullable final String sName, @Nullable final String sDesiredValue)
   {
     return EqualsUtils.equals (getAttributeAsString (sName), sDesiredValue);
   }
 
-  public boolean hasAttributeValue (final String sName, final String sDesiredValue, final boolean bDefault)
+  public boolean hasAttributeValue (@Nullable final String sName,
+                                    @Nullable final String sDesiredValue,
+                                    final boolean bDefault)
   {
     final String sValue = getAttributeAsString (sName);
     return sValue == null ? bDefault : EqualsUtils.equals (sValue, sDesiredValue);

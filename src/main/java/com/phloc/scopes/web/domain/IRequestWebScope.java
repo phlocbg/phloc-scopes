@@ -20,6 +20,7 @@ package com.phloc.scopes.web.domain;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Enumeration;
+import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -29,6 +30,7 @@ import javax.servlet.http.HttpSession;
 
 import com.phloc.scopes.IWebScope;
 import com.phloc.scopes.nonweb.domain.IRequestScope;
+import com.phloc.scopes.web.fileupload.IFileItem;
 
 /**
  * Interface for a single web request scope object.
@@ -37,6 +39,14 @@ import com.phloc.scopes.nonweb.domain.IRequestScope;
  */
 public interface IRequestWebScope extends IRequestScope, IWebScope
 {
+  /**
+   * @return A non-<code>null</code> but maybe empty map with all contained
+   *         {@link IFileItem} objects from file uploads. The key of the map is
+   *         the field name.
+   */
+  @Nonnull
+  Map <String, IFileItem> getAllUploadedFileItems ();
+
   /**
    * Returns the name of the scheme used to make this request, for example,
    * <code>http</code>, <code>https</code>, or <code>ftp</code>. Different
