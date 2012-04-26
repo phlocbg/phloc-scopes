@@ -40,7 +40,7 @@ import com.phloc.scopes.web.mgr.WebScopeManager;
  * @author philip
  */
 @Immutable
-public class RequestField
+public class RequestFieldData
 {
   private final String m_sFieldName;
   private final String m_sDefaultValue;
@@ -52,7 +52,7 @@ public class RequestField
    *        The request field to copy the values from. May not be
    *        <code>null</code>.
    */
-  public RequestField (@Nonnull final RequestField aRF)
+  public RequestFieldData (@Nonnull final RequestFieldData aRF)
   {
     this (aRF.m_sFieldName, aRF.m_sDefaultValue);
   }
@@ -63,9 +63,26 @@ public class RequestField
    * @param sFieldName
    *        The field name to use. May neither be <code>null</code> nor empty.
    */
-  public RequestField (@Nonnull @Nonempty final String sFieldName)
+  public RequestFieldData (@Nonnull @Nonempty final String sFieldName)
   {
     this (sFieldName, "");
+  }
+
+  /**
+   * Default constructor.
+   * 
+   * @param sFieldName
+   *        The field name to use. May neither be <code>null</code> nor empty.
+   * @param sDefaultValue
+   *        The default value to use, if no value is present in the request
+   *        scope.
+   */
+  public RequestFieldData (@Nonnull @Nonempty final String sFieldName, @Nullable final String sDefaultValue)
+  {
+    if (StringHelper.hasNoText (sFieldName))
+      throw new IllegalArgumentException ("fieldName");
+    m_sFieldName = sFieldName;
+    m_sDefaultValue = sDefaultValue == null ? "" : sDefaultValue;
   }
 
   /**
@@ -78,26 +95,9 @@ public class RequestField
    *        The object who's ID is to be used. May be <code>null</code> in which
    *        case no default value is used
    */
-  public RequestField (@Nonnull @Nonempty final String sFieldName, @Nullable final IHasID <String> aDefaultValueProvider)
+  public RequestFieldData (@Nonnull @Nonempty final String sFieldName, @Nullable final IHasID <String> aDefaultValueProvider)
   {
     this (sFieldName, aDefaultValueProvider == null ? "" : aDefaultValueProvider.getID ());
-  }
-
-  /**
-   * Default constructor.
-   * 
-   * @param sFieldName
-   *        The field name to use. May neither be <code>null</code> nor empty.
-   * @param sDefaultValue
-   *        The default value to use, if no value is present in the request
-   *        scope.
-   */
-  public RequestField (@Nonnull @Nonempty final String sFieldName, @Nullable final String sDefaultValue)
-  {
-    if (StringHelper.hasNoText (sFieldName))
-      throw new IllegalArgumentException ("fieldName");
-    m_sFieldName = sFieldName;
-    m_sDefaultValue = sDefaultValue == null ? "" : sDefaultValue;
   }
 
   /**
@@ -108,7 +108,7 @@ public class RequestField
    * @param nDefaultValue
    *        The default value to be used. Is converted to a String
    */
-  public RequestField (@Nonnull @Nonempty final String sFieldName, final int nDefaultValue)
+  public RequestFieldData (@Nonnull @Nonempty final String sFieldName, final int nDefaultValue)
   {
     this (sFieldName, Integer.toString (nDefaultValue));
   }
@@ -121,7 +121,7 @@ public class RequestField
    * @param nDefaultValue
    *        The default value to be used. Is converted to a String
    */
-  public RequestField (@Nonnull @Nonempty final String sFieldName, final long nDefaultValue)
+  public RequestFieldData (@Nonnull @Nonempty final String sFieldName, final long nDefaultValue)
   {
     this (sFieldName, Long.toString (nDefaultValue));
   }
@@ -227,7 +227,7 @@ public class RequestField
       return true;
     if (o == null || !getClass ().equals (o.getClass ()))
       return false;
-    final RequestField rhs = (RequestField) o;
+    final RequestFieldData rhs = (RequestFieldData) o;
     return m_sFieldName.equals (rhs.m_sFieldName) && m_sDefaultValue.equals (rhs.m_sDefaultValue);
   }
 

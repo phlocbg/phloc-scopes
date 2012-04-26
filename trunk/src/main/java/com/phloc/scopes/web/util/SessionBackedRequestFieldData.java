@@ -31,21 +31,21 @@ import com.phloc.scopes.web.mgr.WebScopeManager;
  * 
  * @author philip
  */
-public class SessionBackedRequestField extends RequestField
+public class SessionBackedRequestFieldData extends RequestFieldData
 {
-  public SessionBackedRequestField (@Nonnull final String sFieldName)
+  public SessionBackedRequestFieldData (@Nonnull final String sFieldName)
   {
     super (sFieldName);
     _init ();
   }
 
-  public SessionBackedRequestField (@Nonnull final String sFieldName, @Nullable final String sDefaultValue)
+  public SessionBackedRequestFieldData (@Nonnull final String sFieldName, @Nullable final String sDefaultValue)
   {
     super (sFieldName, sDefaultValue);
     _init ();
   }
 
-  public SessionBackedRequestField (@Nonnull final String sFieldName, final int nDefaultValue)
+  public SessionBackedRequestFieldData (@Nonnull final String sFieldName, final int nDefaultValue)
   {
     super (sFieldName, nDefaultValue);
     _init ();
