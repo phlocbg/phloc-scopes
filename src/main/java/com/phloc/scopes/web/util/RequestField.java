@@ -24,7 +24,9 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
 import com.phloc.commons.annotations.Nonempty;
+import com.phloc.commons.annotations.OverrideOnDemand;
 import com.phloc.commons.collections.ContainerHelper;
+import com.phloc.commons.hash.HashCodeGenerator;
 import com.phloc.commons.id.IHasID;
 import com.phloc.commons.string.StringHelper;
 import com.phloc.commons.string.ToStringGenerator;
@@ -140,6 +142,7 @@ public class RequestField
    *         available.
    */
   @Nonnull
+  @OverrideOnDemand
   public String getDefaultValue ()
   {
     return m_sDefaultValue;
@@ -165,7 +168,7 @@ public class RequestField
   @Nullable
   protected final String getRequestValueWithoutDefault ()
   {
-    return getScope ().getAttributeAsString (m_sFieldName);
+    return getScope ().getAttributeAsString (m_sFieldName, null);
   }
 
   /**
@@ -215,6 +218,23 @@ public class RequestField
       throw new IllegalArgumentException ("expectedValue");
 
     return sExpectedValue.equals (getRequestValue ());
+  }
+
+  @Override
+  public boolean equals (final Object o)
+  {
+    if (o == this)
+      return true;
+    if (o == null || !getClass ().equals (o.getClass ()))
+      return false;
+    final RequestField rhs = (RequestField) o;
+    return m_sFieldName.equals (rhs.m_sFieldName) && m_sDefaultValue.equals (rhs.m_sDefaultValue);
+  }
+
+  @Override
+  public int hashCode ()
+  {
+    return new HashCodeGenerator (this).append (m_sFieldName).append (m_sDefaultValue).getHashCode ();
   }
 
   @Override
