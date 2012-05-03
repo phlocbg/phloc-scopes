@@ -30,6 +30,7 @@ import com.phloc.scopes.MetaScopeFactory;
 import com.phloc.scopes.nonweb.domain.IApplicationScope;
 import com.phloc.scopes.nonweb.domain.IGlobalScope;
 import com.phloc.scopes.nonweb.domain.IRequestScope;
+import com.phloc.scopes.spi.ScopeSPIManager;
 
 /**
  * This is the manager class for non-web scope handling. The following scopes
@@ -79,7 +80,10 @@ public final class ScopeManager
 
     s_aGlobalScope = aGlobalScope;
     aGlobalScope.initScope ();
-    s_aLogger.info ("Global scope initialized!");
+    s_aLogger.info ("Global scope '" + aGlobalScope.getID () + "' initialized!");
+
+    // Invoke SPIs
+    ScopeSPIManager.onGlobalScopeBegin (aGlobalScope);
   }
 
   /**
@@ -119,6 +123,10 @@ public final class ScopeManager
      */
     if (s_aGlobalScope != null)
     {
+      // Invoke SPI
+      ScopeSPIManager.onGlobalScopeEnd (s_aGlobalScope);
+
+      // Destroy and invalidate scope
       s_aGlobalScope.destroyScope ();
       s_aGlobalScope = null;
 
@@ -126,7 +134,7 @@ public final class ScopeManager
       s_aLogger.info ("Global scope shut down!");
     }
     else
-      s_aLogger.warn ("No global scope present that could be ended!");
+      s_aLogger.warn ("No global scope present that could be shut down!");
   }
 
   // --- application scope ---
@@ -202,17 +210,26 @@ public final class ScopeManager
 
     // Happens if an internal redirect happens in a web-application (e.g. for
     // 404 page)
-    if (s_aRequestScope.get () != null)
-      s_aLogger.warn ("A request scope is already present!");
+    final IRequestScope aExistingRequestScope = s_aRequestScope.get ();
+    if (aExistingRequestScope != null)
+      s_aLogger.warn ("A request scope is already present: " + aExistingRequestScope.toString ());
 
     // set request context
     s_aRequestScope.set (aRequestScope);
 
     // assign the application ID to the current request
-    aRequestScope.setAttribute (REQ_APPLICATION_ID, sApplicationID);
+    if (aRequestScope.setAttribute (REQ_APPLICATION_ID, sApplicationID).isUnchanged ())
+      s_aLogger.warn ("Failed to set the application ID '" +
+                      sApplicationID +
+                      "' into the request scope '" +
+                      aRequestScope.getID () +
+                      "'");
 
     // Now init the scope
     aRequestScope.initScope ();
+
+    // call SPIs
+    ScopeSPIManager.onRequestScopeBegin (aRequestScope);
   }
 
   public static void onRequestBegin (@Nonnull @Nonempty final String sApplicationID,
@@ -240,17 +257,23 @@ public final class ScopeManager
    */
   public static void onRequestEnd ()
   {
-    final IRequestScope aScope = s_aRequestScope.get ();
+    final IRequestScope aRequestScope = s_aRequestScope.get ();
     try
     {
       // Do we have something to destroy?
-      if (aScope != null)
-        aScope.destroyScope ();
+      if (aRequestScope != null)
+      {
+        // call SPIs
+        ScopeSPIManager.onRequestScopeEnd (aRequestScope);
+
+        // Destroy scope
+        aRequestScope.destroyScope ();
+      }
       else
       {
         // Happens after an internal redirect happened in a web-application
         // (e.g. for 404 page) for the original scope
-        s_aLogger.warn ("No request scope present that could be ended!");
+        s_aLogger.warn ("No request scope present that could be shut down!");
       }
     }
     finally

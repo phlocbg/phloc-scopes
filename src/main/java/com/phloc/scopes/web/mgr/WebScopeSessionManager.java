@@ -38,8 +38,8 @@ import com.phloc.commons.annotations.UsedViaReflection;
 import com.phloc.commons.collections.ContainerHelper;
 import com.phloc.commons.stats.IStatisticsHandlerCounter;
 import com.phloc.commons.stats.StatisticsManager;
-import com.phloc.scopes.IScope;
 import com.phloc.scopes.MetaScopeFactory;
+import com.phloc.scopes.spi.ScopeSPIManager;
 import com.phloc.scopes.web.domain.ISessionWebScope;
 import com.phloc.scopes.web.singleton.GlobalWebSingleton;
 
@@ -109,25 +109,28 @@ public final class WebScopeSessionManager extends GlobalWebSingleton
 
     // Check if a matching session scope is present
     final String sSessionID = aHttpSession.getId ();
-    ISessionWebScope aScope = getSessionScopeOfID (sSessionID);
-    if (aScope == null)
+    ISessionWebScope aSessionScope = getSessionScopeOfID (sSessionID);
+    if (aSessionScope == null)
     {
       // create new scope
       m_aRWLock.writeLock ().lock ();
       try
       {
         // Try in write-lock to be 100% sure
-        aScope = m_aSessionScopes.get (sSessionID);
-        if (aScope == null)
+        aSessionScope = m_aSessionScopes.get (sSessionID);
+        if (aSessionScope == null)
         {
           // This can e.g. happen in tests, when there are no registered
           // listeners for session events!
           s_aLogger.warn ("Creating a new session for ID '" +
                           sSessionID +
                           "' but there should already be one! Check your HttpSessionListener implementation.");
-          aScope = MetaScopeFactory.getWebScopeFactory ().createSessionScope (aHttpSession);
-          m_aSessionScopes.put (sSessionID, aScope);
-          aScope.initScope ();
+          aSessionScope = MetaScopeFactory.getWebScopeFactory ().createSessionScope (aHttpSession);
+          m_aSessionScopes.put (sSessionID, aSessionScope);
+          aSessionScope.initScope ();
+
+          // Invoke SPIs
+          ScopeSPIManager.onSessionWebScopeBegin (aSessionScope);
         }
       }
       finally
@@ -135,7 +138,7 @@ public final class WebScopeSessionManager extends GlobalWebSingleton
         m_aRWLock.writeLock ().unlock ();
       }
     }
-    return aScope;
+    return aSessionScope;
   }
 
   @Nonnull
@@ -158,6 +161,10 @@ public final class WebScopeSessionManager extends GlobalWebSingleton
     }
 
     aSessionScope.initScope ();
+
+    // Invoke SPIs
+    ScopeSPIManager.onSessionWebScopeBegin (aSessionScope);
+
     s_aUniqueSessionCounter.increment ();
     return aSessionScope;
   }
@@ -176,9 +183,15 @@ public final class WebScopeSessionManager extends GlobalWebSingleton
       {
         try
         {
-          final IScope aSessionScope = m_aSessionScopes.remove (sSessionID);
+          final ISessionWebScope aSessionScope = m_aSessionScopes.remove (sSessionID);
           if (aSessionScope != null)
+          {
+            // Invoke SPIs
+            ScopeSPIManager.onSessionWebScopeEnd (aSessionScope);
+
+            // Destroy the scope
             aSessionScope.destroyScope ();
+          }
           else
           {
             // Ensure session is invalidated anyhow, even if no session scope is
