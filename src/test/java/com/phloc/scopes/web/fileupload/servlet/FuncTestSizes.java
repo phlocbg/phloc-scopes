@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.phloc.scopes.web.fileupload;
+package com.phloc.scopes.web.fileupload.servlet;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -31,14 +31,17 @@ import javax.servlet.http.HttpServletRequest;
 import org.junit.Test;
 
 import com.phloc.commons.charset.CCharset;
+import com.phloc.scopes.web.fileupload.AbstractFileUploadBase;
+import com.phloc.scopes.web.fileupload.AbstractFileUploadTestCase;
+import com.phloc.scopes.web.fileupload.FileUploadException;
+import com.phloc.scopes.web.fileupload.IFileItem;
 import com.phloc.scopes.web.fileupload.io.DiskFileItemFactory;
-import com.phloc.scopes.web.fileupload.servlet.ServletFileUpload;
 import com.phloc.scopes.web.mock.MockHttpServletRequest;
 
 /**
  * Unit test for items with varying sizes.
  */
-public final class SizesTest extends AbstractFileUploadTestCase
+public final class FuncTestSizes extends AbstractFileUploadTestCase
 {
   /**
    * Runs a test with varying file sizes.

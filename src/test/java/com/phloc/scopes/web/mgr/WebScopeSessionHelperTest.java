@@ -38,7 +38,7 @@ import com.phloc.scopes.web.mock.AbstractWebScopeAwareTestSuite;
  * 
  * @author philip
  */
-public class WebScopeSessionHelperTest extends AbstractWebScopeAwareTestSuite
+public final class WebScopeSessionHelperTest extends AbstractWebScopeAwareTestSuite
 {
   private static final class MockScopeRenewalAware implements IScopeRenewalAware, Serializable
   {

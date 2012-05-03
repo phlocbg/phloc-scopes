@@ -44,7 +44,7 @@ import com.phloc.scopes.web.mock.MockHttpServletRequest;
 /**
  * Unit test for items with varying sizes.
  */
-public final class StreamingTest
+public final class FuncTestStreaming
 {
   /**
    * Tests a file upload with varying file sizes.
