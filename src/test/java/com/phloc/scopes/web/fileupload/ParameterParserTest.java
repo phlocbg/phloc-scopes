@@ -17,40 +17,21 @@
  */
 package com.phloc.scopes.web.fileupload;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
 import java.util.Map;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.Test;
 
 /**
  * Unit tests for {@link ParameterParser}.
  * 
  * @author <a href="mailto:oleg@ural.ru">Oleg Kalnichevski</a>
  */
-public class ParameterParserTest extends TestCase
+public final class ParameterParserTest
 {
-
-  // ------------------------------------------------------------ Constructor
-  public ParameterParserTest (final String testName)
-  {
-    super (testName);
-  }
-
-  // ------------------------------------------------------------------- Main
-  public static void main (final String args[])
-  {
-    final String [] testCaseName = { ParameterParserTest.class.getName () };
-    junit.textui.TestRunner.main (testCaseName);
-  }
-
-  // ------------------------------------------------------- TestCase Methods
-
-  public static Test suite ()
-  {
-    return new TestSuite (ParameterParserTest.class);
-  }
-
+  @Test
   public void testParsing ()
   {
     String s = "test; test1 =  stuff   ; test2 =  \"stuff; stuff\"; test3=\"stuff";
@@ -87,6 +68,7 @@ public class ParameterParserTest extends TestCase
     assertEquals (0, params.size ());
   }
 
+  @Test
   public void testContentTypeParsing ()
   {
     final String s = "text/plain; Charset=UTF-8";
@@ -96,6 +78,7 @@ public class ParameterParserTest extends TestCase
     assertEquals ("UTF-8", params.get ("charset"));
   }
 
+  @Test
   public void testParsingEscapedChars ()
   {
     String s = "param = \"stuff\\\"; more stuff\"";
@@ -112,6 +95,7 @@ public class ParameterParserTest extends TestCase
   }
 
   // See: http://issues.apache.org/jira/browse/FILEUPLOAD-139
+  @Test
   public void testFileUpload139 ()
   {
     final ParameterParser parser = new ParameterParser ();

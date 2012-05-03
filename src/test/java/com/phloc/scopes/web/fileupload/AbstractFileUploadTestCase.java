@@ -22,8 +22,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import junit.framework.TestCase;
-
 import com.phloc.scopes.web.fileupload.io.DiskFileItemFactory;
 import com.phloc.scopes.web.fileupload.servlet.ServletFileUpload;
 import com.phloc.scopes.web.mock.MockHttpServletRequest;
@@ -31,16 +29,16 @@ import com.phloc.scopes.web.mock.MockHttpServletRequest;
 /**
  * Base class for deriving test cases.
  */
-public abstract class FileUploadTestCase extends TestCase
+public abstract class AbstractFileUploadTestCase
 {
   protected static final String CONTENT_TYPE = "multipart/form-data; boundary=---1234";
 
-  protected List <IFileItem> parseUpload (final byte [] bytes) throws FileUploadException
+  protected final List <IFileItem> parseUpload (final byte [] bytes) throws FileUploadException
   {
     return parseUpload (bytes, CONTENT_TYPE);
   }
 
-  protected List <IFileItem> parseUpload (final byte [] bytes, final String contentType) throws FileUploadException
+  protected final List <IFileItem> parseUpload (final byte [] bytes, final String contentType) throws FileUploadException
   {
     final ServletFileUpload upload = new ServletFileUpload (new DiskFileItemFactory (10240));
     final HttpServletRequest request = MockHttpServletRequest.createWithContent (bytes, contentType);
@@ -49,7 +47,8 @@ public abstract class FileUploadTestCase extends TestCase
     return fileItems;
   }
 
-  protected List <IFileItem> parseUpload (final String content) throws UnsupportedEncodingException, FileUploadException
+  protected final List <IFileItem> parseUpload (final String content) throws UnsupportedEncodingException,
+                                                                     FileUploadException
   {
     final byte [] bytes = content.getBytes ("US-ASCII");
     return parseUpload (bytes, CONTENT_TYPE);

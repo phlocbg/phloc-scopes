@@ -15,7 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.phloc.scopes.web.fileupload;
+package com.phloc.scopes.web.fileupload.io;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -24,17 +30,16 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
-import com.phloc.scopes.web.fileupload.io.DiskFileItem;
-import com.phloc.scopes.web.fileupload.io.DiskFileItemFactory;
+import com.phloc.scopes.web.fileupload.IFileItem;
+import com.phloc.scopes.web.fileupload.IFileItemFactory;
 
 /**
  * Serialization Unit tests for {@link DiskFileItem}.
  */
-public class DiskFileItemSerializeTest extends TestCase
+public final class DiskFileItemTest
 {
-
   /**
    * Content type for regular form items.
    */
@@ -46,43 +51,33 @@ public class DiskFileItemSerializeTest extends TestCase
   private static final int threshold = 16;
 
   /**
-   * Standard JUnit test case constructor.
-   * 
-   * @param name
-   *        The name of the test case.
-   */
-  public DiskFileItemSerializeTest (final String name)
-  {
-    super (name);
-  }
-
-  /**
    * Test creation of a field for which the amount of data falls below the
    * configured threshold.
    */
+  @Test
   public void testBelowThreshold ()
   {
 
     // Create the FileItem
-    final byte [] testFieldValueBytes = createContentBytes (threshold - 1);
-    final IFileItem item = createFileItem (testFieldValueBytes);
+    final byte [] testFieldValueBytes = _createContentBytes (threshold - 1);
+    final IFileItem item = _createFileItem (testFieldValueBytes);
 
     // Check state is as expected
     assertTrue ("Initial: in memory", item.isInMemory ());
     assertEquals ("Initial: size", item.getSize (), testFieldValueBytes.length);
-    compareBytes ("Initial", item.get (), testFieldValueBytes);
+    _compareBytes ("Initial", item.get (), testFieldValueBytes);
 
     // Serialize & Deserialize
     try
     {
-      final IFileItem newItem = (IFileItem) serializeDeserialize (item);
+      final IFileItem newItem = (IFileItem) _serializeDeserialize (item);
 
       // Test deserialized content is as expected
       assertTrue ("Check in memory", newItem.isInMemory ());
-      compareBytes ("Check", testFieldValueBytes, newItem.get ());
+      _compareBytes ("Check", testFieldValueBytes, newItem.get ());
 
       // Compare FileItem's (except byte[])
-      compareFileItems (item, newItem);
+      _compareFileItems (item, newItem);
 
     }
     catch (final Exception e)
@@ -96,28 +91,29 @@ public class DiskFileItemSerializeTest extends TestCase
    * Test creation of a field for which the amount of data equals the configured
    * threshold.
    */
+  @Test
   public void testThreshold ()
   {
     // Create the FileItem
-    final byte [] testFieldValueBytes = createContentBytes (threshold);
-    final IFileItem item = createFileItem (testFieldValueBytes);
+    final byte [] testFieldValueBytes = _createContentBytes (threshold);
+    final IFileItem item = _createFileItem (testFieldValueBytes);
 
     // Check state is as expected
     assertTrue ("Initial: in memory", item.isInMemory ());
     assertEquals ("Initial: size", item.getSize (), testFieldValueBytes.length);
-    compareBytes ("Initial", item.get (), testFieldValueBytes);
+    _compareBytes ("Initial", item.get (), testFieldValueBytes);
 
     // Serialize & Deserialize
     try
     {
-      final IFileItem newItem = (IFileItem) serializeDeserialize (item);
+      final IFileItem newItem = (IFileItem) _serializeDeserialize (item);
 
       // Test deserialized content is as expected
       assertTrue ("Check in memory", newItem.isInMemory ());
-      compareBytes ("Check", testFieldValueBytes, newItem.get ());
+      _compareBytes ("Check", testFieldValueBytes, newItem.get ());
 
       // Compare FileItem's (except byte[])
-      compareFileItems (item, newItem);
+      _compareFileItems (item, newItem);
 
     }
     catch (final Exception e)
@@ -130,29 +126,30 @@ public class DiskFileItemSerializeTest extends TestCase
    * Test creation of a field for which the amount of data falls above the
    * configured threshold.
    */
+  @Test
   public void testAboveThreshold ()
   {
 
     // Create the FileItem
-    final byte [] testFieldValueBytes = createContentBytes (threshold + 1);
-    final IFileItem item = createFileItem (testFieldValueBytes);
+    final byte [] testFieldValueBytes = _createContentBytes (threshold + 1);
+    final IFileItem item = _createFileItem (testFieldValueBytes);
 
     // Check state is as expected
     assertFalse ("Initial: in memory", item.isInMemory ());
     assertEquals ("Initial: size", item.getSize (), testFieldValueBytes.length);
-    compareBytes ("Initial", item.get (), testFieldValueBytes);
+    _compareBytes ("Initial", item.get (), testFieldValueBytes);
 
     // Serialize & Deserialize
     try
     {
-      final IFileItem newItem = (IFileItem) serializeDeserialize (item);
+      final IFileItem newItem = (IFileItem) _serializeDeserialize (item);
 
       // Test deserialized content is as expected
       assertFalse ("Check in memory", newItem.isInMemory ());
-      compareBytes ("Check", testFieldValueBytes, newItem.get ());
+      _compareBytes ("Check", testFieldValueBytes, newItem.get ());
 
       // Compare FileItem's (except byte[])
-      compareFileItems (item, newItem);
+      _compareFileItems (item, newItem);
 
     }
     catch (final Exception e)
@@ -164,7 +161,7 @@ public class DiskFileItemSerializeTest extends TestCase
   /**
    * Compare FileItem's (except the byte[] content)
    */
-  private void compareFileItems (final IFileItem origItem, final IFileItem newItem)
+  private void _compareFileItems (final IFileItem origItem, final IFileItem newItem)
   {
     assertTrue ("Compare: is in Memory", origItem.isInMemory () == newItem.isInMemory ());
     assertTrue ("Compare: is Form Field", origItem.isFormField () == newItem.isFormField ());
@@ -176,7 +173,7 @@ public class DiskFileItemSerializeTest extends TestCase
   /**
    * Compare content bytes.
    */
-  private void compareBytes (final String text, final byte [] origBytes, final byte [] newBytes)
+  private void _compareBytes (final String text, final byte [] origBytes, final byte [] newBytes)
   {
     assertNotNull (origBytes);
     assertNotNull (newBytes);
@@ -190,7 +187,7 @@ public class DiskFileItemSerializeTest extends TestCase
   /**
    * Create content bytes of a specified size.
    */
-  private byte [] createContentBytes (final int size)
+  private byte [] _createContentBytes (final int size)
   {
     final StringBuffer buffer = new StringBuffer (size);
     byte count = 0;
@@ -209,7 +206,7 @@ public class DiskFileItemSerializeTest extends TestCase
   /**
    * Create a FileItem with the specfied content bytes.
    */
-  private IFileItem createFileItem (final byte [] contentBytes)
+  private IFileItem _createFileItem (final byte [] contentBytes)
   {
     final IFileItemFactory factory = new DiskFileItemFactory (threshold);
     final String textFieldName = "textField";
@@ -233,7 +230,7 @@ public class DiskFileItemSerializeTest extends TestCase
   /**
    * Do serialization and deserialization.
    */
-  private Object serializeDeserialize (final Object target)
+  private Object _serializeDeserialize (final Object target)
   {
 
     // Serialize the test object

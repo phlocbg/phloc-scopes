@@ -17,6 +17,10 @@
  */
 package com.phloc.scopes.web.fileupload;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FilterInputStream;
@@ -29,7 +33,7 @@ import java.util.List;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
 import com.phloc.scopes.web.fileupload.AbstractFileUploadBase.IOFileUploadException;
 import com.phloc.scopes.web.fileupload.io.DiskFileItemFactory;
@@ -40,15 +44,16 @@ import com.phloc.scopes.web.mock.MockHttpServletRequest;
 /**
  * Unit test for items with varying sizes.
  */
-public class StreamingTest extends TestCase
+public final class StreamingTest
 {
   /**
    * Tests a file upload with varying file sizes.
    */
+  @Test
   public void testFileUpload () throws IOException, FileUploadException
   {
-    final byte [] request = newRequest ();
-    final List <IFileItem> fileItems = parseUploadToList (request);
+    final byte [] request = _newRequest ();
+    final List <IFileItem> fileItems = _parseUploadToList (request);
     final Iterator <IFileItem> fileIter = fileItems.iterator ();
     int add = 16;
     int num = 0;
@@ -73,14 +78,15 @@ public class StreamingTest extends TestCase
   /**
    * Tests, whether an invalid request throws a proper exception.
    */
+  @Test
   public void testFileUploadException () throws IOException, FileUploadException
   {
-    final byte [] request = newRequest ();
+    final byte [] request = _newRequest ();
     final byte [] invalidRequest = new byte [request.length - 11];
     System.arraycopy (request, 0, invalidRequest, 0, request.length - 11);
     try
     {
-      parseUploadToList (invalidRequest);
+      _parseUploadToList (invalidRequest);
       fail ("Expected EndOfStreamException");
     }
     catch (final IOFileUploadException e)
@@ -92,9 +98,10 @@ public class StreamingTest extends TestCase
   /**
    * Tests, whether an IOException is properly delegated.
    */
+  @Test
   public void testIOException () throws IOException
   {
-    final byte [] request = newRequest ();
+    final byte [] request = _newRequest ();
     final InputStream stream = new FilterInputStream (new ByteArrayInputStream (request))
     {
       private int num;
@@ -126,7 +133,7 @@ public class StreamingTest extends TestCase
     };
     try
     {
-      parseUploadToList (stream, request.length);
+      _parseUploadToList (stream, request.length);
       fail ("Expected IOException");
     }
     catch (final FileUploadException e)
@@ -139,11 +146,12 @@ public class StreamingTest extends TestCase
   /**
    * Test for FILEUPLOAD-135
    */
+  @Test
   public void testFILEUPLOAD135 () throws IOException, FileUploadException
   {
-    final byte [] request = newShortRequest ();
+    final byte [] request = _newShortRequest ();
     final ByteArrayInputStream bais = new ByteArrayInputStream (request);
-    final List <IFileItem> fileItems = parseUploadToList (new InputStream ()
+    final List <IFileItem> fileItems = _parseUploadToList (new InputStream ()
     {
       @Override
       public int read () throws IOException
@@ -170,7 +178,7 @@ public class StreamingTest extends TestCase
     assertTrue (!fileIter.hasNext ());
   }
 
-  private IFileItemIterator parseUploadToIterator (final byte [] aContent) throws FileUploadException, IOException
+  private IFileItemIterator _parseUploadToIterator (final byte [] aContent) throws FileUploadException, IOException
   {
     final String contentType = "multipart/form-data; boundary=---1234";
 
@@ -180,12 +188,12 @@ public class StreamingTest extends TestCase
     return upload.getItemIterator (new ServletRequestContext (request));
   }
 
-  private List <IFileItem> parseUploadToList (final byte [] bytes) throws FileUploadException
+  private List <IFileItem> _parseUploadToList (final byte [] bytes) throws FileUploadException
   {
-    return parseUploadToList (new ByteArrayInputStream (bytes), bytes.length);
+    return _parseUploadToList (new ByteArrayInputStream (bytes), bytes.length);
   }
 
-  private List <IFileItem> parseUploadToList (final InputStream pStream, final int pLength) throws FileUploadException
+  private List <IFileItem> _parseUploadToList (final InputStream pStream, final int pLength) throws FileUploadException
   {
     final String contentType = "multipart/form-data; boundary=---1234";
 
@@ -216,30 +224,29 @@ public class StreamingTest extends TestCase
     return upload.parseRequest (new ServletRequestContext (request));
   }
 
-  private String getHeader (final String pField)
+  private static String _getHeader (final String pField)
   {
     return "-----1234\r\n" + "Content-Disposition: form-data; name=\"" + pField + "\"\r\n" + "\r\n";
-
   }
 
-  private String getFooter ()
+  private static String _getFooter ()
   {
     return "-----1234--\r\n";
   }
 
-  private byte [] newShortRequest () throws IOException
+  private static byte [] _newShortRequest () throws IOException
   {
     final ByteArrayOutputStream baos = new ByteArrayOutputStream ();
     final OutputStreamWriter osw = new OutputStreamWriter (baos, "US-ASCII");
-    osw.write (getHeader ("field"));
+    osw.write (_getHeader ("field"));
     osw.write ("123");
     osw.write ("\r\n");
-    osw.write (getFooter ());
+    osw.write (_getFooter ());
     osw.close ();
     return baos.toByteArray ();
   }
 
-  private byte [] newRequest () throws IOException
+  private static byte [] _newRequest () throws IOException
   {
     final ByteArrayOutputStream baos = new ByteArrayOutputStream ();
     final OutputStreamWriter osw = new OutputStreamWriter (baos, "US-ASCII");
@@ -251,7 +258,7 @@ public class StreamingTest extends TestCase
       {
         add = 16;
       }
-      osw.write (getHeader ("field" + (num++)));
+      osw.write (_getHeader ("field" + (num++)));
       osw.flush ();
       for (int j = 0; j < i; j++)
       {
@@ -259,7 +266,7 @@ public class StreamingTest extends TestCase
       }
       osw.write ("\r\n");
     }
-    osw.write (getFooter ());
+    osw.write (_getFooter ());
     osw.close ();
     return baos.toByteArray ();
   }
@@ -267,6 +274,7 @@ public class StreamingTest extends TestCase
   /**
    * Tests, whether an {@link InvalidFileNameException} is thrown.
    */
+  @Test
   public void testInvalidFileNameException () throws Exception
   {
     final String fileName = "foo.exe\u0000.png";
@@ -293,7 +301,7 @@ public class StreamingTest extends TestCase
                            "-----1234--\r\n";
     final byte [] reqBytes = request.getBytes ("US-ASCII");
 
-    final IFileItemIterator fileItemIter = parseUploadToIterator (reqBytes);
+    final IFileItemIterator fileItemIter = _parseUploadToIterator (reqBytes);
     final IFileItemStream fileItemStream = fileItemIter.next ();
     try
     {
@@ -307,7 +315,7 @@ public class StreamingTest extends TestCase
       assertTrue (e.getMessage ().indexOf ("foo.exe\\0.png") != -1);
     }
 
-    final List <IFileItem> fileItems = parseUploadToList (reqBytes);
+    final List <IFileItem> fileItems = _parseUploadToList (reqBytes);
     final IFileItem fileItem = fileItems.get (0);
     try
     {

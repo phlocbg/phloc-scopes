@@ -17,12 +17,18 @@
  */
 package com.phloc.scopes.web.fileupload;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.junit.Test;
 
 import com.phloc.commons.charset.CCharset;
 import com.phloc.scopes.web.fileupload.io.DiskFileItemFactory;
@@ -32,11 +38,12 @@ import com.phloc.scopes.web.mock.MockHttpServletRequest;
 /**
  * Unit test for items with varying sizes.
  */
-public class SizesTest extends FileUploadTestCase
+public final class SizesTest extends AbstractFileUploadTestCase
 {
   /**
    * Runs a test with varying file sizes.
    */
+  @Test
   public void testFileUpload () throws IOException, FileUploadException
   {
     final ByteArrayOutputStream baos = new ByteArrayOutputStream ();
@@ -87,6 +94,7 @@ public class SizesTest extends FileUploadTestCase
   /**
    * Checks, whether limiting the file size works.
    */
+  @Test
   public void testFileSizeLimit () throws IOException, FileUploadException
   {
     final String request = "-----1234\r\n"
