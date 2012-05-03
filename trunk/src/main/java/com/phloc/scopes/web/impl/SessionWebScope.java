@@ -39,6 +39,7 @@ import com.phloc.commons.string.ToStringGenerator;
 import com.phloc.scopes.AbstractMapBasedScope;
 import com.phloc.scopes.MetaScopeFactory;
 import com.phloc.scopes.ScopeUtils;
+import com.phloc.scopes.spi.ScopeSPIManager;
 import com.phloc.scopes.web.domain.ISessionApplicationWebScope;
 import com.phloc.scopes.web.domain.ISessionWebScope;
 
@@ -94,9 +95,14 @@ public class SessionWebScope extends AbstractMapBasedScope implements ISessionWe
     m_aRWLock.writeLock ().lock ();
     try
     {
-      // destroy all contained session application scopes first
       for (final ISessionApplicationWebScope aSessionAppScope : m_aSessionAppScopes.values ())
+      {
+        // Invoke SPIs
+        ScopeSPIManager.onSessionApplicationWebScopeEnd (aSessionAppScope);
+
+        // destroy the scope
         aSessionAppScope.destroyScope ();
+      }
       m_aSessionAppScopes.clear ();
     }
     finally
@@ -147,6 +153,9 @@ public class SessionWebScope extends AbstractMapBasedScope implements ISessionWe
           aSessionAppScope = MetaScopeFactory.getWebScopeFactory ().createSessionApplicationScope (sAppScopeID);
           m_aSessionAppScopes.put (sAppScopeID, aSessionAppScope);
           aSessionAppScope.initScope ();
+
+          // Invoke SPIs
+          ScopeSPIManager.onSessionApplicationWebScopeBegin (aSessionAppScope);
         }
       }
       finally

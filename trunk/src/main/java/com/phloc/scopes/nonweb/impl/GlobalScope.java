@@ -38,6 +38,7 @@ import com.phloc.scopes.MetaScopeFactory;
 import com.phloc.scopes.ScopeUtils;
 import com.phloc.scopes.nonweb.domain.IApplicationScope;
 import com.phloc.scopes.nonweb.domain.IGlobalScope;
+import com.phloc.scopes.spi.ScopeSPIManager;
 
 /**
  * Base implementation of the {@link IGlobalScope} interface.<br>
@@ -71,7 +72,13 @@ public class GlobalScope extends AbstractMapBasedScope implements IGlobalScope
     try
     {
       for (final IApplicationScope aAppScope : m_aAppScopes.values ())
+      {
+        // Invoke SPIs
+        ScopeSPIManager.onApplicationScopeEnd (aAppScope);
+
+        // Destroy the scope
         aAppScope.destroyScope ();
+      }
       m_aAppScopes.clear ();
     }
     finally
@@ -131,6 +138,9 @@ public class GlobalScope extends AbstractMapBasedScope implements IGlobalScope
           aAppScope = createApplicationScope (sApplicationID);
           m_aAppScopes.put (sApplicationID, aAppScope);
           aAppScope.initScope ();
+
+          // Invoke SPIs
+          ScopeSPIManager.onApplicationScopeBegin (aAppScope);
         }
       }
       finally
