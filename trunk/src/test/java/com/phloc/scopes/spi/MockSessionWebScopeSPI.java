@@ -17,8 +17,10 @@
  */
 package com.phloc.scopes.spi;
 
+import com.phloc.commons.annotations.IsSPIImplementation;
 import com.phloc.scopes.web.domain.ISessionWebScope;
 
+@IsSPIImplementation
 public final class MockSessionWebScopeSPI extends AbstractScopeSPI implements ISessionWebScopeSPI
 {
   public void onSessionWebScopeBegin (final ISessionWebScope aScope)
