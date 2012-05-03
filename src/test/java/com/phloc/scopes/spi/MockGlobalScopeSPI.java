@@ -17,8 +17,10 @@
  */
 package com.phloc.scopes.spi;
 
+import com.phloc.commons.annotations.IsSPIImplementation;
 import com.phloc.scopes.nonweb.domain.IGlobalScope;
 
+@IsSPIImplementation
 public final class MockGlobalScopeSPI extends AbstractScopeSPI implements IGlobalScopeSPI
 {
   public void onGlobalScopeBegin (final IGlobalScope aScope)
