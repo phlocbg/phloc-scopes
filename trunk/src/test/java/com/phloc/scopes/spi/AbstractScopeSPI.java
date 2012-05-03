@@ -17,32 +17,37 @@
  */
 package com.phloc.scopes.spi;
 
-import javax.annotation.Nonnull;
-
-import com.phloc.commons.annotations.IsSPIInterface;
-import com.phloc.scopes.web.domain.IRequestWebScope;
+import com.phloc.commons.mock.MockRuntimeException;
 
 /**
- * SPI for handling the global scope lifecycle. Is invoked only for web scopes.
+ * Abstract base class for all Mock SPI implementations
  * 
  * @author philip
  */
-@IsSPIInterface
-public interface IRequestWebScopeSPI
+abstract class AbstractScopeSPI
 {
-  /**
-   * Called after the request web scope was started
-   * 
-   * @param aRequestWebScope
-   *        The request web scope object to be used
-   */
-  void onRequestWebScopeBegin (@Nonnull IRequestWebScope aRequestWebScope);
+  private static int s_nBegin = 0;
+  private static int s_nEnd = 0;
 
-  /**
-   * Called before the request web scope is shut down
-   * 
-   * @param aRequestWebScope
-   *        The request web scope object to be used
-   */
-  void onRequestWebScopeEnd (@Nonnull IRequestWebScope aRequestWebScope);
+  protected static final void onBegin ()
+  {
+    s_nBegin++;
+    throw new MockRuntimeException ();
+  }
+
+  public static final int getBegin ()
+  {
+    return s_nBegin;
+  }
+
+  protected static final void onEnd ()
+  {
+    s_nEnd++;
+    throw new MockRuntimeException ();
+  }
+
+  public static final int getEnd ()
+  {
+    return s_nEnd;
+  }
 }

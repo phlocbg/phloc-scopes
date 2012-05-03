@@ -54,6 +54,10 @@ public enum EScope
    * 
    * @param eScope
    *        The scope to resolve to a real scope.
+   * @param bCreateIfNotExisting
+   *        if <code>false</code> and the scope is not existing,
+   *        <code>null</code> will be returned. This parameter is only used in
+   *        application scopes.
    * @return The matching IScope.
    * @throws IllegalArgumentException
    *         If an illegal enumeration value is passed.

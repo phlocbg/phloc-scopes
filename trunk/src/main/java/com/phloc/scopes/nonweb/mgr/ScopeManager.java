@@ -46,6 +46,8 @@ import com.phloc.scopes.spi.ScopeSPIManager;
 @NotThreadSafe
 public final class ScopeManager
 {
+  public static final boolean DEFAULT_CREATE_SCOPE = true;
+
   private static final Logger s_aLogger = LoggerFactory.getLogger (ScopeManager.class);
 
   /**
@@ -91,10 +93,14 @@ public final class ScopeManager
    * 
    * @param sScopeID
    *        The scope ID to use
+   * @return The created global scope object. Never <code>null</code>.
    */
-  public static void onGlobalBegin (@Nonnull @Nonempty final String sScopeID)
+  @Nonnull
+  public static IGlobalScope onGlobalBegin (@Nonnull @Nonempty final String sScopeID)
   {
-    setGlobalScope (MetaScopeFactory.getScopeFactory ().createGlobalScope (sScopeID));
+    final IGlobalScope aGlobalScope = MetaScopeFactory.getScopeFactory ().createGlobalScope (sScopeID);
+    setGlobalScope (aGlobalScope);
+    return aGlobalScope;
   }
 
   public static boolean isGlobalScopePresent ()
@@ -168,18 +174,60 @@ public final class ScopeManager
     return ret;
   }
 
+  /**
+   * Get or create the current application scope using the application ID
+   * present in the request scope.
+   * 
+   * @return Never <code>null</code>.
+   */
   @Nonnull
   public static IApplicationScope getApplicationScope ()
   {
-    return getApplicationScope (true);
+    return getApplicationScope (DEFAULT_CREATE_SCOPE);
   }
 
+  /**
+   * Get or create the current application scope using the application ID
+   * present in the request scope.
+   * 
+   * @param bCreateIfNotExisting
+   *        if <code>false</code> an no application scope is present, none will
+   *        be created
+   * @return <code>null</code> if bCreateIfNotExisting is <code>false</code> and
+   *         no such scope is present
+   */
   @Nullable
   public static IApplicationScope getApplicationScope (final boolean bCreateIfNotExisting)
   {
     return getApplicationScope (getRequestApplicationID (), bCreateIfNotExisting);
   }
 
+  /**
+   * Get or create an application scope.
+   * 
+   * @param sApplicationID
+   *        The ID of the application scope be retrieved or created. May neither
+   *        be <code>null</code> nor empty.
+   * @return Never <code>null</code>.
+   */
+  @Nonnull
+  public static IApplicationScope getApplicationScope (@Nonnull @Nonempty final String sApplicationID)
+  {
+    return getApplicationScope (sApplicationID, DEFAULT_CREATE_SCOPE);
+  }
+
+  /**
+   * Get or create an application scope.
+   * 
+   * @param sApplicationID
+   *        The ID of the application scope be retrieved or created. May neither
+   *        be <code>null</code> nor empty.
+   * @param bCreateIfNotExisting
+   *        if <code>false</code> an no application scope is present, none will
+   *        be created
+   * @return <code>null</code> if bCreateIfNotExisting is <code>false</code> and
+   *         no such scope is present
+   */
   @Nullable
   public static IApplicationScope getApplicationScope (@Nonnull @Nonempty final String sApplicationID,
                                                        final boolean bCreateIfNotExisting)
@@ -232,10 +280,13 @@ public final class ScopeManager
     ScopeSPIManager.onRequestScopeBegin (aRequestScope);
   }
 
-  public static void onRequestBegin (@Nonnull @Nonempty final String sApplicationID,
-                                     @Nonnull @Nonempty final String sScopeID)
+  @Nonnull
+  public static IRequestScope onRequestBegin (@Nonnull @Nonempty final String sApplicationID,
+                                              @Nonnull @Nonempty final String sScopeID)
   {
-    setRequestScope (sApplicationID, MetaScopeFactory.getScopeFactory ().createRequestScope (sScopeID));
+    final IRequestScope aRequestScope = MetaScopeFactory.getScopeFactory ().createRequestScope (sScopeID);
+    setRequestScope (sApplicationID, aRequestScope);
+    return aRequestScope;
   }
 
   public static boolean isRequestScopePresent ()
@@ -248,7 +299,7 @@ public final class ScopeManager
   {
     final IRequestScope aScope = s_aRequestScope.get ();
     if (aScope == null)
-      throw new IllegalStateException ("The request context is not available. If you're running the unittests, inherit your test class from a scopeAwareTestCase.");
+      throw new IllegalStateException ("No request scope is available.");
     return aScope;
   }
 
@@ -273,11 +324,12 @@ public final class ScopeManager
       {
         // Happens after an internal redirect happened in a web-application
         // (e.g. for 404 page) for the original scope
-        s_aLogger.warn ("No request scope present that could be shut down!");
+        s_aLogger.warn ("No request scope present that could be ended!");
       }
     }
     finally
     {
+      // Remove from ThreadLocal
       s_aRequestScope.remove ();
     }
   }

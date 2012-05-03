@@ -59,7 +59,11 @@ public enum EWebScope
    * 
    * @param eScope
    *        The scope to resolve to a real scope.
-   * @return The matching IScope.
+   * @param bCreateIfNotExisting
+   *        if <code>false</code> and the scope is not existing,
+   *        <code>null</code> will be returned. This parameter is only used in
+   *        application, session and session application scopes.
+   * @return The matching IWebScope.
    * @throws IllegalArgumentException
    *         If an illegal enumeration value is passed.
    */
@@ -79,7 +83,7 @@ public enum EWebScope
       case REQUEST:
         return WebScopeManager.getRequestScope ();
       default:
-        throw new IllegalArgumentException ("Unknown scope: " + eScope);
+        throw new IllegalArgumentException ("Unknown web scope: " + eScope);
     }
   }
 }
