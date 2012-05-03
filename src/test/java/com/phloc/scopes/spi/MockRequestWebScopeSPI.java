@@ -17,32 +17,17 @@
  */
 package com.phloc.scopes.spi;
 
-import javax.annotation.Nonnull;
-
-import com.phloc.commons.annotations.IsSPIInterface;
 import com.phloc.scopes.web.domain.IRequestWebScope;
 
-/**
- * SPI for handling the global scope lifecycle. Is invoked only for web scopes.
- * 
- * @author philip
- */
-@IsSPIInterface
-public interface IRequestWebScopeSPI
+public final class MockRequestWebScopeSPI extends AbstractScopeSPI implements IRequestWebScopeSPI
 {
-  /**
-   * Called after the request web scope was started
-   * 
-   * @param aRequestWebScope
-   *        The request web scope object to be used
-   */
-  void onRequestWebScopeBegin (@Nonnull IRequestWebScope aRequestWebScope);
+  public void onRequestWebScopeBegin (final IRequestWebScope aScope)
+  {
+    onBegin ();
+  }
 
-  /**
-   * Called before the request web scope is shut down
-   * 
-   * @param aRequestWebScope
-   *        The request web scope object to be used
-   */
-  void onRequestWebScopeEnd (@Nonnull IRequestWebScope aRequestWebScope);
+  public void onRequestWebScopeEnd (final IRequestWebScope aScope)
+  {
+    onEnd ();
+  }
 }

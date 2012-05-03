@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.phloc.commons.annotations.Nonempty;
 import com.phloc.scopes.MetaScopeFactory;
 import com.phloc.scopes.nonweb.mgr.ScopeManager;
 import com.phloc.scopes.web.domain.IApplicationWebScope;
@@ -74,16 +75,65 @@ public final class WebScopeManager
 
   // --- application scope ---
 
+  /**
+   * Get or create the current application scope using the application ID
+   * present in the request scope.
+   * 
+   * @return Never <code>null</code>.
+   */
   @Nonnull
   public static IApplicationWebScope getApplicationScope ()
   {
-    return getApplicationScope (true);
+    return (IApplicationWebScope) ScopeManager.getApplicationScope ();
   }
 
-  @Nonnull
+  /**
+   * Get or create the current application scope using the application ID
+   * present in the request scope.
+   * 
+   * @param bCreateIfNotExisting
+   *        if <code>false</code> an no application scope is present, none will
+   *        be created
+   * @return <code>null</code> if bCreateIfNotExisting is <code>false</code> and
+   *         no such scope is present
+   */
+  @Nullable
   public static IApplicationWebScope getApplicationScope (final boolean bCreateIfNotExisting)
   {
     return (IApplicationWebScope) ScopeManager.getApplicationScope (bCreateIfNotExisting);
+  }
+
+  /**
+   * Get or create an application scope.
+   * 
+   * @param sApplicationID
+   *        The ID of the application scope be retrieved or created. May neither
+   *        be <code>null</code> nor empty.
+   * @return Never <code>null</code>.
+   */
+  @Nonnull
+  public static IApplicationWebScope getApplicationScope (@Nonnull @Nonempty final String sApplicationID)
+  {
+    return (IApplicationWebScope) ScopeManager.getApplicationScope (sApplicationID);
+  }
+
+  /**
+   * Get or create an application scope.
+   * 
+   * @param sApplicationID
+   *        The ID of the application scope be retrieved or created. May neither
+   *        be <code>null</code> nor empty.
+   * @param bCreateIfNotExisting
+   *        if <code>false</code> an no application scope is present, none will
+   *        be created
+   * @return <code>null</code> if bCreateIfNotExisting is <code>false</code> and
+   *         no such scope is present
+   */
+  @Nullable
+  public static IApplicationWebScope getApplicationScope (@Nonnull @Nonempty final String sApplicationID,
+                                                          final boolean bCreateIfNotExisting)
+  {
+    return (IApplicationWebScope) ScopeManager.getApplicationScope (sApplicationID, bCreateIfNotExisting);
   }
 
   // --- session scope ---
@@ -97,7 +147,7 @@ public final class WebScopeManager
   @Nonnull
   public static ISessionWebScope getSessionScope ()
   {
-    return getSessionScope (true);
+    return getSessionScope (ScopeManager.DEFAULT_CREATE_SCOPE);
   }
 
   @Nullable
@@ -117,7 +167,7 @@ public final class WebScopeManager
   @Nonnull
   public static ISessionApplicationWebScope getSessionApplicationScope ()
   {
-    return getSessionApplicationScope (true);
+    return getSessionApplicationScope (ScopeManager.DEFAULT_CREATE_SCOPE);
   }
 
   @Nullable
@@ -126,15 +176,19 @@ public final class WebScopeManager
     return getSessionApplicationScope (ScopeManager.getRequestApplicationID (), bCreateIfNotExisting);
   }
 
+  @Nonnull
+  public static ISessionApplicationWebScope getSessionApplicationScope (@Nonnull @Nonempty final String sApplicationID)
+  {
+    return getSessionApplicationScope (sApplicationID, ScopeManager.DEFAULT_CREATE_SCOPE);
+  }
+
   @Nullable
-  public static ISessionApplicationWebScope getSessionApplicationScope (@Nonnull final String sAppID,
+  public static ISessionApplicationWebScope getSessionApplicationScope (@Nonnull @Nonempty final String sApplicationID,
                                                                         final boolean bCreateIfNotExisting)
   {
     final ISessionWebScope aSessionScope = getSessionScope (bCreateIfNotExisting);
-    if (aSessionScope == null)
-      return null;
-
-    return aSessionScope.getSessionApplicationScope (sAppID, bCreateIfNotExisting);
+    return aSessionScope == null ? null : aSessionScope.getSessionApplicationScope (sApplicationID,
+                                                                                    bCreateIfNotExisting);
   }
 
   // --- request scopes ---
