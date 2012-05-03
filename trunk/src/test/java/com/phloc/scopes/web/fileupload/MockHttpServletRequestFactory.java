@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.phloc.scopes.web.mock.MockHttpServletRequest;
 
-final class HttpServletRequestFactory
+final class MockHttpServletRequestFactory
 {
   @Nonnull
   public static HttpServletRequest createHttpServletRequestWithNullContentType ()

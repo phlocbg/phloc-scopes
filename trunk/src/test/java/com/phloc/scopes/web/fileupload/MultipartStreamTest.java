@@ -17,20 +17,23 @@
  */
 package com.phloc.scopes.web.fileupload;
 
+import static org.junit.Assert.assertNotNull;
+
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
 /**
  * Unit tests {@link MultipartStream}.
  * 
  * @author Sean C. Sullivan
  */
-public class MultipartStreamTest extends TestCase
+public final class MultipartStreamTest
 {
   static private final String BOUNDARY_TEXT = "myboundary";
 
+  @Test
   public void testThreeParamConstructor () throws Exception
   {
     final String strData = "foobar";
@@ -45,6 +48,7 @@ public class MultipartStreamTest extends TestCase
     assertNotNull (ms);
   }
 
+  @Test
   public void testTwoParamConstructor () throws Exception
   {
     final String strData = "foobar";

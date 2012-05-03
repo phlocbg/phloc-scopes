@@ -15,24 +15,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.phloc.scopes.web.fileupload;
+package com.phloc.scopes.web.fileupload.util;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Iterator;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
-import com.phloc.scopes.web.fileupload.util.FileItemHeadersImpl;
+import com.phloc.scopes.web.fileupload.IFileItemHeaders;
 
 /**
  * Unit tests {@link IFileItemHeaders} and {@link FileItemHeadersImpl}.
  * 
  * @author Michael C. Macaluso
  */
-public class FileItemHeadersTest extends TestCase
+public final class FileItemHeadersImplTest
 {
   /**
    * @throws Exception
    */
+  @Test
   public void testFileItemHeaders () throws Exception
   {
     final FileItemHeadersImpl aMutableFileItemHeaders = new FileItemHeadersImpl ();

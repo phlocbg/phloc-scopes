@@ -17,9 +17,15 @@
  */
 package com.phloc.scopes.web.fileupload;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
+import org.junit.Test;
 
 import com.phloc.scopes.web.fileupload.servlet.ServletFileUpload;
 import com.phloc.scopes.web.mock.MockHttpServletRequest;
@@ -27,9 +33,9 @@ import com.phloc.scopes.web.mock.MockHttpServletRequest;
 /**
  * Tests the progress listener.
  */
-public class ProgressListenerTest extends FileUploadTestCase
+public final class IProgressListenerTest extends AbstractFileUploadTestCase
 {
-  private class ProgressListenerImpl implements IProgressListener
+  private static class ProgressListenerImpl implements IProgressListener
   {
     private final long expectedContentLength;
     private final int expectedItems;
@@ -64,6 +70,7 @@ public class ProgressListenerTest extends FileUploadTestCase
   /**
    * Parse a very long file upload by using a progress listener.
    */
+  @Test
   public void testProgressListener () throws Exception
   {
     final int NUM_ITEMS = 512;
@@ -87,7 +94,7 @@ public class ProgressListenerTest extends FileUploadTestCase
 
     MockHttpServletRequest request = MockHttpServletRequest.createWithContent (contents,
                                                                                "multipart/form-data; boundary=---1234");
-    runTest (NUM_ITEMS, contents.length, request);
+    _runTest (NUM_ITEMS, contents.length, request);
     request = new MockHttpServletRequest ()
     {
       @Override
@@ -98,10 +105,10 @@ public class ProgressListenerTest extends FileUploadTestCase
     };
     request.setContent (contents);
     request.setContentType ("multipart/form-data; boundary=---1234");
-    runTest (NUM_ITEMS, contents.length, request);
+    _runTest (NUM_ITEMS, contents.length, request);
   }
 
-  private void runTest (final int NUM_ITEMS, final long pContentLength, final MockHttpServletRequest request) throws FileUploadException,
+  private void _runTest (final int NUM_ITEMS, final long pContentLength, final MockHttpServletRequest request) throws FileUploadException,
                                                                                                              IOException
   {
     final ServletFileUpload upload = new ServletFileUpload (null);
