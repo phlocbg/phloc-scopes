@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.phloc.scopes.web.fileupload;
+package com.phloc.scopes.web.fileupload.servlet;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -27,6 +27,10 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import org.junit.Test;
+
+import com.phloc.scopes.web.fileupload.AbstractFileUploadTestCase;
+import com.phloc.scopes.web.fileupload.FileUploadException;
+import com.phloc.scopes.web.fileupload.IFileItem;
 
 /**
  * Unit tests
