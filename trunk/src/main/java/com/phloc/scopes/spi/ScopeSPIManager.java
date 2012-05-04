@@ -27,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.phloc.commons.lang.ServiceLoaderBackport;
+import com.phloc.commons.mock.IMockException;
 import com.phloc.scopes.nonweb.domain.IApplicationScope;
 import com.phloc.scopes.nonweb.domain.IGlobalScope;
 import com.phloc.scopes.nonweb.domain.IRequestScope;
@@ -96,7 +97,9 @@ public final class ScopeSPIManager
       }
       catch (final Throwable t)
       {
-        s_aLogger.error ("Failed to invoke SPI method onGlobalScopeBegin on " + aSPI, t);
+        s_aLogger.error ("Failed to invoke SPI method onGlobalScopeBegin on " + aSPI, t instanceof IMockException
+                                                                                                                 ? null
+                                                                                                                 : t);
       }
 
     if (aGlobalScope instanceof IGlobalWebScope)
@@ -110,7 +113,8 @@ public final class ScopeSPIManager
         }
         catch (final Throwable t)
         {
-          s_aLogger.error ("Failed to invoke SPI method onGlobalWebScopeBegin on " + aSPI, t);
+          s_aLogger.error ("Failed to invoke SPI method onGlobalWebScopeBegin on " + aSPI,
+                           t instanceof IMockException ? null : t);
         }
     }
   }
@@ -125,7 +129,8 @@ public final class ScopeSPIManager
       }
       catch (final Throwable t)
       {
-        s_aLogger.error ("Failed to invoke SPI method onGlobalScopeEnd on " + aSPI, t);
+        s_aLogger.error ("Failed to invoke SPI method onGlobalScopeEnd on " + aSPI, t instanceof IMockException ? null
+                                                                                                               : t);
       }
 
     if (aGlobalScope instanceof IGlobalWebScope)
@@ -139,7 +144,8 @@ public final class ScopeSPIManager
         }
         catch (final Throwable t)
         {
-          s_aLogger.error ("Failed to invoke SPI method onGlobalWebScopeEnd on " + aSPI, t);
+          s_aLogger.error ("Failed to invoke SPI method onGlobalWebScopeEnd on " + aSPI,
+                           t instanceof IMockException ? null : t);
         }
     }
   }
@@ -154,7 +160,8 @@ public final class ScopeSPIManager
       }
       catch (final Throwable t)
       {
-        s_aLogger.error ("Failed to invoke SPI method onApplicationScopeBegin on " + aSPI, t);
+        s_aLogger.error ("Failed to invoke SPI method onApplicationScopeBegin on " + aSPI,
+                         t instanceof IMockException ? null : t);
       }
 
     if (aApplicationScope instanceof IApplicationWebScope)
@@ -168,7 +175,8 @@ public final class ScopeSPIManager
         }
         catch (final Throwable t)
         {
-          s_aLogger.error ("Failed to invoke SPI method onApplicationWebScopeBegin on " + aSPI, t);
+          s_aLogger.error ("Failed to invoke SPI method onApplicationWebScopeBegin on " + aSPI,
+                           t instanceof IMockException ? null : t);
         }
     }
   }
@@ -183,7 +191,8 @@ public final class ScopeSPIManager
       }
       catch (final Throwable t)
       {
-        s_aLogger.error ("Failed to invoke SPI method onApplicationScopeEnd on " + aSPI, t);
+        s_aLogger.error ("Failed to invoke SPI method onApplicationScopeEnd on " + aSPI,
+                         t instanceof IMockException ? null : t);
       }
 
     if (aApplicationScope instanceof IApplicationWebScope)
@@ -197,7 +206,8 @@ public final class ScopeSPIManager
         }
         catch (final Throwable t)
         {
-          s_aLogger.error ("Failed to invoke SPI method onApplicationWebScopeEnd on " + aSPI, t);
+          s_aLogger.error ("Failed to invoke SPI method onApplicationWebScopeEnd on " + aSPI,
+                           t instanceof IMockException ? null : t);
         }
     }
   }
@@ -212,7 +222,8 @@ public final class ScopeSPIManager
       }
       catch (final Throwable t)
       {
-        s_aLogger.error ("Failed to invoke SPI method onSessionWebScopeBegin on " + aSPI, t);
+        s_aLogger.error ("Failed to invoke SPI method onSessionWebScopeBegin on " + aSPI,
+                         t instanceof IMockException ? null : t);
       }
   }
 
@@ -226,7 +237,8 @@ public final class ScopeSPIManager
       }
       catch (final Throwable t)
       {
-        s_aLogger.error ("Failed to invoke SPI method onSessionWebScopeEnd on " + aSPI, t);
+        s_aLogger.error ("Failed to invoke SPI method onSessionWebScopeEnd on " + aSPI,
+                         t instanceof IMockException ? null : t);
       }
   }
 
@@ -240,7 +252,8 @@ public final class ScopeSPIManager
       }
       catch (final Throwable t)
       {
-        s_aLogger.error ("Failed to invoke SPI method onSessionApplicationWebScopeBegin on " + aSPI, t);
+        s_aLogger.error ("Failed to invoke SPI method onSessionApplicationWebScopeBegin on " + aSPI,
+                         t instanceof IMockException ? null : t);
       }
   }
 
@@ -254,7 +267,8 @@ public final class ScopeSPIManager
       }
       catch (final Throwable t)
       {
-        s_aLogger.error ("Failed to invoke SPI method onSessionApplicationWebScopeEnd on " + aSPI, t);
+        s_aLogger.error ("Failed to invoke SPI method onSessionApplicationWebScopeEnd on " + aSPI,
+                         t instanceof IMockException ? null : t);
       }
   }
 
@@ -268,7 +282,8 @@ public final class ScopeSPIManager
       }
       catch (final Throwable t)
       {
-        s_aLogger.error ("Failed to invoke SPI method onRequestScopeBegin on " + aSPI, t);
+        s_aLogger.error ("Failed to invoke SPI method onRequestScopeBegin on " + aSPI,
+                         t instanceof IMockException ? null : t);
       }
 
     if (aRequestScope instanceof IRequestWebScope)
@@ -282,7 +297,8 @@ public final class ScopeSPIManager
         }
         catch (final Throwable t)
         {
-          s_aLogger.error ("Failed to invoke SPI method onRequestWebScopeBegin on " + aSPI, t);
+          s_aLogger.error ("Failed to invoke SPI method onRequestWebScopeBegin on " + aSPI,
+                           t instanceof IMockException ? null : t);
         }
     }
   }
@@ -297,7 +313,8 @@ public final class ScopeSPIManager
       }
       catch (final Throwable t)
       {
-        s_aLogger.error ("Failed to invoke SPI method onRequestScopeEnd on " + aSPI, t);
+        s_aLogger.error ("Failed to invoke SPI method onRequestScopeEnd on " + aSPI, t instanceof IMockException ? null
+                                                                                                                : t);
       }
 
     if (aRequestScope instanceof IRequestWebScope)
@@ -311,7 +328,8 @@ public final class ScopeSPIManager
         }
         catch (final Throwable t)
         {
-          s_aLogger.error ("Failed to invoke SPI method onRequestWebScopeEnd on " + aSPI, t);
+          s_aLogger.error ("Failed to invoke SPI method onRequestWebScopeEnd on " + aSPI,
+                           t instanceof IMockException ? null : t);
         }
     }
   }
