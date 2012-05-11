@@ -42,6 +42,8 @@ import org.slf4j.LoggerFactory;
 import com.phloc.commons.annotations.Nonempty;
 import com.phloc.commons.annotations.OverrideOnDemand;
 import com.phloc.commons.annotations.ReturnsMutableCopy;
+import com.phloc.commons.callback.AdapterRunnableToCallableWithParameter;
+import com.phloc.commons.callback.INonThrowingCallableWithParameter;
 import com.phloc.commons.callback.INonThrowingRunnableWithParameter;
 import com.phloc.commons.collections.ContainerHelper;
 import com.phloc.commons.collections.attrs.AbstractReadonlyAttributeContainer;
@@ -147,14 +149,22 @@ public class RequestWebScopeNoMultipart extends AbstractReadonlyAttributeContain
     return m_sScopeID;
   }
 
-  public void runAtomic (@Nonnull final INonThrowingRunnableWithParameter <IScope> aAction)
+  public final void runAtomic (@Nonnull final INonThrowingRunnableWithParameter <IScope> aRunnable)
   {
-    if (aAction == null)
-      throw new NullPointerException ("action");
+    // Wrap runnable in callable
+    runAtomic (AdapterRunnableToCallableWithParameter.createAdapter (aRunnable));
+  }
+
+  @Nullable
+  public final <T> T runAtomic (@Nonnull final INonThrowingCallableWithParameter <T, IScope> aCallable)
+  {
+    if (aCallable == null)
+      throw new NullPointerException ("callable");
+
     m_aRWLock.writeLock ().lock ();
     try
     {
-      aAction.run (this);
+      return aCallable.call (this);
     }
     finally
     {

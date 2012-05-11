@@ -20,8 +20,10 @@ package com.phloc.scopes;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.phloc.commons.annotations.ReturnsMutableCopy;
+import com.phloc.commons.callback.INonThrowingCallableWithParameter;
 import com.phloc.commons.callback.INonThrowingRunnableWithParameter;
 import com.phloc.commons.collections.attrs.IAttributeContainer;
 import com.phloc.commons.id.IHasID;
@@ -81,15 +83,24 @@ public interface IScope extends IAttributeContainer, IHasID <String>
   /**
    * Perform stuff as a single action. All actions are executed in a write-lock!
    * 
-   * @param aAction
+   * @param aRunnable
    *        The action to be executed. May not be <code>null</code>.
    */
-  void runAtomic (@Nonnull INonThrowingRunnableWithParameter <IScope> aAction);
+  void runAtomic (@Nonnull INonThrowingRunnableWithParameter <IScope> aRunnable);
+
+  /**
+   * Perform stuff as a single action. All actions are executed in a write-lock!
+   * 
+   * @param aCallable
+   *        The action to be executed. May not be <code>null</code>.
+   * @return The result from the callable. May be <code>null</code>.
+   */
+  @Nullable
+  <T> T runAtomic (@Nonnull INonThrowingCallableWithParameter <T, IScope> aCallable);
 
   /**
    * @return The non-<code>null</code> map with all contained attributes that
-   *         implement the {@link IScopeRenewalAware} interface. May be
-   *         empty.
+   *         implement the {@link IScopeRenewalAware} interface. May be empty.
    */
   @Nonnull
   @ReturnsMutableCopy

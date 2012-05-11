@@ -32,11 +32,11 @@ import org.slf4j.LoggerFactory;
 import com.phloc.commons.GlobalDebug;
 import com.phloc.commons.annotations.OverrideOnDemand;
 import com.phloc.commons.annotations.UsedViaReflection;
+import com.phloc.commons.callback.INonThrowingCallableWithParameter;
 import com.phloc.commons.callback.INonThrowingRunnableWithParameter;
 import com.phloc.commons.exceptions.LoggedRuntimeException;
 import com.phloc.commons.lang.ClassHelper;
 import com.phloc.commons.mutable.MutableBoolean;
-import com.phloc.commons.mutable.Wrapper;
 import com.phloc.commons.priviledged.PrivilegedActionAccessibleObjectSetAccessible;
 import com.phloc.commons.stats.IStatisticsHandlerKeyedCounter;
 import com.phloc.commons.stats.StatisticsManager;
@@ -196,6 +196,25 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
     });
   }
 
+  /**
+   * Check if a singleton is already instantiated inside a scope
+   * 
+   * @param aScope
+   *        The scope to check. May not be <code>null</code>.
+   * @param aClass
+   *        The class to be checked.
+   * @return <code>true</code> if the singleton for the specified class is
+   *         already instantiated, <code>false</code> otherwise.
+   */
+  @Nonnull
+  protected static final boolean isSingletonInstantiated (@Nonnull final IScope aScope,
+                                                          @Nonnull final Class <? extends AbstractSingleton> aClass)
+  {
+    final String sSingletonScopeKey = getSingletonScopeKey (aClass);
+    final AbstractSingleton aInstance = aClass.cast (aScope.getAttributeObject (sSingletonScopeKey));
+    return aInstance != null;
+  }
+
   @Nonnull
   private static <T> T _instantiateSingleton (@Nonnull final Class <T> aClass, @Nonnull final IScope aScope)
   {
@@ -225,38 +244,56 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
     }
   }
 
+  /**
+   * Get the singleton object in the passed scope, using the passed class. If
+   * the singleton is not yet instantiated, a new instance is created.
+   * 
+   * @param aScope
+   *        The scope to be used. May not be <code>null</code>.
+   * @param aClass
+   *        The class to be used.
+   * @return The singleton object.
+   */
   @Nonnull
-  protected static <T extends AbstractSingleton> T getSingleton (@Nonnull final IScope aScope,
-                                                                 @Nonnull final Class <T> aClass)
+  protected static final <T extends AbstractSingleton> T getSingleton (@Nonnull final IScope aScope,
+                                                                       @Nonnull final Class <T> aClass)
   {
     final String sSingletonScopeKey = getSingletonScopeKey (aClass);
 
     // check if contained in passed scope
-    T aInstance = aClass.cast (aScope.getCastedAttribute (sSingletonScopeKey));
+    T aInstance = aClass.cast (aScope.getAttributeObject (sSingletonScopeKey));
     if (aInstance == null)
     {
+      // Some final objects to access them from the nested inner class
       final MutableBoolean aFinalWasInstantiated = new MutableBoolean (false);
-      final Wrapper <T> aFinalInstance = new Wrapper <T> ();
 
-      aScope.runAtomic (new INonThrowingRunnableWithParameter <IScope> ()
+      // Safe instantiation:
+      aInstance = aScope.runAtomic (new INonThrowingCallableWithParameter <T, IScope> ()
       {
-        public void run (@Nullable final IScope aInnerScope)
+        public T call (@Nullable final IScope aInnerScope)
         {
           // try to resolve again in case it was set in the meantime
-          T aInnerInstance = aClass.cast (aScope.getCastedAttribute (sSingletonScopeKey));
+          T aInnerInstance = aClass.cast (aScope.getAttributeObject (sSingletonScopeKey));
           if (aInnerInstance == null)
           {
+            // Main instantiation
             aInnerInstance = _instantiateSingleton (aClass, aScope);
+
+            // Set in scope
             aScope.setAttribute (sSingletonScopeKey, aInnerInstance);
+
+            // Remember that we instantiated the object
             aFinalWasInstantiated.set (true);
+
+            // And some statistics
             s_aStatsCounterInstantiate.increment (sSingletonScopeKey);
           }
-          aFinalInstance.set (aInnerInstance);
+
+          // We have the instance - maybe from re-querying the scope, maybe from
+          // instantiation
+          return aInnerInstance;
         }
       });
-
-      // Extract from wrapper
-      aInstance = aFinalInstance.get ();
 
       // Call outside the sync block, and after the instance was registered in
       // the scope

@@ -41,7 +41,7 @@ public abstract class RequestSingleton extends AbstractSingleton
   }
 
   @Nonnull
-  private static IRequestScope _getMyScope ()
+  private static IRequestScope _getStaticScope ()
   {
     return ScopeManager.getRequestScope ();
   }
@@ -50,18 +50,23 @@ public abstract class RequestSingleton extends AbstractSingleton
   @Nonnull
   protected final IRequestScope getScope ()
   {
-    return _getMyScope ();
+    return _getStaticScope ();
+  }
+
+  protected static final boolean isSingletonInstantiated (@Nonnull final Class <? extends RequestSingleton> aClass)
+  {
+    return isSingletonInstantiated (_getStaticScope (), aClass);
   }
 
   @Nonnull
-  protected static <T extends RequestSingleton> T getRequestSingleton (@Nonnull final Class <T> aClass)
+  protected static final <T extends RequestSingleton> T getRequestSingleton (@Nonnull final Class <T> aClass)
   {
-    return getSingleton (_getMyScope (), aClass);
+    return getSingleton (_getStaticScope (), aClass);
   }
 
   @Nonnull
   public static final List <RequestSingleton> getAllSingletons ()
   {
-    return getAllSingletons (_getMyScope (), RequestSingleton.class);
+    return getAllSingletons (_getStaticScope (), RequestSingleton.class);
   }
 }

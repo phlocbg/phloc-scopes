@@ -37,7 +37,7 @@ import com.phloc.scopes.nonweb.domain.IRequestScope;
  * 
  * @author philip
  */
-public final class RequestScope extends AbstractMapBasedScope implements IRequestScope
+public class RequestScope extends AbstractMapBasedScope implements IRequestScope
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (RequestScope.class);
 

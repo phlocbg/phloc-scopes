@@ -43,7 +43,7 @@ public abstract class SessionWebSingleton extends AbstractSingleton implements S
   }
 
   @Nonnull
-  private static ISessionWebScope _getMyScope ()
+  private static ISessionWebScope _getStaticScope ()
   {
     return WebScopeManager.getSessionScope ();
   }
@@ -52,18 +52,23 @@ public abstract class SessionWebSingleton extends AbstractSingleton implements S
   @Nonnull
   protected final ISessionWebScope getScope ()
   {
-    return _getMyScope ();
+    return _getStaticScope ();
+  }
+
+  protected static final boolean isSingletonInstantiated (@Nonnull final Class <? extends SessionWebSingleton> aClass)
+  {
+    return isSingletonInstantiated (_getStaticScope (), aClass);
   }
 
   @Nonnull
-  protected static <T extends SessionWebSingleton> T getSessionSingleton (@Nonnull final Class <T> aClass)
+  protected static final <T extends SessionWebSingleton> T getSessionSingleton (@Nonnull final Class <T> aClass)
   {
-    return getSingleton (_getMyScope (), aClass);
+    return getSingleton (_getStaticScope (), aClass);
   }
 
   @Nonnull
   public static final List <SessionWebSingleton> getAllSingletons ()
   {
-    return getAllSingletons (_getMyScope (), SessionWebSingleton.class);
+    return getAllSingletons (_getStaticScope (), SessionWebSingleton.class);
   }
 }
