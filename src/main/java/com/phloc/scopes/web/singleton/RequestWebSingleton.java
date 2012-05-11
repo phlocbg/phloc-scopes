@@ -41,7 +41,7 @@ public abstract class RequestWebSingleton extends AbstractSingleton
   }
 
   @Nonnull
-  private static IRequestWebScope _getMyScope ()
+  private static IRequestWebScope _getStaticScope ()
   {
     return WebScopeManager.getRequestScope ();
   }
@@ -50,18 +50,23 @@ public abstract class RequestWebSingleton extends AbstractSingleton
   @Nonnull
   protected final IRequestWebScope getScope ()
   {
-    return _getMyScope ();
+    return _getStaticScope ();
+  }
+
+  protected static final boolean isSingletonInstantiated (@Nonnull final Class <? extends RequestWebSingleton> aClass)
+  {
+    return isSingletonInstantiated (_getStaticScope (), aClass);
   }
 
   @Nonnull
-  protected static <T extends RequestWebSingleton> T getRequestSingleton (@Nonnull final Class <T> aClass)
+  protected static final <T extends RequestWebSingleton> T getRequestSingleton (@Nonnull final Class <T> aClass)
   {
-    return getSingleton (_getMyScope (), aClass);
+    return getSingleton (_getStaticScope (), aClass);
   }
 
   @Nonnull
   public static final List <RequestWebSingleton> getAllSingletons ()
   {
-    return getAllSingletons (_getMyScope (), RequestWebSingleton.class);
+    return getAllSingletons (_getStaticScope (), RequestWebSingleton.class);
   }
 }

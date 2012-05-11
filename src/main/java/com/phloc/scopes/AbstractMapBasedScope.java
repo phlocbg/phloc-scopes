@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
 
 import org.slf4j.Logger;
@@ -29,6 +30,8 @@ import org.slf4j.LoggerFactory;
 import com.phloc.commons.annotations.Nonempty;
 import com.phloc.commons.annotations.OverrideOnDemand;
 import com.phloc.commons.annotations.ReturnsMutableCopy;
+import com.phloc.commons.callback.AdapterRunnableToCallableWithParameter;
+import com.phloc.commons.callback.INonThrowingCallableWithParameter;
 import com.phloc.commons.callback.INonThrowingRunnableWithParameter;
 import com.phloc.commons.collections.attrs.MapBasedAttributeContainerThreadSafe;
 import com.phloc.commons.hash.HashCodeGenerator;
@@ -161,15 +164,22 @@ public abstract class AbstractMapBasedScope extends MapBasedAttributeContainerTh
     postDestroy ();
   }
 
-  public final void runAtomic (@Nonnull final INonThrowingRunnableWithParameter <IScope> aAction)
+  public final void runAtomic (@Nonnull final INonThrowingRunnableWithParameter <IScope> aRunnable)
   {
-    if (aAction == null)
-      throw new NullPointerException ("action");
+    // Wrap runnable in callable
+    runAtomic (AdapterRunnableToCallableWithParameter.createAdapter (aRunnable));
+  }
+
+  @Nullable
+  public final <T> T runAtomic (@Nonnull final INonThrowingCallableWithParameter <T, IScope> aCallable)
+  {
+    if (aCallable == null)
+      throw new NullPointerException ("callable");
 
     m_aRWLock.writeLock ().lock ();
     try
     {
-      aAction.run (this);
+      return aCallable.call (this);
     }
     finally
     {

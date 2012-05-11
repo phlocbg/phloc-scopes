@@ -42,27 +42,32 @@ public abstract class ApplicationWebSingleton extends AbstractSingleton
   }
 
   @Nonnull
-  private static IApplicationWebScope _getMyScope ()
+  private static IApplicationWebScope _getStaticScope ()
   {
     return WebScopeManager.getApplicationScope ();
   }
 
   @Override
   @Nonnull
-  protected IApplicationWebScope getScope ()
+  protected final IApplicationWebScope getScope ()
   {
-    return _getMyScope ();
+    return _getStaticScope ();
+  }
+
+  protected static final boolean isSingletonInstantiated (@Nonnull final Class <? extends ApplicationWebSingleton> aClass)
+  {
+    return isSingletonInstantiated (_getStaticScope (), aClass);
   }
 
   @Nonnull
-  protected static <T extends ApplicationWebSingleton> T getApplicationSingleton (@Nonnull final Class <T> aClass)
+  protected static final <T extends ApplicationWebSingleton> T getApplicationSingleton (@Nonnull final Class <T> aClass)
   {
-    return getSingleton (_getMyScope (), aClass);
+    return getSingleton (_getStaticScope (), aClass);
   }
 
   @Nonnull
   public static final List <ApplicationWebSingleton> getAllSingletons ()
   {
-    return getAllSingletons (_getMyScope (), ApplicationWebSingleton.class);
+    return getAllSingletons (_getStaticScope (), ApplicationWebSingleton.class);
   }
 }

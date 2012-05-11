@@ -42,27 +42,32 @@ public abstract class ApplicationSingleton extends AbstractSingleton
   }
 
   @Nonnull
-  private static IApplicationScope _getMyScope ()
+  private static IApplicationScope _getStaticScope ()
   {
     return ScopeManager.getApplicationScope ();
   }
 
   @Override
   @Nonnull
-  protected IApplicationScope getScope ()
+  protected final IApplicationScope getScope ()
   {
-    return _getMyScope ();
+    return _getStaticScope ();
+  }
+
+  protected static final boolean isSingletonInstantiated (@Nonnull final Class <? extends ApplicationSingleton> aClass)
+  {
+    return isSingletonInstantiated (_getStaticScope (), aClass);
   }
 
   @Nonnull
-  protected static <T extends ApplicationSingleton> T getApplicationSingleton (@Nonnull final Class <T> aClass)
+  protected static final <T extends ApplicationSingleton> T getApplicationSingleton (@Nonnull final Class <T> aClass)
   {
-    return getSingleton (_getMyScope (), aClass);
+    return getSingleton (_getStaticScope (), aClass);
   }
 
   @Nonnull
   public static final List <ApplicationSingleton> getAllSingletons ()
   {
-    return getAllSingletons (_getMyScope (), ApplicationSingleton.class);
+    return getAllSingletons (_getStaticScope (), ApplicationSingleton.class);
   }
 }
