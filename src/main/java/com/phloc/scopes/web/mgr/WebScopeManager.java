@@ -153,8 +153,20 @@ public final class WebScopeManager
   @Nullable
   public static ISessionWebScope getSessionScope (final boolean bCreateIfNotExisting)
   {
-    final HttpSession aHttpSession = getRequestScope ().getSession (bCreateIfNotExisting);
-    return aHttpSession == null ? null : WebScopeSessionManager.getInstance ().getSessionScope (aHttpSession);
+    final IRequestWebScope aRequestScope = getRequestScopeOrNull ();
+    if (aRequestScope != null)
+    {
+      final HttpSession aHttpSession = aRequestScope.getSession (bCreateIfNotExisting);
+      if (aHttpSession != null)
+        return WebScopeSessionManager.getInstance ().getSessionScope (aHttpSession);
+    }
+    else
+    {
+      // If we want a session scope, we expect the return value to be non-null!
+      if (bCreateIfNotExisting)
+        throw new IllegalStateException ("No request scope is present, so no session scope can be created!");
+    }
+    return null;
   }
 
   public static void onSessionEnd (@Nonnull final HttpSession aHttpSession)
@@ -202,6 +214,13 @@ public final class WebScopeManager
                                                                                                       aHttpResponse);
     ScopeManager.setRequestScope (sApplicationID, aRequestScope);
     return aRequestScope;
+  }
+
+  @Nullable
+  public static IRequestWebScope getRequestScopeOrNull ()
+  {
+    // Just cast
+    return (IRequestWebScope) ScopeManager.getRequestScopeOrNull ();
   }
 
   public static boolean isRequestScopePresent ()

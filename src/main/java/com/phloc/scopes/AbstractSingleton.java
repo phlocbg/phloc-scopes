@@ -151,6 +151,9 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
   @Nonnull
   public static String getSingletonScopeKey (@Nonnull final Class <? extends AbstractSingleton> aClass)
   {
+    if (aClass == null)
+      throw new NullPointerException ("class");
+
     // Preallocate some bytes
     return new StringBuilder (255).append ("singleton.").append (aClass.getName ()).toString ();
   }
@@ -210,6 +213,11 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
   protected static final boolean isSingletonInstantiated (@Nonnull final IScope aScope,
                                                           @Nonnull final Class <? extends AbstractSingleton> aClass)
   {
+    if (aScope == null)
+      throw new NullPointerException ("scope");
+    if (aClass == null)
+      throw new NullPointerException ("class");
+
     final String sSingletonScopeKey = getSingletonScopeKey (aClass);
     final AbstractSingleton aInstance = aClass.cast (aScope.getAttributeObject (sSingletonScopeKey));
     return aInstance != null;
@@ -258,6 +266,11 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
   protected static final <T extends AbstractSingleton> T getSingleton (@Nonnull final IScope aScope,
                                                                        @Nonnull final Class <T> aClass)
   {
+    if (aScope == null)
+      throw new NullPointerException ("scope");
+    if (aClass == null)
+      throw new NullPointerException ("class");
+
     final String sSingletonScopeKey = getSingletonScopeKey (aClass);
 
     // check if contained in passed scope
@@ -307,6 +320,11 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
   protected static final <T extends AbstractSingleton> List <T> getAllSingletons (@Nonnull final IScope aScope,
                                                                                   @Nonnull final Class <T> aDesiredClass)
   {
+    if (aScope == null)
+      throw new NullPointerException ("scope");
+    if (aDesiredClass == null)
+      throw new NullPointerException ("desiredClass");
+
     final List <T> ret = new ArrayList <T> ();
     for (final String sAttrName : aScope.getAllAttributeNames ())
     {

@@ -289,15 +289,34 @@ public final class ScopeManager
     return aRequestScope;
   }
 
-  public static boolean isRequestScopePresent ()
+  /**
+   * @return The current request scope or <code>null</code> if no request scope
+   *         is present.
+   */
+  @Nullable
+  public static IRequestScope getRequestScopeOrNull ()
   {
-    return s_aRequestScope.get () != null;
+    return s_aRequestScope.get ();
   }
 
+  /**
+   * @return <code>true</code> if a request scope is present, <code>false</code>
+   *         otherwise
+   */
+  public static boolean isRequestScopePresent ()
+  {
+    return getRequestScopeOrNull () != null;
+  }
+
+  /**
+   * @return The current request scope and never <code>null</code>.
+   * @throws IllegalStateException
+   *         If no request scope is present
+   */
   @Nonnull
   public static IRequestScope getRequestScope ()
   {
-    final IRequestScope aScope = s_aRequestScope.get ();
+    final IRequestScope aScope = getRequestScopeOrNull ();
     if (aScope == null)
       throw new IllegalStateException ("No request scope is available.");
     return aScope;
