@@ -26,6 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.phloc.commons.annotations.Nonempty;
+import com.phloc.commons.string.StringHelper;
 import com.phloc.scopes.nonweb.mgr.ScopeManager;
 import com.phloc.scopes.web.domain.IRequestWebScope;
 import com.phloc.scopes.web.mgr.WebScopeManager;
@@ -87,26 +88,39 @@ public final class RequestScopeInitializer
                                                 @Nonnull final HttpServletRequest aHttpRequest,
                                                 @Nonnull final HttpServletResponse aHttpResponse)
   {
+    if (StringHelper.hasNoText (sApplicationID))
+      throw new IllegalArgumentException ("No application ID present!");
+
     if (WebScopeManager.isRequestScopePresent ())
     {
       // A scope is already present - e.g. from a scope aware filter
       final IRequestWebScope aExistingRequestScope = WebScopeManager.getRequestScope ();
-      final String sExistingApplicationID = ScopeManager.getRequestApplicationID (aExistingRequestScope);
-      if (!sApplicationID.equals (sExistingApplicationID))
+
+      // Check if scope is in destruction or destroyed!
+      if (!aExistingRequestScope.isValid ())
       {
-        // Application ID mismatch!
-        s_aLogger.warn ("The existing request scope has the application ID '" +
-                        sExistingApplicationID +
-                        "' but now the application ID '" +
-                        sApplicationID +
-                        "' should be used. The old application ID '" +
-                        sExistingApplicationID +
-                        "' is continued to be used!!!");
+        // Wow...
+        s_aLogger.error ("The existing request scope is no longer valid: " + aExistingRequestScope.toString ());
       }
-      return new RequestScopeInitializer (aExistingRequestScope, false);
+      else
+      {
+        final String sExistingApplicationID = ScopeManager.getRequestApplicationID (aExistingRequestScope);
+        if (!sApplicationID.equals (sExistingApplicationID))
+        {
+          // Application ID mismatch!
+          s_aLogger.warn ("The existing request scope has the application ID '" +
+                          sExistingApplicationID +
+                          "' but now the application ID '" +
+                          sApplicationID +
+                          "' should be used. The old application ID '" +
+                          sExistingApplicationID +
+                          "' is continued to be used!!!");
+        }
+        return new RequestScopeInitializer (aExistingRequestScope, false);
+      }
     }
 
-    // No scope present
+    // No valid scope present
     final IRequestWebScope aRequestScope = WebScopeManager.onRequestBegin (sApplicationID, aHttpRequest, aHttpResponse);
     return new RequestScopeInitializer (aRequestScope, true);
   }
