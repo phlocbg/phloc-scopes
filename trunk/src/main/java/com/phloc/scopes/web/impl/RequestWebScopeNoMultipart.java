@@ -111,7 +111,10 @@ public class RequestWebScopeNoMultipart extends AbstractReadonlyAttributeContain
     // As the parameters are stored directly in the HTTP request, we're not
     // loosing any data here!
     if (getAttributeObject (REQUEST_ATTR_SCOPE_INITED) != null)
+    {
+      s_aLogger.warn ("Scope was already inited: " + toString ());
       return;
+    }
     setAttribute (REQUEST_ATTR_SCOPE_INITED, Boolean.TRUE);
 
     // where some extra items (like file items) handled?
@@ -673,6 +676,8 @@ public class RequestWebScopeNoMultipart extends AbstractReadonlyAttributeContain
     return new ToStringGenerator (this).append ("scopeID", m_sScopeID)
                                        .append ("httpRequest", m_aHttpRequest)
                                        .append ("httpResponse", m_aHttpResponse)
+                                       .append ("inDestruction", m_bInDestruction)
+                                       .append ("destroyed", m_bDestroyed)
                                        .toString ();
   }
 }
