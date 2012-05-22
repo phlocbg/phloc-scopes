@@ -81,6 +81,7 @@ public final class ScopeManager
       throw new IllegalStateException ("Another global scope is already present");
 
     s_aGlobalScope = aGlobalScope;
+
     aGlobalScope.initScope ();
     s_aLogger.info ("Global scope '" + aGlobalScope.getID () + "' initialized!");
 
@@ -103,6 +104,12 @@ public final class ScopeManager
     return aGlobalScope;
   }
 
+  @Nullable
+  public static IGlobalScope getGlobalScopeOrNull ()
+  {
+    return s_aGlobalScope;
+  }
+
   public static boolean isGlobalScopePresent ()
   {
     return s_aGlobalScope != null;
@@ -111,9 +118,10 @@ public final class ScopeManager
   @Nonnull
   public static IGlobalScope getGlobalScope ()
   {
-    if (s_aGlobalScope == null)
+    final IGlobalScope aGlobalScope = getGlobalScopeOrNull ();
+    if (aGlobalScope == null)
       throw new IllegalStateException ("No global scope object has been set!");
-    return s_aGlobalScope;
+    return aGlobalScope;
   }
 
   /**
@@ -246,32 +254,40 @@ public final class ScopeManager
    * @param aRequestScope
    *        The request scope to use. May not be <code>null</code>.
    */
-  public static void setRequestScope (@Nonnull @Nonempty final String sApplicationID,
-                                      @Nonnull final IRequestScope aRequestScope)
+  public static void setAndInitRequestScope (@Nonnull @Nonempty final String sApplicationID,
+                                             @Nonnull final IRequestScope aRequestScope)
   {
     if (StringHelper.hasNoText (sApplicationID))
-      throw new IllegalArgumentException ("appID");
+      throw new IllegalArgumentException ("applicationID");
     if (aRequestScope == null)
       throw new NullPointerException ("requestScope");
-    if (s_aGlobalScope == null)
+    if (!isGlobalScopePresent ())
       throw new IllegalStateException ("No global context present! May be the global context listener is not installed?");
 
     // Happens if an internal redirect happens in a web-application (e.g. for
     // 404 page)
     final IRequestScope aExistingRequestScope = s_aRequestScope.get ();
     if (aExistingRequestScope != null)
-      s_aLogger.warn ("A request scope is already present: " + aExistingRequestScope.toString ());
+    {
+      s_aLogger.warn ("A request scope is already present - will overwrite it: " + aExistingRequestScope.toString ());
+      if (aExistingRequestScope.isValid ())
+      {
+        // TODO shall the scope be destroyed here????
+      }
+    }
 
     // set request context
     s_aRequestScope.set (aRequestScope);
 
     // assign the application ID to the current request
     if (aRequestScope.setAttribute (REQ_APPLICATION_ID, sApplicationID).isUnchanged ())
+    {
       s_aLogger.warn ("Failed to set the application ID '" +
                       sApplicationID +
                       "' into the request scope '" +
                       aRequestScope.getID () +
                       "'");
+    }
 
     // Now init the scope
     aRequestScope.initScope ();
@@ -285,7 +301,7 @@ public final class ScopeManager
                                               @Nonnull @Nonempty final String sScopeID)
   {
     final IRequestScope aRequestScope = MetaScopeFactory.getScopeFactory ().createRequestScope (sScopeID);
-    setRequestScope (sApplicationID, aRequestScope);
+    setAndInitRequestScope (sApplicationID, aRequestScope);
     return aRequestScope;
   }
 

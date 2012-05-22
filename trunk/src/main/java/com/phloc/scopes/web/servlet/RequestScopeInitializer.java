@@ -91,19 +91,16 @@ public final class RequestScopeInitializer
     if (StringHelper.hasNoText (sApplicationID))
       throw new IllegalArgumentException ("No application ID present!");
 
-    if (WebScopeManager.isRequestScopePresent ())
+    // Check if a request scope is already present
+    final IRequestWebScope aExistingRequestScope = WebScopeManager.getRequestScopeOrNull ();
+    if (aExistingRequestScope != null)
     {
       // A scope is already present - e.g. from a scope aware filter
-      final IRequestWebScope aExistingRequestScope = WebScopeManager.getRequestScope ();
 
       // Check if scope is in destruction or destroyed!
-      if (!aExistingRequestScope.isValid ())
+      if (aExistingRequestScope.isValid ())
       {
-        // Wow...
-        s_aLogger.error ("The existing request scope is no longer valid: " + aExistingRequestScope.toString ());
-      }
-      else
-      {
+        // Check the application IDs
         final String sExistingApplicationID = ScopeManager.getRequestApplicationID (aExistingRequestScope);
         if (!sApplicationID.equals (sExistingApplicationID))
         {
@@ -118,9 +115,14 @@ public final class RequestScopeInitializer
         }
         return new RequestScopeInitializer (aExistingRequestScope, false);
       }
+
+      // Wow...
+      s_aLogger.error ("The existing request scope is no longer valid - creating a new one: " +
+                       aExistingRequestScope.toString ());
     }
 
     // No valid scope present
+    // -> create a new scope
     final IRequestWebScope aRequestScope = WebScopeManager.onRequestBegin (sApplicationID, aHttpRequest, aHttpResponse);
     return new RequestScopeInitializer (aRequestScope, true);
   }
