@@ -212,7 +212,7 @@ public final class WebScopeManager
   {
     final IRequestWebScope aRequestScope = MetaScopeFactory.getWebScopeFactory ().createRequestScope (aHttpRequest,
                                                                                                       aHttpResponse);
-    ScopeManager.setRequestScope (sApplicationID, aRequestScope);
+    ScopeManager.setAndInitRequestScope (sApplicationID, aRequestScope);
     return aRequestScope;
   }
 

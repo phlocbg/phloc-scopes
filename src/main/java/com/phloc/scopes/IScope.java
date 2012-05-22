@@ -59,6 +59,8 @@ public interface IScope extends IAttributeContainer, IHasID <String>
   /**
    * @return <code>true</code> if this scope is neither in destruction nor
    *         destroyed.
+   * @see #isInDestruction()
+   * @see #isDestroyed()
    */
   boolean isValid ();
 
