@@ -77,7 +77,7 @@
 <tr border="1"><td>2/23/12</td><td colspan="4">_Release *2.7.0*_</td></tr>
 <tr><td>2/23/12</td><td>add</td><td>api</td><td></td><td>Added new IScope method boolean isDestroyed()</td></tr>
 <tr border="1"><td>1/27/12</td><td colspan="4">_Release *2.6.0*_</td></tr>
-<tr><td>9/12/11</td><td>change</td><td>tech</td><td></td><td>Removed POM dependency from [http://code.google.com/p/phloc-datetime phloc-datetime]</td></tr>
+<tr><td>1/27/12</td><td>change</td><td>tech</td><td></td><td>Removed POM dependency from [http://code.google.com/p/phloc-datetime phloc-datetime]</td></tr>
 <tr border="1"><td>1/21/12</td><td colspan="4">_Release *2.5.3*_</td></tr>
 <tr border="1"><td>1/21/12</td><td colspan="4">_Release *2.5.2*_</td></tr>
 <tr border="1"><td>9/12/11</td><td colspan="4">_Release *2.5.1*_</td></tr>
