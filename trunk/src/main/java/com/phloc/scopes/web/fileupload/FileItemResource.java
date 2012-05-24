@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.net.URL;
+import java.nio.charset.Charset;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -86,6 +87,13 @@ public final class FileItemResource implements IReadableResource
   {
     final InputStream aIS = getInputStream ();
     return StreamUtils.createReader (aIS, sCharset);
+  }
+
+  @Nullable
+  public Reader getReader (@Nonnull final Charset aCharset)
+  {
+    final InputStream aIS = getInputStream ();
+    return StreamUtils.createReader (aIS, aCharset);
   }
 
   public boolean exists ()
