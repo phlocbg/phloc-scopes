@@ -72,10 +72,21 @@ public final class MockServletContext implements ServletContext
    * Create a new MockServletContext, using no base path and a
    * DefaultIResourceProvider (i.e. the classpath root as WAR root).
    */
-  @Nonnull
   public MockServletContext ()
   {
     this (null, "", null, null);
+  }
+
+  /**
+   * Create a new MockServletContext, using no base path and a
+   * DefaultIResourceProvider (i.e. the classpath root as WAR root).
+   * 
+   * @param aInitParams
+   *        The init parameter
+   */
+  public MockServletContext (@Nullable final Map <String, String> aInitParams)
+  {
+    this (null, "", null, aInitParams);
   }
 
   /**
