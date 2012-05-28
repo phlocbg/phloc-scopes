@@ -239,7 +239,7 @@ public class RequestWebScopeNoMultipart extends AbstractReadonlyAttributeContain
     }
     finally
     {
-      m_aRWLock.writeLock ().lock ();
+      m_aRWLock.writeLock ().unlock ();
     }
 
     // Call callback (if special interface is implemented)
