@@ -116,7 +116,6 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
    * 
    * @see MockServletContext
    */
-  @Nonnull
   public MockHttpServletRequest ()
   {
     this (null, "", "");
@@ -130,7 +129,6 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
    *        <code>null</code> to use a default MockServletContext)
    * @see MockServletContext
    */
-  @Nonnull
   public MockHttpServletRequest (@Nullable final ServletContext aServletContext)
   {
     this (aServletContext, "", "");
