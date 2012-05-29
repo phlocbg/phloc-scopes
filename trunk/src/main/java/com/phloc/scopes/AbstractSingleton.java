@@ -209,7 +209,6 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
    * @return <code>true</code> if the singleton for the specified class is
    *         already instantiated, <code>false</code> otherwise.
    */
-  @Nonnull
   protected static final boolean isSingletonInstantiated (@Nonnull final IScope aScope,
                                                           @Nonnull final Class <? extends AbstractSingleton> aClass)
   {
