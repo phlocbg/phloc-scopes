@@ -20,6 +20,7 @@ package com.phloc.scopes.web.domain;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
@@ -42,10 +43,20 @@ public interface IRequestWebScope extends IRequestScope, IWebScope
   /**
    * @return A non-<code>null</code> but maybe empty map with all contained
    *         {@link IFileItem} objects from file uploads. The key of the map is
-   *         the field name.
+   *         the field name. Important: if the value is an array of
+   *         {@link IFileItem} it is not considered in the returned map!
    */
   @Nonnull
   Map <String, IFileItem> getAllUploadedFileItems ();
+
+  /**
+   * @return A non-<code>null</code> but maybe empty list of all
+   *         {@link IFileItem} objects in the request. In comparison to
+   *         {@link #getAllUploadedFileItems()} this method also returns the
+   *         content of {@link IFileItem} arrays.
+   */
+  @Nonnull
+  List <IFileItem> getAllUploadedFileItemValues ();
 
   /**
    * Returns the name of the scheme used to make this request, for example,

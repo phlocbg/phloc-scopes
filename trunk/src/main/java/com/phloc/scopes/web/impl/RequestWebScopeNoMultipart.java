@@ -178,8 +178,8 @@ public class RequestWebScopeNoMultipart extends AbstractReadonlyAttributeContain
   @Nonnull
   public EChange clear ()
   {
-    // Create a copy of the list!
-    final List <String> aNames = ContainerHelper.newList (getAttributeNames ());
+    // Create a copy of the attribute names!
+    final Set <String> aNames = getAllAttributeNames ();
     if (aNames.isEmpty ())
       return EChange.UNCHANGED;
     for (final String sAttrName : aNames)
@@ -243,7 +243,7 @@ public class RequestWebScopeNoMultipart extends AbstractReadonlyAttributeContain
     }
 
     // Call callback (if special interface is implemented)
-    for (final Object aValue : getAllAttributes ().values ())
+    for (final Object aValue : getAllAttributeValues ())
       if (aValue instanceof IScopeDestructionAware)
         try
         {
@@ -425,9 +425,34 @@ public class RequestWebScopeNoMultipart extends AbstractReadonlyAttributeContain
   public Map <String, IFileItem> getAllUploadedFileItems ()
   {
     final Map <String, IFileItem> ret = new HashMap <String, IFileItem> ();
-    for (final Map.Entry <String, Object> aEntry : getAllAttributes ().entrySet ())
-      if (aEntry.getValue () instanceof IFileItem)
-        ret.put (aEntry.getKey (), (IFileItem) aEntry.getValue ());
+    final Enumeration <String> aEnum = getAttributeNames ();
+    while (aEnum.hasMoreElements ())
+    {
+      final String sAttrName = aEnum.nextElement ();
+      final Object aAttrValue = getAttributeObject (sAttrName);
+      if (aAttrValue instanceof IFileItem)
+        ret.put (sAttrName, (IFileItem) aAttrValue);
+    }
+    return ret;
+  }
+
+  @Nonnull
+  @ReturnsMutableCopy
+  public List <IFileItem> getAllUploadedFileItemValues ()
+  {
+    final List <IFileItem> ret = new ArrayList <IFileItem> ();
+    final Enumeration <String> aEnum = getAttributeNames ();
+    while (aEnum.hasMoreElements ())
+    {
+      final String sAttrName = aEnum.nextElement ();
+      final Object aAttrValue = getAttributeObject (sAttrName);
+      if (aAttrValue instanceof IFileItem)
+        ret.add ((IFileItem) aAttrValue);
+      else
+        if (aAttrValue instanceof IFileItem [])
+          for (final IFileItem aChild : (IFileItem []) aAttrValue)
+            ret.add (aChild);
+    }
     return ret;
   }
 
@@ -528,12 +553,14 @@ public class RequestWebScopeNoMultipart extends AbstractReadonlyAttributeContain
     // append non-standard port
     if (sScheme.equals ("http"))
     {
+      // Do not print default HTTP port
       if (nPort != 80)
         aSB.append (':').append (nPort);
     }
     else
       if (sScheme.equals ("https"))
       {
+        // Do not print default HTTPS port
         if (nPort != 443)
           aSB.append (':').append (nPort);
       }
@@ -579,7 +606,7 @@ public class RequestWebScopeNoMultipart extends AbstractReadonlyAttributeContain
   {
     final StringBuilder aReqUrl = new StringBuilder (m_aHttpRequest.getRequestURL ());
     final String sQueryString = m_aHttpRequest.getQueryString (); // d=789
-    if (sQueryString != null)
+    if (StringHelper.hasText (sQueryString))
       aReqUrl.append ('?').append (sQueryString);
     return aReqUrl.toString ();
   }
@@ -643,23 +670,26 @@ public class RequestWebScopeNoMultipart extends AbstractReadonlyAttributeContain
   public final Map <String, IScopeRenewalAware> getAllScopeRenewalAwareAttributes ()
   {
     final Map <String, IScopeRenewalAware> ret = new HashMap <String, IScopeRenewalAware> ();
-    for (final Map.Entry <String, Object> aEntry : getAllAttributes ().entrySet ())
+    final Enumeration <String> aEnum = getAttributeNames ();
+    while (aEnum.hasMoreElements ())
     {
-      final Object aValue = aEntry.getValue ();
-      if (aValue instanceof IScopeRenewalAware)
-        ret.put (aEntry.getKey (), (IScopeRenewalAware) aValue);
+      final String sAttrName = aEnum.nextElement ();
+      final Object aAttrValue = getAttributeObject (sAttrName);
+      if (aAttrValue instanceof IScopeRenewalAware)
+        ret.put (sAttrName, (IScopeRenewalAware) aAttrValue);
     }
     return ret;
   }
 
   public boolean isEmpty ()
   {
-    return !getAttributeNames ().hasMoreElements ();
+    return ContainerHelper.isEmpty (getAttributeNames ());
   }
 
   @Nonnegative
   public int size ()
   {
+    // TODO use ContainerHelper.getSize() in phloc-commons > 3.5.7
     int ret = 0;
     final Enumeration <String> aEnum = getAttributeNames ();
     while (aEnum.hasMoreElements ())
