@@ -477,7 +477,7 @@ public final class MultipartStream
    * 
    * @return The <code>header-part</code> of the current encapsulation.
    * @throws MalformedStreamException
-   *         if the stream ends unexpecetedly.
+   *         if the stream ends unexpectedly.
    */
   public String readHeaders () throws MalformedStreamException
   {
