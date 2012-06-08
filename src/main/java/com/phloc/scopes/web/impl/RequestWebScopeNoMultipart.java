@@ -689,15 +689,7 @@ public class RequestWebScopeNoMultipart extends AbstractReadonlyAttributeContain
   @Nonnegative
   public int size ()
   {
-    // TODO use ContainerHelper.getSize() in phloc-commons > 3.5.7
-    int ret = 0;
-    final Enumeration <String> aEnum = getAttributeNames ();
-    while (aEnum.hasMoreElements ())
-    {
-      aEnum.nextElement ();
-      ++ret;
-    }
-    return ret;
+    return ContainerHelper.getSize (getAttributeNames ());
   }
 
   @Override
