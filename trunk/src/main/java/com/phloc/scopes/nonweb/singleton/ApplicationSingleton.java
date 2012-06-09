@@ -44,7 +44,7 @@ public abstract class ApplicationSingleton extends AbstractSingleton
   @Nonnull
   private static IApplicationScope _getStaticScope ()
   {
-    return ScopeManager.getApplicationScope ();
+    return ScopeManager.getApplicationScope (true);
   }
 
   @Override

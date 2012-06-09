@@ -45,7 +45,7 @@ public abstract class SessionWebSingleton extends AbstractSingleton implements S
   @Nonnull
   private static ISessionWebScope _getStaticScope ()
   {
-    return WebScopeManager.getSessionScope ();
+    return WebScopeManager.getSessionScope (true);
   }
 
   @Override
