@@ -44,7 +44,7 @@ public abstract class ApplicationWebSingleton extends AbstractSingleton
   @Nonnull
   private static IApplicationWebScope _getStaticScope ()
   {
-    return WebScopeManager.getApplicationScope ();
+    return WebScopeManager.getApplicationScope (true);
   }
 
   @Override

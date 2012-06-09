@@ -43,7 +43,7 @@ public abstract class SessionApplicationSingleton extends AbstractSingleton impl
   @Nonnull
   private static ISessionApplicationWebScope _getStaticScope ()
   {
-    return WebScopeManager.getSessionApplicationScope ();
+    return WebScopeManager.getSessionApplicationScope (true);
   }
 
   @Override
