@@ -20,6 +20,17 @@
 -->
 <changelog xmlns="http://www.phloc.com/ns/changelog/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.phloc.com/ns/changelog/1.0 schemas/changelog-1.0.xsd" version="1.0" component="phloc-scopes">
+  <release date="2012-06-25" version="3.9.7" />
+  <entry date="2012-06-25" category="tech" action="update">
+    <change>
+      <text locale="en">Minor improvement in lock handling of RequestWebScopeNoMultipart</text>
+    </change>
+  </entry>
+  <entry date="2012-06-25" category="tech" action="update">
+    <change>
+      <text locale="en">Updated to phloc-commons 3.6.1</text>
+    </change>
+  </entry>
   <entry date="2012-06-06" category="api" action="add">
     <change>
       <text locale="en">Added new class GlobalSingletonTreeWithUniqueID</text>

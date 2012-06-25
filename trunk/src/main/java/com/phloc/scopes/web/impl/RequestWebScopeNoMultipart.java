@@ -376,13 +376,14 @@ public class RequestWebScopeNoMultipart extends AbstractReadonlyAttributeContain
     if (s_aLogger.isTraceEnabled ())
       s_aLogger.trace ("name='" + sName + "' -- '" + aNewValue + "'");
 
+    // Gte value in read-lock :)
+    final Object aOldValue = getAttributeObject (sName);
+    if (EqualsUtils.equals (aOldValue, aNewValue))
+      return EChange.UNCHANGED;
+
     m_aRWLock.writeLock ().lock ();
     try
     {
-      final Object aOldValue = m_aHttpRequest.getAttribute (sName);
-      if (EqualsUtils.equals (aOldValue, aNewValue))
-        return EChange.UNCHANGED;
-
       m_aHttpRequest.setAttribute (sName, aNewValue);
       return EChange.CHANGED;
     }
