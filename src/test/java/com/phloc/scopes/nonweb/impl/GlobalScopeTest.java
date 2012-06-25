@@ -25,7 +25,6 @@ import org.junit.Test;
 
 import com.phloc.commons.mutable.MutableBoolean;
 import com.phloc.scopes.IScopeDestructionAware;
-import com.phloc.scopes.nonweb.impl.GlobalScope;
 
 /**
  * Test class for class {@link GlobalScope}.
@@ -39,9 +38,9 @@ public final class GlobalScopeTest
   {
     final GlobalScope aGS = new GlobalScope ("test");
     assertEquals ("test", aGS.getID ());
-    assertEquals (0, aGS.size ());
+    assertEquals (0, aGS.getAttributeCount ());
     assertTrue (aGS.setAttribute ("key1", "whatsoever").isChanged ());
-    assertEquals (1, aGS.size ());
+    assertEquals (1, aGS.getAttributeCount ());
     final MutableBoolean aDestroyed = new MutableBoolean (false);
     assertTrue (aGS.setAttribute ("key2", new IScopeDestructionAware ()
     {
@@ -51,10 +50,10 @@ public final class GlobalScopeTest
         aDestroyed.set (true);
       }
     }).isChanged ());
-    assertEquals (2, aGS.size ());
+    assertEquals (2, aGS.getAttributeCount ());
     // Check null value - no change
     assertTrue (aGS.setAttribute ("key3", null).isUnchanged ());
-    assertEquals (2, aGS.size ());
+    assertEquals (2, aGS.getAttributeCount ());
     assertTrue (aGS.isValid ());
     assertFalse (aGS.isInDestruction ());
     assertFalse (aGS.isDestroyed ());

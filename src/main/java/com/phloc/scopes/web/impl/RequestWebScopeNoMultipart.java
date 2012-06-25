@@ -681,13 +681,26 @@ public class RequestWebScopeNoMultipart extends AbstractReadonlyAttributeContain
     return ret;
   }
 
+  @Deprecated
   public boolean isEmpty ()
+  {
+    return containsNoAttribute ();
+  }
+
+  public boolean containsNoAttribute ()
   {
     return ContainerHelper.isEmpty (getAttributeNames ());
   }
 
+  @Deprecated
   @Nonnegative
   public int size ()
+  {
+    return getAttributeCount ();
+  }
+
+  @Nonnegative
+  public int getAttributeCount ()
   {
     return ContainerHelper.getSize (getAttributeNames ());
   }
