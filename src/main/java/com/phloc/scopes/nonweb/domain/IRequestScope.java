@@ -19,8 +19,10 @@ package com.phloc.scopes.nonweb.domain;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.phloc.commons.annotations.Nonempty;
 import com.phloc.scopes.IScope;
 
 /**
@@ -31,10 +33,11 @@ import com.phloc.scopes.IScope;
 public interface IRequestScope extends IScope
 {
   /**
-   * @return The session ID associated with this request. May be
-   *         <code>null</code>.
+   * @return The session ID associated with this request. May neither be
+   *         <code>null</code> nor empty.
    */
-  @Nullable
+  @Nonnull
+  @Nonempty
   String getSessionID ();
 
   /**

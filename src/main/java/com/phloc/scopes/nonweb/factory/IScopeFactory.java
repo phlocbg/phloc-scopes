@@ -18,7 +18,6 @@
 package com.phloc.scopes.nonweb.factory;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import com.phloc.commons.annotations.Nonempty;
 import com.phloc.scopes.nonweb.domain.IApplicationScope;
@@ -84,5 +83,5 @@ public interface IScopeFactory
    * @return Never <code>null</code>.
    */
   @Nonnull
-  IRequestScope createRequestScope (@Nonnull @Nonempty String sScopeID, @Nullable String sSessionID);
+  IRequestScope createRequestScope (@Nonnull @Nonempty String sScopeID, @Nonnull @Nonempty String sSessionID);
 }
