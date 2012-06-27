@@ -27,6 +27,7 @@ import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.phloc.commons.annotations.Nonempty;
 import com.phloc.commons.annotations.ReturnsMutableCopy;
 import com.phloc.commons.annotations.UsedViaReflection;
 import com.phloc.commons.collections.ContainerHelper;
@@ -96,7 +97,7 @@ public final class ScopeSessionManager extends GlobalSingleton
    *         scope exists and bCreateIfNotExisting is false.
    */
   @Nullable
-  public ISessionScope getSessionScope (@Nullable final String sSessionID, final boolean bCreateIfNotExisting)
+  public ISessionScope getSessionScope (@Nonnull @Nonempty final String sSessionID, final boolean bCreateIfNotExisting)
   {
     // Check if a matching session scope is present
     ISessionScope aSessionScope = getSessionScopeOfID (sSessionID);

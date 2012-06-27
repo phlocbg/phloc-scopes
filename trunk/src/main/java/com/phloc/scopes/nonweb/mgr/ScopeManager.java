@@ -353,7 +353,7 @@ public final class ScopeManager
   @Nonnull
   public static IRequestScope onRequestBegin (@Nonnull @Nonempty final String sApplicationID,
                                               @Nonnull @Nonempty final String sScopeID,
-                                              @Nullable final String sSessionID)
+                                              @Nonnull @Nonempty final String sSessionID)
   {
     final IRequestScope aRequestScope = MetaScopeFactory.getScopeFactory ().createRequestScope (sScopeID, sSessionID);
     setAndInitRequestScope (sApplicationID, aRequestScope);

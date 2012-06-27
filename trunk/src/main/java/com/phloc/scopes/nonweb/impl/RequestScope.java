@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 import com.phloc.commons.annotations.Nonempty;
 import com.phloc.commons.collections.ContainerHelper;
 import com.phloc.commons.equals.EqualsUtils;
+import com.phloc.commons.string.StringHelper;
 import com.phloc.commons.string.ToStringGenerator;
 import com.phloc.scopes.AbstractMapBasedScope;
 import com.phloc.scopes.ScopeUtils;
@@ -43,9 +44,11 @@ public class RequestScope extends AbstractMapBasedScope implements IRequestScope
   private static final Logger s_aLogger = LoggerFactory.getLogger (RequestScope.class);
   private final String m_sSessionID;
 
-  public RequestScope (@Nonnull @Nonempty final String sScopeID, @Nullable final String sSessionID)
+  public RequestScope (@Nonnull @Nonempty final String sScopeID, @Nonnull @Nonempty final String sSessionID)
   {
     super (sScopeID);
+    if (StringHelper.hasNoText (sSessionID))
+      throw new IllegalArgumentException ("sessionID");
     m_sSessionID = sSessionID;
 
     // done initialization

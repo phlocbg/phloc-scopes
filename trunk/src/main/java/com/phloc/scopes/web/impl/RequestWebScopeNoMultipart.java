@@ -155,8 +155,7 @@ public class RequestWebScopeNoMultipart extends AbstractReadonlyAttributeContain
   @Nullable
   public final String getSessionID ()
   {
-    final HttpSession aHttpSession = m_aHttpRequest.getSession (false);
-    return aHttpSession == null ? null : aHttpSession.getId ();
+    return m_aHttpRequest.getSession (true).getId ();
   }
 
   public final void runAtomic (@Nonnull final INonThrowingRunnableWithParameter <IScope> aRunnable)
