@@ -130,7 +130,7 @@ public final class WebScopeSessionManager extends GlobalWebSingleton
           aSessionScope.initScope ();
 
           // Invoke SPIs
-          ScopeSPIManager.onSessionWebScopeBegin (aSessionScope);
+          ScopeSPIManager.onSessionScopeBegin (aSessionScope);
         }
       }
       finally
@@ -163,7 +163,7 @@ public final class WebScopeSessionManager extends GlobalWebSingleton
     aSessionScope.initScope ();
 
     // Invoke SPIs
-    ScopeSPIManager.onSessionWebScopeBegin (aSessionScope);
+    ScopeSPIManager.onSessionScopeBegin (aSessionScope);
 
     s_aUniqueSessionCounter.increment ();
     return aSessionScope;
@@ -187,7 +187,7 @@ public final class WebScopeSessionManager extends GlobalWebSingleton
           if (aSessionScope != null)
           {
             // Invoke SPIs
-            ScopeSPIManager.onSessionWebScopeEnd (aSessionScope);
+            ScopeSPIManager.onSessionScopeEnd (aSessionScope);
 
             // Destroy the scope
             aSessionScope.destroyScope ();

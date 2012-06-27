@@ -31,6 +31,13 @@ import com.phloc.scopes.IScope;
 public interface IRequestScope extends IScope
 {
   /**
+   * @return The session ID associated with this request. May be
+   *         <code>null</code>.
+   */
+  @Nullable
+  String getSessionID ();
+
+  /**
    * Get a list of all attribute values with the same name.
    * 
    * @param sName

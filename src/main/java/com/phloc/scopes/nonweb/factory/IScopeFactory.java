@@ -18,11 +18,14 @@
 package com.phloc.scopes.nonweb.factory;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.phloc.commons.annotations.Nonempty;
 import com.phloc.scopes.nonweb.domain.IApplicationScope;
 import com.phloc.scopes.nonweb.domain.IGlobalScope;
 import com.phloc.scopes.nonweb.domain.IRequestScope;
+import com.phloc.scopes.nonweb.domain.ISessionApplicationScope;
+import com.phloc.scopes.nonweb.domain.ISessionScope;
 
 /**
  * Interface for a non-web scope factory.
@@ -52,12 +55,34 @@ public interface IScopeFactory
   IApplicationScope createApplicationScope (@Nonnull @Nonempty String sScopeID);
 
   /**
+   * Create a new session scope
+   * 
+   * @param sScopeID
+   *        The scope ID to use
+   * @return Never <code>null</code>.
+   */
+  @Nonnull
+  ISessionScope createSessionScope (@Nonnull @Nonempty String sScopeID);
+
+  /**
+   * Create a new session application scope
+   * 
+   * @param sScopeID
+   *        The scope ID to use
+   * @return Never <code>null</code>.
+   */
+  @Nonnull
+  ISessionApplicationScope createSessionApplicationScope (@Nonnull @Nonempty String sScopeID);
+
+  /**
    * Create a new request scope
    * 
    * @param sScopeID
    *        The scope ID to use. May neither be <code>null</code> nor empty.
+   * @param sSessionID
+   *        The session scope ID to use. May be <code>null</code>.
    * @return Never <code>null</code>.
    */
   @Nonnull
-  IRequestScope createRequestScope (@Nonnull @Nonempty String sScopeID);
+  IRequestScope createRequestScope (@Nonnull @Nonempty String sScopeID, @Nullable String sSessionID);
 }

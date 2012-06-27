@@ -43,11 +43,11 @@ import com.phloc.scopes.web.impl.SessionWebScope;
 import com.phloc.scopes.web.mgr.WebScopeManager;
 
 /**
- * Standalone version of the scope factory. No dependencies to Web components.
+ * Web version of the scope factory.
  * 
  * @author philip
  */
-public class DefaultWebScopeFactory implements IWebScopeFactory
+public final class DefaultWebScopeFactory implements IWebScopeFactory
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (DefaultWebScopeFactory.class);
 
@@ -123,7 +123,7 @@ public class DefaultWebScopeFactory implements IWebScopeFactory
   }
 
   @Nonnull
-  public final IApplicationWebScope createApplicationScope (@Nonnull @Nonempty final String sScopeID)
+  public IApplicationWebScope createApplicationScope (@Nonnull @Nonempty final String sScopeID)
   {
     return new ApplicationWebScope (sScopeID);
   }
@@ -135,7 +135,7 @@ public class DefaultWebScopeFactory implements IWebScopeFactory
   }
 
   @Nonnull
-  public final ISessionApplicationWebScope createSessionApplicationScope (@Nonnull @Nonempty final String sScopeID)
+  public ISessionApplicationWebScope createSessionApplicationScope (@Nonnull @Nonempty final String sScopeID)
   {
     return new SessionApplicationWebScope (sScopeID);
   }

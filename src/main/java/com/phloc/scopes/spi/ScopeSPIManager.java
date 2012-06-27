@@ -31,6 +31,8 @@ import com.phloc.commons.mock.IMockException;
 import com.phloc.scopes.nonweb.domain.IApplicationScope;
 import com.phloc.scopes.nonweb.domain.IGlobalScope;
 import com.phloc.scopes.nonweb.domain.IRequestScope;
+import com.phloc.scopes.nonweb.domain.ISessionApplicationScope;
+import com.phloc.scopes.nonweb.domain.ISessionScope;
 import com.phloc.scopes.web.domain.IApplicationWebScope;
 import com.phloc.scopes.web.domain.IGlobalWebScope;
 import com.phloc.scopes.web.domain.IRequestWebScope;
@@ -52,6 +54,8 @@ public final class ScopeSPIManager
   // non-web scopes
   private static final List <IGlobalScopeSPI> s_aGlobalSPIs = new ArrayList <IGlobalScopeSPI> ();
   private static final List <IApplicationScopeSPI> s_aApplicationSPIs = new ArrayList <IApplicationScopeSPI> ();
+  private static final List <ISessionScopeSPI> s_aSessionSPIs = new ArrayList <ISessionScopeSPI> ();
+  private static final List <ISessionApplicationScopeSPI> s_aSessionApplicationSPIs = new ArrayList <ISessionApplicationScopeSPI> ();
   private static final List <IRequestScopeSPI> s_aRequestSPIs = new ArrayList <IRequestScopeSPI> ();
 
   // web scopes
@@ -68,6 +72,10 @@ public final class ScopeSPIManager
       s_aGlobalSPIs.add (aSPI);
     for (final IApplicationScopeSPI aSPI : ServiceLoaderBackport.load (IApplicationScopeSPI.class))
       s_aApplicationSPIs.add (aSPI);
+    for (final ISessionScopeSPI aSPI : ServiceLoaderBackport.load (ISessionScopeSPI.class))
+      s_aSessionSPIs.add (aSPI);
+    for (final ISessionApplicationScopeSPI aSPI : ServiceLoaderBackport.load (ISessionApplicationScopeSPI.class))
+      s_aSessionApplicationSPIs.add (aSPI);
     for (final IRequestScopeSPI aSPI : ServiceLoaderBackport.load (IRequestScopeSPI.class))
       s_aRequestSPIs.add (aSPI);
 
@@ -212,64 +220,128 @@ public final class ScopeSPIManager
     }
   }
 
-  public static void onSessionWebScopeBegin (@Nonnull final ISessionWebScope aSessionWebScope)
+  public static void onSessionScopeBegin (@Nonnull final ISessionScope aSessionScope)
   {
-    // web scope
-    for (final ISessionWebScopeSPI aSPI : s_aSessionWebSPIs)
+    // non-web scope
+    for (final ISessionScopeSPI aSPI : s_aSessionSPIs)
       try
       {
-        aSPI.onSessionWebScopeBegin (aSessionWebScope);
+        aSPI.onSessionScopeBegin (aSessionScope);
       }
       catch (final Throwable t)
       {
-        s_aLogger.error ("Failed to invoke SPI method onSessionWebScopeBegin on " + aSPI,
+        s_aLogger.error ("Failed to invoke SPI method onSessionScopeBegin on " + aSPI,
                          t instanceof IMockException ? null : t);
       }
+
+    if (aSessionScope instanceof ISessionWebScope)
+    {
+      // web scope
+      final ISessionWebScope aSessionWebScope = (ISessionWebScope) aSessionScope;
+      for (final ISessionWebScopeSPI aSPI : s_aSessionWebSPIs)
+        try
+        {
+          aSPI.onSessionWebScopeBegin (aSessionWebScope);
+        }
+        catch (final Throwable t)
+        {
+          s_aLogger.error ("Failed to invoke SPI method onSessionWebScopeBegin on " + aSPI,
+                           t instanceof IMockException ? null : t);
+        }
+    }
   }
 
-  public static void onSessionWebScopeEnd (@Nonnull final ISessionWebScope aSessionWebScope)
+  public static void onSessionScopeEnd (@Nonnull final ISessionScope aSessionScope)
   {
-    // web scope
-    for (final ISessionWebScopeSPI aSPI : s_aSessionWebSPIs)
+    // non-web scope
+    for (final ISessionScopeSPI aSPI : s_aSessionSPIs)
       try
       {
-        aSPI.onSessionWebScopeEnd (aSessionWebScope);
+        aSPI.onSessionScopeEnd (aSessionScope);
       }
       catch (final Throwable t)
       {
-        s_aLogger.error ("Failed to invoke SPI method onSessionWebScopeEnd on " + aSPI,
-                         t instanceof IMockException ? null : t);
+        s_aLogger.error ("Failed to invoke SPI method onSessionScopeEnd on " + aSPI, t instanceof IMockException ? null
+                                                                                                                : t);
       }
+
+    if (aSessionScope instanceof ISessionWebScope)
+    {
+      // web scope
+      final ISessionWebScope aSessionWebScope = (ISessionWebScope) aSessionScope;
+      for (final ISessionWebScopeSPI aSPI : s_aSessionWebSPIs)
+        try
+        {
+          aSPI.onSessionWebScopeEnd (aSessionWebScope);
+        }
+        catch (final Throwable t)
+        {
+          s_aLogger.error ("Failed to invoke SPI method onSessionWebScopeEnd on " + aSPI,
+                           t instanceof IMockException ? null : t);
+        }
+    }
   }
 
-  public static void onSessionApplicationWebScopeBegin (@Nonnull final ISessionApplicationWebScope aSessionApplicationWebScope)
+  public static void onSessionApplicationScopeBegin (@Nonnull final ISessionApplicationScope aSessionApplicationScope)
   {
-    // web scope
-    for (final ISessionApplicationWebScopeSPI aSPI : s_aSessionApplicationWebSPIs)
+    // non-web scope
+    for (final ISessionApplicationScopeSPI aSPI : s_aSessionApplicationSPIs)
       try
       {
-        aSPI.onSessionApplicationWebScopeBegin (aSessionApplicationWebScope);
+        aSPI.onSessionApplicationScopeBegin (aSessionApplicationScope);
       }
       catch (final Throwable t)
       {
-        s_aLogger.error ("Failed to invoke SPI method onSessionApplicationWebScopeBegin on " + aSPI,
+        s_aLogger.error ("Failed to invoke SPI method onSessionApplicationScopeBegin on " + aSPI,
                          t instanceof IMockException ? null : t);
       }
+
+    if (aSessionApplicationScope instanceof ISessionApplicationWebScope)
+    {
+      // web scope
+      final ISessionApplicationWebScope aSessionApplicationWebScope = (ISessionApplicationWebScope) aSessionApplicationScope;
+      for (final ISessionApplicationWebScopeSPI aSPI : s_aSessionApplicationWebSPIs)
+        try
+        {
+          aSPI.onSessionApplicationWebScopeBegin (aSessionApplicationWebScope);
+        }
+        catch (final Throwable t)
+        {
+          s_aLogger.error ("Failed to invoke SPI method onSessionApplicationWebScopeBegin on " + aSPI,
+                           t instanceof IMockException ? null : t);
+        }
+    }
   }
 
-  public static void onSessionApplicationWebScopeEnd (@Nonnull final ISessionApplicationWebScope aSessionApplicationWebScope)
+  public static void onSessionApplicationScopeEnd (@Nonnull final ISessionApplicationScope aSessionApplicationScope)
   {
-    // web scope
-    for (final ISessionApplicationWebScopeSPI aSPI : s_aSessionApplicationWebSPIs)
+    // non-web scope
+    for (final ISessionApplicationScopeSPI aSPI : s_aSessionApplicationSPIs)
       try
       {
-        aSPI.onSessionApplicationWebScopeEnd (aSessionApplicationWebScope);
+        aSPI.onSessionApplicationScopeEnd (aSessionApplicationScope);
       }
       catch (final Throwable t)
       {
-        s_aLogger.error ("Failed to invoke SPI method onSessionApplicationWebScopeEnd on " + aSPI,
+        s_aLogger.error ("Failed to invoke SPI method onSessionApplicationScopeEnd on " + aSPI,
                          t instanceof IMockException ? null : t);
       }
+
+    if (aSessionApplicationScope instanceof ISessionApplicationWebScope)
+    {
+      // web scope
+      final ISessionApplicationWebScope aSessionApplicationWebScope = (ISessionApplicationWebScope) aSessionApplicationScope;
+      for (final ISessionApplicationWebScopeSPI aSPI : s_aSessionApplicationWebSPIs)
+        try
+        {
+          aSPI.onSessionApplicationWebScopeEnd (aSessionApplicationWebScope);
+        }
+        catch (final Throwable t)
+        {
+          s_aLogger.error ("Failed to invoke SPI method onSessionApplicationWebScopeEnd on " + aSPI,
+                           t instanceof IMockException ? null : t);
+        }
+    }
   }
 
   public static void onRequestScopeBegin (@Nonnull final IRequestScope aRequestScope)
