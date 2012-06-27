@@ -15,17 +15,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.phloc.scopes.web.domain;
+package com.phloc.scopes.nonweb.domain;
 
-import com.phloc.scopes.IWebScope;
-import com.phloc.scopes.nonweb.domain.ISessionApplicationScope;
+import com.phloc.scopes.IScope;
 
 /**
  * Interface for a single session application scope object.
  * 
  * @author philip
  */
-public interface ISessionApplicationWebScope extends ISessionApplicationScope, IWebScope
+public interface ISessionApplicationScope extends IScope
 {
   /* empty */
 }

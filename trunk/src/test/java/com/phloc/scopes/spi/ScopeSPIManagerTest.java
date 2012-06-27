@@ -68,7 +68,7 @@ public final class ScopeSPIManagerTest
 
     // Create request scope
     nPrev = AbstractScopeSPI.getBegin ();
-    ScopeManager.onRequestBegin ("appid", "scopeid");
+    ScopeManager.onRequestBegin ("appid", "scopeid", "sessionid");
     assertEquals (nPrev + 1, AbstractScopeSPI.getBegin ());
 
     // End request scope
@@ -92,7 +92,7 @@ public final class ScopeSPIManagerTest
 
     // Create request scope
     nPrev = AbstractScopeSPI.getBegin ();
-    ScopeManager.onRequestBegin ("appid", "scopeid");
+    ScopeManager.onRequestBegin ("appid", "scopeid", "sessionid");
     assertEquals (nPrev + 1, AbstractScopeSPI.getBegin ());
 
     // Create application scope
@@ -121,7 +121,7 @@ public final class ScopeSPIManagerTest
 
     // Create request scope
     nPrev = AbstractScopeSPI.getBegin ();
-    ScopeManager.onRequestBegin ("appid", "scopeid");
+    ScopeManager.onRequestBegin ("appid", "scopeid", "sessionid");
     assertEquals (nPrev + 1, AbstractScopeSPI.getBegin ());
 
     // Create application scope

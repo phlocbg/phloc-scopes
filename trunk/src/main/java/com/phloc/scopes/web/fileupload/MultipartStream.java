@@ -1018,8 +1018,8 @@ public final class MultipartStream
 
       for (;;)
       {
-        final int bytesRead = m_aInput.read (m_aBuffer, m_nTail, m_nBufSize - m_nTail);
-        if (bytesRead == -1)
+        final int nBytesRead = m_aInput.read (m_aBuffer, m_nTail, m_nBufSize - m_nTail);
+        if (nBytesRead == -1)
         {
           // The last pad amount is left in the buffer.
           // Boundary can't be in there so signal an error
@@ -1029,9 +1029,9 @@ public final class MultipartStream
         }
         if (m_aNotifier != null)
         {
-          m_aNotifier.noteBytesRead (bytesRead);
+          m_aNotifier.noteBytesRead (nBytesRead);
         }
-        m_nTail += bytesRead;
+        m_nTail += nBytesRead;
 
         _findSeparator ();
         final int av = available ();

@@ -17,21 +17,20 @@
  */
 package com.phloc.scopes.web.domain;
 
-import java.util.Map;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpSession;
 
 import com.phloc.commons.annotations.Nonempty;
 import com.phloc.scopes.IWebScope;
+import com.phloc.scopes.nonweb.domain.ISessionScope;
 
 /**
  * Interface for a single session scope object.
  * 
  * @author philip
  */
-public interface ISessionWebScope extends IWebScope
+public interface ISessionWebScope extends ISessionScope, IWebScope
 {
   /**
    * Get the underlying HTTP session. Important: do not use it to access the
@@ -69,25 +68,9 @@ public interface ISessionWebScope extends IWebScope
   long getMaxInactiveInterval ();
 
   /**
-   * Create an application specific scope within the session.
-   * 
-   * @param sApplicationID
-   *        The application ID to use. May not be <code>null</code>.
-   * @param bCreateIfNotExisting
-   *        Create the session application scope if does not yet exist. If
-   *        <code>false</code> and the scope does not exist than
-   *        <code>null</code> is returned.
-   * @return <code>null</code> if bCreateIfNotExisting is <code>false</code> and
-   *         the scope is not present
+   * {@inheritDoc}
    */
   @Nullable
   ISessionApplicationWebScope getSessionApplicationScope (@Nonnull @Nonempty String sApplicationID,
                                                           boolean bCreateIfNotExisting);
-
-  /**
-   * @return A non-<code>null</code> map with all available session application
-   *         scopes. The key is the application ID and the value is the scope.
-   */
-  @Nonnull
-  Map <String, ISessionApplicationWebScope> getAllSessionApplicationScopes ();
 }

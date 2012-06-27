@@ -15,38 +15,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.phloc.scopes.nonweb.mock;
+package com.phloc.scopes.web.mgr;
 
-import com.phloc.scopes.nonweb.mgr.ScopeManager;
+import static org.junit.Assert.assertNotNull;
+
+import org.junit.Test;
+
+import com.phloc.scopes.web.mock.AbstractWebScopeAwareTestCase;
 
 /**
- * Base class for all JUnit tests requiring correct scope handling.
+ * Test class for class {@link EWebScope}.
  * 
  * @author philip
  */
-public final class ScopeAwareTestSetup
+public final class EWebScopeTest extends AbstractWebScopeAwareTestCase
 {
-  /** The application ID to use. */
-  private static final String MOCK_APPID = "mock.appid";
-
-  private ScopeAwareTestSetup ()
-  {}
-
-  public static void setupScopeTests ()
+  @Test
+  public void testGetScope ()
   {
-    // begin request
-    ScopeManager.onGlobalBegin ("mock.global");
-
-    // begin request
-    ScopeManager.onRequestBegin (MOCK_APPID, "mock.request", "mock.session");
-  }
-
-  public static void shutdownScopeTests ()
-  {
-    // end request
-    ScopeManager.onRequestEnd ();
-
-    // shutdown global context
-    ScopeManager.onGlobalEnd ();
+    for (final EWebScope eScope : EWebScope.values ())
+    {
+      assertNotNull (eScope.getScope (true));
+    }
   }
 }

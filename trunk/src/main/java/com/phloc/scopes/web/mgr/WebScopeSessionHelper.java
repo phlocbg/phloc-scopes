@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 
 import com.phloc.commons.string.StringHelper;
 import com.phloc.scopes.IScopeRenewalAware;
+import com.phloc.scopes.nonweb.domain.ISessionApplicationScope;
 import com.phloc.scopes.web.domain.ISessionApplicationWebScope;
 import com.phloc.scopes.web.domain.ISessionWebScope;
 
@@ -51,8 +52,8 @@ public final class WebScopeSessionHelper
 
       // Save all values from all session application scopes
       final Map <String, Map <String, IScopeRenewalAware>> aSessionApplicationScopeValues = new HashMap <String, Map <String, IScopeRenewalAware>> ();
-      for (final Map.Entry <String, ISessionApplicationWebScope> aEntry : aOldSessionScope.getAllSessionApplicationScopes ()
-                                                                                          .entrySet ())
+      for (final Map.Entry <String, ISessionApplicationScope> aEntry : aOldSessionScope.getAllSessionApplicationScopes ()
+                                                                                       .entrySet ())
       {
         final Map <String, IScopeRenewalAware> aSurviving = aEntry.getValue ().getAllScopeRenewalAwareAttributes ();
         if (!aSurviving.isEmpty ())

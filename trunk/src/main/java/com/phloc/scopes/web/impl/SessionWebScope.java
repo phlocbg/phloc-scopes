@@ -19,8 +19,6 @@ package com.phloc.scopes.web.impl;
 
 import java.io.Serializable;
 import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -31,15 +29,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.phloc.commons.annotations.Nonempty;
-import com.phloc.commons.annotations.ReturnsMutableCopy;
-import com.phloc.commons.collections.ContainerHelper;
 import com.phloc.commons.state.EChange;
-import com.phloc.commons.string.StringHelper;
 import com.phloc.commons.string.ToStringGenerator;
-import com.phloc.scopes.AbstractMapBasedScope;
 import com.phloc.scopes.MetaScopeFactory;
-import com.phloc.scopes.ScopeUtils;
-import com.phloc.scopes.spi.ScopeSPIManager;
+import com.phloc.scopes.nonweb.impl.SessionScope;
 import com.phloc.scopes.web.domain.ISessionApplicationWebScope;
 import com.phloc.scopes.web.domain.ISessionWebScope;
 
@@ -49,23 +42,19 @@ import com.phloc.scopes.web.domain.ISessionWebScope;
  * @author philip
  */
 @ThreadSafe
-public class SessionWebScope extends AbstractMapBasedScope implements ISessionWebScope
+public class SessionWebScope extends SessionScope implements ISessionWebScope
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (SessionWebScope.class);
 
   private final HttpSession m_aHttpSession;
-  private final Map <String, ISessionApplicationWebScope> m_aSessionAppScopes = new HashMap <String, ISessionApplicationWebScope> ();
 
   public SessionWebScope (@Nonnull final HttpSession aHttpSession)
   {
     super (aHttpSession.getId ());
     m_aHttpSession = aHttpSession;
-
-    // Sessions are always displayed to see what's happening
-    if (ScopeUtils.debugScopeLifeCycle (s_aLogger))
-      s_aLogger.info ("Created session web scope '" + getID () + "'");
   }
 
+  @Override
   public void initScope ()
   {
     // Copy all attributes from the HTTP session in this scope
@@ -90,95 +79,18 @@ public class SessionWebScope extends AbstractMapBasedScope implements ISessionWe
   }
 
   @Override
-  protected final void destroyOwnedScopes ()
+  @Nonnull
+  protected ISessionApplicationWebScope createSessionApplicationScope (@Nonnull @Nonempty final String sApplicationID)
   {
-    m_aRWLock.writeLock ().lock ();
-    try
-    {
-      for (final ISessionApplicationWebScope aSessionAppScope : m_aSessionAppScopes.values ())
-      {
-        // Invoke SPIs
-        ScopeSPIManager.onSessionApplicationWebScopeEnd (aSessionAppScope);
-
-        // destroy the scope
-        aSessionAppScope.destroyScope ();
-      }
-      m_aSessionAppScopes.clear ();
-    }
-    finally
-    {
-      m_aRWLock.writeLock ().unlock ();
-    }
+    return MetaScopeFactory.getWebScopeFactory ().createSessionApplicationScope (sApplicationID);
   }
 
   @Override
-  protected void postDestroy ()
-  {
-    if (ScopeUtils.debugScopeLifeCycle (s_aLogger))
-      s_aLogger.info ("Destroyed session web scope '" + getID () + "'");
-  }
-
   @Nullable
   public ISessionApplicationWebScope getSessionApplicationScope (@Nonnull @Nonempty final String sApplicationID,
                                                                  final boolean bCreateIfNotExisting)
   {
-    if (StringHelper.hasNoText (sApplicationID))
-      throw new IllegalArgumentException ("applicationID");
-
-    // To make the ID unique, prepend the application ID with this scope ID
-    final String sAppScopeID = getID () + '.' + sApplicationID;
-    ISessionApplicationWebScope aSessionAppScope;
-
-    // Try with read-lock only
-    m_aRWLock.readLock ().lock ();
-    try
-    {
-      aSessionAppScope = m_aSessionAppScopes.get (sAppScopeID);
-    }
-    finally
-    {
-      m_aRWLock.readLock ().unlock ();
-    }
-
-    if (aSessionAppScope == null && bCreateIfNotExisting)
-    {
-      m_aRWLock.writeLock ().lock ();
-      try
-      {
-        // Check again - now in write lock
-        aSessionAppScope = m_aSessionAppScopes.get (sAppScopeID);
-        if (aSessionAppScope == null)
-        {
-          // Definitively not present
-          aSessionAppScope = MetaScopeFactory.getWebScopeFactory ().createSessionApplicationScope (sAppScopeID);
-          m_aSessionAppScopes.put (sAppScopeID, aSessionAppScope);
-          aSessionAppScope.initScope ();
-
-          // Invoke SPIs
-          ScopeSPIManager.onSessionApplicationWebScopeBegin (aSessionAppScope);
-        }
-      }
-      finally
-      {
-        m_aRWLock.writeLock ().unlock ();
-      }
-    }
-    return aSessionAppScope;
-  }
-
-  @Nonnull
-  @ReturnsMutableCopy
-  public Map <String, ISessionApplicationWebScope> getAllSessionApplicationScopes ()
-  {
-    m_aRWLock.readLock ().lock ();
-    try
-    {
-      return ContainerHelper.newMap (m_aSessionAppScopes);
-    }
-    finally
-    {
-      m_aRWLock.readLock ().unlock ();
-    }
+    return (ISessionApplicationWebScope) super.getSessionApplicationScope (sApplicationID, bCreateIfNotExisting);
   }
 
   @Nonnull
@@ -200,9 +112,6 @@ public class SessionWebScope extends AbstractMapBasedScope implements ISessionWe
   @Override
   public String toString ()
   {
-    return ToStringGenerator.getDerived (super.toString ())
-                            .append ("httpSession", m_aHttpSession)
-                            .append ("sessionAppScopes", m_aSessionAppScopes)
-                            .toString ();
+    return ToStringGenerator.getDerived (super.toString ()).append ("httpSession", m_aHttpSession).toString ();
   }
 }

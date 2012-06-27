@@ -18,21 +18,26 @@
 package com.phloc.scopes.nonweb.factory;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.phloc.commons.annotations.Nonempty;
 import com.phloc.scopes.nonweb.domain.IApplicationScope;
 import com.phloc.scopes.nonweb.domain.IGlobalScope;
 import com.phloc.scopes.nonweb.domain.IRequestScope;
+import com.phloc.scopes.nonweb.domain.ISessionApplicationScope;
+import com.phloc.scopes.nonweb.domain.ISessionScope;
 import com.phloc.scopes.nonweb.impl.ApplicationScope;
 import com.phloc.scopes.nonweb.impl.GlobalScope;
 import com.phloc.scopes.nonweb.impl.RequestScope;
+import com.phloc.scopes.nonweb.impl.SessionApplicationScope;
+import com.phloc.scopes.nonweb.impl.SessionScope;
 
 /**
  * Standalone version of the scope factory. No dependencies to Web components.
  * 
  * @author philip
  */
-public class DefaultScopeFactory implements IScopeFactory
+public final class DefaultScopeFactory implements IScopeFactory
 {
   public DefaultScopeFactory ()
   {}
@@ -44,14 +49,26 @@ public class DefaultScopeFactory implements IScopeFactory
   }
 
   @Nonnull
-  public final IApplicationScope createApplicationScope (@Nonnull @Nonempty final String sScopeID)
+  public IApplicationScope createApplicationScope (@Nonnull @Nonempty final String sScopeID)
   {
     return new ApplicationScope (sScopeID);
   }
 
   @Nonnull
-  public IRequestScope createRequestScope (@Nonnull @Nonempty final String sScopeID)
+  public ISessionScope createSessionScope (@Nonnull @Nonempty final String sScopeID)
   {
-    return new RequestScope (sScopeID);
+    return new SessionScope (sScopeID);
+  }
+
+  @Nonnull
+  public ISessionApplicationScope createSessionApplicationScope (@Nonnull @Nonempty final String sScopeID)
+  {
+    return new SessionApplicationScope (sScopeID);
+  }
+
+  @Nonnull
+  public IRequestScope createRequestScope (@Nonnull @Nonempty final String sScopeID, @Nullable final String sSessionID)
+  {
+    return new RequestScope (sScopeID, sSessionID);
   }
 }

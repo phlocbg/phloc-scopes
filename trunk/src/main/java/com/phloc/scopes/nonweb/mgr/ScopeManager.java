@@ -30,6 +30,8 @@ import com.phloc.scopes.MetaScopeFactory;
 import com.phloc.scopes.nonweb.domain.IApplicationScope;
 import com.phloc.scopes.nonweb.domain.IGlobalScope;
 import com.phloc.scopes.nonweb.domain.IRequestScope;
+import com.phloc.scopes.nonweb.domain.ISessionApplicationScope;
+import com.phloc.scopes.nonweb.domain.ISessionScope;
 import com.phloc.scopes.spi.ScopeSPIManager;
 
 /**
@@ -243,6 +245,58 @@ public final class ScopeManager
     return getGlobalScope ().getApplicationScope (sApplicationID, bCreateIfNotExisting);
   }
 
+  // --- session scope ---
+
+  @Nonnull
+  public static ISessionScope getSessionScope ()
+  {
+    return getSessionScope (ScopeManager.DEFAULT_CREATE_SCOPE);
+  }
+
+  @Nullable
+  public static ISessionScope getSessionScope (final boolean bCreateIfNotExisting)
+  {
+    final IRequestScope aRequestScope = getRequestScopeOrNull ();
+    if (aRequestScope != null)
+    {
+      return ScopeSessionManager.getInstance ().getSessionScope (aRequestScope.getSessionID (), bCreateIfNotExisting);
+    }
+
+    // If we want a session scope, we expect the return value to be non-null!
+    if (bCreateIfNotExisting)
+      throw new IllegalStateException ("No request scope is present, so no session scope can be created!");
+    return null;
+  }
+
+  // --- session application scope ---
+
+  @Nonnull
+  public static ISessionApplicationScope getSessionApplicationScope ()
+  {
+    return getSessionApplicationScope (ScopeManager.DEFAULT_CREATE_SCOPE);
+  }
+
+  @Nullable
+  public static ISessionApplicationScope getSessionApplicationScope (final boolean bCreateIfNotExisting)
+  {
+    return getSessionApplicationScope (ScopeManager.getRequestApplicationID (), bCreateIfNotExisting);
+  }
+
+  @Nonnull
+  public static ISessionApplicationScope getSessionApplicationScope (@Nonnull @Nonempty final String sApplicationID)
+  {
+    return getSessionApplicationScope (sApplicationID, ScopeManager.DEFAULT_CREATE_SCOPE);
+  }
+
+  @Nullable
+  public static ISessionApplicationScope getSessionApplicationScope (@Nonnull @Nonempty final String sApplicationID,
+                                                                     final boolean bCreateIfNotExisting)
+  {
+    final ISessionScope aSessionScope = getSessionScope (bCreateIfNotExisting);
+    return aSessionScope == null ? null : aSessionScope.getSessionApplicationScope (sApplicationID,
+                                                                                    bCreateIfNotExisting);
+  }
+
   // --- request scope ---
 
   /**
@@ -298,9 +352,10 @@ public final class ScopeManager
 
   @Nonnull
   public static IRequestScope onRequestBegin (@Nonnull @Nonempty final String sApplicationID,
-                                              @Nonnull @Nonempty final String sScopeID)
+                                              @Nonnull @Nonempty final String sScopeID,
+                                              @Nullable final String sSessionID)
   {
-    final IRequestScope aRequestScope = MetaScopeFactory.getScopeFactory ().createRequestScope (sScopeID);
+    final IRequestScope aRequestScope = MetaScopeFactory.getScopeFactory ().createRequestScope (sScopeID, sSessionID);
     setAndInitRequestScope (sApplicationID, aRequestScope);
     return aRequestScope;
   }

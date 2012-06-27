@@ -35,6 +35,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Test;
 
+import com.phloc.commons.mock.MockIOException;
 import com.phloc.scopes.web.fileupload.AbstractFileUploadBase.IOFileUploadException;
 import com.phloc.scopes.web.fileupload.io.DiskFileItemFactory;
 import com.phloc.scopes.web.fileupload.servlet.ServletFileUpload;
@@ -111,7 +112,7 @@ public final class FuncTestStreaming
       {
         if (++num > 123)
         {
-          throw new IOException ("123");
+          throw new MockIOException ("123");
         }
         return super.read ();
       }

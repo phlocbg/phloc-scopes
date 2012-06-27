@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 import com.phloc.commons.annotations.Nonempty;
 import com.phloc.commons.collections.ContainerHelper;
 import com.phloc.commons.equals.EqualsUtils;
+import com.phloc.commons.string.ToStringGenerator;
 import com.phloc.scopes.AbstractMapBasedScope;
 import com.phloc.scopes.ScopeUtils;
 import com.phloc.scopes.nonweb.domain.IRequestScope;
@@ -40,14 +41,22 @@ import com.phloc.scopes.nonweb.domain.IRequestScope;
 public class RequestScope extends AbstractMapBasedScope implements IRequestScope
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (RequestScope.class);
+  private final String m_sSessionID;
 
-  public RequestScope (@Nonnull @Nonempty final String sScopeID)
+  public RequestScope (@Nonnull @Nonempty final String sScopeID, @Nullable final String sSessionID)
   {
     super (sScopeID);
+    m_sSessionID = sSessionID;
 
     // done initialization
     if (ScopeUtils.debugScopeLifeCycle (s_aLogger))
       s_aLogger.info ("Created request scope '" + sScopeID + "'");
+  }
+
+  @Nullable
+  public final String getSessionID ()
+  {
+    return m_sSessionID;
   }
 
   public void initScope ()
@@ -94,5 +103,11 @@ public class RequestScope extends AbstractMapBasedScope implements IRequestScope
   {
     final String sValue = getAttributeAsString (sName);
     return sValue == null ? bDefault : EqualsUtils.equals (sValue, sDesiredValue);
+  }
+
+  @Override
+  public String toString ()
+  {
+    return ToStringGenerator.getDerived (super.toString ()).append ("sessionID", m_sSessionID).toString ();
   }
 }
