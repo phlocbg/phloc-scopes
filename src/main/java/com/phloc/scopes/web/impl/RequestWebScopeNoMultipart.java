@@ -279,7 +279,7 @@ public class RequestWebScopeNoMultipart extends AbstractReadonlyAttributeContain
       s_aLogger.info ("Destroyed request web scope '" + getID () + "'");
   }
 
-  public boolean containsAttribute (final String sName)
+  public boolean containsAttribute (@Nullable final String sName)
   {
     return getAttributeObject (sName) != null;
   }
@@ -321,13 +321,13 @@ public class RequestWebScopeNoMultipart extends AbstractReadonlyAttributeContain
   }
 
   @Nullable
-  public List <String> getAttributeValues (final String sName)
+  public List <String> getAttributeValues (@Nullable final String sName)
   {
     return getAttributeValues (sName, null);
   }
 
   @Nullable
-  public List <String> getAttributeValues (final String sName, @Nullable final List <String> aDefault)
+  public List <String> getAttributeValues (@Nullable final String sName, @Nullable final List <String> aDefault)
   {
     final Object aValue = getAttributeObject (sName);
     if (aValue instanceof String [])
@@ -343,12 +343,14 @@ public class RequestWebScopeNoMultipart extends AbstractReadonlyAttributeContain
     return aDefault;
   }
 
-  public boolean hasAttributeValue (final String sName, @Nullable final String sDesiredValue)
+  public boolean hasAttributeValue (@Nullable final String sName, @Nullable final String sDesiredValue)
   {
     return EqualsUtils.equals (getAttributeAsString (sName), sDesiredValue);
   }
 
-  public boolean hasAttributeValue (final String sName, final String sDesiredValue, final boolean bDefault)
+  public boolean hasAttributeValue (@Nullable final String sName,
+                                    @Nullable final String sDesiredValue,
+                                    final boolean bDefault)
   {
     final String sValue = getAttributeAsString (sName);
     return sValue == null ? bDefault : EqualsUtils.equals (sValue, sDesiredValue);
@@ -360,7 +362,7 @@ public class RequestWebScopeNoMultipart extends AbstractReadonlyAttributeContain
   }
 
   @Nonnull
-  public EChange removeAttribute (final String sName)
+  public EChange removeAttribute (@Nullable final String sName)
   {
     m_aRWLock.writeLock ().lock ();
     try
@@ -377,7 +379,7 @@ public class RequestWebScopeNoMultipart extends AbstractReadonlyAttributeContain
   }
 
   @Nonnull
-  public EChange setAttribute (final String sName, final Object aNewValue)
+  public EChange setAttribute (final String sName, @Nullable final Object aNewValue)
   {
     if (s_aLogger.isTraceEnabled ())
       s_aLogger.trace ("name='" + sName + "' -- '" + aNewValue + "'");
@@ -400,7 +402,7 @@ public class RequestWebScopeNoMultipart extends AbstractReadonlyAttributeContain
   }
 
   @Nullable
-  public Object getAttributeObject (final String sName)
+  public Object getAttributeObject (@Nullable final String sName)
   {
     m_aRWLock.readLock ().lock ();
     try

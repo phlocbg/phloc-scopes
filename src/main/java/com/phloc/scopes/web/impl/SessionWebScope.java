@@ -70,7 +70,7 @@ public class SessionWebScope extends SessionScope implements ISessionWebScope
 
   @Override
   @Nonnull
-  public EChange setAttribute (@Nonnull final String sName, @Nonnull final Object aNewValue)
+  public EChange setAttribute (@Nonnull final String sName, @Nullable final Object aNewValue)
   {
     if (aNewValue != null && !(aNewValue instanceof Serializable))
       s_aLogger.warn ("Value of class " + aNewValue.getClass ().getName () + " should implement Serializable!");

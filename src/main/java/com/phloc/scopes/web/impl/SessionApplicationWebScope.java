@@ -20,6 +20,7 @@ package com.phloc.scopes.web.impl;
 import java.io.Serializable;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
 
 import org.slf4j.Logger;
@@ -56,7 +57,7 @@ public class SessionApplicationWebScope extends AbstractMapBasedScope implements
 
   @Override
   @Nonnull
-  public EChange setAttribute (@Nonnull final String sName, @Nonnull final Object aNewValueValue)
+  public EChange setAttribute (@Nonnull final String sName, @Nullable final Object aNewValueValue)
   {
     if (aNewValueValue != null && !(aNewValueValue instanceof Serializable))
       s_aLogger.warn ("Value of class " + aNewValueValue.getClass ().getName () + " should implement Serializable!");
