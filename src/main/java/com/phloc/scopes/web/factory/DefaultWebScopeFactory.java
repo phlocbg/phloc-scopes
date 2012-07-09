@@ -20,6 +20,7 @@ package com.phloc.scopes.web.factory;
 import java.lang.reflect.Method;
 
 import javax.annotation.Nonnull;
+import javax.annotation.concurrent.NotThreadSafe;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -47,7 +48,8 @@ import com.phloc.scopes.web.mgr.WebScopeManager;
  * 
  * @author philip
  */
-public final class DefaultWebScopeFactory implements IWebScopeFactory
+@NotThreadSafe
+public class DefaultWebScopeFactory implements IWebScopeFactory
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (DefaultWebScopeFactory.class);
 
@@ -61,6 +63,8 @@ public final class DefaultWebScopeFactory implements IWebScopeFactory
       throw new NullPointerException ("servletContext");
 
     IContextPathProvider aContextPathProvider = null;
+
+    // Using getContextPath for Servlet API >= 2.5:
     if ((aServletContext.getMajorVersion () == 2 && aServletContext.getMinorVersion () >= 5) ||
         aServletContext.getMajorVersion () > 2)
     {
