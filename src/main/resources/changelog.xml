@@ -20,6 +20,11 @@
 -->
 <changelog xmlns="http://www.phloc.com/ns/changelog/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.phloc.com/ns/changelog/1.0 schemas/changelog-1.0.xsd" version="1.0" component="phloc-scopes">
+  <entry date="2012-07-09" category="api" action="change">
+    <change>
+      <text locale="en">Default scope factories are non-final</text>
+    </change>
+  </entry>
   <entry date="2012-06-25" category="feature" action="add">
     <change>
       <text locale="en">Started adding Session and SessionApplication scopes for non-web applications</text>
