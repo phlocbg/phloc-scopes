@@ -98,8 +98,8 @@ public final class GlobalWebScope extends GlobalScope implements IGlobalWebScope
   public String getContextPath ()
   {
     // Must invoke the provider on demand, because with servlet-api < 2.5 there
-    // is no method ServletContext.getContextPath and therefore it must be tken
-    // from the request!!
+    // is no method ServletContext.getContextPath and therefore it must be taken
+    // from the request scope!!
     return m_aContextPathProvider.getContextPath ();
   }
 

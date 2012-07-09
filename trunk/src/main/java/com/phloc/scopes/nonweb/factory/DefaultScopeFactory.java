@@ -18,6 +18,7 @@
 package com.phloc.scopes.nonweb.factory;
 
 import javax.annotation.Nonnull;
+import javax.annotation.concurrent.NotThreadSafe;
 
 import com.phloc.commons.annotations.Nonempty;
 import com.phloc.scopes.nonweb.domain.IApplicationScope;
@@ -36,7 +37,8 @@ import com.phloc.scopes.nonweb.impl.SessionScope;
  * 
  * @author philip
  */
-public final class DefaultScopeFactory implements IScopeFactory
+@NotThreadSafe
+public class DefaultScopeFactory implements IScopeFactory
 {
   public DefaultScopeFactory ()
   {}
