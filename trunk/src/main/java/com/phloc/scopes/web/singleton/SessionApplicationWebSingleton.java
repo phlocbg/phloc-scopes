@@ -15,60 +15,58 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.phloc.scopes.nonweb.singleton;
+package com.phloc.scopes.web.singleton;
 
 import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import com.phloc.commons.annotations.MustImplementEqualsAndHashcode;
 import com.phloc.scopes.AbstractSingleton;
-import com.phloc.scopes.nonweb.domain.ISessionScope;
-import com.phloc.scopes.nonweb.mgr.ScopeManager;
+import com.phloc.scopes.web.domain.ISessionApplicationWebScope;
+import com.phloc.scopes.web.mgr.WebScopeManager;
 
 /**
- * This is the base class for singleton objects that reside in the session
- * non-web scope.
+ * This is the base class for singleton objects that reside in the
+ * session-application scope.
  * 
- * @see com.phloc.scopes.nonweb.mgr.EScope#SESSION
+ * @see com.phloc.scopes.web.mgr.EWebScope#SESSION_APPLICATION
  * @author philip
  */
-@MustImplementEqualsAndHashcode
-public abstract class SessionSingleton extends AbstractSingleton implements Serializable
+public abstract class SessionApplicationWebSingleton extends AbstractSingleton implements Serializable
 {
-  protected SessionSingleton ()
+  protected SessionApplicationWebSingleton ()
   {
-    super ("getSessionSingleton");
+    super ("getSessionApplicationSingleton");
   }
 
   @Nonnull
-  private static ISessionScope _getStaticScope ()
+  private static ISessionApplicationWebScope _getStaticScope ()
   {
-    return ScopeManager.getSessionScope ();
+    return WebScopeManager.getSessionApplicationScope (true);
   }
 
   @Override
   @Nonnull
-  protected final ISessionScope getScope ()
+  protected final ISessionApplicationWebScope getScope ()
   {
     return _getStaticScope ();
   }
 
-  protected static final boolean isSingletonInstantiated (@Nonnull final Class <? extends SessionSingleton> aClass)
+  protected static final boolean isSingletonInstantiated (@Nonnull final Class <? extends SessionApplicationWebSingleton> aClass)
   {
     return isSingletonInstantiated (_getStaticScope (), aClass);
   }
 
   @Nonnull
-  protected static final <T extends SessionSingleton> T getSessionSingleton (@Nonnull final Class <T> aClass)
+  protected static final <T extends SessionApplicationWebSingleton> T getSessionApplicationSingleton (@Nonnull final Class <T> aClass)
   {
     return getSingleton (_getStaticScope (), aClass);
   }
 
   @Nonnull
-  public static final List <SessionSingleton> getAllSingletons ()
+  public static final List <SessionApplicationWebSingleton> getAllSingletons ()
   {
-    return getAllSingletons (_getStaticScope (), SessionSingleton.class);
+    return getAllSingletons (_getStaticScope (), SessionApplicationWebSingleton.class);
   }
 }

@@ -15,24 +15,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.phloc.scopes.web.singleton;
+package com.phloc.scopes.nonweb.singleton;
 
 import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import com.phloc.commons.annotations.MustImplementEqualsAndHashcode;
 import com.phloc.scopes.AbstractSingleton;
-import com.phloc.scopes.web.domain.ISessionApplicationWebScope;
-import com.phloc.scopes.web.mgr.WebScopeManager;
+import com.phloc.scopes.nonweb.domain.ISessionApplicationScope;
+import com.phloc.scopes.nonweb.mgr.ScopeManager;
 
 /**
- * This is the base class for singleton objects that reside in the
- * session-application scope.
+ * This is the base class for singleton objects that reside in the session
+ * application non-web scope.
  * 
- * @see com.phloc.scopes.web.mgr.EWebScope#SESSION_APPLICATION
+ * @see com.phloc.scopes.nonweb.mgr.EScope#SESSION_APPLICATION
  * @author philip
  */
+@MustImplementEqualsAndHashcode
 public abstract class SessionApplicationSingleton extends AbstractSingleton implements Serializable
 {
   protected SessionApplicationSingleton ()
@@ -41,14 +43,14 @@ public abstract class SessionApplicationSingleton extends AbstractSingleton impl
   }
 
   @Nonnull
-  private static ISessionApplicationWebScope _getStaticScope ()
+  private static ISessionApplicationScope _getStaticScope ()
   {
-    return WebScopeManager.getSessionApplicationScope (true);
+    return ScopeManager.getSessionApplicationScope ();
   }
 
   @Override
   @Nonnull
-  protected final ISessionApplicationWebScope getScope ()
+  protected final ISessionApplicationScope getScope ()
   {
     return _getStaticScope ();
   }
@@ -59,7 +61,7 @@ public abstract class SessionApplicationSingleton extends AbstractSingleton impl
   }
 
   @Nonnull
-  protected static final <T extends SessionApplicationSingleton> T getSessionApplicationSingleton (@Nonnull final Class <T> aClass)
+  protected static final <T extends SessionApplicationSingleton> T getSessionSingleton (@Nonnull final Class <T> aClass)
   {
     return getSingleton (_getStaticScope (), aClass);
   }
