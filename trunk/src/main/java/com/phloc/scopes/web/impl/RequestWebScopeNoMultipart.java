@@ -20,16 +20,11 @@ package com.phloc.scopes.web.impl;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
@@ -42,20 +37,13 @@ import org.slf4j.LoggerFactory;
 import com.phloc.commons.annotations.Nonempty;
 import com.phloc.commons.annotations.OverrideOnDemand;
 import com.phloc.commons.annotations.ReturnsMutableCopy;
-import com.phloc.commons.callback.AdapterRunnableToCallableWithParameter;
-import com.phloc.commons.callback.INonThrowingCallableWithParameter;
-import com.phloc.commons.callback.INonThrowingRunnableWithParameter;
 import com.phloc.commons.collections.ContainerHelper;
-import com.phloc.commons.collections.attrs.AbstractReadonlyAttributeContainer;
 import com.phloc.commons.equals.EqualsUtils;
 import com.phloc.commons.idfactory.GlobalIDFactory;
 import com.phloc.commons.lang.GenericReflection;
-import com.phloc.commons.state.EChange;
 import com.phloc.commons.string.StringHelper;
 import com.phloc.commons.string.ToStringGenerator;
-import com.phloc.scopes.IScope;
-import com.phloc.scopes.IScopeDestructionAware;
-import com.phloc.scopes.IScopeRenewalAware;
+import com.phloc.scopes.AbstractMapBasedScope;
 import com.phloc.scopes.ScopeUtils;
 import com.phloc.scopes.web.domain.IRequestWebScope;
 import com.phloc.scopes.web.fileupload.IFileItem;
@@ -65,27 +53,31 @@ import com.phloc.scopes.web.fileupload.IFileItem;
  * 
  * @author philip
  */
-public class RequestWebScopeNoMultipart extends AbstractReadonlyAttributeContainer implements IRequestWebScope
+public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements IRequestWebScope
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (RequestWebScopeNoMultipart.class);
   private static final String REQUEST_ATTR_SCOPE_INITED = "$request.scope.inited";
 
-  protected final ReadWriteLock m_aRWLock = new ReentrantReadWriteLock ();
-  private final String m_sScopeID;
   protected final HttpServletRequest m_aHttpRequest;
   protected final HttpServletResponse m_aHttpResponse;
-  private boolean m_bInDestruction = false;
-  private boolean m_bDestroyed = false;
+
+  @Nonnull
+  @Nonempty
+  private static String _createScopeID (@Nonnull final HttpServletRequest aHttpRequest)
+  {
+    if (aHttpRequest == null)
+      throw new NullPointerException ("httpRequest");
+
+    return GlobalIDFactory.getNewIntID () + "@" + aHttpRequest.getRequestURI ();
+  }
 
   public RequestWebScopeNoMultipart (@Nonnull final HttpServletRequest aHttpRequest,
                                      @Nonnull final HttpServletResponse aHttpResponse)
   {
-    if (aHttpRequest == null)
-      throw new NullPointerException ("httpRequest");
+    super (_createScopeID (aHttpRequest));
     if (aHttpResponse == null)
       throw new NullPointerException ("httpResponse");
 
-    m_sScopeID = GlobalIDFactory.getNewIntID () + "@" + aHttpRequest.getRequestURI ();
     m_aHttpRequest = aHttpRequest;
     m_aHttpResponse = aHttpResponse;
 
@@ -145,179 +137,10 @@ public class RequestWebScopeNoMultipart extends AbstractReadonlyAttributeContain
       s_aLogger.info ("Initialized request web scope '" + getID () + "'");
   }
 
-  @Nonnull
-  @Nonempty
-  public final String getID ()
-  {
-    return m_sScopeID;
-  }
-
   @Nullable
   public final String getSessionID ()
   {
     return m_aHttpRequest.getSession (true).getId ();
-  }
-
-  public final void runAtomic (@Nonnull final INonThrowingRunnableWithParameter <IScope> aRunnable)
-  {
-    // Wrap runnable in callable
-    runAtomic (AdapterRunnableToCallableWithParameter.createAdapter (aRunnable));
-  }
-
-  @Nullable
-  public final <T> T runAtomic (@Nonnull final INonThrowingCallableWithParameter <T, IScope> aCallable)
-  {
-    if (aCallable == null)
-      throw new NullPointerException ("callable");
-
-    m_aRWLock.writeLock ().lock ();
-    try
-    {
-      return aCallable.call (this);
-    }
-    finally
-    {
-      m_aRWLock.writeLock ().unlock ();
-    }
-  }
-
-  @Nonnull
-  public EChange clear ()
-  {
-    // Create a copy of the attribute names!
-    final Set <String> aNames = getAllAttributeNames ();
-    if (aNames.isEmpty ())
-      return EChange.UNCHANGED;
-    for (final String sAttrName : aNames)
-      removeAttribute (sAttrName);
-    return EChange.CHANGED;
-  }
-
-  public boolean isValid ()
-  {
-    m_aRWLock.readLock ().lock ();
-    try
-    {
-      return !m_bInDestruction && !m_bDestroyed;
-    }
-    finally
-    {
-      m_aRWLock.readLock ().unlock ();
-    }
-  }
-
-  public boolean isInDestruction ()
-  {
-    m_aRWLock.readLock ().lock ();
-    try
-    {
-      return m_bInDestruction;
-    }
-    finally
-    {
-      m_aRWLock.readLock ().unlock ();
-    }
-  }
-
-  public boolean isDestroyed ()
-  {
-    m_aRWLock.readLock ().lock ();
-    try
-    {
-      return m_bDestroyed;
-    }
-    finally
-    {
-      m_aRWLock.readLock ().unlock ();
-    }
-  }
-
-  public void destroyScope ()
-  {
-    m_aRWLock.writeLock ().lock ();
-    try
-    {
-      if (m_bDestroyed)
-        throw new IllegalStateException ("Scope is already destroyed!");
-      if (m_bInDestruction)
-        throw new IllegalStateException ("Scope is already in destruction!");
-      m_bInDestruction = true;
-    }
-    finally
-    {
-      m_aRWLock.writeLock ().unlock ();
-    }
-
-    // Call callback (if special interface is implemented)
-    for (final Object aValue : getAllAttributeValues ())
-      if (aValue instanceof IScopeDestructionAware)
-        try
-        {
-          ((IScopeDestructionAware) aValue).onScopeDestruction ();
-        }
-        catch (final Throwable t)
-        {
-          s_aLogger.error ("Failed to call destruction method in scope " + getID () + " on " + aValue, t);
-        }
-
-    // Remove all attributes here
-    clear ();
-
-    // Finished destruction process -> remember this
-    m_aRWLock.writeLock ().lock ();
-    try
-    {
-      m_bDestroyed = true;
-      m_bInDestruction = false;
-    }
-    finally
-    {
-      m_aRWLock.writeLock ().unlock ();
-    }
-
-    if (ScopeUtils.debugScopeLifeCycle (s_aLogger))
-      s_aLogger.info ("Destroyed request web scope '" + getID () + "'");
-  }
-
-  public boolean containsAttribute (@Nullable final String sName)
-  {
-    return getAttributeObject (sName) != null;
-  }
-
-  @Nonnull
-  @ReturnsMutableCopy
-  public Map <String, Object> getAllAttributes ()
-  {
-    final Map <String, Object> ret = new HashMap <String, Object> ();
-    final Enumeration <String> aEnum = getAttributeNames ();
-    while (aEnum.hasMoreElements ())
-    {
-      final String sAttrName = aEnum.nextElement ();
-      final Object aAttrValue = getAttributeObject (sAttrName);
-      ret.put (sAttrName, aAttrValue);
-    }
-    return ret;
-  }
-
-  @Nonnull
-  @ReturnsMutableCopy
-  public Set <String> getAllAttributeNames ()
-  {
-    return ContainerHelper.newSet (getAttributeNames ());
-  }
-
-  @Nonnull
-  @ReturnsMutableCopy
-  public Collection <Object> getAllAttributeValues ()
-  {
-    final List <Object> ret = new ArrayList <Object> ();
-    final Enumeration <String> aEnum = getAttributeNames ();
-    while (aEnum.hasMoreElements ())
-    {
-      final String sAttrName = aEnum.nextElement ();
-      ret.add (getAttributeObject (sAttrName));
-    }
-    return ret;
   }
 
   @Nullable
@@ -359,74 +182,6 @@ public class RequestWebScopeNoMultipart extends AbstractReadonlyAttributeContain
   public String getCharacterEncoding ()
   {
     return m_aHttpRequest.getCharacterEncoding ();
-  }
-
-  @Nonnull
-  public EChange removeAttribute (@Nullable final String sName)
-  {
-    m_aRWLock.writeLock ().lock ();
-    try
-    {
-      if (m_aHttpRequest.getAttribute (sName) == null)
-        return EChange.UNCHANGED;
-      m_aHttpRequest.removeAttribute (sName);
-      return EChange.CHANGED;
-    }
-    finally
-    {
-      m_aRWLock.writeLock ().unlock ();
-    }
-  }
-
-  @Nonnull
-  public EChange setAttribute (final String sName, @Nullable final Object aNewValue)
-  {
-    if (s_aLogger.isTraceEnabled ())
-      s_aLogger.trace ("name='" + sName + "' -- '" + aNewValue + "'");
-
-    // Gte value in read-lock :)
-    final Object aOldValue = getAttributeObject (sName);
-    if (EqualsUtils.equals (aOldValue, aNewValue))
-      return EChange.UNCHANGED;
-
-    m_aRWLock.writeLock ().lock ();
-    try
-    {
-      m_aHttpRequest.setAttribute (sName, aNewValue);
-      return EChange.CHANGED;
-    }
-    finally
-    {
-      m_aRWLock.writeLock ().unlock ();
-    }
-  }
-
-  @Nullable
-  public Object getAttributeObject (@Nullable final String sName)
-  {
-    m_aRWLock.readLock ().lock ();
-    try
-    {
-      return m_aHttpRequest.getAttribute (sName);
-    }
-    finally
-    {
-      m_aRWLock.readLock ().unlock ();
-    }
-  }
-
-  @Nonnull
-  public Enumeration <String> getAttributeNames ()
-  {
-    m_aRWLock.readLock ().lock ();
-    try
-    {
-      return GenericReflection.uncheckedCast (m_aHttpRequest.getAttributeNames ());
-    }
-    finally
-    {
-      m_aRWLock.readLock ().unlock ();
-    }
   }
 
   @Nonnull
@@ -674,54 +429,12 @@ public class RequestWebScopeNoMultipart extends AbstractReadonlyAttributeContain
     return m_aHttpResponse.getOutputStream ();
   }
 
-  @Nonnull
-  @ReturnsMutableCopy
-  public final Map <String, IScopeRenewalAware> getAllScopeRenewalAwareAttributes ()
-  {
-    final Map <String, IScopeRenewalAware> ret = new HashMap <String, IScopeRenewalAware> ();
-    final Enumeration <String> aEnum = getAttributeNames ();
-    while (aEnum.hasMoreElements ())
-    {
-      final String sAttrName = aEnum.nextElement ();
-      final Object aAttrValue = getAttributeObject (sAttrName);
-      if (aAttrValue instanceof IScopeRenewalAware)
-        ret.put (sAttrName, (IScopeRenewalAware) aAttrValue);
-    }
-    return ret;
-  }
-
-  @Deprecated
-  public boolean isEmpty ()
-  {
-    return containsNoAttribute ();
-  }
-
-  public boolean containsNoAttribute ()
-  {
-    return ContainerHelper.isEmpty (getAttributeNames ());
-  }
-
-  @Deprecated
-  @Nonnegative
-  public int size ()
-  {
-    return getAttributeCount ();
-  }
-
-  @Nonnegative
-  public int getAttributeCount ()
-  {
-    return ContainerHelper.getSize (getAttributeNames ());
-  }
-
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("scopeID", m_sScopeID)
-                                       .append ("httpRequest", m_aHttpRequest)
-                                       .append ("httpResponse", m_aHttpResponse)
-                                       .append ("inDestruction", m_bInDestruction)
-                                       .append ("destroyed", m_bDestroyed)
-                                       .toString ();
+    return ToStringGenerator.getDerived (super.toString ())
+                            .append ("httpRequest", m_aHttpRequest)
+                            .append ("httpResponse", m_aHttpResponse)
+                            .toString ();
   }
 }

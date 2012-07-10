@@ -291,7 +291,12 @@ public final class MockServletContext implements ServletContext
   public String getRealPath (@Nonnull final String sPath)
   {
     final IReadableResource aResource = m_aResourceProvider.getReadableResource (getResourceLocation (sPath));
-    return aResource.getAsFile ().getAbsolutePath ();
+    if (aResource == null)
+      throw new IllegalStateException ("Failed to get real path of '" + sPath + "'");
+    final File aFile = aResource.getAsFile ();
+    if (aFile == null)
+      throw new IllegalStateException ("Failed to convert resource " + aResource + " to a file");
+    return aFile.getAbsolutePath ();
   }
 
   @Nonnull

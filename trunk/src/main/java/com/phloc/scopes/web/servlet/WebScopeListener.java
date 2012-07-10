@@ -32,7 +32,7 @@ import com.phloc.scopes.web.mgr.WebScopeManager;
  * 
  * @author philip
  */
-public final class WebScopeListener implements ServletContextListener, HttpSessionListener
+public class WebScopeListener implements ServletContextListener, HttpSessionListener
 {
   public void contextInitialized (@Nonnull final ServletContextEvent aEvent)
   {
