@@ -28,8 +28,7 @@ import org.slf4j.LoggerFactory;
 
 import com.phloc.commons.annotations.Nonempty;
 import com.phloc.commons.state.EChange;
-import com.phloc.scopes.AbstractMapBasedScope;
-import com.phloc.scopes.ScopeUtils;
+import com.phloc.scopes.nonweb.impl.SessionApplicationScope;
 import com.phloc.scopes.web.domain.ISessionApplicationWebScope;
 
 /**
@@ -40,20 +39,14 @@ import com.phloc.scopes.web.domain.ISessionApplicationWebScope;
  * @author philip
  */
 @ThreadSafe
-public class SessionApplicationWebScope extends AbstractMapBasedScope implements ISessionApplicationWebScope
+public class SessionApplicationWebScope extends SessionApplicationScope implements ISessionApplicationWebScope
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (SessionApplicationWebScope.class);
 
   public SessionApplicationWebScope (@Nonnull @Nonempty final String sScopeID)
   {
     super (sScopeID);
-
-    if (ScopeUtils.debugScopeLifeCycle (s_aLogger))
-      s_aLogger.info ("Created session application web scope '" + sScopeID + "'");
   }
-
-  public void initScope ()
-  {}
 
   @Override
   @Nonnull
@@ -63,12 +56,5 @@ public class SessionApplicationWebScope extends AbstractMapBasedScope implements
       s_aLogger.warn ("Value of class " + aNewValueValue.getClass ().getName () + " should implement Serializable!");
 
     return super.setAttribute (sName, aNewValueValue);
-  }
-
-  @Override
-  protected void postDestroy ()
-  {
-    if (ScopeUtils.debugScopeLifeCycle (s_aLogger))
-      s_aLogger.info ("Destroyed session application web scope '" + getID () + "'");
   }
 }
