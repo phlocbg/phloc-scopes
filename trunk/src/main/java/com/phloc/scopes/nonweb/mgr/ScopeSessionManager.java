@@ -19,21 +19,25 @@ package com.phloc.scopes.nonweb.mgr;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.concurrent.ThreadSafe;
 
-import com.phloc.commons.annotations.Nonempty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.phloc.commons.annotations.ReturnsMutableCopy;
 import com.phloc.commons.annotations.UsedViaReflection;
 import com.phloc.commons.collections.ContainerHelper;
 import com.phloc.commons.stats.IStatisticsHandlerCounter;
 import com.phloc.commons.stats.StatisticsManager;
-import com.phloc.scopes.MetaScopeFactory;
 import com.phloc.scopes.nonweb.domain.ISessionScope;
 import com.phloc.scopes.nonweb.singleton.GlobalSingleton;
 import com.phloc.scopes.spi.ScopeSPIManager;
@@ -43,14 +47,17 @@ import com.phloc.scopes.spi.ScopeSPIManager;
  * 
  * @author philip
  */
+@ThreadSafe
 public final class ScopeSessionManager extends GlobalSingleton
 {
+  private static final Logger s_aLogger = LoggerFactory.getLogger (ScopeSessionManager.class);
   private static final IStatisticsHandlerCounter s_aUniqueSessionCounter = StatisticsManager.getCounterHandler (ScopeSessionManager.class.getName () +
                                                                                                                 "$UNIQUE_SESSIONS");
 
   /** All contained session scopes. */
   private final ReadWriteLock m_aRWLock = new ReentrantReadWriteLock ();
   private final Map <String, ISessionScope> m_aSessionScopes = new HashMap <String, ISessionScope> ();
+  private final Set <String> m_aSessionsInDestruction = new HashSet <String> ();
 
   @Deprecated
   @UsedViaReflection
@@ -85,48 +92,75 @@ public final class ScopeSessionManager extends GlobalSingleton
     }
   }
 
-  /**
-   * Get the session scope matching the passed session ID.
-   * 
-   * @param sSessionID
-   *        The session ID for which the session scope is used.
-   * @param bCreateIfNotExisting
-   *        if <code>true</code> and the scope is not existing, the scope is
-   *        created
-   * @return The matching session scope or <code>null</code> if no such session
-   *         scope exists and bCreateIfNotExisting is false.
-   */
-  @Nullable
-  public ISessionScope getSessionScope (@Nonnull @Nonempty final String sSessionID, final boolean bCreateIfNotExisting)
+  public void onScopeBegin (@Nonnull final ISessionScope aSessionScope)
   {
-    // Check if a matching session scope is present
-    ISessionScope aSessionScope = getSessionScopeOfID (sSessionID);
-    if (aSessionScope == null && bCreateIfNotExisting)
+    if (aSessionScope == null)
+      throw new NullPointerException ("sessionScope");
+
+    final String sSessionID = aSessionScope.getID ();
+    m_aRWLock.writeLock ().lock ();
+    try
     {
-      // create new scope
-      m_aRWLock.writeLock ().lock ();
-      try
+      if (m_aSessionScopes.put (sSessionID, aSessionScope) != null)
+        s_aLogger.error ("Overwriting session scope with ID '" + sSessionID + "'");
+    }
+    finally
+    {
+      m_aRWLock.writeLock ().unlock ();
+    }
+
+    // Init the scope after it was registered
+    aSessionScope.initScope ();
+
+    // Invoke SPIs
+    ScopeSPIManager.onSessionScopeBegin (aSessionScope);
+
+    // Increment statistics counter
+    s_aUniqueSessionCounter.increment ();
+  }
+
+  public void onScopeEnd (@Nonnull final ISessionScope aSessionScope)
+  {
+    if (aSessionScope == null)
+      throw new NullPointerException ("sessionScope");
+
+    final String sSessionID = aSessionScope.getID ();
+
+    m_aRWLock.writeLock ().lock ();
+    try
+    {
+      // Only if we're not just in destruction of exactly this session
+      if (m_aSessionsInDestruction.add (sSessionID))
       {
-        // Try in write-lock to be 100% sure
-        aSessionScope = m_aSessionScopes.get (sSessionID);
-        if (aSessionScope == null)
+        try
         {
-          aSessionScope = MetaScopeFactory.getScopeFactory ().createSessionScope (sSessionID);
-          m_aSessionScopes.put (sSessionID, aSessionScope);
-          aSessionScope.initScope ();
+          // Remove from map
+          final ISessionScope aRemovedScope = m_aSessionScopes.remove (sSessionID);
+          if (aRemovedScope != aSessionScope)
+          {
+            s_aLogger.error ("Ending an unknown session with ID '" + sSessionID + "'");
+            s_aLogger.error ("  Scope to be removed: " + aSessionScope);
+            s_aLogger.error ("  Removed scope:       " + aRemovedScope);
+          }
 
           // Invoke SPIs
-          ScopeSPIManager.onSessionScopeBegin (aSessionScope);
+          ScopeSPIManager.onSessionScopeEnd (aSessionScope);
 
-          s_aUniqueSessionCounter.increment ();
+          // Destroy the scope
+          aSessionScope.destroyScope ();
+        }
+        finally
+        {
+          m_aSessionsInDestruction.remove (sSessionID);
         }
       }
-      finally
-      {
-        m_aRWLock.writeLock ().unlock ();
-      }
+      else
+        s_aLogger.info ("Already destructing session '" + sSessionID + "'");
     }
-    return aSessionScope;
+    finally
+    {
+      m_aRWLock.writeLock ().unlock ();
+    }
   }
 
   /**
@@ -168,23 +202,32 @@ public final class ScopeSessionManager extends GlobalSingleton
   @Override
   protected void onDestroy ()
   {
-    m_aRWLock.writeLock ().lock ();
-    try
+    // destroy all session scopes (make a copy, because we're invalidating
+    // the sessions!)
+    for (final ISessionScope aSessionScope : getAllSessionScopes ())
     {
-      // destroy all session scopes
-      for (final ISessionScope aSessionScope : m_aSessionScopes.values ())
+      // Unfortunately we need a special handling here
+      if (aSessionScope.selfDestruct ().isContinue ())
       {
-        // Invoke SPIs
-        ScopeSPIManager.onSessionScopeEnd (aSessionScope);
-
-        // Destroy the scope
-        aSessionScope.destroyScope ();
+        // Remove from map
+        onScopeEnd (aSessionScope);
       }
-      m_aSessionScopes.clear ();
+      // Else the destruction was already started!
     }
-    finally
+
+    // Sanity check in case something went wrong
+    if (getSessionCount () > 0)
     {
-      m_aRWLock.writeLock ().unlock ();
+      m_aRWLock.writeLock ().lock ();
+      try
+      {
+        s_aLogger.error ("The following session scopes are left over: " + m_aSessionScopes);
+        m_aSessionScopes.clear ();
+      }
+      finally
+      {
+        m_aRWLock.writeLock ().unlock ();
+      }
     }
   }
 }
