@@ -25,9 +25,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.phloc.commons.annotations.Nonempty;
 import com.phloc.scopes.MetaScopeFactory;
+import com.phloc.scopes.nonweb.domain.ISessionScope;
 import com.phloc.scopes.nonweb.mgr.ScopeManager;
+import com.phloc.scopes.nonweb.mgr.ScopeSessionManager;
 import com.phloc.scopes.web.domain.IApplicationWebScope;
 import com.phloc.scopes.web.domain.IGlobalWebScope;
 import com.phloc.scopes.web.domain.IRequestWebScope;
@@ -42,6 +47,8 @@ import com.phloc.scopes.web.domain.ISessionWebScope;
 @Immutable
 public final class WebScopeManager
 {
+  private static final Logger s_aLogger = LoggerFactory.getLogger (WebScopeManager.class);
+
   private WebScopeManager ()
   {}
 
@@ -141,7 +148,12 @@ public final class WebScopeManager
   @Nonnull
   public static ISessionWebScope onSessionBegin (@Nonnull final HttpSession aHttpSession)
   {
-    return WebScopeSessionManager.getInstance ().onSessionBegin (aHttpSession);
+    if (s_aLogger.isDebugEnabled ())
+      s_aLogger.debug ("SESSION BEGIN: isNew? = " + aHttpSession.isNew ());
+
+    final ISessionWebScope aSessionWebScope = MetaScopeFactory.getWebScopeFactory ().createSessionScope (aHttpSession);
+    ScopeSessionManager.getInstance ().onScopeBegin (aSessionWebScope);
+    return aSessionWebScope;
   }
 
   @Nonnull
@@ -153,12 +165,31 @@ public final class WebScopeManager
   @Nullable
   public static ISessionWebScope getSessionScope (final boolean bCreateIfNotExisting)
   {
+    // Try to to resolve the current request scope
     final IRequestWebScope aRequestScope = getRequestScopeOrNull ();
     if (aRequestScope != null)
     {
+      // Check if we have an HTTP session object
       final HttpSession aHttpSession = aRequestScope.getSession (bCreateIfNotExisting);
       if (aHttpSession != null)
-        return WebScopeSessionManager.getInstance ().getSessionScope (aHttpSession);
+      {
+        // Do we already have a session web scope for the session?
+        final String sSessionID = aHttpSession.getId ();
+        ISessionWebScope aSessionWebScope = (ISessionWebScope) ScopeSessionManager.getInstance ()
+                                                                                  .getSessionScopeOfID (sSessionID);
+        if (aSessionWebScope == null)
+        {
+          // This can e.g. happen in tests, when there are no registered
+          // listeners for session events!
+          s_aLogger.warn ("Creating a new session for ID '" +
+                          sSessionID +
+                          "' but there should already be one! Check your HttpSessionListener implementation.");
+
+          // Create a new session scope
+          aSessionWebScope = onSessionBegin (aHttpSession);
+        }
+        return aSessionWebScope;
+      }
     }
     else
     {
@@ -171,7 +202,26 @@ public final class WebScopeManager
 
   public static void onSessionEnd (@Nonnull final HttpSession aHttpSession)
   {
-    WebScopeSessionManager.getInstance ().onSessionEnd (aHttpSession);
+    final ScopeSessionManager aSSM = ScopeSessionManager.getInstance ();
+    final ISessionScope aSessionScope = aSSM.getSessionScopeOfID (aHttpSession.getId ());
+    if (aSessionScope != null)
+      aSSM.onScopeEnd (aSessionScope);
+    else
+    {
+      // Ensure session is invalidated anyhow, even if no session scope is
+      // present.
+      // Happens in Tomcat startup if sessions that where serialized in
+      // a previous invocation are invalidated on Tomcat restart
+      s_aLogger.warn ("Found no session scope but invalidating session '" + aHttpSession.getId () + "' anyway");
+      try
+      {
+        aHttpSession.invalidate ();
+      }
+      catch (final IllegalStateException ex)
+      {
+        // session already invalidated
+      }
+    }
   }
 
   // --- session application scope ---

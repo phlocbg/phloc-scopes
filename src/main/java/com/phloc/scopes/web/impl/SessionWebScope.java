@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 
 import com.phloc.commons.annotations.Nonempty;
 import com.phloc.commons.state.EChange;
+import com.phloc.commons.state.EContinue;
 import com.phloc.commons.string.ToStringGenerator;
 import com.phloc.scopes.MetaScopeFactory;
 import com.phloc.scopes.nonweb.impl.SessionScope;
@@ -66,6 +67,30 @@ public class SessionWebScope extends SessionScope implements ISessionWebScope
         final Object aAttrValue = m_aHttpSession.getAttribute (sAttrName);
         setAttribute (sAttrName, aAttrValue);
       }
+  }
+
+  @Override
+  @Nonnull
+  public EContinue selfDestruct ()
+  {
+    // Since the session is still open when we're shutting down the global
+    // context, the session must also be invalidated!
+    try
+    {
+      // Should implicitly trigger a call to WebScopeManager.onSessionEnd, which
+      // than
+      // triggers a call to aSessionScope.destroyScope
+      m_aHttpSession.invalidate ();
+      // Do not continue with the regular destruction procedure!
+      return EContinue.BREAK;
+    }
+    catch (final IllegalStateException ex)
+    {
+      s_aLogger.warn ("Session '" + getID () + "' was already invalidated, but was still contained!");
+    }
+
+    // Continue with the regular destruction
+    return EContinue.CONTINUE;
   }
 
   @Override

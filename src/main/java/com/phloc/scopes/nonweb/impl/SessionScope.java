@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 import com.phloc.commons.annotations.Nonempty;
 import com.phloc.commons.annotations.ReturnsMutableCopy;
 import com.phloc.commons.collections.ContainerHelper;
+import com.phloc.commons.state.EContinue;
 import com.phloc.commons.string.StringHelper;
 import com.phloc.commons.string.ToStringGenerator;
 import com.phloc.scopes.AbstractMapBasedScope;
@@ -90,6 +91,13 @@ public class SessionScope extends AbstractMapBasedScope implements ISessionScope
   {
     if (ScopeUtils.debugScopeLifeCycle (s_aLogger))
       s_aLogger.info ("Destroyed session scope '" + getID () + "'");
+  }
+
+  @Nonnull
+  public EContinue selfDestruct ()
+  {
+    // Nothing to do here!
+    return EContinue.CONTINUE;
   }
 
   @Nonnull

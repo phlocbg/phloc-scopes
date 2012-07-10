@@ -259,7 +259,18 @@ public final class ScopeManager
     final IRequestScope aRequestScope = getRequestScopeOrNull ();
     if (aRequestScope != null)
     {
-      return ScopeSessionManager.getInstance ().getSessionScope (aRequestScope.getSessionID (), bCreateIfNotExisting);
+      final ScopeSessionManager aSSM = ScopeSessionManager.getInstance ();
+
+      // Check if a matching session scope is present
+      final String sSessionID = aRequestScope.getSessionID ();
+      ISessionScope aSessionScope = aSSM.getSessionScopeOfID (sSessionID);
+      if (aSessionScope == null && bCreateIfNotExisting)
+      {
+        aSessionScope = MetaScopeFactory.getScopeFactory ().createSessionScope (sSessionID);
+        aSSM.onScopeBegin (aSessionScope);
+      }
+
+      return aSessionScope;
     }
 
     // If we want a session scope, we expect the return value to be non-null!
