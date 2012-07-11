@@ -43,12 +43,14 @@ import com.phloc.scopes.nonweb.singleton.GlobalSingleton;
 import com.phloc.scopes.spi.ScopeSPIManager;
 
 /**
- * Internal manager class for session web scopes.
+ * Internal manager class for session scopes.<br>
+ * This class is only non-final so that the deprecated WebScopeSessionManager
+ * can be used as well!
  * 
  * @author philip
  */
 @ThreadSafe
-public final class ScopeSessionManager extends GlobalSingleton
+public class ScopeSessionManager extends GlobalSingleton
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (ScopeSessionManager.class);
   private static final IStatisticsHandlerCounter s_aUniqueSessionCounter = StatisticsManager.getCounterHandler (ScopeSessionManager.class.getName () +
@@ -68,6 +70,23 @@ public final class ScopeSessionManager extends GlobalSingleton
   public static ScopeSessionManager getInstance ()
   {
     return getGlobalSingleton (ScopeSessionManager.class);
+  }
+
+  /**
+   * Get the session scope with the specified ID. If no such scope exists, no
+   * further actions are taken.
+   * 
+   * @param sScopeID
+   *        The ID to be resolved.
+   * @return <code>null</code> if no such scope exists.
+   * @deprecated
+   * @see #getSessionScopeOfID(String)
+   */
+  @Nullable
+  @Deprecated
+  public ISessionScope getSessionScope (@Nullable final String sScopeID)
+  {
+    return getSessionScopeOfID (sScopeID);
   }
 
   /**

@@ -25,22 +25,22 @@ import org.junit.Test;
 import com.phloc.scopes.web.mock.AbstractWebScopeAwareTestSuite;
 
 /**
- * Test class for class {@link RequestWebSingleton}.<br>
+ * Test class for class {@link ApplicationWebSingleton}.<br>
  * Note: must reside here for Mock* stuff!
  * 
  * @author philip
  */
-public final class RequestWebSingletonTest extends AbstractWebScopeAwareTestSuite
+public final class ApplicationWebSingletonTest extends AbstractWebScopeAwareTestSuite
 {
   @Test
   public void testSerialize () throws Exception
   {
-    final MockRequestWebSingleton a = MockRequestWebSingleton.getInstance ();
+    final MockApplicationWebSingleton a = MockApplicationWebSingleton.getInstance ();
     assertEquals (0, a.get ());
     a.inc ();
     assertEquals (1, a.get ());
 
-    final MockRequestWebSingleton b = MockRequestWebSingleton.getInstance ();
+    final MockApplicationWebSingleton b = MockApplicationWebSingleton.getInstance ();
     assertSame (a, b);
   }
 }
