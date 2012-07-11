@@ -22,25 +22,27 @@ import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
 
+import com.phloc.commons.mock.PhlocTestUtils;
 import com.phloc.scopes.web.mock.AbstractWebScopeAwareTestSuite;
 
 /**
- * Test class for class {@link RequestWebSingleton}.<br>
+ * Test class for class {@link SessionApplicationWebSingleton}.<br>
  * Note: must reside here for Mock* stuff!
  * 
  * @author philip
  */
-public final class RequestWebSingletonTest extends AbstractWebScopeAwareTestSuite
+public final class SessionApplicationWebSingletonTest extends AbstractWebScopeAwareTestSuite
 {
   @Test
   public void testSerialize () throws Exception
   {
-    final MockRequestWebSingleton a = MockRequestWebSingleton.getInstance ();
+    final MockSessionApplicationWebSingleton a = MockSessionApplicationWebSingleton.getInstance ();
     assertEquals (0, a.get ());
     a.inc ();
     assertEquals (1, a.get ());
+    PhlocTestUtils.testDefaultSerialization (a);
 
-    final MockRequestWebSingleton b = MockRequestWebSingleton.getInstance ();
+    final MockSessionApplicationWebSingleton b = MockSessionApplicationWebSingleton.getInstance ();
     assertSame (a, b);
   }
 }

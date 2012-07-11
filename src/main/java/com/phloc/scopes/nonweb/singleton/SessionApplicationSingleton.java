@@ -61,7 +61,7 @@ public abstract class SessionApplicationSingleton extends AbstractSingleton impl
   }
 
   @Nonnull
-  protected static final <T extends SessionApplicationSingleton> T getSessionSingleton (@Nonnull final Class <T> aClass)
+  protected static final <T extends SessionApplicationSingleton> T getSessionApplicationSingleton (@Nonnull final Class <T> aClass)
   {
     return getSingleton (_getStaticScope (), aClass);
   }

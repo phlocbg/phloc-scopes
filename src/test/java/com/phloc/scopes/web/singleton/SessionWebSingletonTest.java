@@ -18,12 +18,12 @@
 package com.phloc.scopes.web.singleton;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
 
 import com.phloc.commons.mock.PhlocTestUtils;
 import com.phloc.scopes.web.mock.AbstractWebScopeAwareTestSuite;
-import com.phloc.scopes.web.singleton.SessionWebSingleton;
 
 /**
  * Test class for class {@link SessionWebSingleton}.<br>
@@ -41,5 +41,8 @@ public final class SessionWebSingletonTest extends AbstractWebScopeAwareTestSuit
     a.inc ();
     assertEquals (1, a.get ());
     PhlocTestUtils.testDefaultSerialization (a);
+
+    final MockSessionWebSingleton b = MockSessionWebSingleton.getInstance ();
+    assertSame (a, b);
   }
 }

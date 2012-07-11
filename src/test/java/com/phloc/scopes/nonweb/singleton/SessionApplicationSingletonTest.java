@@ -15,32 +15,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.phloc.scopes.web.singleton;
+package com.phloc.scopes.nonweb.singleton;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
 
-import com.phloc.scopes.web.mock.AbstractWebScopeAwareTestSuite;
+import com.phloc.commons.mock.PhlocTestUtils;
+import com.phloc.scopes.nonweb.mock.AbstractScopeAwareTestSuite;
 
 /**
- * Test class for class {@link RequestWebSingleton}.<br>
+ * Test class for class {@link SessionApplicationSingleton}.<br>
  * Note: must reside here for Mock* stuff!
  * 
  * @author philip
  */
-public final class RequestWebSingletonTest extends AbstractWebScopeAwareTestSuite
+public final class SessionApplicationSingletonTest extends AbstractScopeAwareTestSuite
 {
   @Test
   public void testSerialize () throws Exception
   {
-    final MockRequestWebSingleton a = MockRequestWebSingleton.getInstance ();
+    final MockSessionApplicationSingleton a = MockSessionApplicationSingleton.getInstance ();
     assertEquals (0, a.get ());
     a.inc ();
     assertEquals (1, a.get ());
+    PhlocTestUtils.testDefaultSerialization (a);
 
-    final MockRequestWebSingleton b = MockRequestWebSingleton.getInstance ();
+    final MockSessionApplicationSingleton b = MockSessionApplicationSingleton.getInstance ();
     assertSame (a, b);
   }
 }
