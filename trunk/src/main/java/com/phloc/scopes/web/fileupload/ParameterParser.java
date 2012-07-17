@@ -20,6 +20,8 @@ package com.phloc.scopes.web.fileupload;
 import java.util.HashMap;
 import java.util.Map;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /**
  * A simple parser intended to parse sequences of name/value pairs. Parameter
  * values are exptected to be enclosed in quotes if they contain unsafe
@@ -319,13 +321,11 @@ public final class ParameterParser
    *        the name/value pairs separator
    * @return a map of name/value pairs
    */
-  @edu.umd.cs.findbugs.annotations.SuppressWarnings ("EI_EXPOSE_REP2")
+  @SuppressFBWarnings ("EI_EXPOSE_REP2")
   public Map <String, String> parse (final char [] chars, final int offset, final int length, final char separator)
   {
     if (chars == null)
-    {
       return new HashMap <String, String> ();
-    }
     final HashMap <String, String> params = new HashMap <String, String> ();
     this.m_aChars = chars;
     this.m_nPos = offset;
