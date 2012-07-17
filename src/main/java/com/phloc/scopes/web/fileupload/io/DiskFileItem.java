@@ -50,6 +50,8 @@ import com.phloc.scopes.web.fileupload.InvalidFileNameException;
 import com.phloc.scopes.web.fileupload.ParameterParser;
 import com.phloc.scopes.web.fileupload.util.Streams;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /**
  * <p>
  * The default implementation of the {@link IFileItem} interface.
@@ -68,7 +70,6 @@ import com.phloc.scopes.web.fileupload.util.Streams;
  * @since FileUpload 1.1
  * @version $Id: DiskFileItem.java 963609 2010-07-13 06:56:47Z jochen $
  */
-@edu.umd.cs.findbugs.annotations.SuppressWarnings ("SE_NO_SERIALVERSIONID")
 public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
 {
   /**
@@ -293,7 +294,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
    * @return The contents of the file as an array of bytes.
    */
   @ReturnsMutableObject (reason = "Speed")
-  @edu.umd.cs.findbugs.annotations.SuppressWarnings ("EI_EXPOSE_REP")
+  @SuppressFBWarnings ("EI_EXPOSE_REP")
   @Nullable
   public byte [] get ()
   {
