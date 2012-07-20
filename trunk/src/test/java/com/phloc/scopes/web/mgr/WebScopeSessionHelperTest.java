@@ -59,7 +59,7 @@ public final class WebScopeSessionHelperTest extends AbstractWebScopeAwareTestSu
   @Test
   public void testRenewSessionScopeEmpty ()
   {
-    WebScopeSessionHelper.renewSessionScope ();
+    WebScopeSessionHelper.renewCurrentSessionScope ();
   }
 
   @Test
@@ -94,7 +94,7 @@ public final class WebScopeSessionHelperTest extends AbstractWebScopeAwareTestSu
 
     // Main renew session
     final String sOldSessionID = aWS.getID ();
-    WebScopeSessionHelper.renewSessionScope ();
+    WebScopeSessionHelper.renewCurrentSessionScope ();
 
     // Check session scope
     aWS = WebScopeManager.getSessionScope (false);

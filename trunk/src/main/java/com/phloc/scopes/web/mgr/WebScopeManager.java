@@ -28,6 +28,7 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.phloc.commons.annotations.DevelopersNote;
 import com.phloc.commons.annotations.Nonempty;
 import com.phloc.scopes.MetaScopeFactory;
 import com.phloc.scopes.nonweb.domain.ISessionScope;
@@ -163,6 +164,31 @@ public final class WebScopeManager
   }
 
   @Nullable
+  @DevelopersNote ("This is only for project-internal use!")
+  public static ISessionWebScope internalGetOrCreateSessionScope (@Nonnull final HttpSession aHttpSession)
+  {
+    if (aHttpSession == null)
+      throw new NullPointerException ("httpSession");
+
+    // Do we already have a session web scope for the session?
+    final String sSessionID = aHttpSession.getId ();
+    ISessionWebScope aSessionWebScope = (ISessionWebScope) ScopeSessionManager.getInstance ()
+                                                                              .getSessionScopeOfID (sSessionID);
+    if (aSessionWebScope == null)
+    {
+      // This can e.g. happen in tests, when there are no registered
+      // listeners for session events!
+      s_aLogger.warn ("Creating a new session for ID '" +
+                      sSessionID +
+                      "' but there should already be one! Check your HttpSessionListener implementation.");
+
+      // Create a new session scope
+      aSessionWebScope = onSessionBegin (aHttpSession);
+    }
+    return aSessionWebScope;
+  }
+
+  @Nullable
   public static ISessionWebScope getSessionScope (final boolean bCreateIfNotExisting)
   {
     // Try to to resolve the current request scope
@@ -172,24 +198,7 @@ public final class WebScopeManager
       // Check if we have an HTTP session object
       final HttpSession aHttpSession = aRequestScope.getSession (bCreateIfNotExisting);
       if (aHttpSession != null)
-      {
-        // Do we already have a session web scope for the session?
-        final String sSessionID = aHttpSession.getId ();
-        ISessionWebScope aSessionWebScope = (ISessionWebScope) ScopeSessionManager.getInstance ()
-                                                                                  .getSessionScopeOfID (sSessionID);
-        if (aSessionWebScope == null)
-        {
-          // This can e.g. happen in tests, when there are no registered
-          // listeners for session events!
-          s_aLogger.warn ("Creating a new session for ID '" +
-                          sSessionID +
-                          "' but there should already be one! Check your HttpSessionListener implementation.");
-
-          // Create a new session scope
-          aSessionWebScope = onSessionBegin (aHttpSession);
-        }
-        return aSessionWebScope;
-      }
+        return internalGetOrCreateSessionScope (aHttpSession);
     }
     else
     {
