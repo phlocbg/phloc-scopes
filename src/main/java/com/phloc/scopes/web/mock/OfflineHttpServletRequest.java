@@ -18,6 +18,7 @@
 package com.phloc.scopes.web.mock;
 
 import javax.annotation.Nullable;
+import javax.annotation.concurrent.NotThreadSafe;
 import javax.servlet.ServletContext;
 
 /**
@@ -27,6 +28,7 @@ import javax.servlet.ServletContext;
  * 
  * @author philip
  */
+@NotThreadSafe
 public final class OfflineHttpServletRequest extends MockHttpServletRequest
 {
   public OfflineHttpServletRequest ()

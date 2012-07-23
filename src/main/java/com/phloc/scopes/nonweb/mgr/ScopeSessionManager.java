@@ -225,8 +225,7 @@ public class ScopeSessionManager extends GlobalSingleton
     }
   }
 
-  @Override
-  protected void onDestroy ()
+  public void destroyAllSessions ()
   {
     // destroy all session scopes (make a copy, because we're invalidating
     // the sessions!)
@@ -247,7 +246,10 @@ public class ScopeSessionManager extends GlobalSingleton
       m_aRWLock.writeLock ().lock ();
       try
       {
-        s_aLogger.error ("The following session scopes are left over: " + m_aSessionScopes);
+        s_aLogger.error ("The following " +
+                         m_aSessionScopes.size () +
+                         " session scopes are left over: " +
+                         m_aSessionScopes);
         m_aSessionScopes.clear ();
       }
       finally
@@ -255,5 +257,11 @@ public class ScopeSessionManager extends GlobalSingleton
         m_aRWLock.writeLock ().unlock ();
       }
     }
+  }
+
+  @Override
+  protected void onDestroy ()
+  {
+    destroyAllSessions ();
   }
 }

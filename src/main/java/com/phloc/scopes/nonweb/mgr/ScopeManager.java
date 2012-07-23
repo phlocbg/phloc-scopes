@@ -17,9 +17,12 @@
  */
 package com.phloc.scopes.nonweb.mgr;
 
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.annotation.concurrent.NotThreadSafe;
+import javax.annotation.concurrent.ThreadSafe;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +48,7 @@ import com.phloc.scopes.spi.ScopeSPIManager;
  * 
  * @author philip
  */
-@NotThreadSafe
+@ThreadSafe
 public final class ScopeManager
 {
   public static final boolean DEFAULT_CREATE_SCOPE = true;
@@ -57,6 +60,8 @@ public final class ScopeManager
    * current request
    */
   private static final String REQ_APPLICATION_ID = "phloc.applicationscope";
+
+  private static Lock s_aGlobalLock = new ReentrantLock ();
 
   /** Global scope */
   private static IGlobalScope s_aGlobalScope;
@@ -79,16 +84,25 @@ public final class ScopeManager
   {
     if (aGlobalScope == null)
       throw new NullPointerException ("globalScope");
-    if (s_aGlobalScope != null)
-      throw new IllegalStateException ("Another global scope is already present");
 
-    s_aGlobalScope = aGlobalScope;
+    s_aGlobalLock.lock ();
+    try
+    {
+      if (s_aGlobalScope != null)
+        throw new IllegalStateException ("Another global scope is already present");
 
-    aGlobalScope.initScope ();
-    s_aLogger.info ("Global scope '" + aGlobalScope.getID () + "' initialized!");
+      s_aGlobalScope = aGlobalScope;
 
-    // Invoke SPIs
-    ScopeSPIManager.onGlobalScopeBegin (aGlobalScope);
+      aGlobalScope.initScope ();
+      s_aLogger.info ("Global scope '" + aGlobalScope.getID () + "' initialized!");
+
+      // Invoke SPIs
+      ScopeSPIManager.onGlobalScopeBegin (aGlobalScope);
+    }
+    finally
+    {
+      s_aGlobalLock.unlock ();
+    }
   }
 
   /**
@@ -109,12 +123,20 @@ public final class ScopeManager
   @Nullable
   public static IGlobalScope getGlobalScopeOrNull ()
   {
-    return s_aGlobalScope;
+    s_aGlobalLock.lock ();
+    try
+    {
+      return s_aGlobalScope;
+    }
+    finally
+    {
+      s_aGlobalLock.unlock ();
+    }
   }
 
   public static boolean isGlobalScopePresent ()
   {
-    return s_aGlobalScope != null;
+    return getGlobalScopeOrNull () != null;
   }
 
   @Nonnull
@@ -131,26 +153,34 @@ public final class ScopeManager
    */
   public static void onGlobalEnd ()
   {
-    /**
-     * This code removes all attributes set for the global context. This is
-     * necessary, since the attributes would survive a Tomcat servlet context
-     * reload if we don't kill them manually.<br>
-     * Global scope variable may be null if onGlobalBegin() was never called!
-     */
-    if (s_aGlobalScope != null)
+    s_aGlobalLock.lock ();
+    try
     {
-      // Invoke SPI
-      ScopeSPIManager.onGlobalScopeEnd (s_aGlobalScope);
+      /**
+       * This code removes all attributes set for the global context. This is
+       * necessary, since the attributes would survive a Tomcat servlet context
+       * reload if we don't kill them manually.<br>
+       * Global scope variable may be null if onGlobalBegin() was never called!
+       */
+      if (s_aGlobalScope != null)
+      {
+        // Invoke SPI
+        ScopeSPIManager.onGlobalScopeEnd (s_aGlobalScope);
 
-      // Destroy and invalidate scope
-      s_aGlobalScope.destroyScope ();
-      s_aGlobalScope = null;
+        // Destroy and invalidate scope
+        s_aGlobalScope.destroyScope ();
+        s_aGlobalScope = null;
 
-      // done
-      s_aLogger.info ("Global scope shut down!");
+        // done
+        s_aLogger.info ("Global scope shut down!");
+      }
+      else
+        s_aLogger.warn ("No global scope present that could be shut down!");
     }
-    else
-      s_aLogger.warn ("No global scope present that could be shut down!");
+    finally
+    {
+      s_aGlobalLock.unlock ();
+    }
   }
 
   // --- application scope ---

@@ -18,12 +18,14 @@
 package com.phloc.scopes.web.mock;
 
 import javax.annotation.Nonnull;
+import javax.annotation.concurrent.ThreadSafe;
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.ServletRequestListener;
 import javax.servlet.http.HttpServletRequest;
 
 import com.phloc.scopes.web.mgr.WebScopeManager;
 
+@ThreadSafe
 public final class MockServletRequestListener implements ServletRequestListener
 {
   /** The application ID to use. */

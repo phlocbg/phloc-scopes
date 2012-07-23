@@ -23,6 +23,7 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.concurrent.NotThreadSafe;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 
@@ -33,6 +34,7 @@ import com.phloc.commons.collections.ContainerHelper;
  * 
  * @author philip
  */
+@NotThreadSafe
 public class MockServletConfig implements ServletConfig
 {
   private final ServletContext m_aSC;

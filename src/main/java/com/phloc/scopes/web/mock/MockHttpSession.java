@@ -24,6 +24,7 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.concurrent.NotThreadSafe;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionBindingEvent;
@@ -46,6 +47,7 @@ import com.phloc.commons.string.ToStringGenerator;
  * @author philip
  */
 @SuppressWarnings ("deprecation")
+@NotThreadSafe
 public class MockHttpSession implements HttpSession
 {
   public static final String SESSION_COOKIE_NAME = "JSESSIONID";

@@ -36,6 +36,7 @@ import java.util.Set;
 import javax.annotation.CheckForSigned;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.concurrent.NotThreadSafe;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletInputStream;
@@ -64,6 +65,7 @@ import com.phloc.commons.system.SystemHelper;
  * 
  * @author philip
  */
+@NotThreadSafe
 public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
 {
   public static final String DEFAULT_PROTOCOL = "http";

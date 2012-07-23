@@ -27,6 +27,7 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.concurrent.NotThreadSafe;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -47,6 +48,7 @@ import com.phloc.commons.system.SystemHelper;
  * 
  * @author philip
  */
+@NotThreadSafe
 public final class MockHttpServletResponse implements HttpServletResponse, IHasLocale
 {
   public static final int DEFAULT_SERVER_PORT = 80;

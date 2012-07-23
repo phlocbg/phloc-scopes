@@ -46,7 +46,7 @@ import com.phloc.scopes.web.mock.MockHttpServletRequest;
  */
 public final class WebScopeSessionHelperTest extends AbstractWebScopeAwareTestCase
 {
-  private static final class MockScopeRenewalAware implements IScopeRenewalAware, Serializable
+  public static final class MockScopeRenewalAware implements IScopeRenewalAware, Serializable
   {
     private final String m_sStr;
 
@@ -65,7 +65,8 @@ public final class WebScopeSessionHelperTest extends AbstractWebScopeAwareTestCa
   @Test
   public void testRenewSessionScopeEmpty ()
   {
-    WebScopeSessionHelper.renewCurrentSessionScope ();
+    assertTrue (WebScopeSessionHelper.renewCurrentSessionScope (false).isUnchanged ());
+    assertTrue (WebScopeSessionHelper.renewCurrentSessionScope (true).isUnchanged ());
   }
 
   @Test
@@ -98,11 +99,20 @@ public final class WebScopeSessionHelperTest extends AbstractWebScopeAwareTestCa
 
     assertEquals (3, aWS.getAllSessionApplicationScopes ().size ());
 
-    // Main renew session
+    // Main renew session (no session invalidation)
     final String sOldSessionID = aWS.getID ();
-    WebScopeSessionHelper.renewCurrentSessionScope ();
+    assertTrue (WebScopeSessionHelper.renewCurrentSessionScope (false).isChanged ());
 
-    // Check session scope
+    // Check session scope (same underlying http session)
+    aWS = WebScopeManager.getSessionScope (false);
+    assertNotNull (aWS);
+    assertEquals (aWS.getID (), sOldSessionID);
+    assertEquals (2, aWS.getAllAttributes ().size ());
+
+    // Main renew session (with session invalidation)
+    assertTrue (WebScopeSessionHelper.renewCurrentSessionScope (true).isChanged ());
+
+    // Check session scope (new underlying http session)
     aWS = WebScopeManager.getSessionScope (false);
     assertNotNull (aWS);
     assertFalse (aWS.getID ().equals (sOldSessionID));
@@ -145,19 +155,20 @@ public final class WebScopeSessionHelperTest extends AbstractWebScopeAwareTestCa
           try
           {
             // Create and setup the request
-            final MockHttpServletRequest r = new MockHttpServletRequest (getServletContext ());
-            r.setSessionID (sSessionID);
+            final MockHttpServletRequest aRequest = new MockHttpServletRequest (getServletContext ());
+            aRequest.setSessionID (sSessionID);
 
             // Create the session
-            final HttpSession s = r.getSession (true);
-            assertNotNull (s);
+            final HttpSession aHttpSession = aRequest.getSession (true);
+            assertNotNull (aHttpSession);
             final ISessionWebScope aSessionScope = WebScopeManager.getSessionScope (true);
             assertNotNull (aSessionScope);
-            assertSame (s, aSessionScope.getSession ());
+            assertSame (aHttpSession, aSessionScope.getSession ());
             aSessionScope.setAttribute ("x", new MockScopeRenewalAware ("bla"));
             aSessionScope.setAttribute ("y", "bla");
             assertEquals (2, aSessionScope.getAttributeCount ());
             aSessionScope.getSessionApplicationScope ("app", true).setAttribute ("x", "y");
+            assertEquals (1, aSessionScope.getSessionApplicationScopeCount ());
 
             // Wait until all sessions are created
             aCDLStart.countDown ();
@@ -166,13 +177,15 @@ public final class WebScopeSessionHelperTest extends AbstractWebScopeAwareTestCa
             aCDLGlobalChecks.await ();
 
             // Renew the session scope
-            final ISessionWebScope aNewSessionScope = WebScopeSessionHelper.renewSessionScope (s, false);
+            final ISessionWebScope aNewSessionScope = WebScopeSessionHelper.renewSessionScope (aHttpSession);
             assertNotNull (aNewSessionScope);
             assertTrue (aNewSessionScope != aSessionScope);
             assertEquals (1, aNewSessionScope.getAttributeCount ());
             assertTrue (aNewSessionScope.containsAttribute ("x"));
+            assertTrue (aNewSessionScope.getAttributeObject ("x") instanceof MockScopeRenewalAware);
+            assertEquals (0, aSessionScope.getSessionApplicationScopeCount ());
 
-            r.invalidate ();
+            aRequest.invalidate ();
 
             aCDLDone.countDown ();
           }
@@ -192,8 +205,15 @@ public final class WebScopeSessionHelperTest extends AbstractWebScopeAwareTestCa
     aCDLGlobalChecks.countDown ();
     aCDLDone.await ();
 
+    // Still all sessions present
+    assertEquals (nMax, ScopeSessionManager.getInstance ().getSessionCount ());
+    ScopeSessionManager.getInstance ().destroyAllSessions ();
+    assertEquals (0, ScopeSessionManager.getInstance ().getSessionCount ());
+
     // End all requests
     for (int i = 0; i < nMax; ++i)
       aThreads[i].join ();
+
+    m_aLogger.info ("Test Done");
   }
 }
