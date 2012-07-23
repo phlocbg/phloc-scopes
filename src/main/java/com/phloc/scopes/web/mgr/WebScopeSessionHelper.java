@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 import javax.servlet.http.HttpSession;
 
@@ -31,6 +32,7 @@ import com.phloc.commons.state.EChange;
 import com.phloc.commons.string.StringHelper;
 import com.phloc.scopes.IScopeRenewalAware;
 import com.phloc.scopes.nonweb.domain.ISessionApplicationScope;
+import com.phloc.scopes.nonweb.mgr.ScopeSessionManager;
 import com.phloc.scopes.web.domain.ISessionApplicationWebScope;
 import com.phloc.scopes.web.domain.ISessionWebScope;
 
@@ -116,8 +118,9 @@ public final class WebScopeSessionHelper
     return EChange.CHANGED;
   }
 
-  @Nonnull
-  public static EChange renewSessionScope (@Nonnull final HttpSession aHttpSession)
+  @Nullable
+  public static ISessionWebScope renewSessionScope (@Nonnull final HttpSession aHttpSession,
+                                                    final boolean bInvalidateHttpSession)
   {
     if (aHttpSession == null)
       throw new NullPointerException ("httpSession");
@@ -125,7 +128,7 @@ public final class WebScopeSessionHelper
     // Get the old session scope
     final ISessionWebScope aOldSessionScope = WebScopeManager.internalGetOrCreateSessionScope (aHttpSession, false);
     if (aOldSessionScope == null)
-      return EChange.UNCHANGED;
+      return null;
 
     // OK, we have a session scope to renew
 
@@ -134,13 +137,23 @@ public final class WebScopeSessionHelper
     final Map <String, IScopeRenewalAware> aSessionScopeValues = aOldSessionScope.getAllScopeRenewalAwareAttributes ();
     final Map <String, Map <String, IScopeRenewalAware>> aSessionApplicationScopeValues = _getSessionApplicationScopeValues (aOldSessionScope);
 
-    // renew the session
-    s_aLogger.info ("Invalidating session " + aOldSessionScope.getID ());
-    aOldSessionScope.selfDestruct ();
+    // Clear the old the session scope
+    if (bInvalidateHttpSession)
+    {
+      // renew the session
+      s_aLogger.info ("Invalidating session " + aOldSessionScope.getID ());
+      aOldSessionScope.selfDestruct ();
+    }
+    else
+    {
+      // Do not invalidate the underlying session - only renew the session scope
+      // itself
+      ScopeSessionManager.getInstance ().onScopeEnd (aOldSessionScope);
+    }
 
     // Ensure that we get a new session!
     final ISessionWebScope aNewSessionScope = WebScopeManager.internalGetOrCreateSessionScope (aHttpSession, true);
     _restoreScopeAttributes (aNewSessionScope, aSessionScopeValues, aSessionApplicationScopeValues);
-    return EChange.CHANGED;
+    return aNewSessionScope;
   }
 }

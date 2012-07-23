@@ -21,24 +21,30 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.io.Serializable;
+import java.util.concurrent.CountDownLatch;
 
 import javax.annotation.Nullable;
+import javax.servlet.http.HttpSession;
 
 import org.junit.Test;
 
 import com.phloc.scopes.IScopeRenewalAware;
+import com.phloc.scopes.nonweb.mgr.ScopeSessionManager;
 import com.phloc.scopes.web.domain.ISessionApplicationWebScope;
 import com.phloc.scopes.web.domain.ISessionWebScope;
-import com.phloc.scopes.web.mock.AbstractWebScopeAwareTestSuite;
+import com.phloc.scopes.web.mock.AbstractWebScopeAwareTestCase;
+import com.phloc.scopes.web.mock.MockHttpServletRequest;
 
 /**
  * Test class for class {@link WebScopeSessionHelper}.
  * 
  * @author philip
  */
-public final class WebScopeSessionHelperTest extends AbstractWebScopeAwareTestSuite
+public final class WebScopeSessionHelperTest extends AbstractWebScopeAwareTestCase
 {
   private static final class MockScopeRenewalAware implements IScopeRenewalAware, Serializable
   {
@@ -118,5 +124,75 @@ public final class WebScopeSessionHelperTest extends AbstractWebScopeAwareTestSu
     // Had no scope renewal aware attrs:
     aAWS3 = aWS.getSessionApplicationScope ("app3", false);
     assertNull (aAWS3);
+  }
+
+  @Test
+  public void testMultipleSessions () throws InterruptedException
+  {
+    final int nMax = 10;
+    final Thread [] aThreads = new Thread [nMax];
+    final CountDownLatch aCDLStart = new CountDownLatch (nMax);
+    final CountDownLatch aCDLGlobalChecks = new CountDownLatch (1);
+    final CountDownLatch aCDLDone = new CountDownLatch (nMax);
+    for (int i = 0; i < nMax; ++i)
+    {
+      final String sSessionID = "Session " + i;
+      aThreads[i] = new Thread ("Mock " + i)
+      {
+        @Override
+        public void run ()
+        {
+          try
+          {
+            // Create and setup the request
+            final MockHttpServletRequest r = new MockHttpServletRequest (getServletContext ());
+            r.setSessionID (sSessionID);
+
+            // Create the session
+            final HttpSession s = r.getSession (true);
+            assertNotNull (s);
+            final ISessionWebScope aSessionScope = WebScopeManager.getSessionScope (true);
+            assertNotNull (aSessionScope);
+            assertSame (s, aSessionScope.getSession ());
+            aSessionScope.setAttribute ("x", new MockScopeRenewalAware ("bla"));
+            aSessionScope.setAttribute ("y", "bla");
+            assertEquals (2, aSessionScope.getAttributeCount ());
+
+            // Wait until all sessions are created
+            aCDLStart.countDown ();
+
+            // Wait until global checks are performed
+            aCDLGlobalChecks.await ();
+
+            // Renew the session scope
+            final ISessionWebScope aNewSessionScope = WebScopeSessionHelper.renewSessionScope (s, false);
+            assertNotNull (aNewSessionScope);
+            assertTrue (aNewSessionScope != aSessionScope);
+            assertEquals (1, aNewSessionScope.getAttributeCount ());
+            assertTrue (aNewSessionScope.containsAttribute ("x"));
+
+            r.invalidate ();
+
+            aCDLDone.countDown ();
+          }
+          catch (final Exception ex)
+          {
+            throw new RuntimeException (ex);
+          }
+        }
+      };
+    }
+    for (int i = 0; i < nMax; ++i)
+      aThreads[i].start ();
+
+    // Wait until all sessions are retrieved
+    aCDLStart.await ();
+    assertEquals (nMax, ScopeSessionManager.getInstance ().getSessionCount ());
+    aCDLGlobalChecks.countDown ();
+    aCDLDone.await ();
+
+    // End all requests
+    for (int i = 0; i < nMax; ++i)
+      aThreads[i].join ();
   }
 }

@@ -106,6 +106,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   private String m_sRequestURI;
   private String m_sServletPath = "";
   private HttpSession m_aSession;
+  private String m_sSessionID;
   private boolean m_bRequestedSessionIDValid = true;
   private boolean m_bRequestedSessionIDFromCookie = true;
   private boolean m_bRequestedSessionIDFromURL = false;
@@ -892,14 +893,33 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
     return m_sServletPath;
   }
 
+  /**
+   * Define the session ID to be used when creating a new session
+   * 
+   * @param sSessionID
+   *        The session ID to be used. If it is <code>null</code> a unique
+   *        session ID is generated.
+   */
+  public void setSessionID (@Nullable final String sSessionID)
+  {
+    m_sSessionID = sSessionID;
+  }
+
+  /**
+   * @return The session ID to use or <code>null</code> if a new session ID
+   *         should be generated!
+   */
+  @Nullable
+  public String getSessionID ()
+  {
+    return m_sSessionID;
+  }
+
   public void setSession (@Nullable final HttpSession aHttpSession)
   {
     m_aSession = aHttpSession;
     if (aHttpSession instanceof MockHttpSession)
-    {
-      final MockHttpSession aMockSession = ((MockHttpSession) aHttpSession);
-      aMockSession.doAccess ();
-    }
+      ((MockHttpSession) aHttpSession).doAccess ();
   }
 
   @Nullable
@@ -913,7 +933,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
 
     // Create new session if necessary.
     if (m_aSession == null && bCreate)
-      m_aSession = new MockHttpSession (getServletContext ());
+      m_aSession = new MockHttpSession (getServletContext (), m_sSessionID);
 
     // Update last access time
     if (m_aSession instanceof MockHttpSession)
