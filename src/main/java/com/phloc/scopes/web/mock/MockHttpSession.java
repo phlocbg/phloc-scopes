@@ -38,6 +38,7 @@ import com.phloc.commons.collections.ArrayHelper;
 import com.phloc.commons.collections.ContainerHelper;
 import com.phloc.commons.idfactory.GlobalIDFactory;
 import com.phloc.commons.string.StringHelper;
+import com.phloc.commons.string.ToStringGenerator;
 
 /**
  * Mock implementation of {@link HttpSession}.
@@ -298,5 +299,21 @@ public class MockHttpSession implements HttpSession
     if (!(aState instanceof Map))
       throw new IllegalArgumentException ("Serialized state needs to be of type [java.util.Map]");
     m_aAttributes.putAll ((Map <String, Object>) aState);
+  }
+
+  @Override
+  public String toString ()
+  {
+    return new ToStringGenerator (this).append ("ID", m_sID)
+                                       .append ("creationTime", m_nCreationTime)
+                                       .append ("maxInactiveInterval", m_nMaxInactiveInterval)
+                                       .append ("lastAccessedTime", m_nLastAccessedTime)
+                                       .appendIfNotNull ("servletContext",
+                                                         m_aServletContext == null ? null
+                                                                                  : m_aServletContext.getServerInfo ())
+                                       .append ("attributes", m_aAttributes)
+                                       .append ("isInvalidated", m_bInvalidated)
+                                       .append ("isNew", m_bIsNew)
+                                       .toString ();
   }
 }

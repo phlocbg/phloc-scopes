@@ -19,6 +19,7 @@ package com.phloc.scopes.nonweb.domain;
 
 import java.util.Map;
 
+import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -66,4 +67,10 @@ public interface ISessionScope extends IScope
    */
   @Nonnull
   Map <String, ISessionApplicationScope> getAllSessionApplicationScopes ();
+
+  /**
+   * @return The number of contained session application scopes. Always &ge; 0.
+   */
+  @Nonnegative
+  int getSessionApplicationScopeCount ();
 }

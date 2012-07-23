@@ -138,6 +138,13 @@ public class ScopeSessionManager extends GlobalSingleton
     s_aUniqueSessionCounter.increment ();
   }
 
+  /**
+   * Close the passed session scope gracefully. Each managed scope is guaranteed
+   * to be destroyed only once. First the SPI manager is invoked, and afterwards
+   * the scope is destroyed.
+   * 
+   * @param aSessionScope
+   */
   public void onScopeEnd (@Nonnull final ISessionScope aSessionScope)
   {
     if (aSessionScope == null)

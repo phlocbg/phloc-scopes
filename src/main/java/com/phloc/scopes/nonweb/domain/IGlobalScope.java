@@ -19,6 +19,7 @@ package com.phloc.scopes.nonweb.domain;
 
 import java.util.Map;
 
+import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -50,4 +51,10 @@ public interface IGlobalScope extends IScope
    */
   @Nonnull
   Map <String, IApplicationScope> getAllApplicationScopes ();
+
+  /**
+   * @return The number of contained application scopes. Always &ge; 0.
+   */
+  @Nonnegative
+  int getApplicationScopeCount ();
 }
