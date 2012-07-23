@@ -337,7 +337,10 @@ public final class ScopeManager
       s_aLogger.warn ("A request scope is already present - will overwrite it: " + aExistingRequestScope.toString ());
       if (aExistingRequestScope.isValid ())
       {
-        // TODO shall the scope be destroyed here????
+        // The scope shall be destroyed here, as this is most probably a
+        // programming error!
+        s_aLogger.warn ("Destroying the old request scope before the new one gets initialized!");
+        _destroyRequestScope (aExistingRequestScope);
       }
     }
 
@@ -404,6 +407,15 @@ public final class ScopeManager
     return aScope;
   }
 
+  private static void _destroyRequestScope (@Nonnull final IRequestScope aRequestScope)
+  {
+    // call SPIs
+    ScopeSPIManager.onRequestScopeEnd (aRequestScope);
+
+    // Destroy scope
+    aRequestScope.destroyScope ();
+  }
+
   /**
    * To be called after a request finished.
    */
@@ -415,11 +427,7 @@ public final class ScopeManager
       // Do we have something to destroy?
       if (aRequestScope != null)
       {
-        // call SPIs
-        ScopeSPIManager.onRequestScopeEnd (aRequestScope);
-
-        // Destroy scope
-        aRequestScope.destroyScope ();
+        _destroyRequestScope (aRequestScope);
       }
       else
       {

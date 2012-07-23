@@ -83,7 +83,7 @@ public class SessionWebScope extends SessionScope implements ISessionWebScope
       // Do not continue with the regular destruction procedure!
       return EContinue.BREAK;
     }
-    catch (final IllegalStateException ex)
+    catch (final RuntimeException ex)
     {
       s_aLogger.warn ("Session '" + getID () + "' was already invalidated, but was still contained!");
     }
