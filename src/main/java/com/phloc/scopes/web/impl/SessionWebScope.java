@@ -78,8 +78,7 @@ public class SessionWebScope extends SessionScope implements ISessionWebScope
     try
     {
       // Should implicitly trigger a call to WebScopeManager.onSessionEnd, which
-      // than
-      // triggers a call to aSessionScope.destroyScope
+      // than triggers a call to aSessionScope.destroyScope
       m_aHttpSession.invalidate ();
       // Do not continue with the regular destruction procedure!
       return EContinue.BREAK;
