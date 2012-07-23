@@ -157,6 +157,7 @@ public final class WebScopeSessionHelperTest extends AbstractWebScopeAwareTestCa
             aSessionScope.setAttribute ("x", new MockScopeRenewalAware ("bla"));
             aSessionScope.setAttribute ("y", "bla");
             assertEquals (2, aSessionScope.getAttributeCount ());
+            aSessionScope.getSessionApplicationScope ("app", true).setAttribute ("x", "y");
 
             // Wait until all sessions are created
             aCDLStart.countDown ();

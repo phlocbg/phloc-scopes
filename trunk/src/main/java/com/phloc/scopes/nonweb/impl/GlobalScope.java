@@ -20,6 +20,7 @@ package com.phloc.scopes.nonweb.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
@@ -159,6 +160,20 @@ public class GlobalScope extends AbstractMapBasedScope implements IGlobalScope
     try
     {
       return ContainerHelper.newMap (m_aAppScopes);
+    }
+    finally
+    {
+      m_aRWLock.readLock ().unlock ();
+    }
+  }
+
+  @Nonnegative
+  public int getApplicationScopeCount ()
+  {
+    m_aRWLock.readLock ().lock ();
+    try
+    {
+      return m_aAppScopes.size ();
     }
     finally
     {

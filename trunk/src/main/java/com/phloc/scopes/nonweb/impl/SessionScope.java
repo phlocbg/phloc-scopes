@@ -20,6 +20,7 @@ package com.phloc.scopes.nonweb.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
@@ -162,6 +163,20 @@ public class SessionScope extends AbstractMapBasedScope implements ISessionScope
     try
     {
       return ContainerHelper.newMap (m_aSessionAppScopes);
+    }
+    finally
+    {
+      m_aRWLock.readLock ().unlock ();
+    }
+  }
+
+  @Nonnegative
+  public int getSessionApplicationScopeCount ()
+  {
+    m_aRWLock.readLock ().lock ();
+    try
+    {
+      return m_aSessionAppScopes.size ();
     }
     finally
     {
