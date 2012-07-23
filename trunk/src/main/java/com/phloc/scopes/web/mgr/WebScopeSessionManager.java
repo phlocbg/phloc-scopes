@@ -20,6 +20,12 @@ package com.phloc.scopes.web.mgr;
 import com.phloc.commons.annotations.UsedViaReflection;
 import com.phloc.scopes.nonweb.mgr.ScopeSessionManager;
 
+/**
+ * Present only for backwards code compatibility. {@link ScopeSessionManager} is
+ * the class to be used.
+ * 
+ * @author philip
+ */
 @Deprecated
 public final class WebScopeSessionManager extends ScopeSessionManager
 {

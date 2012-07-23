@@ -51,6 +51,9 @@ public abstract class AbstractScopeAwareFilter implements Filter
   private String m_sApplicationID;
 
   /**
+   * Determine the application ID to be used, based on the passed filter
+   * configuration. This method is only invoked once on startup.
+   * 
    * @param aFilterConfig
    *        The filter configuration
    * @return The application ID for this filter.

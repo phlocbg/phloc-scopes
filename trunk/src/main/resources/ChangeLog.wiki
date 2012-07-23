@@ -1,7 +1,14 @@
 #summary Change log of phloc-scopes
 = Change log =
 <wiki:comment>This content is generated. Do not modify!</wiki:comment>
-<table border="1" cellspacing="0"><thead><tr><th>Date</th><th>Action</th><th>Category</th><th>Incompatible?</th><th>Description</th></tr></thead><tbody><tr border="1"><td>7/12/12</td><td colspan="4">_Release *4.0.0*_</td></tr>
+<table border="1" cellspacing="0"><thead><tr><th>Date</th><th>Action</th><th>Category</th><th>Incompatible?</th><th>Description</th></tr></thead><tbody><tr border="1"><td>7/23/12</td><td colspan="4">_Release *4.0.1*_</td></tr>
+<tr><td>7/23/12</td><td>add</td><td>api</td><td></td><td>Added new method ScopeSessionManager.destroyAllSessions</td></tr>
+<tr><td>7/23/12</td><td>add</td><td>api</td><td></td><td>Added new method IGlobalScope.getApplicationScopeCount</td></tr>
+<tr><td>7/23/12</td><td>add</td><td>api</td><td></td><td>Added new method ISessionScope.getSessionApplicationScopeCount</td></tr>
+<tr><td>7/23/12</td><td>add</td><td>api</td><td></td><td>Extended MockHttpServletRequest so that a certain session ID can be used instead of always creating a new one</td></tr>
+<tr><td>7/23/12</td><td>add</td><td>api</td><td></td><td>Improved API of AbstractWebScopeAwareTest(Suite|Case) and WebScopeAwareTestSetup</td></tr>
+<tr><td>7/23/12</td><td>add</td><td>api</td><td></td><td>Added new method WebScopeSessionHelper.renewSessionScope(HttpSession,boolean)</td></tr>
+<tr border="1"><td>7/12/12</td><td colspan="4">_Release *4.0.0*_</td></tr>
 <tr><td>7/11/12</td><td>update</td><td>api</td><td></td><td>Improved backward compatibility</td></tr>
 <tr border="1"><td>7/10/12</td><td colspan="4">_Release *4.0.0.RC1*_</td></tr>
 <tr><td>7/10/12</td><td>add</td><td>api</td><td></td><td>Added class SessionApplicationSingleton</td></tr>

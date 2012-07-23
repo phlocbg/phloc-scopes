@@ -189,6 +189,15 @@ public final class WebScopeManager
     return aSessionWebScope;
   }
 
+  /**
+   * Get the session scope from the current request scope.
+   * 
+   * @param bCreateIfNotExisting
+   *        if <code>true</code> a new session scope (and a new HTTP session if
+   *        required) is created if none is existing so far.
+   * @return <code>null</code> if no session scope is present, and none should
+   *         be created.
+   */
   @Nullable
   public static ISessionWebScope getSessionScope (final boolean bCreateIfNotExisting)
   {
@@ -215,7 +224,10 @@ public final class WebScopeManager
     final ScopeSessionManager aSSM = ScopeSessionManager.getInstance ();
     final ISessionScope aSessionScope = aSSM.getSessionScopeOfID (aHttpSession.getId ());
     if (aSessionScope != null)
+    {
+      // Regular scope end
       aSSM.onScopeEnd (aSessionScope);
+    }
     else
     {
       // Ensure session is invalidated anyhow, even if no session scope is

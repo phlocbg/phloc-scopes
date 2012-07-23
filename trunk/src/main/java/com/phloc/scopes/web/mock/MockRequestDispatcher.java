@@ -18,6 +18,7 @@
 package com.phloc.scopes.web.mock;
 
 import javax.annotation.Nonnull;
+import javax.annotation.concurrent.NotThreadSafe;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -31,6 +32,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author philip
  */
+@NotThreadSafe
 public class MockRequestDispatcher implements RequestDispatcher
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (MockRequestDispatcher.class);
@@ -80,6 +82,7 @@ public class MockRequestDispatcher implements RequestDispatcher
    * Obtain the underlying MockHttpServletResponse, unwrapping
    * {@link HttpServletResponseWrapper} decorators if necessary.
    */
+  @Nonnull
   protected MockHttpServletResponse getMockHttpServletResponse (@Nonnull final ServletResponse aResponse)
   {
     if (aResponse instanceof MockHttpServletResponse)

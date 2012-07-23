@@ -34,11 +34,20 @@ import com.phloc.commons.exceptions.InitializationException;
 import com.phloc.commons.lang.CGStringHelper;
 import com.phloc.commons.string.StringHelper;
 
+/**
+ * A simple Servlet filter that surrounds each and every call with the necessary
+ * scope begin and end calls.
+ * 
+ * @author philip
+ */
 public class DefaultScopeAwareFilter implements Filter
 {
   private String m_sApplicationID;
 
   /**
+   * Determine the application ID to be used, based on the passed filter
+   * configuration. This method is only invoked once on startup.
+   * 
    * @param aFilterConfig
    *        The filter configuration
    * @return The application ID for this filter.

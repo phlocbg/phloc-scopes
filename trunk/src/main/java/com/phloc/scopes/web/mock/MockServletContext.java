@@ -29,6 +29,7 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.concurrent.NotThreadSafe;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.Servlet;
 import javax.servlet.ServletContext;
@@ -53,6 +54,7 @@ import com.phloc.commons.string.StringHelper;
  * 
  * @author philip
  */
+@NotThreadSafe
 public final class MockServletContext implements ServletContext
 {
   public static final String DEFAULT_SERVLET_CONTEXT_NAME = "MockServletContext";
