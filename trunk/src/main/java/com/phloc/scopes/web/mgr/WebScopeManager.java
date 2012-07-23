@@ -165,7 +165,8 @@ public final class WebScopeManager
 
   @Nullable
   @DevelopersNote ("This is only for project-internal use!")
-  public static ISessionWebScope internalGetOrCreateSessionScope (@Nonnull final HttpSession aHttpSession)
+  public static ISessionWebScope internalGetOrCreateSessionScope (@Nonnull final HttpSession aHttpSession,
+                                                                  final boolean bCreateIfNotExisting)
   {
     if (aHttpSession == null)
       throw new NullPointerException ("httpSession");
@@ -174,13 +175,13 @@ public final class WebScopeManager
     final String sSessionID = aHttpSession.getId ();
     ISessionWebScope aSessionWebScope = (ISessionWebScope) ScopeSessionManager.getInstance ()
                                                                               .getSessionScopeOfID (sSessionID);
-    if (aSessionWebScope == null)
+    if (aSessionWebScope == null && bCreateIfNotExisting)
     {
       // This can e.g. happen in tests, when there are no registered
       // listeners for session events!
-      s_aLogger.warn ("Creating a new session for ID '" +
+      s_aLogger.warn ("Creating a new session web scope for ID '" +
                       sSessionID +
-                      "' but there should already be one! Check your HttpSessionListener implementation.");
+                      "' but there should already be one! Check your HttpSessionListener implementation. See com.phloc.scopes.web.servlet.WebScopeListener for an example");
 
       // Create a new session scope
       aSessionWebScope = onSessionBegin (aHttpSession);
@@ -198,7 +199,7 @@ public final class WebScopeManager
       // Check if we have an HTTP session object
       final HttpSession aHttpSession = aRequestScope.getSession (bCreateIfNotExisting);
       if (aHttpSession != null)
-        return internalGetOrCreateSessionScope (aHttpSession);
+        return internalGetOrCreateSessionScope (aHttpSession, bCreateIfNotExisting);
     }
     else
     {

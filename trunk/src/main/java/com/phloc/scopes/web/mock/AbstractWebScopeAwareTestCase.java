@@ -18,10 +18,9 @@
 package com.phloc.scopes.web.mock;
 
 import javax.annotation.Nonnull;
-import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
 
 import com.phloc.commons.mock.AbstractPhlocTestCase;
-import com.phloc.scopes.web.mgr.WebScopeManager;
 
 /**
  * Base class where the initialization of the scopes happens before each test
@@ -41,9 +40,21 @@ public abstract class AbstractWebScopeAwareTestCase extends AbstractPhlocTestCas
   }
 
   @Nonnull
-  protected final ServletContext getServletContext ()
+  protected final MockServletContext getServletContext ()
   {
-    return WebScopeManager.getGlobalScope ().getServletContext ();
+    return WebScopeAwareTestSetup.getServletContext ();
+  }
+
+  @Nonnull
+  protected final MockHttpServletRequest getRequest ()
+  {
+    return WebScopeAwareTestSetup.getRequest ();
+  }
+
+  @Nonnull
+  protected final HttpSession getSession (final boolean bCreateIfNotExisting)
+  {
+    return WebScopeAwareTestSetup.getSession (bCreateIfNotExisting);
   }
 
   @Override

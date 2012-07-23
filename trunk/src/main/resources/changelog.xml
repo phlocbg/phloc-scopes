@@ -20,6 +20,16 @@
 -->
 <changelog xmlns="http://www.phloc.com/ns/changelog/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.phloc.com/ns/changelog/1.0 schemas/changelog-1.0.xsd" version="1.0" component="phloc-scopes">
+  <entry date="2012-07-23" category="api" action="add">
+    <change>
+      <text locale="en">Improved API of AbstractWebScopeAwareTest(Suite|Case) and WebScopeAwareTestSetup</text>
+    </change>
+  </entry>
+  <entry date="2012-07-23" category="api" action="add">
+    <change>
+      <text locale="en">Added new method WebScopeSessionHelper.renewSessionScope</text>
+    </change>
+  </entry>
   <release date="2012-07-12" version="4.0.0" />
   <entry date="2012-07-11" category="api" action="update">
     <change>

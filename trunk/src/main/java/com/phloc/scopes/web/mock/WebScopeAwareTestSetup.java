@@ -17,11 +17,16 @@
  */
 package com.phloc.scopes.web.mock;
 
+import javax.annotation.Nullable;
+import javax.annotation.concurrent.NotThreadSafe;
+import javax.servlet.http.HttpSession;
+
 /**
  * Base class for all JUnit tests requiring correct web scope handling.
  * 
  * @author philip
  */
+@NotThreadSafe
 public final class WebScopeAwareTestSetup
 {
   public static final String MOCK_CONTEXT = "/MockContext";
@@ -54,5 +59,23 @@ public final class WebScopeAwareTestSetup
     // shutdown global context -> triggers events
     s_aServletContext.invalidate ();
     s_aServletContext = null;
+  }
+
+  @Nullable
+  public static MockServletContext getServletContext ()
+  {
+    return s_aServletContext;
+  }
+
+  @Nullable
+  public static MockHttpServletRequest getRequest ()
+  {
+    return s_aRequest;
+  }
+
+  @Nullable
+  public static HttpSession getSession (final boolean bCreateIfNotExisting)
+  {
+    return s_aRequest == null ? null : s_aRequest.getSession (bCreateIfNotExisting);
   }
 }
