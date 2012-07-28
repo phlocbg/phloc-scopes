@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 import com.phloc.commons.charset.CharsetManager;
-import com.phloc.commons.string.StringHelper;
+import com.phloc.commons.string.StringParser;
 import com.phloc.scopes.web.fileupload.MultipartStream.ItemInputStream;
 import com.phloc.scopes.web.fileupload.util.AbstractLimitedInputStream;
 import com.phloc.scopes.web.fileupload.util.FileItemHeadersImpl;
@@ -983,7 +983,7 @@ public abstract class AbstractFileUploadBase
 
     private long getContentLength (final IFileItemHeaders pHeaders)
     {
-      return StringHelper.parseLong (pHeaders.getHeader (CONTENT_LENGTH), -1L);
+      return StringParser.parseLong (pHeaders.getHeader (CONTENT_LENGTH), -1L);
     }
 
     /**

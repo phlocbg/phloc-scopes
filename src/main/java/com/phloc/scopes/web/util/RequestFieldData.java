@@ -95,7 +95,8 @@ public class RequestFieldData
    *        The object who's ID is to be used. May be <code>null</code> in which
    *        case no default value is used
    */
-  public RequestFieldData (@Nonnull @Nonempty final String sFieldName, @Nullable final IHasID <String> aDefaultValueProvider)
+  public RequestFieldData (@Nonnull @Nonempty final String sFieldName,
+                           @Nullable final IHasID <String> aDefaultValueProvider)
   {
     this (sFieldName, aDefaultValueProvider == null ? "" : aDefaultValueProvider.getID ());
   }

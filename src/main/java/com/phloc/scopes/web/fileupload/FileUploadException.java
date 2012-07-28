@@ -17,7 +17,6 @@
  */
 package com.phloc.scopes.web.fileupload;
 
-
 /**
  * Exception for errors encountered while processing the request.
  * 
