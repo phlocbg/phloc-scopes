@@ -17,7 +17,6 @@
  */
 package com.phloc.scopes;
 
-
 /**
  * Base interface for web scopes. This is only a marker interface and offers no
  * additional logic.

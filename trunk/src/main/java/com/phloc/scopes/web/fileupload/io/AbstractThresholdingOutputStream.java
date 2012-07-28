@@ -35,8 +35,8 @@ import java.io.OutputStream;
  * cause the threshold to be exceeded.
  * 
  * @author <a href="mailto:martinc@apache.org">Martin Cooper</a>
- * @version $Id: ThresholdingOutputStream.java 736890 2009-01-23 02:02:22Z niallp
- *          $
+ * @version $Id: ThresholdingOutputStream.java 736890 2009-01-23 02:02:22Z
+ *          niallp $
  */
 public abstract class AbstractThresholdingOutputStream extends OutputStream
 {
