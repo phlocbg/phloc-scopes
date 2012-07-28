@@ -25,10 +25,11 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 import com.phloc.commons.charset.CharsetManager;
+import com.phloc.commons.string.StringHelper;
 import com.phloc.scopes.web.fileupload.MultipartStream.ItemInputStream;
-import com.phloc.scopes.web.fileupload.util.ICloseable;
-import com.phloc.scopes.web.fileupload.util.FileItemHeadersImpl;
 import com.phloc.scopes.web.fileupload.util.AbstractLimitedInputStream;
+import com.phloc.scopes.web.fileupload.util.FileItemHeadersImpl;
+import com.phloc.scopes.web.fileupload.util.ICloseable;
 import com.phloc.scopes.web.fileupload.util.Streams;
 
 /**
@@ -982,14 +983,7 @@ public abstract class AbstractFileUploadBase
 
     private long getContentLength (final IFileItemHeaders pHeaders)
     {
-      try
-      {
-        return Long.parseLong (pHeaders.getHeader (CONTENT_LENGTH));
-      }
-      catch (final Exception e)
-      {
-        return -1;
-      }
+      return StringHelper.parseLong (pHeaders.getHeader (CONTENT_LENGTH), -1L);
     }
 
     /**
