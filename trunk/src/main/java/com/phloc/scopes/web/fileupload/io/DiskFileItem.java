@@ -17,11 +17,8 @@
  */
 package com.phloc.scopes.web.fileupload.io;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -42,6 +39,8 @@ import com.phloc.commons.io.file.FileOperations;
 import com.phloc.commons.io.file.SimpleFileIO;
 import com.phloc.commons.io.streams.NonBlockingByteArrayInputStream;
 import com.phloc.commons.io.streams.StreamUtils;
+import com.phloc.commons.state.ESuccess;
+import com.phloc.commons.state.ISuccessIndicator;
 import com.phloc.scopes.web.fileupload.FileUploadException;
 import com.phloc.scopes.web.fileupload.IFileItem;
 import com.phloc.scopes.web.fileupload.IFileItemHeaders;
@@ -364,48 +363,31 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
    * @throws Exception
    *         if an error occurs.
    */
-  public void write (final File file) throws Exception
+  @Nonnull
+  public ISuccessIndicator write (final File file) throws Exception
   {
     if (isInMemory ())
+      return SimpleFileIO.writeFile (file, get ());
+
+    final File aOutputFile = getStoreLocation ();
+    if (aOutputFile != null)
     {
-      SimpleFileIO.writeFile (file, get ());
+      // Save the length of the file
+      m_nSize = aOutputFile.length ();
+
+      /*
+       * The uploaded file is being stored on disk in a temporary location so
+       * move it to the desired file.
+       */
+      if (FileOperations.renameFile (aOutputFile, file).isSuccess ())
+        return ESuccess.SUCCESS;
+
+      // Copying needed
+      return FileOperations.copyFile (aOutputFile, file);
     }
-    else
-    {
-      final File outputFile = getStoreLocation ();
-      if (outputFile != null)
-      {
-        // Save the length of the file
-        m_nSize = outputFile.length ();
-        /*
-         * The uploaded file is being stored on disk in a temporary location so
-         * move it to the desired file.
-         */
-        if (!outputFile.renameTo (file))
-        {
-          BufferedInputStream in = null;
-          BufferedOutputStream out = null;
-          try
-          {
-            in = new BufferedInputStream (new FileInputStream (outputFile));
-            out = new BufferedOutputStream (new FileOutputStream (file));
-            StreamUtils.copyInputStreamToOutputStream (in, out);
-          }
-          finally
-          {
-            StreamUtils.close (in);
-            StreamUtils.close (out);
-          }
-        }
-      }
-      else
-      {
-        /*
-         * For whatever reason we cannot write the file to disk.
-         */
-        throw new FileUploadException ("Cannot write uploaded file to disk!");
-      }
-    }
+
+    // For whatever reason we cannot write the file to disk.
+    throw new FileUploadException ("Cannot write uploaded file to disk!");
   }
 
   /**

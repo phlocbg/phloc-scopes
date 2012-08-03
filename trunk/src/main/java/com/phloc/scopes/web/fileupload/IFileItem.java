@@ -25,6 +25,9 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 
 import javax.activation.DataSource;
+import javax.annotation.Nonnull;
+
+import com.phloc.commons.state.ISuccessIndicator;
 
 /**
  * <p>
@@ -160,10 +163,12 @@ public interface IFileItem extends Serializable, DataSource
    * 
    * @param file
    *        The <code>File</code> into which the uploaded item should be stored.
+   * @return Never null
    * @throws Exception
    *         if an error occurs.
    */
-  void write (File file) throws Exception;
+  @Nonnull
+  ISuccessIndicator write (File file) throws Exception;
 
   /**
    * Deletes the underlying storage for a file item, including deleting any
