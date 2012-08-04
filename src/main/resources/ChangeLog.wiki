@@ -1,7 +1,8 @@
 #summary Change log of phloc-scopes
 = Change log =
 <wiki:comment>This content is generated. Do not modify!</wiki:comment>
-<table border="1" cellspacing="0"><thead><tr><th>Date</th><th>Action</th><th>Category</th><th>Incompatible?</th><th>Description</th></tr></thead><tbody><tr border="1"><td>7/24/12</td><td colspan="4">_Release *4.0.2*_</td></tr>
+<table border="1" cellspacing="0"><thead><tr><th>Date</th><th>Action</th><th>Category</th><th>Incompatible?</th><th>Description</th></tr></thead><tbody><tr><td>8/3/12</td><td>change</td><td>api</td><td></td><td>IFileItem.write now returns a success indicator</td></tr>
+<tr border="1"><td>7/24/12</td><td colspan="4">_Release *4.0.2*_</td></tr>
 <tr><td>7/24/12</td><td>add</td><td>api</td><td></td><td>Added methods in WebScopeSessionManager to handle ISessionWebScope objects only</td></tr>
 <tr><td>7/24/12</td><td>change</td><td>api</td><td></td><td>Undeprecated WebScopeSessionManager</td></tr>
 <tr border="1"><td>7/23/12</td><td colspan="4">_Release *4.0.1*_</td></tr>
