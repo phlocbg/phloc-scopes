@@ -168,11 +168,12 @@ public final class ScopeManager
         ScopeSPIManager.onGlobalScopeEnd (s_aGlobalScope);
 
         // Destroy and invalidate scope
+        final String sDestroyedScopeID = s_aGlobalScope.getID ();
         s_aGlobalScope.destroyScope ();
         s_aGlobalScope = null;
 
         // done
-        s_aLogger.info ("Global scope shut down!");
+        s_aLogger.info ("Global scope '" + sDestroyedScopeID + "' shut down!");
       }
       else
         s_aLogger.warn ("No global scope present that could be shut down!");
