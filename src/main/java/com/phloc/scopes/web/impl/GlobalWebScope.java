@@ -50,6 +50,19 @@ public final class GlobalWebScope extends GlobalScope implements IGlobalWebScope
   private final ServletContext m_aSC;
   private final IContextPathProvider m_aContextPathProvider;
 
+  @Nonnull
+  @Nonempty
+  private static String _createScopeID (@Nonnull final ServletContext aServletContext)
+  {
+    String ret = aServletContext.getServletContextName ();
+    if (ret == null)
+    {
+      // <display-name> element is missing in web.xml
+      ret = "phloc-scopes-global";
+    }
+    return ret;
+  }
+
   /**
    * Create a new {@link GlobalWebScope}. No objects are copied from the passed
    * {@link ServletContext} so this must be one of the very first action
@@ -64,7 +77,7 @@ public final class GlobalWebScope extends GlobalScope implements IGlobalWebScope
   public GlobalWebScope (@Nonnull final ServletContext aServletContext,
                          @Nonnull final IContextPathProvider aContextPathProvider)
   {
-    super (aServletContext.getServletContextName ());
+    super (_createScopeID (aServletContext));
     if (aContextPathProvider == null)
       throw new NullPointerException ("contextPathProvider");
 
