@@ -36,6 +36,11 @@ import com.phloc.scopes.nonweb.mgr.ScopeSessionManager;
 import com.phloc.scopes.web.domain.ISessionApplicationWebScope;
 import com.phloc.scopes.web.domain.ISessionWebScope;
 
+/**
+ * Some utility methods to handle complex actions in session scopes.
+ * 
+ * @author philip
+ */
 @Immutable
 public final class WebScopeSessionHelper
 {
@@ -94,7 +99,9 @@ public final class WebScopeSessionHelper
   }
 
   /**
-   * Renew the current session scope.
+   * Renew the current session scope. This means all session and session
+   * application scopes are cleared, and only attributes implementing the
+   * {@link IScopeRenewalAware} interface are kept.
    * 
    * @param bInvalidateHttpSession
    *        if <code>true</code> the underlying HTTP session is also invalidated
