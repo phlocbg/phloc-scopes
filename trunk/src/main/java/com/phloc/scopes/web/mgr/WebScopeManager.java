@@ -31,6 +31,7 @@ import org.slf4j.LoggerFactory;
 import com.phloc.commons.annotations.DevelopersNote;
 import com.phloc.commons.annotations.Nonempty;
 import com.phloc.scopes.MetaScopeFactory;
+import com.phloc.scopes.nonweb.domain.IGlobalScope;
 import com.phloc.scopes.nonweb.domain.ISessionScope;
 import com.phloc.scopes.nonweb.mgr.ScopeManager;
 import com.phloc.scopes.nonweb.mgr.ScopeSessionManager;
@@ -55,6 +56,16 @@ public final class WebScopeManager
 
   // --- global scope ---
 
+  /**
+   * To be called, when the global web scope is initialized. Most commonly this
+   * is called from within
+   * {@link javax.servlet.ServletContextListener#contextInitialized(javax.servlet.ServletContextEvent)}
+   * 
+   * @param aServletContext
+   *        The source servlet context to be used to retrieve the scope ID. May
+   *        not be <code>null</code>
+   * @return The created global web scope
+   */
   @Nonnull
   public static IGlobalWebScope onGlobalBegin (@Nonnull final ServletContext aServletContext)
   {
@@ -63,19 +74,43 @@ public final class WebScopeManager
     return aGlobalScope;
   }
 
+  /**
+   * @return <code>true</code> if a global scope is defined, <code>false</code>
+   *         if none is defined
+   */
   public static boolean isGlobalScopePresent ()
   {
     return ScopeManager.isGlobalScopePresent ();
   }
 
+  /**
+   * @return The global scope object.
+   * @throws IllegalStateException
+   *         If no global web scope object is present
+   */
   @Nonnull
   public static IGlobalWebScope getGlobalScope ()
   {
     // Note: if you get an exception here, and you're in the unit test, please
     // derived from AbstractWebScopeAwareTestCase
-    return (IGlobalWebScope) ScopeManager.getGlobalScope ();
+    final IGlobalScope aGlobalScope = ScopeManager.getGlobalScopeOrNull ();
+    if (aGlobalScope == null)
+      throw new IllegalStateException ("No global web scope object has been set!");
+    try
+    {
+      return (IGlobalWebScope) aGlobalScope;
+    }
+    catch (final ClassCastException ex)
+    {
+      throw new IllegalStateException ("Gobal scope object is not a web scope!");
+    }
   }
 
+  /**
+   * To be called, when the global web scope is destroyed. Most commonly this is
+   * called from within
+   * {@link javax.servlet.ServletContextListener#contextDestroyed(javax.servlet.ServletContextEvent)}
+   */
   public static void onGlobalEnd ()
   {
     ScopeManager.onGlobalEnd ();
@@ -146,23 +181,48 @@ public final class WebScopeManager
 
   // --- session scope ---
 
+  /**
+   * To be called, when a session web scope is initialized. Most commonly this
+   * is called from within
+   * {@link javax.servlet.http.HttpSessionListener#sessionCreated(javax.servlet.http.HttpSessionEvent)}
+   * 
+   * @param aHttpSession
+   *        The source session to base the scope on. May not be
+   *        <code>null</code>
+   * @return The created global session scope
+   */
   @Nonnull
   public static ISessionWebScope onSessionBegin (@Nonnull final HttpSession aHttpSession)
   {
-    if (s_aLogger.isDebugEnabled ())
-      s_aLogger.debug ("SESSION BEGIN: isNew? = " + aHttpSession.isNew ());
-
     final ISessionWebScope aSessionWebScope = MetaScopeFactory.getWebScopeFactory ().createSessionScope (aHttpSession);
     ScopeSessionManager.getInstance ().onScopeBegin (aSessionWebScope);
     return aSessionWebScope;
   }
 
+  /**
+   * Get or create a session scope based on the current request scope. This is
+   * the same as calling
+   * <code>getSessionScope({@link ScopeManager#DEFAULT_CREATE_SCOPE})</code>
+   * 
+   * @return Never <code>null</code>.
+   */
   @Nonnull
   public static ISessionWebScope getSessionScope ()
   {
     return getSessionScope (ScopeManager.DEFAULT_CREATE_SCOPE);
   }
 
+  /**
+   * Internal method which does the main logic for session web scope creation
+   * 
+   * @param aHttpSession
+   *        The underlying HTTP session
+   * @param bCreateIfNotExisting
+   *        if <code>true</code> if a new session web scope is created, if none
+   *        is present
+   * @return <code>null</code> if no session scope is present, and
+   *         bCreateIfNotExisting is false
+   */
   @Nullable
   @DevelopersNote ("This is only for project-internal use!")
   public static ISessionWebScope internalGetOrCreateSessionScope (@Nonnull final HttpSession aHttpSession,
@@ -173,8 +233,7 @@ public final class WebScopeManager
 
     // Do we already have a session web scope for the session?
     final String sSessionID = aHttpSession.getId ();
-    ISessionWebScope aSessionWebScope = (ISessionWebScope) ScopeSessionManager.getInstance ()
-                                                                              .getSessionScopeOfID (sSessionID);
+    ISessionScope aSessionWebScope = ScopeSessionManager.getInstance ().getSessionScopeOfID (sSessionID);
     if (aSessionWebScope == null && bCreateIfNotExisting)
     {
       // This can e.g. happen in tests, when there are no registered
@@ -186,7 +245,15 @@ public final class WebScopeManager
       // Create a new session scope
       aSessionWebScope = onSessionBegin (aHttpSession);
     }
-    return aSessionWebScope;
+
+    try
+    {
+      return (ISessionWebScope) aSessionWebScope;
+    }
+    catch (final ClassCastException ex)
+    {
+      throw new IllegalStateException ("Session scope object is not a web scope!");
+    }
   }
 
   /**
@@ -219,8 +286,20 @@ public final class WebScopeManager
     return null;
   }
 
+  /**
+   * To be called, when a session web scope is destroyed. Most commonly this is
+   * called from within
+   * {@link javax.servlet.http.HttpSessionListener#sessionDestroyed(javax.servlet.http.HttpSessionEvent)}
+   * 
+   * @param aHttpSession
+   *        The source session to destroy the matching scope. May not be
+   *        <code>null</code>
+   */
   public static void onSessionEnd (@Nonnull final HttpSession aHttpSession)
   {
+    if (aHttpSession == null)
+      throw new NullPointerException ("httpSession");
+
     final ScopeSessionManager aSSM = ScopeSessionManager.getInstance ();
     final ISessionScope aSessionScope = aSSM.getSessionScopeOfID (aHttpSession.getId ());
     if (aSessionScope != null)
@@ -291,8 +370,14 @@ public final class WebScopeManager
   @Nullable
   public static IRequestWebScope getRequestScopeOrNull ()
   {
-    // Just cast
-    return (IRequestWebScope) ScopeManager.getRequestScopeOrNull ();
+    try
+    { // Just cast
+      return (IRequestWebScope) ScopeManager.getRequestScopeOrNull ();
+    }
+    catch (final ClassCastException ex)
+    {
+      throw new IllegalStateException ("Request scope object is not a web scope!");
+    }
   }
 
   public static boolean isRequestScopePresent ()
@@ -303,8 +388,15 @@ public final class WebScopeManager
   @Nonnull
   public static IRequestWebScope getRequestScope ()
   {
-    // Just cast
-    return (IRequestWebScope) ScopeManager.getRequestScope ();
+    try
+    {
+      // Just cast
+      return (IRequestWebScope) ScopeManager.getRequestScope ();
+    }
+    catch (final ClassCastException ex)
+    {
+      throw new IllegalStateException ("Request scope object is not a web scope!");
+    }
   }
 
   public static void onRequestEnd ()

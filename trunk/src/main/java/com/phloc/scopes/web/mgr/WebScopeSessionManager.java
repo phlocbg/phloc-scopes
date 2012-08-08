@@ -65,7 +65,7 @@ public final class WebScopeSessionManager extends ScopeSessionManager
       return null;
     if (!(aSessionScope instanceof ISessionWebScope))
     {
-      s_aLogger.info ("The passed scope ID '" + sScopeID + "' is not a session web scope!");
+      s_aLogger.warn ("The passed scope ID '" + sScopeID + "' is not a session web scope!");
       return null;
     }
     return (ISessionWebScope) aSessionScope;
@@ -100,6 +100,9 @@ public final class WebScopeSessionManager extends ScopeSessionManager
     return ret;
   }
 
+  /**
+   * Destroy all available web scopes.
+   */
   public static void destroyAllWebSessions ()
   {
     // destroy all session web scopes (make a copy, because we're invalidating
