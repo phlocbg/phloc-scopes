@@ -49,6 +49,8 @@ import com.phloc.commons.io.resourceprovider.DefaultResourceProvider;
 import com.phloc.commons.mime.MimeTypeDeterminator;
 import com.phloc.commons.string.StringHelper;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /**
  * Mock implementation of the {@link ServletContext} interface.
  * 
@@ -290,6 +292,7 @@ public final class MockServletContext implements ServletContext
   }
 
   @Nonnull
+  @SuppressFBWarnings ("RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE")
   public String getRealPath (@Nonnull final String sPath)
   {
     final IReadableResource aResource = m_aResourceProvider.getReadableResource (getResourceLocation (sPath));

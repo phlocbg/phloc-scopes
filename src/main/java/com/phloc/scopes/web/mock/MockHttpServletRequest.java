@@ -859,8 +859,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   @Nullable
   public String getRequestedSessionId ()
   {
-    final HttpSession aHttpSession = getSession ();
-    return aHttpSession != null ? aHttpSession.getId () : null;
+    return getSession (true).getId ();
   }
 
   public void setRequestURI (@Nullable final String sRequestURI)
