@@ -33,6 +33,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 import com.phloc.commons.IHasLocale;
+import com.phloc.commons.annotations.Nonempty;
 import com.phloc.commons.annotations.ReturnsMutableCopy;
 import com.phloc.commons.charset.CCharset;
 import com.phloc.commons.collections.ContainerHelper;
@@ -138,6 +139,16 @@ public final class MockHttpServletResponse implements HttpServletResponse, IHasL
   }
 
   @Nonnull
+  @Nonempty
+  public final String getCharacterEncodingOrDefault ()
+  {
+    String ret = m_sCharacterEncoding;
+    if (ret == null)
+      ret = SystemHelper.getSystemCharsetName ();
+    return ret;
+  }
+
+  @Nonnull
   public ServletOutputStream getOutputStream ()
   {
     if (!m_bOutputStreamAccessAllowed)
@@ -154,10 +165,7 @@ public final class MockHttpServletResponse implements HttpServletResponse, IHasL
 
     if (m_aWriter == null)
     {
-      final Writer aWriter = m_sCharacterEncoding != null
-                                                         ? StreamUtils.createWriter (m_aContent, m_sCharacterEncoding)
-                                                         : StreamUtils.createWriter (m_aContent,
-                                                                                     SystemHelper.getSystemCharsetName ());
+      final Writer aWriter = StreamUtils.createWriter (m_aContent, getCharacterEncodingOrDefault ());
       m_aWriter = new ResponsePrintWriter (aWriter);
     }
     return m_aWriter;
@@ -174,8 +182,14 @@ public final class MockHttpServletResponse implements HttpServletResponse, IHasL
   @Nonnull
   public String getContentAsString ()
   {
+    return getContentAsString (getCharacterEncodingOrDefault ());
+  }
+
+  @Nonnull
+  public String getContentAsString (@Nonnull @Nonempty final String sCharset)
+  {
     flushBuffer ();
-    return m_sCharacterEncoding != null ? m_aContent.getAsString (m_sCharacterEncoding) : m_aContent.toString ();
+    return m_aContent.getAsString (sCharset);
   }
 
   public void setContentLength (final int nContentLength)
@@ -223,11 +237,15 @@ public final class MockHttpServletResponse implements HttpServletResponse, IHasL
     setCommitted (true);
   }
 
+  /*
+   * Throws exception if committed!
+   */
   public void resetBuffer ()
   {
     if (isCommitted ())
       throw new IllegalStateException ("Cannot reset buffer - response is already committed");
     m_aContent.reset ();
+    m_aWriter = null;
   }
 
   private void _setCommittedIfBufferSizeExceeded ()
@@ -247,6 +265,9 @@ public final class MockHttpServletResponse implements HttpServletResponse, IHasL
     return m_bCommitted;
   }
 
+  /*
+   * Throws exception if committed!
+   */
   public void reset ()
   {
     resetBuffer ();
@@ -493,10 +514,7 @@ public final class MockHttpServletResponse implements HttpServletResponse, IHasL
     return m_sErrorMessage;
   }
 
-  // ---------------------------------------------------------------------
   // Methods for MockRequestDispatcher
-  // ---------------------------------------------------------------------
-
   public void setForwardedUrl (@Nullable final String sForwardedUrl)
   {
     m_sForwardedUrl = sForwardedUrl;

@@ -20,6 +20,27 @@
 -->
 <changelog xmlns="http://www.phloc.com/ns/changelog/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.phloc.com/ns/changelog/1.0 schemas/changelog-1.0.xsd" version="1.0" component="phloc-scopes">
+  <release date="2012-08-10" version="4.0.4" />
+  <entry date="2012-08-10" category="tech" action="fix">
+    <change>
+      <text locale="en">MockHttpServletRequest now disables x-gzip and x-compress accept encoding</text>
+    </change>
+  </entry>
+  <entry date="2012-08-10" category="api" action="add">
+    <change>
+      <text locale="en">Added some more MockHttpServletResponse sanity methods</text>
+    </change>
+  </entry>
+  <entry date="2012-08-10" category="tech" action="fix">
+    <change>
+      <text locale="en">Fixed MockHttpServletResponse.getContentAsString if no charset is defined</text>
+    </change>
+  </entry>
+  <entry date="2012-08-08" category="tech" action="change">
+    <change>
+      <text locale="en">SessionBackedRequestFieldData now allows for empty request values</text>
+    </change>
+  </entry>
   <release date="2012-08-08" version="4.0.3" />
   <entry date="2012-08-06" category="tech" action="fix">
     <change>

@@ -201,7 +201,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
     m_aLocales.add (Locale.ENGLISH);
     addHeader ("User-Agent", MockHttpServletRequest.class.getName ());
     // Disable GZip and Deflate!
-    addHeader ("Accept-Encoding", "*, gzip;q=0, deflate;q=0, compress;q=0");
+    addHeader ("Accept-Encoding", "*, gzip;q=0, x-gzip;q=0, deflate;q=0, compress;q=0, x-compress;q=0");
     addHeader ("Accept-Charset", "*");
     if (aParams != null)
       for (final Map.Entry <String, String> aEntry : aParams.entrySet ())
