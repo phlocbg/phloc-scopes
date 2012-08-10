@@ -20,6 +20,7 @@ package com.phloc.scopes.web.util;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.phloc.commons.annotations.Nonempty;
 import com.phloc.scopes.IScope;
 import com.phloc.scopes.web.mgr.WebScopeManager;
 
@@ -51,6 +52,7 @@ public class SessionBackedRequestFieldData extends RequestFieldData
   }
 
   @Nonnull
+  @Nonempty
   private String _getSessionFieldName ()
   {
     return "$$requestfield." + getFieldName ();
@@ -58,10 +60,11 @@ public class SessionBackedRequestFieldData extends RequestFieldData
 
   private void _init ()
   {
-    final String sRequestValue = getRequestValueWithoutDefault ();
+    // get the request method
+    final String sRequestValue = super.getRequestValueWithoutDefault ();
     // Allow empty values!
     if (sRequestValue != null)
-      WebScopeManager.getSessionScope ().setAttribute (_getSessionFieldName (), sRequestValue);
+      WebScopeManager.getSessionScope (true).setAttribute (_getSessionFieldName (), sRequestValue);
   }
 
   @Override

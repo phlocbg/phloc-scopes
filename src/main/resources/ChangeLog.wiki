@@ -1,7 +1,12 @@
 #summary Change log of phloc-scopes
 = Change log =
 <wiki:comment>This content is generated. Do not modify!</wiki:comment>
-<table border="1" cellspacing="0"><thead><tr><th>Date</th><th>Action</th><th>Category</th><th>Incompatible?</th><th>Description</th></tr></thead><tbody><tr border="1"><td>8/8/12</td><td colspan="4">_Release *4.0.3*_</td></tr>
+<table border="1" cellspacing="0"><thead><tr><th>Date</th><th>Action</th><th>Category</th><th>Incompatible?</th><th>Description</th></tr></thead><tbody><tr border="1"><td>8/10/12</td><td colspan="4">_Release *4.0.4*_</td></tr>
+<tr><td>8/10/12</td><td>fix</td><td>tech</td><td></td><td>MockHttpServletRequest now disables x-gzip and x-compress accept encoding</td></tr>
+<tr><td>8/10/12</td><td>add</td><td>api</td><td></td><td>Added some more MockHttpServletResponse sanity methods</td></tr>
+<tr><td>8/10/12</td><td>fix</td><td>tech</td><td></td><td>Fixed MockHttpServletResponse.getContentAsString if no charset is defined</td></tr>
+<tr><td>8/8/12</td><td>change</td><td>tech</td><td></td><td>SessionBackedRequestFieldData now allows for empty request values</td></tr>
+<tr border="1"><td>8/8/12</td><td colspan="4">_Release *4.0.3*_</td></tr>
 <tr><td>8/6/12</td><td>fix</td><td>tech</td><td></td><td>Fixed exception when creating a global web scope where the servlet context does not have a servlet context name</td></tr>
 <tr><td>8/3/12</td><td>change</td><td>api</td><td></td><td>IFileItem.write now returns a success indicator</td></tr>
 <tr border="1"><td>7/24/12</td><td colspan="4">_Release *4.0.2*_</td></tr>
