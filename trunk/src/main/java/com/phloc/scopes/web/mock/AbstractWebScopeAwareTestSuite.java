@@ -32,6 +32,7 @@ import org.junit.BeforeClass;
  * @author philip
  */
 @Immutable
+@Deprecated
 public abstract class AbstractWebScopeAwareTestSuite extends AbstractWebTestCase
 {
   @BeforeClass
