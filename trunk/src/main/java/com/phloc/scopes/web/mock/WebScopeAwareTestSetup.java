@@ -47,13 +47,19 @@ public final class WebScopeAwareTestSetup
 
   public static void shutdownScopeTests ()
   {
-    // end request -> triggers events
-    s_aRequest.invalidate ();
-    s_aRequest = null;
+    if (s_aRequest != null)
+    {
+      // end request -> triggers events
+      s_aRequest.invalidate ();
+      s_aRequest = null;
+    }
 
-    // shutdown global context -> triggers events
-    s_aServletContext.invalidate ();
-    s_aServletContext = null;
+    if (s_aServletContext != null)
+    {
+      // shutdown global context -> triggers events
+      s_aServletContext.invalidate ();
+      s_aServletContext = null;
+    }
   }
 
   @Nullable
