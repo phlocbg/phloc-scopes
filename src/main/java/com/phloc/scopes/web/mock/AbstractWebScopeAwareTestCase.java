@@ -20,18 +20,14 @@ package com.phloc.scopes.web.mock;
 import javax.annotation.Nonnull;
 import javax.servlet.http.HttpSession;
 
-import com.phloc.commons.mock.AbstractPhlocTestCase;
-
 /**
  * Base class where the initialization of the scopes happens before each test
  * execution.
  * 
  * @author philip
  */
-public abstract class AbstractWebScopeAwareTestCase extends AbstractPhlocTestCase
+public abstract class AbstractWebScopeAwareTestCase extends AbstractWebTestCase
 {
-  protected static final String MOCK_CONTEXT = WebScopeAwareTestSetup.MOCK_CONTEXT;
-
   @Override
   protected void beforeSingleTest () throws Exception
   {
