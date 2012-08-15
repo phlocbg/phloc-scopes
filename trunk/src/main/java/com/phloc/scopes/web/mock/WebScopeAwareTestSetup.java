@@ -17,6 +17,8 @@
  */
 package com.phloc.scopes.web.mock;
 
+import java.util.Map;
+
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.servlet.http.HttpSession;
@@ -38,8 +40,13 @@ public final class WebScopeAwareTestSetup
 
   public static void setupScopeTests ()
   {
+    setupScopeTests (null);
+  }
+
+  public static void setupScopeTests (@Nullable final Map <String, String> aServletContextInitParams)
+  {
     // Start global scope -> triggers events
-    s_aServletContext = new MockServletContext (MOCK_CONTEXT);
+    s_aServletContext = new MockServletContext (MOCK_CONTEXT, aServletContextInitParams);
 
     // Start request scope -> triggers events
     s_aRequest = new MockHttpServletRequest (s_aServletContext);

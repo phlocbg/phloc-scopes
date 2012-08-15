@@ -17,9 +17,14 @@
  */
 package com.phloc.scopes.web.mock;
 
+import java.util.Map;
+
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
 import javax.servlet.http.HttpSession;
+
+import com.phloc.commons.annotations.OverrideOnDemand;
 
 /**
  * Base class where the initialization of the scopes happens before each test
@@ -29,12 +34,19 @@ import javax.servlet.http.HttpSession;
  */
 public abstract class AbstractWebScopeAwareTestCase extends AbstractWebTestCase
 {
+  @OverrideOnDemand
+  @Nullable
+  protected Map <String, String> getServletContextInitParams ()
+  {
+    return null;
+  }
+
   @Override
   @OverridingMethodsMustInvokeSuper
   protected void beforeSingleTest () throws Exception
   {
     super.beforeSingleTest ();
-    WebScopeAwareTestSetup.setupScopeTests ();
+    WebScopeAwareTestSetup.setupScopeTests (getServletContextInitParams ());
   }
 
   @Nonnull
