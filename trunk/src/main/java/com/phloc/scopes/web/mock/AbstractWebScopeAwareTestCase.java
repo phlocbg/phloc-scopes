@@ -26,6 +26,7 @@ import javax.servlet.http.HttpSession;
 import org.junit.Rule;
 
 import com.phloc.commons.annotations.OverrideOnDemand;
+import com.phloc.commons.mock.AbstractPhlocTestCase;
 
 /**
  * Base class where the initialization of the scopes happens before each test
@@ -33,8 +34,16 @@ import com.phloc.commons.annotations.OverrideOnDemand;
  * 
  * @author philip
  */
-public abstract class AbstractWebScopeAwareTestCase extends AbstractWebTestCase
+public abstract class AbstractWebScopeAwareTestCase extends AbstractPhlocTestCase
 {
+  protected static final String MOCK_CONTEXT = WebScopeTestRule.MOCK_CONTEXT;
+
+  static
+  {
+    // Ensure that at least the default-default listeners are present
+    MockHttpListener.setToDefault ();
+  }
+
   @OverrideOnDemand
   @Nullable
   protected Map <String, String> getServletContextInitParams ()

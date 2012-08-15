@@ -19,17 +19,21 @@ package com.phloc.scopes.nonweb.mgr;
 
 import static org.junit.Assert.assertNotNull;
 
+import org.junit.Rule;
 import org.junit.Test;
 
-import com.phloc.scopes.nonweb.mock.AbstractScopeAwareTestCase;
+import com.phloc.scopes.nonweb.mock.ScopeTestRule;
 
 /**
  * Test class for class {@link EScope}.
  * 
  * @author philip
  */
-public final class EScopeTest extends AbstractScopeAwareTestCase
+public final class EScopeTest
 {
+  @Rule
+  public ScopeTestRule m_aScopeRule = new ScopeTestRule ();
+
   @Test
   public void testGetScope ()
   {

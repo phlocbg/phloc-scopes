@@ -21,20 +21,23 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 
-
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
 
-import com.phloc.scopes.nonweb.mock.AbstractScopeAwareTestCase;
+import com.phloc.scopes.nonweb.mock.ScopeTestRule;
 
 /**
  * Test class for class {@link GlobalSingleton}.
  * 
  * @author philip
  */
-public final class GlobalSingletonTest extends AbstractScopeAwareTestCase
+public final class GlobalSingletonTest
 {
+  @Rule
+  public ScopeTestRule m_aScopeRule = new ScopeTestRule ();
+
   @BeforeClass
   public static void beforeClass ()
   {

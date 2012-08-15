@@ -24,7 +24,7 @@ import com.phloc.commons.mock.MockRuntimeException;
  * 
  * @author philip
  */
-abstract class AbstractScopeSPI
+public abstract class AbstractScopeSPI
 {
   private static int s_nBegin = 0;
   private static int s_nEnd = 0;
