@@ -21,8 +21,9 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.annotation.OverridingMethodsMustInvokeSuper;
 import javax.servlet.http.HttpSession;
+
+import org.junit.Rule;
 
 import com.phloc.commons.annotations.OverrideOnDemand;
 
@@ -41,37 +42,24 @@ public abstract class AbstractWebScopeAwareTestCase extends AbstractWebTestCase
     return null;
   }
 
-  @Override
-  @OverridingMethodsMustInvokeSuper
-  protected void beforeSingleTest () throws Exception
-  {
-    super.beforeSingleTest ();
-    WebScopeAwareTestSetup.setupScopeTests (getServletContextInitParams ());
-  }
+  @Rule
+  public final WebScopeTestRule m_aWebScope = new WebScopeTestRule (getServletContextInitParams ());
 
   @Nonnull
   protected final MockServletContext getServletContext ()
   {
-    return WebScopeAwareTestSetup.getServletContext ();
+    return m_aWebScope.getServletContext ();
   }
 
   @Nonnull
   protected final MockHttpServletRequest getRequest ()
   {
-    return WebScopeAwareTestSetup.getRequest ();
+    return m_aWebScope.getRequest ();
   }
 
-  @Nonnull
+  @Nullable
   protected final HttpSession getSession (final boolean bCreateIfNotExisting)
   {
-    return WebScopeAwareTestSetup.getSession (bCreateIfNotExisting);
-  }
-
-  @Override
-  @OverridingMethodsMustInvokeSuper
-  protected void afterSingleTest () throws Exception
-  {
-    WebScopeAwareTestSetup.shutdownScopeTests ();
-    super.afterSingleTest ();
+    return m_aWebScope.getSession (bCreateIfNotExisting);
   }
 }
