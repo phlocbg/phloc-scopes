@@ -18,6 +18,7 @@
 package com.phloc.scopes.web.mock;
 
 import javax.annotation.Nonnull;
+import javax.annotation.OverridingMethodsMustInvokeSuper;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -29,6 +30,7 @@ import javax.servlet.http.HttpSession;
 public abstract class AbstractWebScopeAwareTestCase extends AbstractWebTestCase
 {
   @Override
+  @OverridingMethodsMustInvokeSuper
   protected void beforeSingleTest () throws Exception
   {
     super.beforeSingleTest ();
@@ -54,6 +56,7 @@ public abstract class AbstractWebScopeAwareTestCase extends AbstractWebTestCase
   }
 
   @Override
+  @OverridingMethodsMustInvokeSuper
   protected void afterSingleTest () throws Exception
   {
     WebScopeAwareTestSetup.shutdownScopeTests ();
