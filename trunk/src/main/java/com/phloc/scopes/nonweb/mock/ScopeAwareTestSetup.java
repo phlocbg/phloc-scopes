@@ -19,6 +19,8 @@ package com.phloc.scopes.nonweb.mock;
 
 import java.io.File;
 
+import javax.annotation.concurrent.Immutable;
+
 import com.phloc.scopes.nonweb.mgr.ScopeManager;
 
 /**
@@ -26,12 +28,10 @@ import com.phloc.scopes.nonweb.mgr.ScopeManager;
  * 
  * @author philip
  */
+@Immutable
 public final class ScopeAwareTestSetup
 {
   public static final File STORAGE_PATH = new File ("target/junittest").getAbsoluteFile ();
-
-  /** The application ID to use. */
-  private static final String MOCK_APPID = "mock.appid";
 
   private ScopeAwareTestSetup ()
   {}
@@ -42,7 +42,7 @@ public final class ScopeAwareTestSetup
     ScopeManager.onGlobalBegin ("mock.global");
 
     // begin request
-    ScopeManager.onRequestBegin (MOCK_APPID, "mock.request", "mock.session");
+    ScopeManager.onRequestBegin ("mock.appid", "mock.request", "mock.session");
   }
 
   public static void shutdownScopeTests ()

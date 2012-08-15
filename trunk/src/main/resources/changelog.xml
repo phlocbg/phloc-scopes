@@ -21,9 +21,14 @@
 <changelog xmlns="http://www.phloc.com/ns/changelog/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.phloc.com/ns/changelog/1.0 schemas/changelog-1.0.xsd" version="1.0" component="phloc-scopes">
   <release date="2012-08-15" version="4.0.5" />
-  <entry date="2012-08-15" category="api" action="change">
+  <entry date="2012-08-15" category="api" action="add">
     <change>
-      <text locale="en">Deprecated *ScopeAwareTestSuite classes</text>
+      <text locale="en">Added JUnit TestRule implementations for Scope and WebScope</text>
+    </change>
+  </entry>
+  <entry date="2012-08-15" category="api" action="remove">
+    <change>
+      <text locale="en">Removed *ScopeAwareTestSuite classes</text>
     </change>
   </entry>
   <entry date="2012-08-15" category="api" action="improve">
