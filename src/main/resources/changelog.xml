@@ -31,7 +31,7 @@
       <text locale="en">Removed *ScopeAwareTestSuite classes</text>
     </change>
   </entry>
-  <entry date="2012-08-15" category="api" action="improve">
+  <entry date="2012-08-15" category="api" action="update">
     <change>
       <text locale="en">Improved testability of scope stuff</text>
     </change>
