@@ -31,6 +31,7 @@ import javax.servlet.http.HttpSessionListener;
 import com.phloc.commons.annotations.ReturnsMutableCopy;
 import com.phloc.commons.collections.ContainerHelper;
 import com.phloc.commons.state.EChange;
+import com.phloc.commons.string.ToStringGenerator;
 
 /**
  * This class holds the different listeners ({@link ServletContextListener} ,
@@ -119,5 +120,11 @@ public final class MockEventListenerList
       if (aListener instanceof ServletRequestListener)
         ret.add ((ServletRequestListener) aListener);
     return ret;
+  }
+
+  @Override
+  public String toString ()
+  {
+    return new ToStringGenerator (this).append ("listeners", m_aListener).toString ();
   }
 }
