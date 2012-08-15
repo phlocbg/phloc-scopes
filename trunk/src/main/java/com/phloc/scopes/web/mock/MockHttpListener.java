@@ -17,7 +17,6 @@
  */
 package com.phloc.scopes.web.mock;
 
-import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.List;
 
@@ -29,72 +28,87 @@ import javax.servlet.ServletRequestListener;
 import javax.servlet.http.HttpSessionListener;
 
 import com.phloc.commons.annotations.ReturnsMutableCopy;
-import com.phloc.commons.collections.ContainerHelper;
 import com.phloc.scopes.web.servlet.WebScopeListener;
 
+/**
+ * This class globally holds the HTTP listeners ({@link ServletContextListener}
+ * , {@link HttpSessionListener} and {@link ServletRequestListener}) that are
+ * triggered in tests.
+ * 
+ * @author philip
+ */
 @NotThreadSafe
 public final class MockHttpListener
 {
-  private static List <EventListener> s_aListener = new ArrayList <EventListener> ();
+  private static MockEventListenerList s_aDefaultListener = new MockEventListenerList ();
+  private static MockEventListenerList s_aListener = new MockEventListenerList ();
+
+  static
+  {
+    // Set default default listeners :)
+    s_aDefaultListener.addListener (new WebScopeListener ());
+    s_aDefaultListener.addListener (new MockServletRequestListener ());
+
+    // Ensure that some listeners are present
+    s_aListener.setFrom (s_aDefaultListener);
+  }
 
   private MockHttpListener ()
   {}
 
+  public static void addDefaultListener (@Nullable final EventListener aListener)
+  {
+    s_aDefaultListener.addListener (aListener);
+  }
+
+  public static void removeDefaultListeners (@Nonnull final Class <? extends EventListener> aListenerClass)
+  {
+    s_aDefaultListener.removeListeners (aListenerClass);
+  }
+
+  public static void removeAllDefaultListeners ()
+  {
+    s_aDefaultListener.removeAllListeners ();
+  }
+
   public static void setToDefault ()
   {
-    s_aListener.clear ();
-    s_aListener.add (new WebScopeListener ());
-    s_aListener.add (new MockServletRequestListener ());
+    s_aListener.setFrom (s_aDefaultListener);
   }
 
   public static void addListener (@Nullable final EventListener aListener)
   {
-    if (aListener != null)
-      s_aListener.add (aListener);
+    s_aListener.addListener (aListener);
   }
 
   public static void removeListeners (@Nonnull final Class <? extends EventListener> aListenerClass)
   {
-    for (final EventListener aListener : ContainerHelper.newList (s_aListener))
-      if (aListener.getClass ().equals (aListenerClass))
-        s_aListener.remove (aListener);
+    s_aListener.removeListeners (aListenerClass);
   }
 
   public static void removeAllListeners ()
   {
-    s_aListener.clear ();
+    s_aListener.removeAllListeners ();
   }
 
   @Nonnull
   @ReturnsMutableCopy
   public static List <ServletContextListener> getAllServletContextListeners ()
   {
-    final List <ServletContextListener> ret = new ArrayList <ServletContextListener> ();
-    for (final EventListener aListener : s_aListener)
-      if (aListener instanceof ServletContextListener)
-        ret.add ((ServletContextListener) aListener);
-    return ret;
+    return s_aListener.getAllServletContextListeners ();
   }
 
   @Nonnull
   @ReturnsMutableCopy
   public static List <HttpSessionListener> getAllHttpSessionListeners ()
   {
-    final List <HttpSessionListener> ret = new ArrayList <HttpSessionListener> ();
-    for (final EventListener aListener : s_aListener)
-      if (aListener instanceof HttpSessionListener)
-        ret.add ((HttpSessionListener) aListener);
-    return ret;
+    return s_aListener.getAllHttpSessionListeners ();
   }
 
   @Nonnull
   @ReturnsMutableCopy
   public static List <ServletRequestListener> getAllServletRequestListeners ()
   {
-    final List <ServletRequestListener> ret = new ArrayList <ServletRequestListener> ();
-    for (final EventListener aListener : s_aListener)
-      if (aListener instanceof ServletRequestListener)
-        ret.add ((ServletRequestListener) aListener);
-    return ret;
+    return s_aListener.getAllServletRequestListeners ();
   }
 }

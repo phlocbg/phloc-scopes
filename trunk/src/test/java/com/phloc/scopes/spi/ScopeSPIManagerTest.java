@@ -26,7 +26,7 @@ import org.junit.Test;
 
 import com.phloc.scopes.nonweb.mgr.ScopeManager;
 import com.phloc.scopes.web.mgr.WebScopeManager;
-import com.phloc.scopes.web.mock.MockHttpListener;
+import com.phloc.scopes.web.mock.AbstractWebTestCase;
 import com.phloc.scopes.web.mock.MockHttpServletRequest;
 import com.phloc.scopes.web.mock.MockHttpServletResponse;
 import com.phloc.scopes.web.mock.MockServletContext;
@@ -36,14 +36,8 @@ import com.phloc.scopes.web.mock.MockServletContext;
  * 
  * @author philip
  */
-public final class ScopeSPIManagerTest
+public final class ScopeSPIManagerTest extends AbstractWebTestCase
 {
-  static
-  {
-    // Required so that session listeners work properly
-    MockHttpListener.setToDefault ();
-  }
-
   @Test
   public void testNonWebGlobalScope ()
   {

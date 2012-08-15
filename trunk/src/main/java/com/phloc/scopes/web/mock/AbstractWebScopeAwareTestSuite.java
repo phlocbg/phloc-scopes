@@ -24,8 +24,6 @@ import javax.servlet.http.HttpSession;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
-import com.phloc.commons.mock.AbstractPhlocTestCase;
-
 /**
  * Base class where the initialization of the scopes happens once before the
  * class and once afterwards. This is faster than performing the initialization
@@ -34,7 +32,7 @@ import com.phloc.commons.mock.AbstractPhlocTestCase;
  * @author philip
  */
 @Immutable
-public abstract class AbstractWebScopeAwareTestSuite extends AbstractPhlocTestCase
+public abstract class AbstractWebScopeAwareTestSuite extends AbstractWebTestCase
 {
   @BeforeClass
   public static void beforeClass () throws Exception

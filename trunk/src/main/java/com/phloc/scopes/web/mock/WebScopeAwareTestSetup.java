@@ -33,11 +33,6 @@ public final class WebScopeAwareTestSetup
   private static MockServletContext s_aServletContext;
   private static MockHttpServletRequest s_aRequest;
 
-  static
-  {
-    MockHttpListener.setToDefault ();
-  }
-
   private WebScopeAwareTestSetup ()
   {}
 
