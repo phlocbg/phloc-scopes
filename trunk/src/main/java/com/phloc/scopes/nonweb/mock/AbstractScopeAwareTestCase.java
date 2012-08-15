@@ -17,6 +17,8 @@
  */
 package com.phloc.scopes.nonweb.mock;
 
+import javax.annotation.OverridingMethodsMustInvokeSuper;
+
 import com.phloc.commons.mock.AbstractPhlocTestCase;
 
 /**
@@ -28,6 +30,7 @@ import com.phloc.commons.mock.AbstractPhlocTestCase;
 public abstract class AbstractScopeAwareTestCase extends AbstractPhlocTestCase
 {
   @Override
+  @OverridingMethodsMustInvokeSuper
   protected void beforeSingleTest () throws Exception
   {
     super.beforeSingleTest ();
@@ -35,6 +38,7 @@ public abstract class AbstractScopeAwareTestCase extends AbstractPhlocTestCase
   }
 
   @Override
+  @OverridingMethodsMustInvokeSuper
   protected void afterSingleTest () throws Exception
   {
     ScopeAwareTestSetup.shutdownScopeTests ();
