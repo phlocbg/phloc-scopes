@@ -38,6 +38,7 @@ public abstract class AbstractWebScopeAwareTestSuite extends AbstractWebTestCase
   @BeforeClass
   public static void beforeClass () throws Exception
   {
+    // No static init parameters here :(
     WebScopeAwareTestSetup.setupScopeTests ();
   }
 

@@ -108,6 +108,18 @@ public final class MockServletContext implements ServletContext
    * Create a new MockServletContext.
    * 
    * @param sContextPath
+   * @param aInitParams
+   *        The init parameter The context path to use
+   */
+  public MockServletContext (@Nullable final String sContextPath, @Nullable final Map <String, String> aInitParams)
+  {
+    this (sContextPath, "", null, aInitParams);
+  }
+
+  /**
+   * Create a new MockServletContext.
+   * 
+   * @param sContextPath
    *        The context path to use
    * @param sResourceBasePath
    *        the WAR root directory (should not end with a slash)
