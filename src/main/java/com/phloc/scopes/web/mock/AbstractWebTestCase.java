@@ -31,6 +31,7 @@ public abstract class AbstractWebTestCase extends AbstractPhlocTestCase
 
   static
   {
+    // Ensure that at least the default-default listeners are present
     MockHttpListener.setToDefault ();
   }
 }
