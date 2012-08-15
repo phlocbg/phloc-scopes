@@ -24,6 +24,7 @@ import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
 import com.phloc.commons.annotations.OverrideOnDemand;
+import com.phloc.commons.string.ToStringGenerator;
 
 /**
  * Abstract JUnit rule for before and after a test handing.
@@ -59,4 +60,10 @@ public abstract class AbstractBeforeAfterTestRule implements TestRule
 
   @OverrideOnDemand
   protected abstract void after () throws Throwable;
+
+  @Override
+  public String toString ()
+  {
+    return new ToStringGenerator (this).toString ();
+  }
 }
