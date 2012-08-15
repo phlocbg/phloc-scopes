@@ -31,6 +31,7 @@ import com.phloc.commons.annotations.DevelopersNote;
  * @author philip
  */
 @NotThreadSafe
+@Deprecated
 @DevelopersNote ("It's preferred to use the WebScopeTestRule class instead!")
 public final class WebScopeAwareTestSetup
 {
@@ -39,13 +40,13 @@ public final class WebScopeAwareTestSetup
   private WebScopeAwareTestSetup ()
   {}
 
-  public static void setupScopeTests (@Nullable final Map <String, String> aServletContextInitParams)
+  public static void setupScopeTests (@Nullable final Map <String, String> aServletContextInitParams) throws Throwable
   {
     s_aRule = new WebScopeTestRule (aServletContextInitParams);
     s_aRule.before ();
   }
 
-  public static void shutdownScopeTests ()
+  public static void shutdownScopeTests () throws Throwable
   {
     if (s_aRule != null)
     {
