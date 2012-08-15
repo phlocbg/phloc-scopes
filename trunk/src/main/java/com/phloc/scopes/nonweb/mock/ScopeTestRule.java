@@ -19,9 +19,11 @@ package com.phloc.scopes.nonweb.mock;
 
 import java.io.File;
 
+import org.junit.rules.ExternalResource;
+
 import com.phloc.commons.annotations.OverrideOnDemand;
 
-public class ScopeTestRule extends AbstractBeforeAfterTestRule
+public class ScopeTestRule extends ExternalResource
 {
   public static final File STORAGE_PATH = new File ("target/junittest").getAbsoluteFile ();
 
@@ -34,7 +36,7 @@ public class ScopeTestRule extends AbstractBeforeAfterTestRule
 
   @Override
   @OverrideOnDemand
-  protected void after () throws Throwable
+  protected void after ()
   {
     ScopeAwareTestSetup.shutdownScopeTests ();
   }

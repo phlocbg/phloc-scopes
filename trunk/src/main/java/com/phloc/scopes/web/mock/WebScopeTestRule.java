@@ -25,14 +25,15 @@ import javax.annotation.OverridingMethodsMustInvokeSuper;
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.servlet.http.HttpSession;
 
+import org.junit.rules.ExternalResource;
+
 import com.phloc.commons.annotations.OverrideOnDemand;
 import com.phloc.commons.annotations.ReturnsMutableCopy;
 import com.phloc.commons.collections.ContainerHelper;
 import com.phloc.commons.string.ToStringGenerator;
-import com.phloc.scopes.nonweb.mock.AbstractBeforeAfterTestRule;
 
 @NotThreadSafe
-public class WebScopeTestRule extends AbstractBeforeAfterTestRule
+public class WebScopeTestRule extends ExternalResource
 {
   public static final String MOCK_CONTEXT = "/MockContext";
 
@@ -79,7 +80,7 @@ public class WebScopeTestRule extends AbstractBeforeAfterTestRule
   @Override
   @OverrideOnDemand
   @OverridingMethodsMustInvokeSuper
-  protected void after () throws Throwable
+  protected void after ()
   {
     if (m_aRequest != null)
     {
