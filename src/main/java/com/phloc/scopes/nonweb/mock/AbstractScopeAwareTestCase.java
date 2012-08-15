@@ -33,5 +33,5 @@ import com.phloc.commons.mock.AbstractPhlocTestCase;
 public abstract class AbstractScopeAwareTestCase extends AbstractPhlocTestCase
 {
   @Rule
-  public ScopeTestRule m_aScopeRule = new ScopeTestRule ();
+  public final ScopeTestRule m_aScopeRule = new ScopeTestRule ();
 }

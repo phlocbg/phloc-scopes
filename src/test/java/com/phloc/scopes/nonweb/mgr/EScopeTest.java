@@ -32,7 +32,7 @@ import com.phloc.scopes.nonweb.mock.ScopeTestRule;
 public final class EScopeTest
 {
   @Rule
-  public ScopeTestRule m_aScopeRule = new ScopeTestRule ();
+  public final ScopeTestRule m_aScopeRule = new ScopeTestRule ();
 
   @Test
   public void testGetScope ()

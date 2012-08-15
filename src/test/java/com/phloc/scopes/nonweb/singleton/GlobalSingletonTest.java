@@ -36,7 +36,7 @@ import com.phloc.scopes.nonweb.mock.ScopeTestRule;
 public final class GlobalSingletonTest
 {
   @Rule
-  public ScopeTestRule m_aScopeRule = new ScopeTestRule ();
+  public final ScopeTestRule m_aScopeRule = new ScopeTestRule ();
 
   @BeforeClass
   public static void beforeClass ()
