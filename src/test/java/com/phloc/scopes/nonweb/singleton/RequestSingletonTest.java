@@ -20,9 +20,10 @@ package com.phloc.scopes.nonweb.singleton;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
+import org.junit.Rule;
 import org.junit.Test;
 
-import com.phloc.scopes.nonweb.mock.AbstractScopeAwareTestCase;
+import com.phloc.scopes.nonweb.mock.ScopeTestRule;
 
 /**
  * Test class for class {@link RequestSingleton}.<br>
@@ -30,8 +31,11 @@ import com.phloc.scopes.nonweb.mock.AbstractScopeAwareTestCase;
  * 
  * @author philip
  */
-public final class RequestSingletonTest extends AbstractScopeAwareTestCase
+public final class RequestSingletonTest
 {
+  @Rule
+  public ScopeTestRule m_aScopeRule = new ScopeTestRule ();
+
   @Test
   public void testSerialize () throws Exception
   {

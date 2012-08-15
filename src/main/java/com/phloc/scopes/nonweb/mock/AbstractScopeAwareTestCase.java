@@ -19,6 +19,7 @@ package com.phloc.scopes.nonweb.mock;
 
 import org.junit.Rule;
 
+import com.phloc.commons.annotations.DevelopersNote;
 import com.phloc.commons.mock.AbstractPhlocTestCase;
 
 /**
@@ -27,6 +28,8 @@ import com.phloc.commons.mock.AbstractPhlocTestCase;
  * 
  * @author philip
  */
+@Deprecated
+@DevelopersNote ("It's preferred to use the rules directly in your test case class!")
 public abstract class AbstractScopeAwareTestCase extends AbstractPhlocTestCase
 {
   @Rule
