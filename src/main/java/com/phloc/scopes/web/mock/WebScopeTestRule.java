@@ -28,6 +28,7 @@ import javax.servlet.http.HttpSession;
 import com.phloc.commons.annotations.OverrideOnDemand;
 import com.phloc.commons.annotations.ReturnsMutableCopy;
 import com.phloc.commons.collections.ContainerHelper;
+import com.phloc.commons.string.ToStringGenerator;
 import com.phloc.scopes.nonweb.mock.AbstractBeforeAfterTestRule;
 
 @NotThreadSafe
@@ -111,5 +112,14 @@ public class WebScopeTestRule extends AbstractBeforeAfterTestRule
   public final HttpSession getSession (final boolean bCreateIfNotExisting)
   {
     return m_aRequest == null ? null : m_aRequest.getSession (bCreateIfNotExisting);
+  }
+
+  @Override
+  public String toString ()
+  {
+    return new ToStringGenerator (this).appendIfNotNull ("scInitParams", m_aServletContextInitParameters)
+                                       .append ("sc", m_aServletContext)
+                                       .append ("request", m_aRequest)
+                                       .toString ();
   }
 }
