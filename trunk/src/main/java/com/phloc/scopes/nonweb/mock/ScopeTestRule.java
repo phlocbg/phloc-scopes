@@ -53,13 +53,13 @@ public class ScopeTestRule implements TestRule
   }
 
   @OverrideOnDemand
-  protected void before ()
+  protected void before () throws Throwable
   {
     ScopeAwareTestSetup.setupScopeTests ();
   }
 
   @OverrideOnDemand
-  protected void after ()
+  protected void after () throws Throwable
   {
     ScopeAwareTestSetup.shutdownScopeTests ();
   }
