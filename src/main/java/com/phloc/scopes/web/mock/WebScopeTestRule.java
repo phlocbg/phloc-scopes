@@ -28,12 +28,18 @@ import javax.servlet.http.HttpSession;
 import com.phloc.commons.annotations.OverrideOnDemand;
 import com.phloc.commons.annotations.ReturnsMutableCopy;
 import com.phloc.commons.collections.ContainerHelper;
-import com.phloc.scopes.nonweb.mock.ScopeTestRule;
+import com.phloc.scopes.nonweb.mock.AbstractBeforeAfterTestRule;
 
 @NotThreadSafe
-public class WebScopeTestRule extends ScopeTestRule
+public class WebScopeTestRule extends AbstractBeforeAfterTestRule
 {
   public static final String MOCK_CONTEXT = "/MockContext";
+
+  static
+  {
+    // Ensure that at least the default-default listeners are present
+    MockHttpListener.setToDefault ();
+  }
 
   private final Map <String, String> m_aServletContextInitParameters;
   private MockServletContext m_aServletContext;

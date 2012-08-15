@@ -17,15 +17,12 @@
  */
 package com.phloc.scopes.web.mock;
 
-import java.util.Map;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpSession;
 
 import org.junit.Rule;
 
-import com.phloc.commons.annotations.OverrideOnDemand;
 import com.phloc.commons.mock.AbstractPhlocTestCase;
 
 /**
@@ -38,21 +35,8 @@ public abstract class AbstractWebScopeAwareTestCase extends AbstractPhlocTestCas
 {
   protected static final String MOCK_CONTEXT = WebScopeTestRule.MOCK_CONTEXT;
 
-  static
-  {
-    // Ensure that at least the default-default listeners are present
-    MockHttpListener.setToDefault ();
-  }
-
-  @OverrideOnDemand
-  @Nullable
-  protected Map <String, String> getServletContextInitParams ()
-  {
-    return null;
-  }
-
   @Rule
-  public final WebScopeTestRule m_aWebScope = new WebScopeTestRule (getServletContextInitParams ());
+  public final WebScopeTestRule m_aWebScope = new WebScopeTestRule ();
 
   @Nonnull
   protected final MockServletContext getServletContext ()

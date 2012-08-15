@@ -19,45 +19,20 @@ package com.phloc.scopes.nonweb.mock;
 
 import java.io.File;
 
-import javax.annotation.Nonnull;
-
-import org.junit.rules.TestRule;
-import org.junit.runner.Description;
-import org.junit.runners.model.Statement;
-
 import com.phloc.commons.annotations.OverrideOnDemand;
 
-public class ScopeTestRule implements TestRule
+public class ScopeTestRule extends AbstractBeforeAfterTestRule
 {
   public static final File STORAGE_PATH = new File ("target/junittest").getAbsoluteFile ();
 
-  @Nonnull
-  public final Statement apply (@Nonnull final Statement aBase, final Description aDescription)
-  {
-    return new Statement ()
-    {
-      @Override
-      public void evaluate () throws Throwable
-      {
-        before ();
-        try
-        {
-          aBase.evaluate ();
-        }
-        finally
-        {
-          after ();
-        }
-      }
-    };
-  }
-
+  @Override
   @OverrideOnDemand
   protected void before () throws Throwable
   {
     ScopeAwareTestSetup.setupScopeTests ();
   }
 
+  @Override
   @OverrideOnDemand
   protected void after () throws Throwable
   {
