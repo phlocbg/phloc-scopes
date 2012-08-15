@@ -32,6 +32,7 @@ import com.phloc.commons.mock.AbstractPhlocTestCase;
  * @author philip
  */
 @Immutable
+@Deprecated
 public abstract class AbstractScopeAwareTestSuite extends AbstractPhlocTestCase
 {
   @BeforeClass

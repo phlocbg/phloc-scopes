@@ -23,7 +23,7 @@ import static org.junit.Assert.assertSame;
 import org.junit.Test;
 
 import com.phloc.commons.mock.PhlocTestUtils;
-import com.phloc.scopes.web.mock.AbstractWebScopeAwareTestSuite;
+import com.phloc.scopes.web.mock.AbstractWebScopeAwareTestCase;
 
 /**
  * Test class for class {@link SessionApplicationWebSingleton}.<br>
@@ -31,7 +31,7 @@ import com.phloc.scopes.web.mock.AbstractWebScopeAwareTestSuite;
  * 
  * @author philip
  */
-public final class SessionApplicationWebSingletonTest extends AbstractWebScopeAwareTestSuite
+public final class SessionApplicationWebSingletonTest extends AbstractWebScopeAwareTestCase
 {
   @Test
   public void testSerialize () throws Exception

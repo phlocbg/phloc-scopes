@@ -22,7 +22,7 @@ import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
 
-import com.phloc.scopes.nonweb.mock.AbstractScopeAwareTestSuite;
+import com.phloc.scopes.nonweb.mock.AbstractScopeAwareTestCase;
 
 /**
  * Test class for class {@link ApplicationSingleton}.<br>
@@ -30,7 +30,7 @@ import com.phloc.scopes.nonweb.mock.AbstractScopeAwareTestSuite;
  * 
  * @author philip
  */
-public final class ApplicationSingletonTest extends AbstractScopeAwareTestSuite
+public final class ApplicationSingletonTest extends AbstractScopeAwareTestCase
 {
   @Test
   public void testSerialize () throws Exception
