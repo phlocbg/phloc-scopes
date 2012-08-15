@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 import com.phloc.commons.annotations.Nonempty;
 import com.phloc.commons.string.StringHelper;
 import com.phloc.scopes.MetaScopeFactory;
+import com.phloc.scopes.ScopeUtils;
 import com.phloc.scopes.nonweb.domain.IApplicationScope;
 import com.phloc.scopes.nonweb.domain.IGlobalScope;
 import com.phloc.scopes.nonweb.domain.IRequestScope;
@@ -94,7 +95,8 @@ public final class ScopeManager
       s_aGlobalScope = aGlobalScope;
 
       aGlobalScope.initScope ();
-      s_aLogger.info ("Global scope '" + aGlobalScope.getID () + "' initialized!");
+      if (ScopeUtils.debugScopeLifeCycle (s_aLogger))
+        s_aLogger.info ("Global scope '" + aGlobalScope.getID () + "' initialized!");
 
       // Invoke SPIs
       ScopeSPIManager.onGlobalScopeBegin (aGlobalScope);
@@ -173,7 +175,8 @@ public final class ScopeManager
         s_aGlobalScope = null;
 
         // done
-        s_aLogger.info ("Global scope '" + sDestroyedScopeID + "' shut down!");
+        if (ScopeUtils.debugScopeLifeCycle (s_aLogger))
+          s_aLogger.info ("Global scope '" + sDestroyedScopeID + "' shut down!");
       }
       else
         s_aLogger.warn ("No global scope present that could be shut down!");
