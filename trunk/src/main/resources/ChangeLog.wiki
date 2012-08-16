@@ -1,9 +1,9 @@
 #summary Change log of phloc-scopes
 = Change log =
 <wiki:comment>This content is generated. Do not modify!</wiki:comment>
-<table border="1" cellspacing="0"><thead><tr><th>Date</th><th>Action</th><th>Category</th><th>Incompatible?</th><th>Description</th></tr></thead><tbody><tr border="1"><td>8/15/12</td><td colspan="4">_Release *4.0.5*_</td></tr>
+<table border="1" cellspacing="0"><thead><tr><th>Date</th><th>Action</th><th>Category</th><th>Incompatible?</th><th>Description</th></tr></thead><tbody><tr border="1"><td>8/16/12</td><td colspan="4">_Release *4.0.5*_</td></tr>
 <tr><td>8/15/12</td><td>add</td><td>api</td><td></td><td>Added JUnit TestRule implementations for Scope and WebScope</td></tr>
-<tr><td>8/15/12</td><td>remove</td><td>api</td><td></td><td>Removed `*`ScopeAwareTestSuite classes</td></tr>
+<tr><td>8/15/12</td><td>remove</td><td>api</td><td>*yes*</td><td>Removed `*`ScopeAwareTestSuite classes</td></tr>
 <tr><td>8/15/12</td><td>update</td><td>api</td><td></td><td>Improved testability of scope stuff</td></tr>
 <tr><td>8/15/12</td><td>add</td><td>api</td><td></td><td>Made MockHttpListener default values customizable</td></tr>
 <tr border="1"><td>8/10/12</td><td colspan="4">_Release *4.0.4*_</td></tr>
