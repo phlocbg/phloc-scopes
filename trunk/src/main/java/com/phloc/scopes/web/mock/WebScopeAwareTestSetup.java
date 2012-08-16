@@ -46,7 +46,7 @@ public final class WebScopeAwareTestSetup
     s_aRule.before ();
   }
 
-  public static void shutdownScopeTests () throws Throwable
+  public static void shutdownScopeTests ()
   {
     if (s_aRule != null)
     {
