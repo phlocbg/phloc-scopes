@@ -31,45 +31,63 @@ import com.phloc.commons.annotations.DevelopersNote;
  * @author philip
  */
 @NotThreadSafe
-@Deprecated
 @DevelopersNote ("It's preferred to use the WebScopeTestRule class instead!")
 public final class WebScopeAwareTestSetup
 {
-  private static WebScopeTestRule s_aRule;
+  public static final String MOCK_CONTEXT = "/MockContext";
+
+  private static MockServletContext s_aServletContext;
+  private static MockHttpServletRequest s_aRequest;
 
   private WebScopeAwareTestSetup ()
   {}
 
-  public static void setupScopeTests (@Nullable final Map <String, String> aServletContextInitParams) throws Throwable
+  public static void setupScopeTests ()
   {
-    s_aRule = new WebScopeTestRule (aServletContextInitParams);
-    s_aRule.before ();
+    setupScopeTests (null);
+  }
+
+  public static void setupScopeTests (@Nullable final Map <String, String> aServletContextInitParams)
+  {
+    // Start global scope -> triggers events
+    s_aServletContext = new MockServletContext (MOCK_CONTEXT, aServletContextInitParams);
+
+    // Start request scope -> triggers events
+    s_aRequest = new MockHttpServletRequest (s_aServletContext);
   }
 
   public static void shutdownScopeTests ()
   {
-    if (s_aRule != null)
+    if (s_aRequest != null)
     {
-      s_aRule.after ();
-      s_aRule = null;
+      // end request -> triggers events
+      s_aRequest.invalidate ();
+      s_aRequest = null;
+    }
+
+    if (s_aServletContext != null)
+    {
+      // shutdown global context -> triggers events
+      s_aServletContext.invalidate ();
+      s_aServletContext = null;
     }
   }
 
   @Nullable
   public static MockServletContext getServletContext ()
   {
-    return s_aRule.getServletContext ();
+    return s_aServletContext;
   }
 
   @Nullable
   public static MockHttpServletRequest getRequest ()
   {
-    return s_aRule.getRequest ();
+    return s_aRequest;
   }
 
   @Nullable
   public static HttpSession getSession (final boolean bCreateIfNotExisting)
   {
-    return s_aRule.getSession (bCreateIfNotExisting);
+    return s_aRequest == null ? null : s_aRequest.getSession (bCreateIfNotExisting);
   }
 }
