@@ -68,7 +68,7 @@ public class WebScopeTestRule extends ExternalResource
   @Override
   @OverrideOnDemand
   @OverridingMethodsMustInvokeSuper
-  protected void before () throws Throwable
+  public void before () throws Throwable
   {
     // Start global scope -> triggers events
     m_aServletContext = new MockServletContext (MOCK_CONTEXT, getServletContextInitParameters ());
@@ -80,7 +80,7 @@ public class WebScopeTestRule extends ExternalResource
   @Override
   @OverrideOnDemand
   @OverridingMethodsMustInvokeSuper
-  protected void after ()
+  public void after ()
   {
     if (m_aRequest != null)
     {
