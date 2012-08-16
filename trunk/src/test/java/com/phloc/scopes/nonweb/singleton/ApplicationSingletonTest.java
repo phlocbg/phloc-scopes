@@ -22,6 +22,7 @@ import static org.junit.Assert.assertSame;
 
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestRule;
 
 import com.phloc.scopes.nonweb.mock.ScopeTestRule;
 
@@ -34,7 +35,7 @@ import com.phloc.scopes.nonweb.mock.ScopeTestRule;
 public final class ApplicationSingletonTest
 {
   @Rule
-  public final ScopeTestRule m_aScopeRule = new ScopeTestRule ();
+  public final TestRule m_aScopeRule = new ScopeTestRule ();
 
   @Test
   public void testSerialize () throws Exception

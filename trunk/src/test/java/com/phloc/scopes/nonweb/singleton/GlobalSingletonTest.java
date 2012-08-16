@@ -25,6 +25,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestRule;
 
 import com.phloc.scopes.nonweb.mock.ScopeTestRule;
 
@@ -36,7 +37,7 @@ import com.phloc.scopes.nonweb.mock.ScopeTestRule;
 public final class GlobalSingletonTest
 {
   @Rule
-  public final ScopeTestRule m_aScopeRule = new ScopeTestRule ();
+  public final TestRule m_aScopeRule = new ScopeTestRule ();
 
   @BeforeClass
   public static void beforeClass ()

@@ -18,6 +18,7 @@
 package com.phloc.scopes.nonweb.mock;
 
 import org.junit.Rule;
+import org.junit.rules.TestRule;
 
 import com.phloc.commons.annotations.DevelopersNote;
 import com.phloc.commons.mock.AbstractPhlocTestCase;
@@ -33,5 +34,5 @@ import com.phloc.commons.mock.AbstractPhlocTestCase;
 public abstract class AbstractScopeAwareTestCase extends AbstractPhlocTestCase
 {
   @Rule
-  public final ScopeTestRule m_aScopeRule = new ScopeTestRule ();
+  public final TestRule m_aScopeRule = new ScopeTestRule ();
 }
