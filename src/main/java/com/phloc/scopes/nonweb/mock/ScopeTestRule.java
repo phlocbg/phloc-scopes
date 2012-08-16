@@ -29,7 +29,7 @@ public class ScopeTestRule extends ExternalResource
 
   @Override
   @OverrideOnDemand
-  public void before () throws Throwable
+  public void before ()
   {
     ScopeAwareTestSetup.setupScopeTests ();
   }
