@@ -20,6 +20,21 @@
 -->
 <changelog xmlns="http://www.phloc.com/ns/changelog/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.phloc.com/ns/changelog/1.0 schemas/changelog-1.0.xsd" version="1.0" component="phloc-scopes">
+  <entry date="2012-08-17" category="tech" action="change">
+    <change>
+      <text locale="en">WebScopeTestRule now sets the MockHttpListeners to default on every invocation</text>
+    </change>
+  </entry>
+  <entry date="2012-08-17" category="api" action="add">
+    <change>
+      <text locale="en">The application ID of MockServletRequestListener can now be customized</text>
+    </change>
+  </entry>
+  <entry date="2012-08-17" category="api" action="add">
+    <change>
+      <text locale="en">Added method MockServletRequestListener.getCurrentMockResponse () to retrieve the current response</text>
+    </change>
+  </entry>
   <release date="2012-08-16" version="4.0.6" />
   <entry date="2012-08-16" category="api" action="change">
     <change>
