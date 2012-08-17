@@ -35,7 +35,7 @@ import com.phloc.commons.string.ToStringGenerator;
 @NotThreadSafe
 public class WebScopeTestRule extends ExternalResource
 {
-  public static final String MOCK_CONTEXT = "/MockContext";
+  public static final String MOCK_CONTEXT_PATH = "/MockContext";
 
   private final Map <String, String> m_aServletContextInitParameters;
   private MockServletContext m_aServletContext;
@@ -78,7 +78,7 @@ public class WebScopeTestRule extends ExternalResource
     initListener ();
 
     // Start global scope -> triggers events
-    m_aServletContext = new MockServletContext (MOCK_CONTEXT, getServletContextInitParameters ());
+    m_aServletContext = new MockServletContext (MOCK_CONTEXT_PATH, getServletContextInitParameters ());
 
     // Start request scope -> triggers events
     m_aRequest = new MockHttpServletRequest (m_aServletContext);
