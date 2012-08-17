@@ -33,7 +33,7 @@ import com.phloc.commons.mock.AbstractPhlocTestCase;
  */
 public abstract class AbstractWebScopeAwareTestCase extends AbstractPhlocTestCase
 {
-  protected static final String MOCK_CONTEXT = WebScopeTestRule.MOCK_CONTEXT;
+  protected static final String MOCK_CONTEXT = WebScopeTestRule.MOCK_CONTEXT_PATH;
 
   @Rule
   public final WebScopeTestRule m_aWebScope = new WebScopeTestRule ();
