@@ -18,6 +18,7 @@
 package com.phloc.scopes.web.mock;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.ServletRequestListener;
@@ -31,15 +32,23 @@ public final class MockServletRequestListener implements ServletRequestListener
   /** The application ID to use. */
   public static final String MOCK_APPLICATION_ID = "mock.appid";
 
+  private MockHttpServletResponse m_aResp;
+
   public void requestInitialized (@Nonnull final ServletRequestEvent aEvent)
   {
-    WebScopeManager.onRequestBegin (MOCK_APPLICATION_ID,
-                                    (HttpServletRequest) aEvent.getServletRequest (),
-                                    new MockHttpServletResponse ());
+    m_aResp = new MockHttpServletResponse ();
+    WebScopeManager.onRequestBegin (MOCK_APPLICATION_ID, (HttpServletRequest) aEvent.getServletRequest (), m_aResp);
+  }
+
+  @Nullable
+  public MockHttpServletResponse getCurrentMockResponse ()
+  {
+    return m_aResp;
   }
 
   public void requestDestroyed (@Nonnull final ServletRequestEvent aEvent)
   {
     WebScopeManager.onRequestEnd ();
+    m_aResp = null;
   }
 }
