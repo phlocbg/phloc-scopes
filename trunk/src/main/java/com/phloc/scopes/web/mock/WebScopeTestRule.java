@@ -37,12 +37,6 @@ public class WebScopeTestRule extends ExternalResource
 {
   public static final String MOCK_CONTEXT = "/MockContext";
 
-  static
-  {
-    // Ensure that at least the default-default listeners are present
-    MockHttpListener.setToDefault ();
-  }
-
   private final Map <String, String> m_aServletContextInitParameters;
   private MockServletContext m_aServletContext;
   private MockHttpServletRequest m_aRequest;
@@ -65,11 +59,24 @@ public class WebScopeTestRule extends ExternalResource
     return ContainerHelper.newMap (m_aServletContextInitParameters);
   }
 
+  /**
+   * This method triggers the initialization of the {@link MockHttpListener}. It
+   * is called before the main server context is created.
+   */
+  @OverrideOnDemand
+  protected void initListener ()
+  {
+    // Ensure that at least the default-default listeners are present
+    MockHttpListener.setToDefault ();
+  }
+
   @Override
   @OverrideOnDemand
   @OverridingMethodsMustInvokeSuper
   public void before ()
   {
+    initListener ();
+
     // Start global scope -> triggers events
     m_aServletContext = new MockServletContext (MOCK_CONTEXT, getServletContextInitParameters ());
 

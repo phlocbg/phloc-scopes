@@ -24,20 +24,47 @@ import javax.servlet.ServletRequestEvent;
 import javax.servlet.ServletRequestListener;
 import javax.servlet.http.HttpServletRequest;
 
+import com.phloc.commons.annotations.Nonempty;
+import com.phloc.commons.string.StringHelper;
 import com.phloc.scopes.web.mgr.WebScopeManager;
 
+/**
+ * This mock listeners is responsible for creating
+ * 
+ * @author philip
+ */
 @ThreadSafe
 public final class MockServletRequestListener implements ServletRequestListener
 {
   /** The application ID to use. */
   public static final String MOCK_APPLICATION_ID = "mock.appid";
 
+  private final String m_sApplicationID;
   private MockHttpServletResponse m_aResp;
+
+  public MockServletRequestListener ()
+  {
+    this (MOCK_APPLICATION_ID);
+  }
+
+  public MockServletRequestListener (@Nonnull @Nonempty final String sApplicationID)
+  {
+    if (StringHelper.hasNoText (sApplicationID))
+      throw new IllegalArgumentException ("applicationID");
+    m_sApplicationID = sApplicationID;
+  }
+
+  @Nonnull
+  @Nonempty
+  public String getApplicationID ()
+  {
+    return m_sApplicationID;
+  }
 
   public void requestInitialized (@Nonnull final ServletRequestEvent aEvent)
   {
     m_aResp = new MockHttpServletResponse ();
-    WebScopeManager.onRequestBegin (MOCK_APPLICATION_ID, (HttpServletRequest) aEvent.getServletRequest (), m_aResp);
+    WebScopeManager.onRequestBegin (m_sApplicationID, (HttpServletRequest) aEvent.getServletRequest (), m_aResp);
   }
 
   @Nullable
