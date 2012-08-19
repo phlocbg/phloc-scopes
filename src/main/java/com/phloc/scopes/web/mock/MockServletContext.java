@@ -157,6 +157,7 @@ public final class MockServletContext implements ServletContext
       for (final Map.Entry <String, String> aEntry : aInitParams.entrySet ())
         addInitParameter (aEntry.getKey (), aEntry.getValue ());
 
+    // Invoke all event listeners
     final ServletContextEvent aSCE = new ServletContextEvent (this);
     for (final ServletContextListener aListener : MockHttpListener.getAllServletContextListeners ())
       aListener.contextInitialized (aSCE);
