@@ -31,7 +31,6 @@ import com.phloc.commons.annotations.OverrideOnDemand;
 import com.phloc.commons.annotations.ReturnsMutableCopy;
 import com.phloc.commons.collections.ContainerHelper;
 import com.phloc.commons.string.ToStringGenerator;
-import com.phloc.scopes.web.servlet.WebScopeListener;
 
 @NotThreadSafe
 public class WebScopeTestRule extends ExternalResource
@@ -68,10 +67,7 @@ public class WebScopeTestRule extends ExternalResource
   protected void initListener ()
   {
     // Ensure that the default-default listeners are present
-    MockHttpListener.removeAllDefaultListeners ();
-    MockHttpListener.addDefaultListener (new WebScopeListener ());
-    MockHttpListener.addDefaultListener (new MockServletRequestListener ());
-    MockHttpListener.setToDefault ();
+    WebScopeTestInit.setCoreMockHttpListeners ();
   }
 
   @Override

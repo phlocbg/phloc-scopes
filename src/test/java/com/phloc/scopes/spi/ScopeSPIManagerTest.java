@@ -24,11 +24,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Test;
 
+import com.phloc.scopes.ScopeUtils;
 import com.phloc.scopes.nonweb.mgr.ScopeManager;
 import com.phloc.scopes.web.mgr.WebScopeManager;
 import com.phloc.scopes.web.mock.MockHttpServletRequest;
 import com.phloc.scopes.web.mock.MockHttpServletResponse;
 import com.phloc.scopes.web.mock.MockServletContext;
+import com.phloc.scopes.web.mock.WebScopeTestInit;
 
 /**
  * Test class for class {@link ScopeSPIManager}.
@@ -37,6 +39,12 @@ import com.phloc.scopes.web.mock.MockServletContext;
  */
 public final class ScopeSPIManagerTest
 {
+  static
+  {
+    WebScopeTestInit.setCoreMockHttpListeners ();
+    ScopeUtils.setLifeCycleDebuggingEnabled (true);
+  }
+
   @Test
   public void testNonWebGlobalScope ()
   {
