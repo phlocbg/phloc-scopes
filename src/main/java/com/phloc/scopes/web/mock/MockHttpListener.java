@@ -21,7 +21,6 @@ import java.util.EventListener;
 import java.util.List;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
 import javax.servlet.ServletContextListener;
 import javax.servlet.ServletRequestListener;
@@ -45,7 +44,7 @@ public final class MockHttpListener
   private MockHttpListener ()
   {}
 
-  public static void addDefaultListener (@Nullable final EventListener aListener)
+  public static void addDefaultListener (@Nonnull final EventListener aListener)
   {
     s_aDefaultListener.addListener (aListener);
   }
@@ -65,7 +64,7 @@ public final class MockHttpListener
     s_aListener.setFrom (s_aDefaultListener);
   }
 
-  public static void addListener (@Nullable final EventListener aListener)
+  public static void addListener (@Nonnull final EventListener aListener)
   {
     s_aListener.addListener (aListener);
   }
