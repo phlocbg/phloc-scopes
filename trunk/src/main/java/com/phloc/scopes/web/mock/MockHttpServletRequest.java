@@ -68,6 +68,7 @@ import com.phloc.commons.system.SystemHelper;
 @NotThreadSafe
 public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
 {
+  public static final boolean DEFAULT_INVOKE_HTTP_LISTENER = true;
   public static final String DEFAULT_PROTOCOL = "http";
   public static final String DEFAULT_SERVER_ADDR = "127.0.0.1";
   public static final String DEFAULT_SERVER_NAME = "localhost";
@@ -121,7 +122,8 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
    */
   public MockHttpServletRequest ()
   {
-    this (null, "", "");
+    // No servlet context present -> no listeners
+    this (null, false);
   }
 
   /**
@@ -134,7 +136,20 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
    */
   public MockHttpServletRequest (@Nullable final ServletContext aServletContext)
   {
-    this (aServletContext, "", "");
+    this (aServletContext, DEFAULT_INVOKE_HTTP_LISTENER);
+  }
+
+  /**
+   * Create a new MockHttpServletRequest.
+   * 
+   * @param aServletContext
+   *        the ServletContext that the request runs in (may be
+   *        <code>null</code> to use a default MockServletContext)
+   * @see MockServletContext
+   */
+  public MockHttpServletRequest (@Nullable final ServletContext aServletContext, final boolean bInvokeHttpListeners)
+  {
+    this (aServletContext, "", "", null, bInvokeHttpListeners);
   }
 
   /**
@@ -150,7 +165,8 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
    */
   public MockHttpServletRequest (@Nullable final String sMethod, @Nullable final String sRequestURI)
   {
-    this (null, sMethod, sRequestURI);
+    // No servlet context present -> no listeners
+    this (null, sMethod, sRequestURI, null, false);
   }
 
   /**
@@ -171,7 +187,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
                                  @Nullable final String sMethod,
                                  @Nullable final String sRequestURI)
   {
-    this (aServletContext, sMethod, sRequestURI, null);
+    this (aServletContext, sMethod, sRequestURI, null, DEFAULT_INVOKE_HTTP_LISTENER);
   }
 
   /**
@@ -195,11 +211,41 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
                                  @Nullable final String sRequestURI,
                                  @Nullable final Map <String, String> aParams)
   {
+    this (aServletContext, sMethod, sRequestURI, aParams, DEFAULT_INVOKE_HTTP_LISTENER);
+  }
+
+  /**
+   * Create a new MockHttpServletRequest.
+   * 
+   * @param aServletContext
+   *        the ServletContext that the request runs in (may be
+   *        <code>null</code> to use a default MockServletContext)
+   * @param sMethod
+   *        the request method (may be <code>null</code>)
+   * @param sRequestURI
+   *        the request URI (may be <code>null</code>)
+   * @param aParams
+   *        request parameters
+   * @param bInvokeHttpListeners
+   *        if <code>true</code> than the HTTP request event listeners from
+   *        {@link MockHttpListener} are triggered
+   * @see #setMethod
+   * @see #setRequestURI
+   * @see MockServletContext
+   */
+  public MockHttpServletRequest (@Nullable final ServletContext aServletContext,
+                                 @Nullable final String sMethod,
+                                 @Nullable final String sRequestURI,
+                                 @Nullable final Map <String, String> aParams,
+                                 final boolean bInvokeHttpListeners)
+  {
     m_aServletContext = aServletContext;
     m_sMethod = sMethod;
     m_sRequestURI = sRequestURI;
     m_aLocales.add (Locale.ENGLISH);
-    addHeader ("User-Agent", MockHttpServletRequest.class.getName ());
+
+    // Add default HTTP header
+    addHeader ("User-Agent", getClass ().getName ());
     // Disable GZip and Deflate!
     addHeader ("Accept-Encoding", "*, gzip;q=0, x-gzip;q=0, deflate;q=0, compress;q=0, x-compress;q=0");
     addHeader ("Accept-Charset", "*");
@@ -207,8 +253,9 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
       for (final Map.Entry <String, String> aEntry : aParams.entrySet ())
         addParameter (aEntry.getKey (), aEntry.getValue ());
 
-    if (aServletContext != null)
+    if (aServletContext != null && bInvokeHttpListeners)
     {
+      // Invoke all HTTP event listener
       final ServletRequestEvent aSRE = new ServletRequestEvent (aServletContext, this);
       for (final ServletRequestListener aListener : MockHttpListener.getAllServletRequestListeners ())
         aListener.requestInitialized (aSRE);
@@ -539,8 +586,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
       return null;
 
     final InputStream aIS = new NonBlockingByteArrayInputStream (m_aContent);
-    final Reader aReader = m_sCharacterEncoding != null
-                                                       ? StreamUtils.createReader (aIS, m_sCharacterEncoding)
+    final Reader aReader = m_sCharacterEncoding != null ? StreamUtils.createReader (aIS, m_sCharacterEncoding)
                                                        : StreamUtils.createReader (aIS,
                                                                                    SystemHelper.getSystemCharsetName ());
     return new BufferedReader (aReader);
