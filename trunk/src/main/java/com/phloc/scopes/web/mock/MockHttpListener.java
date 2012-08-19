@@ -22,13 +22,12 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.annotation.concurrent.NotThreadSafe;
+import javax.annotation.concurrent.ThreadSafe;
 import javax.servlet.ServletContextListener;
 import javax.servlet.ServletRequestListener;
 import javax.servlet.http.HttpSessionListener;
 
 import com.phloc.commons.annotations.ReturnsMutableCopy;
-import com.phloc.scopes.web.servlet.WebScopeListener;
 
 /**
  * This class globally holds the HTTP listeners ({@link ServletContextListener}
@@ -37,21 +36,11 @@ import com.phloc.scopes.web.servlet.WebScopeListener;
  * 
  * @author philip
  */
-@NotThreadSafe
+@ThreadSafe
 public final class MockHttpListener
 {
   private static MockEventListenerList s_aDefaultListener = new MockEventListenerList ();
   private static MockEventListenerList s_aListener = new MockEventListenerList ();
-
-  static
-  {
-    // Set default default listeners :)
-    s_aDefaultListener.addListener (new WebScopeListener ());
-    s_aDefaultListener.addListener (new MockServletRequestListener ());
-
-    // Ensure that some listeners are present
-    s_aListener.setFrom (s_aDefaultListener);
-  }
 
   private MockHttpListener ()
   {}
