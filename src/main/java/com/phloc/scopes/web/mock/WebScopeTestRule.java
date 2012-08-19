@@ -79,6 +79,7 @@ public class WebScopeTestRule extends ExternalResource
   @OverridingMethodsMustInvokeSuper
   public void before ()
   {
+    // init HTTP event listener BEFORE creating the servlet context etc.!
     initListener ();
 
     // Start global scope -> triggers events
