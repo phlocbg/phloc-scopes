@@ -31,6 +31,11 @@
       <text locale="en">Made MockEventListenerList thread safe</text>
     </change>
   </entry>
+  <entry date="2012-08-19" category="tech" action="change">
+    <change>
+      <text locale="en">By default MockHttpListener does not contain any default listener</text>
+    </change>
+  </entry>
   <release date="2012-08-18" version="4.0.8" />
   <entry date="2012-08-18" category="tech" action="fix">
     <change>
