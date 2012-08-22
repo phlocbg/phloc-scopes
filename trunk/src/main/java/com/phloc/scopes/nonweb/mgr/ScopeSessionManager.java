@@ -36,6 +36,7 @@ import org.slf4j.LoggerFactory;
 import com.phloc.commons.annotations.ReturnsMutableCopy;
 import com.phloc.commons.annotations.UsedViaReflection;
 import com.phloc.commons.collections.ContainerHelper;
+import com.phloc.commons.state.EChange;
 import com.phloc.commons.stats.IStatisticsHandlerCounter;
 import com.phloc.commons.stats.StatisticsManager;
 import com.phloc.scopes.nonweb.domain.ISessionScope;
@@ -52,6 +53,7 @@ import com.phloc.scopes.spi.ScopeSPIManager;
 @ThreadSafe
 public class ScopeSessionManager extends GlobalSingleton
 {
+  public static final boolean DEFAULT_DESTROY_ALL_SESSIONS_ON_SCOPE_END = true;
   private static final Logger s_aLogger = LoggerFactory.getLogger (ScopeSessionManager.class);
   private static final IStatisticsHandlerCounter s_aUniqueSessionCounter = StatisticsManager.getCounterHandler (ScopeSessionManager.class.getName () +
                                                                                                                 "$UNIQUE_SESSIONS");
@@ -60,6 +62,7 @@ public class ScopeSessionManager extends GlobalSingleton
   private final ReadWriteLock m_aRWLock = new ReentrantReadWriteLock ();
   private final Map <String, ISessionScope> m_aSessionScopes = new HashMap <String, ISessionScope> ();
   private final Set <String> m_aSessionsInDestruction = new HashSet <String> ();
+  private boolean m_bDestroyAllSessionsOnScopeEnd = DEFAULT_DESTROY_ALL_SESSIONS_ON_SCOPE_END;
 
   @Deprecated
   @UsedViaReflection
@@ -225,22 +228,8 @@ public class ScopeSessionManager extends GlobalSingleton
     }
   }
 
-  public void destroyAllSessions ()
+  private void _checkIfSessionsExist ()
   {
-    // destroy all session scopes (make a copy, because we're invalidating
-    // the sessions!)
-    for (final ISessionScope aSessionScope : getAllSessionScopes ())
-    {
-      // Unfortunately we need a special handling here
-      if (aSessionScope.selfDestruct ().isContinue ())
-      {
-        // Remove from map
-        onScopeEnd (aSessionScope);
-      }
-      // Else the destruction was already started!
-    }
-
-    // Sanity check in case something went wrong
     if (getSessionCount () > 0)
     {
       m_aRWLock.writeLock ().lock ();
@@ -259,9 +248,78 @@ public class ScopeSessionManager extends GlobalSingleton
     }
   }
 
+  public void destroyAllSessions ()
+  {
+    // destroy all session scopes (make a copy, because we're invalidating
+    // the sessions!)
+    for (final ISessionScope aSessionScope : getAllSessionScopes ())
+    {
+      // Unfortunately we need a special handling here
+      if (aSessionScope.selfDestruct ().isContinue ())
+      {
+        // Remove from map
+        onScopeEnd (aSessionScope);
+      }
+      // Else the destruction was already started!
+    }
+
+    // Sanity check in case something went wrong
+    _checkIfSessionsExist ();
+  }
+
+  /**
+   * Remove all existing session scopes, and invoke the destruction methods on
+   * the contained objects.
+   */
+  private void _endAllSessionScopes ()
+  {
+    // end all session scopes without destroying the underlying sessions (make a
+    // copy, because we're invalidating the sessions!)
+    for (final ISessionScope aSessionScope : getAllSessionScopes ())
+    {
+      // Remove from map
+      onScopeEnd (aSessionScope);
+    }
+
+    // Sanity check in case something went wrong
+    _checkIfSessionsExist ();
+  }
+
+  public boolean isDestroyAllSessionsOnScopeEnd ()
+  {
+    m_aRWLock.readLock ().lock ();
+    try
+    {
+      return m_bDestroyAllSessionsOnScopeEnd;
+    }
+    finally
+    {
+      m_aRWLock.readLock ().unlock ();
+    }
+  }
+
+  public EChange setDestroyAllSessionsOnScopeEnd (final boolean bDestroyAllSessionsOnScopeEnd)
+  {
+    m_aRWLock.writeLock ().lock ();
+    try
+    {
+      if (m_bDestroyAllSessionsOnScopeEnd == bDestroyAllSessionsOnScopeEnd)
+        return EChange.UNCHANGED;
+      m_bDestroyAllSessionsOnScopeEnd = bDestroyAllSessionsOnScopeEnd;
+      return EChange.CHANGED;
+    }
+    finally
+    {
+      m_aRWLock.writeLock ().unlock ();
+    }
+  }
+
   @Override
   protected void onDestroy ()
   {
-    destroyAllSessions ();
+    if (isDestroyAllSessionsOnScopeEnd ())
+      destroyAllSessions ();
+    else
+      _endAllSessionScopes ();
   }
 }
