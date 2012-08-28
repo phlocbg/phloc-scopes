@@ -61,7 +61,7 @@ public class WebScopeTestRule extends ExternalResource
 
   /**
    * This method triggers the initialization of the {@link MockHttpListener}. It
-   * is called before the main server context is created.
+   * is called before the main servlet context is created.
    */
   @OverrideOnDemand
   protected void initListener ()
