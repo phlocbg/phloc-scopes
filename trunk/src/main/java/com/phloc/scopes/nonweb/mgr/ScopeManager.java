@@ -125,15 +125,20 @@ public final class ScopeManager
   @Nullable
   public static IGlobalScope getGlobalScopeOrNull ()
   {
-    s_aGlobalLock.lock ();
-    try
+    if (s_aGlobalLock.tryLock ())
     {
-      return s_aGlobalScope;
+      try
+      {
+        return s_aGlobalScope;
+      }
+      finally
+      {
+        s_aGlobalLock.unlock ();
+      }
     }
-    finally
-    {
-      s_aGlobalLock.unlock ();
-    }
+
+    // Either in setup or in destruction
+    return null;
   }
 
   public static boolean isGlobalScopePresent ()
