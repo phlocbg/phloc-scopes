@@ -187,11 +187,14 @@ public final class WebScopeSessionHelperTest extends AbstractWebScopeAwareTestCa
 
             aRequest.invalidate ();
 
-            aCDLDone.countDown ();
           }
           catch (final Exception ex)
           {
             throw new RuntimeException (ex);
+          }
+          finally
+          {
+            aCDLDone.countDown ();
           }
         }
       };
