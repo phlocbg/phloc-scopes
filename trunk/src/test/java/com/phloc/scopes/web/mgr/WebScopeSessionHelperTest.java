@@ -139,6 +139,8 @@ public final class WebScopeSessionHelperTest extends AbstractWebScopeAwareTestCa
   @Test
   public void testMultipleSessions () throws InterruptedException
   {
+    WebScopeManager.getGlobalScope ();
+
     final int nMax = 10;
     final Thread [] aThreads = new Thread [nMax];
     final CountDownLatch aCDLStart = new CountDownLatch (nMax);
