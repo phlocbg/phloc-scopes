@@ -17,8 +17,8 @@
  */
 package com.phloc.scopes.nonweb.mgr;
 
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -62,7 +62,7 @@ public final class ScopeManager
    */
   private static final String REQ_APPLICATION_ID = "phloc.applicationscope";
 
-  private static Lock s_aGlobalLock = new ReentrantLock ();
+  private static ReadWriteLock s_aGlobalLock = new ReentrantReadWriteLock ();
 
   /** Global scope */
   private static IGlobalScope s_aGlobalScope;
@@ -86,7 +86,7 @@ public final class ScopeManager
     if (aGlobalScope == null)
       throw new NullPointerException ("globalScope");
 
-    s_aGlobalLock.lock ();
+    s_aGlobalLock.writeLock ().lock ();
     try
     {
       if (s_aGlobalScope != null)
@@ -103,7 +103,7 @@ public final class ScopeManager
     }
     finally
     {
-      s_aGlobalLock.unlock ();
+      s_aGlobalLock.writeLock ().unlock ();
     }
   }
 
@@ -125,20 +125,15 @@ public final class ScopeManager
   @Nullable
   public static IGlobalScope getGlobalScopeOrNull ()
   {
-    if (s_aGlobalLock.tryLock ())
+    s_aGlobalLock.readLock ().lock ();
+    try
     {
-      try
-      {
-        return s_aGlobalScope;
-      }
-      finally
-      {
-        s_aGlobalLock.unlock ();
-      }
+      return s_aGlobalScope;
     }
-
-    // Either in setup or in destruction
-    return null;
+    finally
+    {
+      s_aGlobalLock.readLock ().unlock ();
+    }
   }
 
   public static boolean isGlobalScopePresent ()
@@ -160,7 +155,7 @@ public final class ScopeManager
    */
   public static void onGlobalEnd ()
   {
-    s_aGlobalLock.lock ();
+    s_aGlobalLock.writeLock ().lock ();
     try
     {
       /**
@@ -188,7 +183,7 @@ public final class ScopeManager
     }
     finally
     {
-      s_aGlobalLock.unlock ();
+      s_aGlobalLock.writeLock ().unlock ();
     }
   }
 

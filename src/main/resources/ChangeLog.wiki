@@ -1,7 +1,9 @@
 #summary Change log of phloc-scopes
 = Change log =
 <wiki:comment>This content is generated. Do not modify!</wiki:comment>
-<table border="1" cellspacing="0"><thead><tr><th>Date</th><th>Action</th><th>Category</th><th>Incompatible?</th><th>Description</th></tr></thead><tbody><tr border="1"><td>8/30/12</td><td colspan="4">_Release *4.0.10*_</td></tr>
+<table border="1" cellspacing="0"><thead><tr><th>Date</th><th>Action</th><th>Category</th><th>Incompatible?</th><th>Description</th></tr></thead><tbody><tr border="1"><td>8/30/12</td><td colspan="4">_Release *4.0.11*_</td></tr>
+<tr><td>8/30/12</td><td>change</td><td>tech</td><td></td><td>Really Fixed potential deadlock in GlobalScope handling</td></tr>
+<tr border="1"><td>8/30/12</td><td colspan="4">_Release *4.0.10*_</td></tr>
 <tr><td>8/30/12</td><td>change</td><td>tech</td><td></td><td>Fixed potential deadlock in GlobalScope handling, if one thread is trying to access the global scope while it is shutdown in another thread</td></tr>
 <tr><td>8/19/12</td><td>add</td><td>api</td><td></td><td>ScopeSessionManager now has a possibility to prevent all sessions from being destroyed upon global scope destruction</td></tr>
 <tr border="1"><td>8/19/12</td><td colspan="4">_Release *4.0.9*_</td></tr>
