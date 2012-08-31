@@ -289,7 +289,7 @@ public abstract class AbstractFileUploadBase
       {
         final IFileItemStream item = iter.next ();
         // Don't use getName() here to prevent an InvalidFileNameException.
-        final String fileName = ((AbstractFileUploadBase.FileItemIteratorImpl.FileItemStreamImpl) item).name;
+        final String fileName = ((AbstractFileUploadBase.FileItemIteratorImpl.FileItemStreamImpl) item).m_sName;
         final IFileItem fileItem = fac.createItem (item.getFieldName (),
                                                    item.getContentType (),
                                                    item.isFormField (),
@@ -584,31 +584,31 @@ public abstract class AbstractFileUploadBase
       /**
        * The file items content type.
        */
-      private final String contentType;
+      private final String m_sContentType;
       /**
        * The file items field name.
        */
-      private final String fieldName;
+      private final String m_sFieldName;
       /**
        * The file items file name.
        */
-      private final String name;
+      private final String m_sName;
       /**
        * Whether the file item is a form field.
        */
-      private final boolean formField;
+      private final boolean m_bFormField;
       /**
        * The file items input stream.
        */
-      private final InputStream stream;
+      private final InputStream m_aStream;
       /**
        * Whether the file item was already opened.
        */
-      private boolean opened;
+      private boolean m_bOpened;
       /**
        * The headers, if any.
        */
-      private IFileItemHeaders headers;
+      private IFileItemHeaders m_aHeaders;
 
       /**
        * Creates a new instance.
@@ -632,18 +632,18 @@ public abstract class AbstractFileUploadBase
                           final boolean pFormField,
                           final long pContentLength) throws IOException
       {
-        name = pName;
-        fieldName = pFieldName;
-        contentType = pContentType;
-        formField = pFormField;
-        final ItemInputStream itemStream = multi.newInputStream ();
+        m_sName = pName;
+        m_sFieldName = pFieldName;
+        m_sContentType = pContentType;
+        m_bFormField = pFormField;
+        final ItemInputStream itemStream = m_aMulti.newInputStream ();
         InputStream istream = itemStream;
         if (m_nFileSizeMax != -1)
         {
           if (pContentLength != -1 && pContentLength > m_nFileSizeMax)
           {
             final FileSizeLimitExceededException e = new FileSizeLimitExceededException ("The field " +
-                                                                                             fieldName +
+                                                                                             m_sFieldName +
                                                                                              " exceeds its maximum permitted " +
                                                                                              " size of " +
                                                                                              m_nFileSizeMax +
@@ -661,20 +661,20 @@ public abstract class AbstractFileUploadBase
             {
               itemStream.close (true);
               final FileSizeLimitExceededException e = new FileSizeLimitExceededException ("The field " +
-                                                                                               fieldName +
+                                                                                               m_sFieldName +
                                                                                                " exceeds its maximum permitted " +
                                                                                                " size of " +
                                                                                                pSizeMax +
                                                                                                " bytes.",
                                                                                            pCount,
                                                                                            pSizeMax);
-              e.setFieldName (fieldName);
-              e.setFileName (name);
+              e.setFieldName (m_sFieldName);
+              e.setFileName (m_sName);
               throw new FileUploadIOException (e);
             }
           };
         }
-        stream = istream;
+        m_aStream = istream;
       }
 
       /**
@@ -684,7 +684,7 @@ public abstract class AbstractFileUploadBase
        */
       public String getContentType ()
       {
-        return contentType;
+        return m_sContentType;
       }
 
       /**
@@ -694,7 +694,7 @@ public abstract class AbstractFileUploadBase
        */
       public String getFieldName ()
       {
-        return fieldName;
+        return m_sFieldName;
       }
 
       /**
@@ -709,7 +709,7 @@ public abstract class AbstractFileUploadBase
        */
       public String getName ()
       {
-        return Streams.checkFileName (name);
+        return Streams.checkFileName (m_sName);
       }
 
       /**
@@ -719,7 +719,7 @@ public abstract class AbstractFileUploadBase
        */
       public boolean isFormField ()
       {
-        return formField;
+        return m_bFormField;
       }
 
       /**
@@ -731,15 +731,11 @@ public abstract class AbstractFileUploadBase
        */
       public InputStream openStream () throws IOException
       {
-        if (opened)
-        {
+        if (m_bOpened)
           throw new IllegalStateException ("The stream was already opened.");
-        }
-        if (((ICloseable) stream).isClosed ())
-        {
+        if (((ICloseable) m_aStream).isClosed ())
           throw new IFileItemStream.ItemSkippedException ();
-        }
-        return stream;
+        return m_aStream;
       }
 
       /**
@@ -750,7 +746,7 @@ public abstract class AbstractFileUploadBase
        */
       void close () throws IOException
       {
-        stream.close ();
+        m_aStream.close ();
       }
 
       /**
@@ -760,7 +756,7 @@ public abstract class AbstractFileUploadBase
        */
       public IFileItemHeaders getHeaders ()
       {
-        return headers;
+        return m_aHeaders;
       }
 
       /**
@@ -771,42 +767,42 @@ public abstract class AbstractFileUploadBase
        */
       public void setHeaders (final IFileItemHeaders pHeaders)
       {
-        headers = pHeaders;
+        m_aHeaders = pHeaders;
       }
     }
 
     /**
      * The multi part stream to process.
      */
-    private final MultipartStream multi;
+    private final MultipartStream m_aMulti;
     /**
      * The notifier, which used for triggering the {@link IProgressListener}.
      */
-    private final MultipartStream.ProgressNotifier notifier;
+    private final MultipartStream.ProgressNotifier m_aNotifier;
     /**
      * The boundary, which separates the various parts.
      */
-    private final byte [] boundary;
+    private final byte [] m_aBoundary;
     /**
      * The item, which we currently process.
      */
-    private FileItemStreamImpl currentItem;
+    private FileItemStreamImpl m_aCurrentItem;
     /**
      * The current items field name.
      */
-    private String currentFieldName;
+    private String m_sCurrentFieldName;
     /**
      * Whether we are currently skipping the preamble.
      */
-    private boolean skipPreamble;
+    private boolean m_bSkipPreamble;
     /**
      * Whether the current item may still be read.
      */
-    private boolean itemValid;
+    private boolean m_bItemValid;
     /**
      * Whether we have seen the end of the file.
      */
-    private boolean eof;
+    private boolean m_bEof;
 
     /**
      * Creates a new instance.
@@ -878,17 +874,17 @@ public abstract class AbstractFileUploadBase
         charEncoding = ctx.getCharacterEncoding ();
       }
 
-      boundary = getBoundary (contentType);
-      if (boundary == null)
+      m_aBoundary = getBoundary (contentType);
+      if (m_aBoundary == null)
       {
         throw new FileUploadException ("the request was rejected because " + "no multipart boundary was found");
       }
 
-      notifier = new MultipartStream.ProgressNotifier (m_aListener, ctx.getContentLength ());
-      multi = new MultipartStream (input, boundary, notifier);
-      multi.setHeaderEncoding (charEncoding);
+      m_aNotifier = new MultipartStream.ProgressNotifier (m_aListener, ctx.getContentLength ());
+      m_aMulti = new MultipartStream (input, m_aBoundary, m_aNotifier);
+      m_aMulti.setHeaderEncoding (charEncoding);
 
-      skipPreamble = true;
+      m_bSkipPreamble = true;
       findNextItem ();
     }
 
@@ -901,41 +897,41 @@ public abstract class AbstractFileUploadBase
      */
     private boolean findNextItem () throws IOException
     {
-      if (eof)
+      if (m_bEof)
       {
         return false;
       }
-      if (currentItem != null)
+      if (m_aCurrentItem != null)
       {
-        currentItem.close ();
-        currentItem = null;
+        m_aCurrentItem.close ();
+        m_aCurrentItem = null;
       }
       for (;;)
       {
         boolean nextPart;
-        if (skipPreamble)
+        if (m_bSkipPreamble)
         {
-          nextPart = multi.skipPreamble ();
+          nextPart = m_aMulti.skipPreamble ();
         }
         else
         {
-          nextPart = multi.readBoundary ();
+          nextPart = m_aMulti.readBoundary ();
         }
         if (!nextPart)
         {
-          if (currentFieldName == null)
+          if (m_sCurrentFieldName == null)
           {
             // Outer multipart terminated -> No more data
-            eof = true;
+            m_bEof = true;
             return false;
           }
           // Inner multipart terminated -> Return to parsing the outer
-          multi.setBoundary (boundary);
-          currentFieldName = null;
+          m_aMulti.setBoundary (m_aBoundary);
+          m_sCurrentFieldName = null;
           continue;
         }
-        final IFileItemHeaders headers = getParsedHeaders (multi.readHeaders ());
-        if (currentFieldName == null)
+        final IFileItemHeaders headers = getParsedHeaders (m_aMulti.readHeaders ());
+        if (m_sCurrentFieldName == null)
         {
           // We're parsing the outer multipart
           final String fieldName = getFieldName (headers);
@@ -944,21 +940,21 @@ public abstract class AbstractFileUploadBase
             final String subContentType = headers.getHeader (CONTENT_TYPE);
             if (subContentType != null && subContentType.toLowerCase ().startsWith (MULTIPART_MIXED))
             {
-              currentFieldName = fieldName;
+              m_sCurrentFieldName = fieldName;
               // Multiple files associated with this field name
               final byte [] subBoundary = getBoundary (subContentType);
-              multi.setBoundary (subBoundary);
-              skipPreamble = true;
+              m_aMulti.setBoundary (subBoundary);
+              m_bSkipPreamble = true;
               continue;
             }
             final String fileName = getFileName (headers);
-            currentItem = new FileItemStreamImpl (fileName,
-                                                  fieldName,
-                                                  headers.getHeader (CONTENT_TYPE),
-                                                  fileName == null,
-                                                  getContentLength (headers));
-            notifier.noteItem ();
-            itemValid = true;
+            m_aCurrentItem = new FileItemStreamImpl (fileName,
+                                                     fieldName,
+                                                     headers.getHeader (CONTENT_TYPE),
+                                                     fileName == null,
+                                                     getContentLength (headers));
+            m_aNotifier.noteItem ();
+            m_bItemValid = true;
             return true;
           }
         }
@@ -967,17 +963,17 @@ public abstract class AbstractFileUploadBase
           final String fileName = getFileName (headers);
           if (fileName != null)
           {
-            currentItem = new FileItemStreamImpl (fileName,
-                                                  currentFieldName,
-                                                  headers.getHeader (CONTENT_TYPE),
-                                                  false,
-                                                  getContentLength (headers));
-            notifier.noteItem ();
-            itemValid = true;
+            m_aCurrentItem = new FileItemStreamImpl (fileName,
+                                                     m_sCurrentFieldName,
+                                                     headers.getHeader (CONTENT_TYPE),
+                                                     false,
+                                                     getContentLength (headers));
+            m_aNotifier.noteItem ();
+            m_bItemValid = true;
             return true;
           }
         }
-        multi.discardBodyData ();
+        m_aMulti.discardBodyData ();
       }
     }
 
@@ -999,11 +995,11 @@ public abstract class AbstractFileUploadBase
      */
     public boolean hasNext () throws FileUploadException, IOException
     {
-      if (eof)
+      if (m_bEof)
       {
         return false;
       }
-      if (itemValid)
+      if (m_bItemValid)
       {
         return true;
       }
@@ -1025,12 +1021,12 @@ public abstract class AbstractFileUploadBase
      */
     public IFileItemStream next () throws FileUploadException, IOException
     {
-      if (eof || (!itemValid && !hasNext ()))
+      if (m_bEof || (!m_bItemValid && !hasNext ()))
       {
         throw new NoSuchElementException ();
       }
-      itemValid = false;
-      return currentItem;
+      m_bItemValid = false;
+      return m_aCurrentItem;
     }
   }
 
@@ -1044,11 +1040,6 @@ public abstract class AbstractFileUploadBase
      * The exceptions UID, for serializing an instance.
      */
     private static final long serialVersionUID = -7047616958165584154L;
-    /**
-     * The exceptions cause; we overwrite the parent classes field, which is
-     * available since Java 1.4 only.
-     */
-    private final FileUploadException cause;
 
     /**
      * Creates a <code>FileUploadIOException</code> with the given cause.
@@ -1058,19 +1049,7 @@ public abstract class AbstractFileUploadBase
      */
     public FileUploadIOException (final FileUploadException pCause)
     {
-      // We're not doing super(pCause) cause of 1.3 compatibility.
-      cause = pCause;
-    }
-
-    /**
-     * Returns the exceptions cause.
-     * 
-     * @return The exceptions cause, if any, or null.
-     */
-    @Override
-    public Throwable getCause ()
-    {
-      return cause;
+      super (pCause);
     }
   }
 
@@ -1115,11 +1094,6 @@ public abstract class AbstractFileUploadBase
      * The exceptions UID, for serializing an instance.
      */
     private static final long serialVersionUID = 1749796615868477269L;
-    /**
-     * The exceptions cause; we overwrite the parent classes field, which is
-     * available since Java 1.4 only.
-     */
-    private final IOException cause;
 
     /**
      * Creates a new instance with the given cause.
@@ -1131,19 +1105,7 @@ public abstract class AbstractFileUploadBase
      */
     public IOFileUploadException (final String pMsg, final IOException pException)
     {
-      super (pMsg);
-      cause = pException;
-    }
-
-    /**
-     * Returns the exceptions cause.
-     * 
-     * @return The exceptions cause, if any, or null.
-     */
-    @Override
-    public Throwable getCause ()
-    {
-      return cause;
+      super (pMsg, pException);
     }
   }
 
@@ -1157,12 +1119,12 @@ public abstract class AbstractFileUploadBase
     /**
      * The actual size of the request.
      */
-    private final long _actual;
+    private final long m_nActual;
 
     /**
      * The maximum permitted size of the request.
      */
-    private final long _permitted;
+    private final long m_nPermitted;
 
     /**
      * Creates a new instance.
@@ -1177,8 +1139,8 @@ public abstract class AbstractFileUploadBase
     protected SizeException (final String message, final long actual, final long permitted)
     {
       super (message);
-      this._actual = actual;
-      this._permitted = permitted;
+      this.m_nActual = actual;
+      this.m_nPermitted = permitted;
     }
 
     /**
@@ -1188,7 +1150,7 @@ public abstract class AbstractFileUploadBase
      */
     public long getActualSize ()
     {
-      return _actual;
+      return m_nActual;
     }
 
     /**
@@ -1198,7 +1160,7 @@ public abstract class AbstractFileUploadBase
      */
     public long getPermittedSize ()
     {
-      return _permitted;
+      return m_nPermitted;
     }
   }
 
@@ -1242,12 +1204,12 @@ public abstract class AbstractFileUploadBase
     /**
      * File name of the item, which caused the exception.
      */
-    private String fileName;
+    private String m_sFileName;
 
     /**
      * Field name of the item, which caused the exception.
      */
-    private String fieldName;
+    private String m_sFieldName;
 
     /**
      * Constructs a <code>SizeExceededException</code> with the specified detail
@@ -1272,7 +1234,7 @@ public abstract class AbstractFileUploadBase
      */
     public String getFileName ()
     {
-      return fileName;
+      return m_sFileName;
     }
 
     /**
@@ -1280,7 +1242,7 @@ public abstract class AbstractFileUploadBase
      */
     public void setFileName (final String pFileName)
     {
-      fileName = pFileName;
+      m_sFileName = pFileName;
     }
 
     /**
@@ -1290,7 +1252,7 @@ public abstract class AbstractFileUploadBase
      */
     public String getFieldName ()
     {
-      return fieldName;
+      return m_sFieldName;
     }
 
     /**
@@ -1298,7 +1260,7 @@ public abstract class AbstractFileUploadBase
      */
     public void setFieldName (final String pFieldName)
     {
-      fieldName = pFieldName;
+      m_sFieldName = pFieldName;
     }
   }
 
