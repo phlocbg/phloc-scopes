@@ -20,6 +20,12 @@
 -->
 <changelog xmlns="http://www.phloc.com/ns/changelog/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.phloc.com/ns/changelog/1.0 schemas/changelog-1.0.xsd" version="1.0" component="phloc-scopes">
+  <release date="2012-08-31" version="4.0.12" />
+  <entry date="2012-08-31" category="tech" action="change">
+    <change>
+      <text locale="en">Once again tried to resolve potential deadlock in GlobalScope handling</text>
+    </change>
+  </entry>
   <release date="2012-08-30" version="4.0.11" />
   <entry date="2012-08-30" category="tech" action="change">
     <change>
