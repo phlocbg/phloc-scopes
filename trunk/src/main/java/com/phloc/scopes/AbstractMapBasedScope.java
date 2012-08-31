@@ -146,13 +146,13 @@ public abstract class AbstractMapBasedScope extends MapBasedAttributeContainerTh
           s_aLogger.error ("Failed to call destruction method in scope " + getID () + " for " + aValue, t);
         }
 
-    // remove all attributes
-    clear ();
-
     // Finished destruction process -> remember this
     m_aRWLock.writeLock ().lock ();
     try
     {
+      // remove all attributes (double write lock is no problem)
+      clear ();
+
       m_bDestroyed = true;
       m_bInDestruction = false;
     }
