@@ -36,6 +36,7 @@ import com.phloc.commons.IHasLocale;
 import com.phloc.commons.annotations.Nonempty;
 import com.phloc.commons.annotations.ReturnsMutableCopy;
 import com.phloc.commons.charset.CCharset;
+import com.phloc.commons.collections.ArrayHelper;
 import com.phloc.commons.collections.ContainerHelper;
 import com.phloc.commons.collections.multimap.IMultiMapSetBased;
 import com.phloc.commons.collections.multimap.MultiHashMapLinkedHashSetBased;
@@ -306,7 +307,7 @@ public final class MockHttpServletResponse implements HttpServletResponse, IHasL
   @Nonnull
   public Cookie [] getCookies ()
   {
-    return m_aCookies.toArray (new Cookie [0]);
+    return ArrayHelper.newArray (m_aCookies, Cookie.class);
   }
 
   @Nullable
