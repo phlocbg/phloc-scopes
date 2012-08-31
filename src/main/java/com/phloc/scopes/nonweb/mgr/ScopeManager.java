@@ -17,8 +17,8 @@
  */
 package com.phloc.scopes.nonweb.mgr;
 
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -62,10 +62,10 @@ public final class ScopeManager
    */
   private static final String REQ_APPLICATION_ID = "phloc.applicationscope";
 
-  private static ReadWriteLock s_aGlobalLock = new ReentrantReadWriteLock ();
+  private static Lock s_aGlobalLock = new ReentrantLock ();
 
   /** Global scope */
-  private static IGlobalScope s_aGlobalScope;
+  private static volatile IGlobalScope s_aGlobalScope;
 
   /** Request scope */
   private static ThreadLocal <IRequestScope> s_aRequestScope = new ThreadLocal <IRequestScope> ();
@@ -86,7 +86,7 @@ public final class ScopeManager
     if (aGlobalScope == null)
       throw new NullPointerException ("globalScope");
 
-    s_aGlobalLock.writeLock ().lock ();
+    s_aGlobalLock.lock ();
     try
     {
       if (s_aGlobalScope != null)
@@ -103,7 +103,7 @@ public final class ScopeManager
     }
     finally
     {
-      s_aGlobalLock.writeLock ().unlock ();
+      s_aGlobalLock.unlock ();
     }
   }
 
@@ -125,15 +125,14 @@ public final class ScopeManager
   @Nullable
   public static IGlobalScope getGlobalScopeOrNull ()
   {
-    s_aGlobalLock.readLock ().lock ();
-    try
-    {
-      return s_aGlobalScope;
-    }
-    finally
-    {
-      s_aGlobalLock.readLock ().unlock ();
-    }
+    final IGlobalScope ret = s_aGlobalScope;
+    if (ret == null)
+      return null;
+    if (ret.isValid ())
+      return ret;
+    // Return null if it is in destruction or already destroyed
+    s_aLogger.warn ("Global scope is not valid any more!");
+    return null;
   }
 
   public static boolean isGlobalScopePresent ()
@@ -155,7 +154,7 @@ public final class ScopeManager
    */
   public static void onGlobalEnd ()
   {
-    s_aGlobalLock.writeLock ().lock ();
+    s_aGlobalLock.lock ();
     try
     {
       /**
@@ -183,7 +182,7 @@ public final class ScopeManager
     }
     finally
     {
-      s_aGlobalLock.writeLock ().unlock ();
+      s_aGlobalLock.unlock ();
     }
   }
 
