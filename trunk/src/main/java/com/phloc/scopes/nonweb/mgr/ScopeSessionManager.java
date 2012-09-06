@@ -54,6 +54,7 @@ import com.phloc.scopes.spi.ScopeSPIManager;
 public class ScopeSessionManager extends GlobalSingleton
 {
   public static final boolean DEFAULT_DESTROY_ALL_SESSIONS_ON_SCOPE_END = true;
+  public static final boolean DEFAULT_END_ALL_SESSIONS_ON_SCOPE_END = true;
   private static final Logger s_aLogger = LoggerFactory.getLogger (ScopeSessionManager.class);
   private static final IStatisticsHandlerCounter s_aUniqueSessionCounter = StatisticsManager.getCounterHandler (ScopeSessionManager.class.getName () +
                                                                                                                 "$UNIQUE_SESSIONS");
@@ -63,6 +64,7 @@ public class ScopeSessionManager extends GlobalSingleton
   private final Map <String, ISessionScope> m_aSessionScopes = new HashMap <String, ISessionScope> ();
   private final Set <String> m_aSessionsInDestruction = new HashSet <String> ();
   private boolean m_bDestroyAllSessionsOnScopeEnd = DEFAULT_DESTROY_ALL_SESSIONS_ON_SCOPE_END;
+  private boolean m_bEndAllSessionsOnScopeEnd = DEFAULT_END_ALL_SESSIONS_ON_SCOPE_END;
 
   @Deprecated
   @UsedViaReflection
@@ -298,6 +300,7 @@ public class ScopeSessionManager extends GlobalSingleton
     }
   }
 
+  @Nonnull
   public EChange setDestroyAllSessionsOnScopeEnd (final boolean bDestroyAllSessionsOnScopeEnd)
   {
     m_aRWLock.writeLock ().lock ();
@@ -314,12 +317,43 @@ public class ScopeSessionManager extends GlobalSingleton
     }
   }
 
+  public boolean isEndAllSessionsOnScopeEnd ()
+  {
+    m_aRWLock.readLock ().lock ();
+    try
+    {
+      return m_bEndAllSessionsOnScopeEnd;
+    }
+    finally
+    {
+      m_aRWLock.readLock ().unlock ();
+    }
+  }
+
+  @Nonnull
+  public EChange setEndAllSessionsOnScopeEnd (final boolean bEndAllSessionsOnScopeEnd)
+  {
+    m_aRWLock.writeLock ().lock ();
+    try
+    {
+      if (m_bEndAllSessionsOnScopeEnd == bEndAllSessionsOnScopeEnd)
+        return EChange.UNCHANGED;
+      m_bEndAllSessionsOnScopeEnd = bEndAllSessionsOnScopeEnd;
+      return EChange.CHANGED;
+    }
+    finally
+    {
+      m_aRWLock.writeLock ().unlock ();
+    }
+  }
+
   @Override
   protected void onDestroy ()
   {
     if (isDestroyAllSessionsOnScopeEnd ())
       destroyAllSessions ();
     else
-      _endAllSessionScopes ();
+      if (isEndAllSessionsOnScopeEnd ())
+        _endAllSessionScopes ();
   }
 }
