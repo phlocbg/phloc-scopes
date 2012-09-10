@@ -47,7 +47,8 @@ public class SessionWebScope extends SessionScope implements ISessionWebScope
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (SessionWebScope.class);
 
-  private final HttpSession m_aHttpSession;
+  // Do not serialize the session
+  private final transient HttpSession m_aHttpSession;
 
   public SessionWebScope (@Nonnull final HttpSession aHttpSession)
   {
