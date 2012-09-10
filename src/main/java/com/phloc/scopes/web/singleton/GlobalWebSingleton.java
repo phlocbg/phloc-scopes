@@ -39,12 +39,18 @@ public abstract class GlobalWebSingleton extends AbstractSingleton
     super ("getGlobalSingleton");
   }
 
+  /**
+   * @return The scope to be used for this type of singleton.
+   */
   @Nonnull
   private static IGlobalWebScope _getStaticScope ()
   {
     return WebScopeManager.getGlobalScope ();
   }
 
+  /**
+   * @return The scope to be used for this type of singleton.
+   */
   @Override
   @Nonnull
   protected final IGlobalWebScope getScope ()
@@ -52,7 +58,7 @@ public abstract class GlobalWebSingleton extends AbstractSingleton
     return _getStaticScope ();
   }
 
-  protected static final boolean isSingletonInstantiated (@Nonnull final Class <? extends GlobalWebSingleton> aClass)
+  public static final boolean isSingletonInstantiated (@Nonnull final Class <? extends GlobalWebSingleton> aClass)
   {
     return isSingletonInstantiated (_getStaticScope (), aClass);
   }

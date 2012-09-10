@@ -40,12 +40,18 @@ public abstract class RequestWebSingleton extends AbstractSingleton
     super ("getRequestSingleton");
   }
 
+  /**
+   * @return The scope to be used for this type of singleton.
+   */
   @Nonnull
   private static IRequestWebScope _getStaticScope ()
   {
     return WebScopeManager.getRequestScope ();
   }
 
+  /**
+   * @return The scope to be used for this type of singleton.
+   */
   @Override
   @Nonnull
   protected final IRequestWebScope getScope ()
@@ -53,7 +59,7 @@ public abstract class RequestWebSingleton extends AbstractSingleton
     return _getStaticScope ();
   }
 
-  protected static final boolean isSingletonInstantiated (@Nonnull final Class <? extends RequestWebSingleton> aClass)
+  public static final boolean isSingletonInstantiated (@Nonnull final Class <? extends RequestWebSingleton> aClass)
   {
     return isSingletonInstantiated (_getStaticScope (), aClass);
   }

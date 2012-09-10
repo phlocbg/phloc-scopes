@@ -17,13 +17,12 @@
  */
 package com.phloc.scopes.web.singleton;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 
 import com.phloc.commons.annotations.MustImplementEqualsAndHashcode;
-import com.phloc.scopes.AbstractSingleton;
+import com.phloc.scopes.AbstractSerializableSingleton;
 import com.phloc.scopes.web.domain.ISessionWebScope;
 import com.phloc.scopes.web.mgr.WebScopeManager;
 
@@ -35,19 +34,25 @@ import com.phloc.scopes.web.mgr.WebScopeManager;
  * @author philip
  */
 @MustImplementEqualsAndHashcode
-public abstract class SessionWebSingleton extends AbstractSingleton implements Serializable
+public abstract class SessionWebSingleton extends AbstractSerializableSingleton
 {
   protected SessionWebSingleton ()
   {
     super ("getSessionSingleton");
   }
 
+  /**
+   * @return The scope to be used for this type of singleton.
+   */
   @Nonnull
   private static ISessionWebScope _getStaticScope ()
   {
     return WebScopeManager.getSessionScope (true);
   }
 
+  /**
+   * @return The scope to be used for this type of singleton.
+   */
   @Override
   @Nonnull
   protected final ISessionWebScope getScope ()
@@ -55,7 +60,7 @@ public abstract class SessionWebSingleton extends AbstractSingleton implements S
     return _getStaticScope ();
   }
 
-  protected static final boolean isSingletonInstantiated (@Nonnull final Class <? extends SessionWebSingleton> aClass)
+  public static final boolean isSingletonInstantiated (@Nonnull final Class <? extends SessionWebSingleton> aClass)
   {
     return isSingletonInstantiated (_getStaticScope (), aClass);
   }

@@ -300,8 +300,8 @@ public final class WebScopeManager
     if (aHttpSession == null)
       throw new NullPointerException ("httpSession");
 
-    final ScopeSessionManager aSSM = ScopeSessionManager.getInstance ();
-    final ISessionScope aSessionScope = aSSM.getSessionScopeOfID (aHttpSession.getId ());
+    final ScopeSessionManager aSSM = ScopeSessionManager.getInstanceOrNull ();
+    final ISessionScope aSessionScope = aSSM == null ? null : aSSM.getSessionScopeOfID (aHttpSession.getId ());
     if (aSessionScope != null)
     {
       // Regular scope end

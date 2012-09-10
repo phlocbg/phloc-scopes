@@ -77,6 +77,12 @@ public class ScopeSessionManager extends GlobalSingleton
     return getGlobalSingleton (ScopeSessionManager.class);
   }
 
+  @Nullable
+  public static ScopeSessionManager getInstanceOrNull ()
+  {
+    return isSingletonInstantiated (ScopeSessionManager.class) ? getInstance () : null;
+  }
+
   /**
    * Get the session scope with the specified ID. If no such scope exists, no
    * further actions are taken.

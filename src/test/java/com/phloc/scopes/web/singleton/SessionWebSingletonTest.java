@@ -41,6 +41,7 @@ public final class SessionWebSingletonTest extends AbstractWebScopeAwareTestCase
     a.inc ();
     assertEquals (1, a.get ());
     PhlocTestUtils.testDefaultSerialization (a);
+    assertEquals (1, a.get ());
 
     final MockSessionWebSingleton b = MockSessionWebSingleton.getInstance ();
     assertSame (a, b);

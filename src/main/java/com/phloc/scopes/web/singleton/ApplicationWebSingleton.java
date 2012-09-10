@@ -41,12 +41,18 @@ public abstract class ApplicationWebSingleton extends AbstractSingleton
     super ("getApplicationSingleton");
   }
 
+  /**
+   * @return The scope to be used for this type of singleton.
+   */
   @Nonnull
   private static IApplicationWebScope _getStaticScope ()
   {
     return WebScopeManager.getApplicationScope (true);
   }
 
+  /**
+   * @return The scope to be used for this type of singleton.
+   */
   @Override
   @Nonnull
   protected final IApplicationWebScope getScope ()
@@ -54,7 +60,7 @@ public abstract class ApplicationWebSingleton extends AbstractSingleton
     return _getStaticScope ();
   }
 
-  protected static final boolean isSingletonInstantiated (@Nonnull final Class <? extends ApplicationWebSingleton> aClass)
+  public static final boolean isSingletonInstantiated (@Nonnull final Class <? extends ApplicationWebSingleton> aClass)
   {
     return isSingletonInstantiated (_getStaticScope (), aClass);
   }
