@@ -45,9 +45,9 @@ public abstract class SessionApplicationSingleton extends AbstractSerializableSi
    * @return The scope to be used for this type of singleton.
    */
   @Nonnull
-  private static ISessionApplicationScope _getStaticScope ()
+  private static ISessionApplicationScope _getStaticScope (final boolean bCreateIfNotExisting)
   {
-    return ScopeManager.getSessionApplicationScope (true);
+    return ScopeManager.getSessionApplicationScope (bCreateIfNotExisting);
   }
 
   /**
@@ -57,23 +57,23 @@ public abstract class SessionApplicationSingleton extends AbstractSerializableSi
   @Nonnull
   protected final ISessionApplicationScope getScope ()
   {
-    return _getStaticScope ();
-  }
-
-  public static final boolean isSingletonInstantiated (@Nonnull final Class <? extends SessionApplicationSingleton> aClass)
-  {
-    return isSingletonInstantiated (_getStaticScope (), aClass);
+    return _getStaticScope (true);
   }
 
   @Nonnull
   protected static final <T extends SessionApplicationSingleton> T getSessionApplicationSingleton (@Nonnull final Class <T> aClass)
   {
-    return getSingleton (_getStaticScope (), aClass);
+    return getSingleton (_getStaticScope (true), aClass);
+  }
+
+  public static final boolean isSingletonInstantiated (@Nonnull final Class <? extends SessionApplicationSingleton> aClass)
+  {
+    return isSingletonInstantiated (_getStaticScope (false), aClass);
   }
 
   @Nonnull
   public static final List <SessionApplicationSingleton> getAllSingletons ()
   {
-    return getAllSingletons (_getStaticScope (), SessionApplicationSingleton.class);
+    return getAllSingletons (_getStaticScope (false), SessionApplicationSingleton.class);
   }
 }
