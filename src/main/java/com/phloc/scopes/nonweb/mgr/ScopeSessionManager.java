@@ -43,6 +43,8 @@ import com.phloc.scopes.nonweb.domain.ISessionScope;
 import com.phloc.scopes.nonweb.singleton.GlobalSingleton;
 import com.phloc.scopes.spi.ScopeSPIManager;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /**
  * Internal manager class for session scopes.<br>
  * This class is only non-final so that the deprecated WebScopeSessionManager
@@ -337,6 +339,7 @@ public class ScopeSessionManager extends GlobalSingleton
     }
   }
 
+  @SuppressFBWarnings ("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
   @Override
   protected void onDestroy ()
   {

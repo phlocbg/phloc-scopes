@@ -83,7 +83,7 @@ public abstract class AbstractSerializableSingleton extends AbstractSingleton im
     final String sSingletonScopeKey = getSingletonScopeKey (getClass ());
     getScope ().runAtomic (new INonThrowingRunnableWithParameter <IScope> ()
     {
-      public void run (@Nonnull final IScope aInnerScope)
+      public void run (final IScope aInnerScope)
       {
         final AbstractSerializableSingleton aSingleton = AbstractSerializableSingleton.this;
         if (aInnerScope.containsAttribute (sSingletonScopeKey))
