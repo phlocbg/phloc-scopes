@@ -23,6 +23,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 import javax.annotation.Nonnull;
+import javax.annotation.meta.When;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,23 +84,27 @@ public abstract class AbstractSerializableSingleton extends AbstractSingleton im
     final String sSingletonScopeKey = getSingletonScopeKey (getClass ());
     getScope ().runAtomic (new INonThrowingRunnableWithParameter <IScope> ()
     {
-      public void run (final IScope aInnerScope)
+      // Nullable by declaration in base interface only
+      public void run (@Nonnull (when = When.MAYBE) final IScope aInnerScope)
       {
-        final AbstractSerializableSingleton aSingleton = AbstractSerializableSingleton.this;
-        if (aInnerScope.containsAttribute (sSingletonScopeKey))
+        if (aInnerScope != null)
         {
-          final String sMsg = "The scope " +
-                              aInnerScope.getID () +
-                              " already has a singleton of class " +
-                              aSingleton.getClass ();
-          if (bAllowOverwrite)
-            s_aLogger.warn (sMsg + " - overwriting it!");
-          else
-            throw new IllegalStateException (sMsg);
-        }
+          final AbstractSerializableSingleton aSingleton = AbstractSerializableSingleton.this;
+          if (aInnerScope.containsAttribute (sSingletonScopeKey))
+          {
+            final String sMsg = "The scope " +
+                                aInnerScope.getID () +
+                                " already has a singleton of class " +
+                                aSingleton.getClass ();
+            if (bAllowOverwrite)
+              s_aLogger.warn (sMsg + " - overwriting it!");
+            else
+              throw new IllegalStateException (sMsg);
+          }
 
-        // Set the abstract singleton in the scope and not this runnable...
-        aInnerScope.setAttribute (sSingletonScopeKey, aSingleton);
+          // Set the abstract singleton in the scope and not this runnable...
+          aInnerScope.setAttribute (sSingletonScopeKey, aSingleton);
+        }
       }
     });
   }
