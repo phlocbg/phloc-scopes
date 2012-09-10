@@ -28,6 +28,7 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.phloc.commons.annotations.ReturnsMutableCopy;
 import com.phloc.commons.state.EChange;
 import com.phloc.commons.string.StringHelper;
 import com.phloc.scopes.IScopeRenewalAware;
@@ -50,19 +51,26 @@ public final class WebScopeSessionHelper
   {}
 
   @Nonnull
+  @ReturnsMutableCopy
   private static Map <String, Map <String, IScopeRenewalAware>> _getSessionApplicationScopeValues (@Nonnull final ISessionWebScope aOldSessionScope)
   {
     final Map <String, Map <String, IScopeRenewalAware>> aSessionApplicationScopeValues = new HashMap <String, Map <String, IScopeRenewalAware>> ();
-    for (final Map.Entry <String, ISessionApplicationScope> aEntry : aOldSessionScope.getAllSessionApplicationScopes ()
-                                                                                     .entrySet ())
+    final Map <String, ISessionApplicationScope> aAllSessionApplicationScopes = aOldSessionScope.getAllSessionApplicationScopes ();
+    if (!aAllSessionApplicationScopes.isEmpty ())
     {
-      // Get all values from the current session application scope
-      final Map <String, IScopeRenewalAware> aSurviving = aEntry.getValue ().getAllScopeRenewalAwareAttributes ();
-      if (!aSurviving.isEmpty ())
+      final String sPrefixToSkip = aOldSessionScope.getID () + '.';
+
+      // For all existing session application scopes in the session scope
+      for (final Map.Entry <String, ISessionApplicationScope> aEntry : aAllSessionApplicationScopes.entrySet ())
       {
-        // Remove the leading session ID
-        final String sScopeApplicationID = StringHelper.trimStart (aEntry.getKey (), aOldSessionScope.getID () + '.');
-        aSessionApplicationScopeValues.put (sScopeApplicationID, aSurviving);
+        // Get all values from the current session application scope
+        final Map <String, IScopeRenewalAware> aSurviving = aEntry.getValue ().getAllScopeRenewalAwareAttributes ();
+        if (!aSurviving.isEmpty ())
+        {
+          // Remove the leading session ID
+          final String sScopeApplicationID = StringHelper.trimStart (aEntry.getKey (), sPrefixToSkip);
+          aSessionApplicationScopeValues.put (sScopeApplicationID, aSurviving);
+        }
       }
     }
     return aSessionApplicationScopeValues;
@@ -87,15 +95,6 @@ public final class WebScopeSessionHelper
       for (final Map.Entry <String, IScopeRenewalAware> aInnerEntry : aEntry.getValue ().entrySet ())
         aNewSessionApplicationScope.setAttribute (aInnerEntry.getKey (), aInnerEntry.getValue ());
     }
-  }
-
-  /**
-   * @deprecated Use {@link #renewCurrentSessionScope(boolean)} instead
-   */
-  @Deprecated
-  public static void renewSessionScope ()
-  {
-    renewCurrentSessionScope (true);
   }
 
   /**
