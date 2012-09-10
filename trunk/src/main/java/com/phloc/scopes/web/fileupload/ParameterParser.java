@@ -20,7 +20,12 @@ package com.phloc.scopes.web.fileupload;
 import java.util.HashMap;
 import java.util.Map;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import com.phloc.commons.annotations.ReturnsMutableCopy;
+import com.phloc.commons.collections.ArrayHelper;
+import com.phloc.commons.string.StringHelper;
 
 /**
  * A simple parser intended to parse sequences of name/value pairs. Parameter
@@ -69,9 +74,7 @@ public final class ParameterParser
    * Default ParameterParser constructor.
    */
   public ParameterParser ()
-  {
-    super ();
-  }
+  {}
 
   /**
    * Are there any characters left to parse?
@@ -81,7 +84,7 @@ public final class ParameterParser
    */
   private boolean _hasChar ()
   {
-    return this.m_nPos < this.m_nLen;
+    return m_nPos < m_nLen;
   }
 
   /**
@@ -93,22 +96,23 @@ public final class ParameterParser
    *        otherwise.
    * @return the token
    */
+  @Nullable
   private String _getToken (final boolean quoted)
   {
     // Trim leading white spaces
-    while ((m_nIndex1 < m_nIndex2) && (Character.isWhitespace (m_aChars[m_nIndex1])))
+    while (m_nIndex1 < m_nIndex2 && Character.isWhitespace (m_aChars[m_nIndex1]))
     {
       m_nIndex1++;
     }
     // Trim trailing white spaces
-    while ((m_nIndex2 > m_nIndex1) && (Character.isWhitespace (m_aChars[m_nIndex2 - 1])))
+    while (m_nIndex2 > m_nIndex1 && Character.isWhitespace (m_aChars[m_nIndex2 - 1]))
     {
       m_nIndex2--;
     }
     // Strip away quotation marks if necessary
     if (quoted)
     {
-      if (((m_nIndex2 - m_nIndex1) >= 2) && (m_aChars[m_nIndex1] == '"') && (m_aChars[m_nIndex2 - 1] == '"'))
+      if ((m_nIndex2 - m_nIndex1) >= 2 && m_aChars[m_nIndex1] == '"' && m_aChars[m_nIndex2 - 1] == '"')
       {
         m_nIndex1++;
         m_nIndex2--;
@@ -123,38 +127,18 @@ public final class ParameterParser
   }
 
   /**
-   * Tests if the given character is present in the array of characters.
-   * 
-   * @param ch
-   *        the character to test for presense in the array of characters
-   * @param charray
-   *        the array of characters to test against
-   * @return <tt>true</tt> if the character is present in the array of
-   *         characters, <tt>false</tt> otherwise.
-   */
-  private boolean _isOneOf (final char ch, final char [] charray)
-  {
-    boolean result = false;
-    for (final char element : charray)
-    {
-      if (ch == element)
-      {
-        result = true;
-        break;
-      }
-    }
-    return result;
-  }
-
-  /**
    * Parses out a token until any of the given terminators is encountered.
    * 
-   * @param terminators
-   *        the array of terminating characters. Any of these characters when
-   *        encountered signify the end of the token
+   * @param cTerminator1
+   *        the first terminating character. Any when encountered signify the
+   *        end of the token
+   * @param cTerminator2
+   *        the second terminating character. Any when encountered signify the
+   *        end of the token
    * @return the token
    */
-  private String _parseToken (final char [] terminators)
+  @Nullable
+  private String _parseToken (final char cTerminator1, final char cTerminator2)
   {
     char ch;
     m_nIndex1 = m_nPos;
@@ -162,10 +146,8 @@ public final class ParameterParser
     while (_hasChar ())
     {
       ch = m_aChars[m_nPos];
-      if (_isOneOf (ch, terminators))
-      {
+      if (ch == cTerminator1 || ch == cTerminator2)
         break;
-      }
       m_nIndex2++;
       m_nPos++;
     }
@@ -176,33 +158,30 @@ public final class ParameterParser
    * Parses out a token until any of the given terminators is encountered
    * outside the quotation marks.
    * 
-   * @param terminators
-   *        the array of terminating characters. Any of these characters when
-   *        encountered outside the quotation marks signify the end of the token
+   * @param cTerminator
+   *        the terminating character. Any of these characters when encountered
+   *        outside the quotation marks signify the end of the token
    * @return the token
    */
-  private String _parseQuotedToken (final char [] terminators)
+  @Nullable
+  private String _parseQuotedToken (final char cTerminator)
   {
     char ch;
     m_nIndex1 = m_nPos;
     m_nIndex2 = m_nPos;
-    boolean quoted = false;
-    boolean charEscaped = false;
+    boolean bQuoted = false;
+    boolean bCharEscaped = false;
     while (_hasChar ())
     {
       ch = m_aChars[m_nPos];
-      if (!quoted && _isOneOf (ch, terminators))
-      {
+      if (!bQuoted && cTerminator == ch)
         break;
-      }
-      if (!charEscaped && ch == '"')
-      {
-        quoted = !quoted;
-      }
-      charEscaped = (!charEscaped && ch == '\\');
+
+      if (!bCharEscaped && ch == '"')
+        bQuoted = !bQuoted;
+      bCharEscaped = (!bCharEscaped && ch == '\\');
       m_nIndex2++;
       m_nPos++;
-
     }
     return _getToken (true);
   }
@@ -216,7 +195,7 @@ public final class ParameterParser
    */
   public boolean isLowerCaseNames ()
   {
-    return this.m_bLowerCaseNames;
+    return m_bLowerCaseNames;
   }
 
   /**
@@ -229,7 +208,7 @@ public final class ParameterParser
    */
   public void setLowerCaseNames (final boolean b)
   {
-    this.m_bLowerCaseNames = b;
+    m_bLowerCaseNames = b;
   }
 
   /**
@@ -237,36 +216,35 @@ public final class ParameterParser
    * expected to be unique. Multiple separators may be specified and the
    * earliest found in the input string is used.
    * 
-   * @param str
+   * @param sStr
    *        the string that contains a sequence of name/value pairs
-   * @param separators
+   * @param aSeparators
    *        the name/value pairs separators
    * @return a map of name/value pairs
    */
-  public Map <String, String> parse (final String str, final char [] separators)
+  @Nonnull
+  @ReturnsMutableCopy
+  public Map <String, String> parse (@Nullable final String sStr, @Nullable final char [] aSeparators)
   {
-    if (separators == null || separators.length == 0)
-    {
+    if (ArrayHelper.isEmpty (aSeparators))
       return new HashMap <String, String> ();
-    }
-    char separator = separators[0];
-    if (str != null)
+
+    char cSep = aSeparators[0];
+    if (sStr != null)
     {
-      int idx = str.length ();
-      for (final char separator2 : separators)
+      // Find the first separator to use
+      int idx = sStr.length ();
+      for (final char cSep2 : aSeparators)
       {
-        final int tmp = str.indexOf (separator2);
-        if (tmp != -1)
+        final int tmp = sStr.indexOf (cSep2);
+        if (tmp != -1 && tmp < idx)
         {
-          if (tmp < idx)
-          {
-            idx = tmp;
-            separator = separator2;
-          }
+          idx = tmp;
+          cSep = cSep2;
         }
       }
     }
-    return parse (str, separator);
+    return parse (sStr, cSep);
   }
 
   /**
@@ -279,80 +257,39 @@ public final class ParameterParser
    *        the name/value pairs separator
    * @return a map of name/value pairs
    */
-  public Map <String, String> parse (final String str, final char separator)
+  @Nonnull
+  @ReturnsMutableCopy
+  public Map <String, String> parse (@Nullable final String str, final char separator)
   {
-    if (str == null)
-    {
-      return new HashMap <String, String> ();
-    }
-    return parse (str.toCharArray (), separator);
-  }
-
-  /**
-   * Extracts a map of name/value pairs from the given array of characters.
-   * Names are expected to be unique.
-   * 
-   * @param chars
-   *        the array of characters that contains a sequence of name/value pairs
-   * @param separator
-   *        the name/value pairs separator
-   * @return a map of name/value pairs
-   */
-  public Map <String, String> parse (final char [] chars, final char separator)
-  {
-    if (chars == null)
-    {
-      return new HashMap <String, String> ();
-    }
-    return parse (chars, 0, chars.length, separator);
-  }
-
-  /**
-   * Extracts a map of name/value pairs from the given array of characters.
-   * Names are expected to be unique.
-   * 
-   * @param chars
-   *        the array of characters that contains a sequence of name/value pairs
-   * @param offset
-   *        - the initial offset.
-   * @param length
-   *        - the length.
-   * @param separator
-   *        the name/value pairs separator
-   * @return a map of name/value pairs
-   */
-  @SuppressFBWarnings ("EI_EXPOSE_REP2")
-  public Map <String, String> parse (final char [] chars, final int offset, final int length, final char separator)
-  {
-    if (chars == null)
-      return new HashMap <String, String> ();
     final HashMap <String, String> params = new HashMap <String, String> ();
-    this.m_aChars = chars;
-    this.m_nPos = offset;
-    this.m_nLen = length;
-
-    String paramName = null;
-    String paramValue = null;
-    while (_hasChar ())
+    if (str != null)
     {
-      paramName = _parseToken (new char [] { '=', separator });
-      paramValue = null;
-      if (_hasChar () && (chars[m_nPos] == '='))
+      char [] chars;
+      m_aChars = chars = str.toCharArray ();
+      m_nPos = 0;
+      m_nLen = str.length ();
+
+      String sParamName = null;
+      String sParamValue = null;
+      while (_hasChar ())
       {
-        m_nPos++; // skip '='
-        paramValue = _parseQuotedToken (new char [] { separator });
-      }
-      if (_hasChar () && (chars[m_nPos] == separator))
-      {
-        m_nPos++; // skip separator
-      }
-      if ((paramName != null) && (paramName.length () > 0))
-      {
-        if (this.m_bLowerCaseNames)
+        sParamName = _parseToken ('=', separator);
+        sParamValue = null;
+        if (_hasChar () && chars[m_nPos] == '=')
         {
-          paramName = paramName.toLowerCase ();
+          m_nPos++; // skip '='
+          sParamValue = _parseQuotedToken (separator);
         }
-        params.put (paramName, paramValue);
+        if (_hasChar () && chars[m_nPos] == separator)
+        {
+          m_nPos++; // skip separator
+        }
+        if (StringHelper.hasText (sParamName))
+        {
+          if (m_bLowerCaseNames)
+            sParamName = sParamName.toLowerCase ();
+          params.put (sParamName, sParamValue);
+        }
       }
     }
     return params;

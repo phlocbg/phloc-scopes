@@ -37,8 +37,8 @@ public final class WebScopeAwareTestSetup
 {
   public static final String MOCK_CONTEXT = "/MockContext";
 
-  private static MockServletContext s_aServletContext;
-  private static MockHttpServletRequest s_aRequest;
+  private static volatile MockServletContext s_aServletContext;
+  private static volatile MockHttpServletRequest s_aRequest;
 
   private WebScopeAwareTestSetup ()
   {}

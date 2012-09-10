@@ -298,18 +298,18 @@ public final class MultipartStream
    */
   MultipartStream (final InputStream input, final byte [] boundary, final int bufSize, final ProgressNotifier pNotifier)
   {
-    this.m_aInput = input;
-    this.m_nBufSize = bufSize;
-    this.m_aBuffer = new byte [bufSize];
-    this.m_aNotifier = pNotifier;
+    m_aInput = input;
+    m_nBufSize = bufSize;
+    m_aBuffer = new byte [bufSize];
+    m_aNotifier = pNotifier;
 
     // We prepend CR/LF to the boundary to chop trailng CR/LF from
     // body-data tokens.
-    this.m_aBoundary = new byte [boundary.length + BOUNDARY_PREFIX.length];
-    this.m_nBoundaryLength = boundary.length + BOUNDARY_PREFIX.length;
-    this.m_nKeepRegion = this.m_aBoundary.length;
-    System.arraycopy (BOUNDARY_PREFIX, 0, this.m_aBoundary, 0, BOUNDARY_PREFIX.length);
-    System.arraycopy (boundary, 0, this.m_aBoundary, BOUNDARY_PREFIX.length, boundary.length);
+    m_aBoundary = new byte [boundary.length + BOUNDARY_PREFIX.length];
+    m_nBoundaryLength = boundary.length + BOUNDARY_PREFIX.length;
+    m_nKeepRegion = m_aBoundary.length;
+    System.arraycopy (BOUNDARY_PREFIX, 0, m_aBoundary, 0, BOUNDARY_PREFIX.length);
+    System.arraycopy (boundary, 0, m_aBoundary, BOUNDARY_PREFIX.length, boundary.length);
 
     m_nHead = 0;
     m_nTail = 0;
@@ -465,7 +465,7 @@ public final class MultipartStream
     {
       throw new IllegalBoundaryException ("The length of a boundary token can not be changed");
     }
-    System.arraycopy (boundary, 0, this.m_aBoundary, BOUNDARY_PREFIX.length, boundary.length);
+    System.arraycopy (boundary, 0, m_aBoundary, BOUNDARY_PREFIX.length, boundary.length);
   }
 
   /**
@@ -819,13 +819,9 @@ public final class MultipartStream
       if (m_nPos == -1)
       {
         if (m_nTail - m_nHead > m_nKeepRegion)
-        {
           m_nPad = m_nKeepRegion;
-        }
         else
-        {
           m_nPad = m_nTail - m_nHead;
-        }
       }
     }
 
@@ -851,9 +847,7 @@ public final class MultipartStream
     public int available () throws IOException
     {
       if (m_nPos == -1)
-      {
         return m_nTail - m_nHead - m_nPad;
-      }
       return m_nPos - m_nHead;
     }
 
@@ -874,22 +868,17 @@ public final class MultipartStream
     public int read () throws IOException
     {
       if (m_bClosed)
-      {
         throw new IFileItemStream.ItemSkippedException ();
-      }
+
       if (available () == 0)
-      {
         if (_makeAvailable () == 0)
-        {
           return -1;
-        }
-      }
+
       ++m_nTotal;
       final int b = m_aBuffer[m_nHead++];
       if (b >= 0)
-      {
         return b;
-      }
+
       return b + BYTE_POSITIVE_OFFSET;
     }
 
@@ -910,13 +899,11 @@ public final class MultipartStream
     public int read (final byte [] b, final int off, final int len) throws IOException
     {
       if (m_bClosed)
-      {
         throw new IFileItemStream.ItemSkippedException ();
-      }
+
       if (len == 0)
-      {
         return 0;
-      }
+
       int res = available ();
       if (res == 0)
       {

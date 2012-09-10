@@ -29,7 +29,7 @@ import com.phloc.scopes.web.fileupload.IRequestContext;
  * Provides access to the request information needed for a request made to an
  * HTTP servlet.
  * </p>
- * 
+ *
  * @author <a href="mailto:martinc@apache.org">Martin Cooper</a>
  * @since FileUpload 1.1
  * @version $Id: ServletRequestContext.java 479262 2006-11-26 03:09:24Z niallp $
@@ -48,20 +48,20 @@ public final class ServletRequestContext implements IRequestContext
 
   /**
    * Construct a context for this request.
-   * 
+   *
    * @param request
    *        The request to which this context applies.
    */
   public ServletRequestContext (final HttpServletRequest request)
   {
-    this.m_aHttpRequest = request;
+    m_aHttpRequest = request;
   }
 
   // --------------------------------------------------------- Public Methods
 
   /**
    * Retrieve the character encoding for the request.
-   * 
+   *
    * @return The character encoding for the request.
    */
   public String getCharacterEncoding ()
@@ -71,7 +71,7 @@ public final class ServletRequestContext implements IRequestContext
 
   /**
    * Retrieve the content type of the request.
-   * 
+   *
    * @return The content type of the request.
    */
   public String getContentType ()
@@ -81,7 +81,7 @@ public final class ServletRequestContext implements IRequestContext
 
   /**
    * Retrieve the content length of the request.
-   * 
+   *
    * @return The content length of the request.
    */
   public int getContentLength ()
@@ -91,7 +91,7 @@ public final class ServletRequestContext implements IRequestContext
 
   /**
    * Retrieve the input stream for the request.
-   * 
+   *
    * @return The input stream for the request.
    * @throws IOException
    *         if a problem occurs.
@@ -103,12 +103,12 @@ public final class ServletRequestContext implements IRequestContext
 
   /**
    * Returns a string representation of this object.
-   * 
+   *
    * @return a string representation of this object.
    */
   @Override
   public String toString ()
   {
-    return "ContentLength=" + this.getContentLength () + ", ContentType=" + this.getContentType ();
+    return "ContentLength=" + getContentLength () + ", ContentType=" + getContentType ();
   }
 }
