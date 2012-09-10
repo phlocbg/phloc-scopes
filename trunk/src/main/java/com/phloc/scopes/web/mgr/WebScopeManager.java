@@ -91,8 +91,6 @@ public final class WebScopeManager
   @Nullable
   public static IGlobalWebScope getGlobalScopeOrNull ()
   {
-    // Note: if you get an exception here, and you're in the unit test, please
-    // derived from AbstractWebScopeAwareTestCase
     final IGlobalScope aGlobalScope = ScopeManager.getGlobalScopeOrNull ();
     try
     {
@@ -100,7 +98,7 @@ public final class WebScopeManager
     }
     catch (final ClassCastException ex)
     {
-      s_aLogger.warn ("Gobal scope object is not a web scope: " + aGlobalScope);
+      s_aLogger.warn ("Gobal scope object is not a global web scope: " + aGlobalScope);
       return null;
     }
   }
@@ -313,8 +311,8 @@ public final class WebScopeManager
     if (aHttpSession == null)
       throw new NullPointerException ("httpSession");
 
-    final ScopeSessionManager aSSM = ScopeSessionManager.getInstanceOrNull ();
-    final ISessionScope aSessionScope = aSSM == null ? null : aSSM.getSessionScopeOfID (aHttpSession.getId ());
+    final ScopeSessionManager aSSM = ScopeSessionManager.getInstance ();
+    final ISessionScope aSessionScope = aSSM.getSessionScopeOfID (aHttpSession.getId ());
     if (aSessionScope != null)
     {
       // Regular scope end
@@ -385,7 +383,7 @@ public final class WebScopeManager
   {
     final IRequestScope aRequestScope = ScopeManager.getRequestScopeOrNull ();
     try
-    { // Just cast
+    {
       return (IRequestWebScope) aRequestScope;
     }
     catch (final ClassCastException ex)
@@ -397,21 +395,17 @@ public final class WebScopeManager
 
   public static boolean isRequestScopePresent ()
   {
-    return ScopeManager.isRequestScopePresent ();
+    final IRequestScope aRequestScope = ScopeManager.getRequestScopeOrNull ();
+    return aRequestScope instanceof IRequestWebScope;
   }
 
   @Nonnull
   public static IRequestWebScope getRequestScope ()
   {
-    try
-    {
-      // Just cast
-      return (IRequestWebScope) ScopeManager.getRequestScope ();
-    }
-    catch (final ClassCastException ex)
-    {
-      throw new IllegalStateException ("Request scope object is not a web scope!");
-    }
+    final IRequestWebScope aRequestScope = getRequestScopeOrNull ();
+    if (aRequestScope == null)
+      throw new IllegalStateException ("No request web scope object has been set!");
+    return aRequestScope;
   }
 
   public static void onRequestEnd ()

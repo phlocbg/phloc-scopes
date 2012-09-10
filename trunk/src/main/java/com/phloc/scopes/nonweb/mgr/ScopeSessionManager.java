@@ -59,6 +59,8 @@ public class ScopeSessionManager extends GlobalSingleton
   private static final IStatisticsHandlerCounter s_aUniqueSessionCounter = StatisticsManager.getCounterHandler (ScopeSessionManager.class.getName () +
                                                                                                                 "$UNIQUE_SESSIONS");
 
+  private static volatile ScopeSessionManager s_aInstance = null;
+
   /** All contained session scopes. */
   private final ReadWriteLock m_aRWLock = new ReentrantReadWriteLock ();
   private final Map <String, ISessionScope> m_aSessionScopes = new HashMap <String, ISessionScope> ();
@@ -74,30 +76,11 @@ public class ScopeSessionManager extends GlobalSingleton
   @Nonnull
   public static ScopeSessionManager getInstance ()
   {
-    return getGlobalSingleton (ScopeSessionManager.class);
-  }
-
-  @Nullable
-  public static ScopeSessionManager getInstanceOrNull ()
-  {
-    return isSingletonInstantiated (ScopeSessionManager.class) ? getInstance () : null;
-  }
-
-  /**
-   * Get the session scope with the specified ID. If no such scope exists, no
-   * further actions are taken.
-   * 
-   * @param sScopeID
-   *        The ID to be resolved.
-   * @return <code>null</code> if no such scope exists.
-   * @deprecated
-   * @see #getSessionScopeOfID(String)
-   */
-  @Nullable
-  @Deprecated
-  public ISessionScope getSessionScope (@Nullable final String sScopeID)
-  {
-    return getSessionScopeOfID (sScopeID);
+    // This special handling is needed, because this global singleton is
+    // required upon shutdown of the GlobalWebScope!
+    if (s_aInstance == null)
+      s_aInstance = getGlobalSingleton (ScopeSessionManager.class);
+    return s_aInstance;
   }
 
   /**
@@ -155,6 +138,7 @@ public class ScopeSessionManager extends GlobalSingleton
    * the scope is destroyed.
    * 
    * @param aSessionScope
+   *        The session scope to be ended
    */
   public void onScopeEnd (@Nonnull final ISessionScope aSessionScope)
   {
@@ -236,7 +220,7 @@ public class ScopeSessionManager extends GlobalSingleton
     }
   }
 
-  private void _checkIfSessionsExist ()
+  private void _checkIfAnySessionsExist ()
   {
     if (getSessionCount () > 0)
     {
@@ -259,7 +243,7 @@ public class ScopeSessionManager extends GlobalSingleton
   public void destroyAllSessions ()
   {
     // destroy all session scopes (make a copy, because we're invalidating
-    // the sessions!)
+    // the sessions internally!)
     for (final ISessionScope aSessionScope : getAllSessionScopes ())
     {
       // Unfortunately we need a special handling here
@@ -272,7 +256,7 @@ public class ScopeSessionManager extends GlobalSingleton
     }
 
     // Sanity check in case something went wrong
-    _checkIfSessionsExist ();
+    _checkIfAnySessionsExist ();
   }
 
   /**
@@ -290,7 +274,7 @@ public class ScopeSessionManager extends GlobalSingleton
     }
 
     // Sanity check in case something went wrong
-    _checkIfSessionsExist ();
+    _checkIfAnySessionsExist ();
   }
 
   public boolean isDestroyAllSessionsOnScopeEnd ()
@@ -361,5 +345,6 @@ public class ScopeSessionManager extends GlobalSingleton
     else
       if (isEndAllSessionsOnScopeEnd ())
         _endAllSessionScopes ();
+    s_aInstance = null;
   }
 }
