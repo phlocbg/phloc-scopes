@@ -62,6 +62,17 @@ public interface ISessionScope extends IScope
                                                        boolean bCreateIfNotExisting);
 
   /**
+   * Restore a persisted session application scope
+   * 
+   * @param sScopeID
+   *        The ID of the restored application scope. May neither be
+   *        <code>null</code> nor empty.
+   * @param aScope
+   *        The scope to be restored. May not be <code>null</code>.
+   */
+  void restoreSessionApplicationScope (@Nonnull @Nonempty String sScopeID, @Nonnull ISessionApplicationScope aScope);
+
+  /**
    * @return A non-<code>null</code> map with all available session application
    *         scopes. The key is the application ID and the value is the scope.
    */

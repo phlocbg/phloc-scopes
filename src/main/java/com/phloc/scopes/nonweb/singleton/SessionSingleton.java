@@ -17,12 +17,13 @@
  */
 package com.phloc.scopes.nonweb.singleton;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 
 import com.phloc.commons.annotations.MustImplementEqualsAndHashcode;
-import com.phloc.scopes.AbstractSerializableSingleton;
+import com.phloc.scopes.AbstractSingleton;
 import com.phloc.scopes.nonweb.domain.ISessionScope;
 import com.phloc.scopes.nonweb.mgr.ScopeManager;
 
@@ -34,7 +35,7 @@ import com.phloc.scopes.nonweb.mgr.ScopeManager;
  * @author philip
  */
 @MustImplementEqualsAndHashcode
-public abstract class SessionSingleton extends AbstractSerializableSingleton
+public abstract class SessionSingleton extends AbstractSingleton implements Serializable
 {
   protected SessionSingleton ()
   {

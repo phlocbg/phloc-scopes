@@ -17,12 +17,13 @@
  */
 package com.phloc.scopes.web.singleton;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 
 import com.phloc.commons.annotations.MustImplementEqualsAndHashcode;
-import com.phloc.scopes.AbstractSerializableSingleton;
+import com.phloc.scopes.AbstractSingleton;
 import com.phloc.scopes.web.domain.ISessionWebScope;
 import com.phloc.scopes.web.mgr.WebScopeManager;
 
@@ -34,7 +35,7 @@ import com.phloc.scopes.web.mgr.WebScopeManager;
  * @author philip
  */
 @MustImplementEqualsAndHashcode
-public abstract class SessionWebSingleton extends AbstractSerializableSingleton
+public abstract class SessionWebSingleton extends AbstractSingleton implements Serializable
 {
   protected SessionWebSingleton ()
   {

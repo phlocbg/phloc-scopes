@@ -41,6 +41,7 @@ import com.phloc.scopes.web.domain.IGlobalWebScope;
 import com.phloc.scopes.web.domain.IRequestWebScope;
 import com.phloc.scopes.web.domain.ISessionApplicationWebScope;
 import com.phloc.scopes.web.domain.ISessionWebScope;
+import com.phloc.scopes.web.impl.SessionWebScopePassivator;
 
 /**
  * This is the main manager class for web scope handling.
@@ -207,20 +208,8 @@ public final class WebScopeManager
   {
     final ISessionWebScope aSessionWebScope = MetaScopeFactory.getWebScopeFactory ().createSessionScope (aHttpSession);
     ScopeSessionManager.getInstance ().onScopeBegin (aSessionWebScope);
+    aHttpSession.setAttribute ("$phloc.sessionwebscope", new SessionWebScopePassivator (aSessionWebScope));
     return aSessionWebScope;
-  }
-
-  /**
-   * Get or create a session scope based on the current request scope. This is
-   * the same as calling
-   * <code>getSessionScope({@link ScopeManager#DEFAULT_CREATE_SCOPE})</code>
-   * 
-   * @return Never <code>null</code>.
-   */
-  @Nonnull
-  public static ISessionWebScope getSessionScope ()
-  {
-    return getSessionScope (ScopeManager.DEFAULT_CREATE_SCOPE);
   }
 
   /**
@@ -231,9 +220,10 @@ public final class WebScopeManager
    * @param bCreateIfNotExisting
    *        if <code>true</code> if a new session web scope is created, if none
    *        is present
-   * @param bItsOkayToCreateANewSession
+   * @param bItsOkayToCreateANewScope
    *        if <code>true</code> no warning is emitted, if a new session scope
-   *        must be created. This is e.g. used when renewing a session.
+   *        must be created. This is e.g. used when renewing a session or when
+   *        activating a previously passivated session.
    * @return <code>null</code> if no session scope is present, and
    *         bCreateIfNotExisting is false
    */
@@ -241,7 +231,7 @@ public final class WebScopeManager
   @DevelopersNote ("This is only for project-internal use!")
   public static ISessionWebScope internalGetOrCreateSessionScope (@Nonnull final HttpSession aHttpSession,
                                                                   final boolean bCreateIfNotExisting,
-                                                                  final boolean bItsOkayToCreateANewSession)
+                                                                  final boolean bItsOkayToCreateANewScope)
   {
     if (aHttpSession == null)
       throw new NullPointerException ("httpSession");
@@ -251,7 +241,7 @@ public final class WebScopeManager
     ISessionScope aSessionWebScope = ScopeSessionManager.getInstance ().getSessionScopeOfID (sSessionID);
     if (aSessionWebScope == null && bCreateIfNotExisting)
     {
-      if (!bItsOkayToCreateANewSession)
+      if (!bItsOkayToCreateANewScope)
       {
         // This can e.g. happen in tests, when there are no registered
         // listeners for session events!
@@ -274,6 +264,19 @@ public final class WebScopeManager
     {
       throw new IllegalStateException ("Session scope object is not a web scope!");
     }
+  }
+
+  /**
+   * Get or create a session scope based on the current request scope. This is
+   * the same as calling
+   * <code>getSessionScope({@link ScopeManager#DEFAULT_CREATE_SCOPE})</code>
+   * 
+   * @return Never <code>null</code>.
+   */
+  @Nonnull
+  public static ISessionWebScope getSessionScope ()
+  {
+    return getSessionScope (ScopeManager.DEFAULT_CREATE_SCOPE);
   }
 
   /**
