@@ -231,13 +231,17 @@ public final class WebScopeManager
    * @param bCreateIfNotExisting
    *        if <code>true</code> if a new session web scope is created, if none
    *        is present
+   * @param bItsOkayToCreateANewSession
+   *        if <code>true</code> no warning is emitted, if a new session scope
+   *        must be created. This is e.g. used when renewing a session.
    * @return <code>null</code> if no session scope is present, and
    *         bCreateIfNotExisting is false
    */
   @Nullable
   @DevelopersNote ("This is only for project-internal use!")
   public static ISessionWebScope internalGetOrCreateSessionScope (@Nonnull final HttpSession aHttpSession,
-                                                                  final boolean bCreateIfNotExisting)
+                                                                  final boolean bCreateIfNotExisting,
+                                                                  final boolean bItsOkayToCreateANewSession)
   {
     if (aHttpSession == null)
       throw new NullPointerException ("httpSession");
@@ -247,11 +251,16 @@ public final class WebScopeManager
     ISessionScope aSessionWebScope = ScopeSessionManager.getInstance ().getSessionScopeOfID (sSessionID);
     if (aSessionWebScope == null && bCreateIfNotExisting)
     {
-      // This can e.g. happen in tests, when there are no registered
-      // listeners for session events!
-      s_aLogger.warn ("Creating a new session web scope for ID '" +
-                      sSessionID +
-                      "' but there should already be one! Check your HttpSessionListener implementation. See com.phloc.scopes.web.servlet.WebScopeListener for an example");
+      if (!bItsOkayToCreateANewSession)
+      {
+        // This can e.g. happen in tests, when there are no registered
+        // listeners for session events!
+        s_aLogger.warn ("Creating a new session web scope for ID '" +
+                        sSessionID +
+                        "' but there should already be one!" +
+                        " Check your HttpSessionListener implementation." +
+                        " See com.phloc.scopes.web.servlet.WebScopeListener for an example.");
+      }
 
       // Create a new session scope
       aSessionWebScope = onSessionBegin (aHttpSession);
@@ -279,6 +288,26 @@ public final class WebScopeManager
   @Nullable
   public static ISessionWebScope getSessionScope (final boolean bCreateIfNotExisting)
   {
+    return internalGetSessionScope (bCreateIfNotExisting, false);
+  }
+
+  /**
+   * Get the session scope from the current request scope.
+   * 
+   * @param bCreateIfNotExisting
+   *        if <code>true</code> a new session scope (and a new HTTP session if
+   *        required) is created if none is existing so far.
+   * @param bItsOkayToCreateANewSession
+   *        if <code>true</code> no warning is emitted, if a new session scope
+   *        must be created. This is e.g. used when renewing a session.
+   * @return <code>null</code> if no session scope is present, and none should
+   *         be created.
+   */
+  @Nullable
+  @DevelopersNote ("This is only for project-internal use!")
+  public static ISessionWebScope internalGetSessionScope (final boolean bCreateIfNotExisting,
+                                                          final boolean bItsOkayToCreateANewSession)
+  {
     // Try to to resolve the current request scope
     final IRequestWebScope aRequestScope = getRequestScopeOrNull ();
     if (aRequestScope != null)
@@ -286,13 +315,13 @@ public final class WebScopeManager
       // Check if we have an HTTP session object
       final HttpSession aHttpSession = aRequestScope.getSession (bCreateIfNotExisting);
       if (aHttpSession != null)
-        return internalGetOrCreateSessionScope (aHttpSession, bCreateIfNotExisting);
+        return internalGetOrCreateSessionScope (aHttpSession, bCreateIfNotExisting, bItsOkayToCreateANewSession);
     }
     else
     {
       // If we want a session scope, we expect the return value to be non-null!
       if (bCreateIfNotExisting)
-        throw new IllegalStateException ("No request scope is present, so no session scope can be created!");
+        throw new IllegalStateException ("No request scope is present, so no session scope can be retrieved!");
     }
     return null;
   }
