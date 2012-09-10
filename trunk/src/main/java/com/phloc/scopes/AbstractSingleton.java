@@ -50,6 +50,7 @@ import com.phloc.commons.string.ToStringGenerator;
  */
 public abstract class AbstractSingleton implements IScopeDestructionAware
 {
+  private static final int DEFAULT_KEY_LENGTH = 255;
   private static final Logger s_aLogger = LoggerFactory.getLogger (AbstractSingleton.class);
   private static final IStatisticsHandlerKeyedCounter s_aStatsCounterInstantiate = StatisticsManager.getKeyedCounterHandler (AbstractSingleton.class);
 
@@ -156,7 +157,7 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
       throw new NullPointerException ("class");
 
     // Preallocate some bytes
-    return new StringBuilder (255).append ("singleton.").append (aClass.getName ()).toString ();
+    return new StringBuilder (DEFAULT_KEY_LENGTH).append ("singleton.").append (aClass.getName ()).toString ();
   }
 
   /**

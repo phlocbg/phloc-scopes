@@ -45,7 +45,6 @@ import com.phloc.scopes.web.fileupload.FileUploadException;
 import com.phloc.scopes.web.fileupload.IFileItem;
 import com.phloc.scopes.web.fileupload.IFileItemHeaders;
 import com.phloc.scopes.web.fileupload.IFileItemHeadersSupport;
-import com.phloc.scopes.web.fileupload.InvalidFileNameException;
 import com.phloc.scopes.web.fileupload.ParameterParser;
 import com.phloc.scopes.web.fileupload.util.Streams;
 
@@ -181,12 +180,12 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
                        final int sizeThreshold,
                        @Nullable final File repository)
   {
-    this.m_sFieldName = fieldName;
-    this.m_sContentType = contentType;
-    this.m_bIsFormField = isFormField;
-    this.m_sFilename = fileName;
-    this.m_nSizeThreshold = sizeThreshold;
-    this.m_aRepository = repository;
+    m_sFieldName = fieldName;
+    m_sContentType = contentType;
+    m_bIsFormField = isFormField;
+    m_sFilename = fileName;
+    m_nSizeThreshold = sizeThreshold;
+    m_aRepository = repository;
   }
 
   // ------------------------------- Methods from javax.activation.DataSource
@@ -246,7 +245,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
    * Returns the original filename in the client's filesystem.
    * 
    * @return The original filename in the client's filesystem.
-   * @throws InvalidFileNameException
+   * @throws com.phloc.scopes.web.fileupload.InvalidFileNameException
    *         The file name contains a NUL character, which might be an indicator
    *         of a security attack. If you intend to use the file name anyways,
    *         catch the exception and use InvalidFileNameException#getName().
@@ -426,7 +425,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
    */
   public void setFieldName (final String fieldName)
   {
-    this.m_sFieldName = fieldName;
+    m_sFieldName = fieldName;
   }
 
   /**
@@ -500,14 +499,16 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
 
   /**
    * Removes the file contents from the temporary storage.
+   * 
+   * @throws Throwable
    */
   @Override
-  protected void finalize ()
+  protected void finalize () throws Throwable
   {
     final File outputFile = m_aDfos.getFile ();
-
     if (outputFile != null && outputFile.exists ())
       FileOperations.deleteFile (outputFile);
+    super.finalize ();
   }
 
   /**
@@ -569,16 +570,16 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   public String toString ()
   {
     return "name=" +
-           this.getName () +
+           getName () +
            ", StoreLocation=" +
-           String.valueOf (this.getStoreLocation ()) +
+           getStoreLocation () +
            ", size=" +
-           this.getSize () +
+           getSize () +
            "bytes, " +
            "isFormField=" +
            isFormField () +
            ", FieldName=" +
-           this.getFieldName ();
+           getFieldName ();
   }
 
   // -------------------------------------------------- Serialization methods

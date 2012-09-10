@@ -54,6 +54,7 @@ import com.phloc.commons.system.SystemHelper;
 public final class MockHttpServletResponse implements HttpServletResponse, IHasLocale
 {
   public static final int DEFAULT_SERVER_PORT = 80;
+  private static final int DEFAULT_BUFFER_SIZE = 4096;
 
   private boolean m_bOutputStreamAccessAllowed = true;
   private boolean m_bWriterAccessAllowed = true;
@@ -79,7 +80,7 @@ public final class MockHttpServletResponse implements HttpServletResponse, IHasL
   private PrintWriter m_aWriter;
   private int m_nContentLength = 0;
   private String m_sContentType;
-  private int m_nBufferSize = 4096;
+  private int m_nBufferSize = DEFAULT_BUFFER_SIZE;
   private boolean m_bCommitted;
   private Locale m_aLocale = Locale.getDefault ();
 
@@ -141,7 +142,7 @@ public final class MockHttpServletResponse implements HttpServletResponse, IHasL
 
   @Nonnull
   @Nonempty
-  public final String getCharacterEncodingOrDefault ()
+  public String getCharacterEncodingOrDefault ()
   {
     String ret = m_sCharacterEncoding;
     if (ret == null)

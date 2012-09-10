@@ -444,7 +444,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
    * If there are already one or more values registered for the given parameter
    * name, the given value will be added to the end of the list.
    */
-  public void addParameter (@Nonnull final String sName, @Nullable final String sValue)
+  public final void addParameter (@Nonnull final String sName, @Nullable final String sValue)
   {
     addParameter (sName, new String [] { sValue });
   }
@@ -455,7 +455,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
    * If there are already one or more values registered for the given parameter
    * name, the given values will be added to the end of the list.
    */
-  public void addParameter (@Nonnull final String sName, @Nullable final String [] aValues)
+  public final void addParameter (@Nonnull final String sName, @Nullable final String [] aValues)
   {
     if (sName == null)
       throw new NullPointerException ("Parameter name must not be null");

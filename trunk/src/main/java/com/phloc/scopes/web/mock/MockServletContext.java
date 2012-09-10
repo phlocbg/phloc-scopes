@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
@@ -59,6 +60,8 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 @NotThreadSafe
 public final class MockServletContext implements ServletContext
 {
+  public static final int SERVLET_SPEC_MAJOR_VERSION = 2;
+  public static final int SERVLET_SPEC_MINOR_VERSION = 5;
   public static final String DEFAULT_SERVLET_CONTEXT_NAME = "MockServletContext";
   public static final String DEFAULT_SERVLET_CONTEXT_PATH = "";
   private static final Logger s_aLogger = LoggerFactory.getLogger (MockServletContext.class);
@@ -212,14 +215,16 @@ public final class MockServletContext implements ServletContext
     return m_aContexts.get (sContextPath);
   }
 
+  @Nonnegative
   public int getMajorVersion ()
   {
-    return 2;
+    return SERVLET_SPEC_MAJOR_VERSION;
   }
 
+  @Nonnegative
   public int getMinorVersion ()
   {
-    return 5;
+    return SERVLET_SPEC_MINOR_VERSION;
   }
 
   @Nullable

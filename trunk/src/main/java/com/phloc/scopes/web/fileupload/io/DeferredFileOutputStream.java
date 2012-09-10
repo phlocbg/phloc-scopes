@@ -22,6 +22,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.phloc.commons.io.file.FileUtils;
 import com.phloc.commons.io.streams.NonBlockingByteArrayOutputStream;
 import com.phloc.commons.io.streams.StreamUtils;
@@ -77,10 +80,10 @@ public final class DeferredFileOutputStream extends AbstractThresholdingOutputSt
    * @param outputFile
    *        The file to which data is saved beyond the threshold.
    */
-  public DeferredFileOutputStream (final int threshold, final File outputFile)
+  public DeferredFileOutputStream (final int threshold, @Nonnull final File outputFile)
   {
     super (threshold);
-    this.m_aOutputFile = outputFile;
+    m_aOutputFile = outputFile;
 
     m_aMemoryOutputStream = new NonBlockingByteArrayOutputStream ();
     m_aCurrentOutputStream = m_aMemoryOutputStream;
@@ -140,7 +143,7 @@ public final class DeferredFileOutputStream extends AbstractThresholdingOutputSt
    */
   public boolean isInMemory ()
   {
-    return (!isThresholdExceeded ());
+    return !isThresholdExceeded ();
   }
 
   /**
@@ -151,6 +154,7 @@ public final class DeferredFileOutputStream extends AbstractThresholdingOutputSt
    * @return The data for this output stream, or <code>null</code> if no such
    *         data is available.
    */
+  @Nullable
   public byte [] getData ()
   {
     if (m_aMemoryOutputStream != null)
@@ -201,7 +205,7 @@ public final class DeferredFileOutputStream extends AbstractThresholdingOutputSt
    * @exception IOException
    *            if this stream is not yet closed or an error occurs.
    */
-  public void writeTo (final OutputStream out) throws IOException
+  public void writeTo (@Nonnull final OutputStream out) throws IOException
   {
     // we may only need to check if this is closed if we are working with a file
     // but we should force the habit of closing wether we are working with
