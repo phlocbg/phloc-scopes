@@ -37,7 +37,8 @@ public class WebScopeTestRule extends ExternalResource
 {
   public static final String MOCK_CONTEXT_PATH = "/MockContext";
 
-  private final Map <String, String> m_aServletContextInitParameters;
+  private String m_sContextPath = MOCK_CONTEXT_PATH;
+  private Map <String, String> m_aServletContextInitParameters;
   private MockServletContext m_aServletContext;
   private MockHttpServletRequest m_aRequest;
 
@@ -52,8 +53,27 @@ public class WebScopeTestRule extends ExternalResource
   }
 
   @Nonnull
+  public WebScopeTestRule setContextPath (@Nonnull final String sContextPath)
+  {
+    m_sContextPath = sContextPath;
+    return this;
+  }
+
+  @Nullable
+  public String getContextPath ()
+  {
+    return m_sContextPath;
+  }
+
+  @Nonnull
+  public WebScopeTestRule setServletContextInitParameters (@Nullable final Map <String, String> aServletContextInitParameters)
+  {
+    m_aServletContextInitParameters = aServletContextInitParameters;
+    return this;
+  }
+
+  @Nonnull
   @ReturnsMutableCopy
-  @OverrideOnDemand
   public Map <String, String> getServletContextInitParameters ()
   {
     return ContainerHelper.newMap (m_aServletContextInitParameters);
@@ -79,7 +99,7 @@ public class WebScopeTestRule extends ExternalResource
     initListener ();
 
     // Start global scope -> triggers events
-    m_aServletContext = new MockServletContext (MOCK_CONTEXT_PATH, getServletContextInitParameters ());
+    m_aServletContext = new MockServletContext (m_sContextPath, m_aServletContextInitParameters);
 
     // Start request scope -> triggers events
     m_aRequest = new MockHttpServletRequest (m_aServletContext);
