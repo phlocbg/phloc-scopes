@@ -138,7 +138,8 @@ public final class WebScopeSessionHelper
     }
 
     // Ensure that we get a new session!
-    final ISessionWebScope aNewSessionScope = WebScopeManager.getSessionScope (true);
+    // Here it is OK to create a new session scope explicitly!
+    final ISessionWebScope aNewSessionScope = WebScopeManager.internalGetSessionScope (true, true);
     _restoreScopeAttributes (aNewSessionScope, aSessionScopeValues, aSessionApplicationScopeValues);
     return EChange.CHANGED;
   }
@@ -160,7 +161,9 @@ public final class WebScopeSessionHelper
       throw new NullPointerException ("httpSession");
 
     // Get the old session scope
-    final ISessionWebScope aOldSessionScope = WebScopeManager.internalGetOrCreateSessionScope (aHttpSession, false);
+    final ISessionWebScope aOldSessionScope = WebScopeManager.internalGetOrCreateSessionScope (aHttpSession,
+                                                                                               false,
+                                                                                               false);
     if (aOldSessionScope == null)
       return null;
 
@@ -173,11 +176,12 @@ public final class WebScopeSessionHelper
 
     // Do not invalidate the underlying session - only renew the session scope
     // itself because we don't have the possibility to create a new HTTP
-    // sessions
+    // session for an arbitrary user!
     ScopeSessionManager.getInstance ().onScopeEnd (aOldSessionScope);
 
     // Ensure that we get a new session!
-    final ISessionWebScope aNewSessionScope = WebScopeManager.internalGetOrCreateSessionScope (aHttpSession, true);
+    // Here it is OK to create a new session scope explicitly!
+    final ISessionWebScope aNewSessionScope = WebScopeManager.internalGetOrCreateSessionScope (aHttpSession, true, true);
     _restoreScopeAttributes (aNewSessionScope, aSessionScopeValues, aSessionApplicationScopeValues);
     return aNewSessionScope;
   }
