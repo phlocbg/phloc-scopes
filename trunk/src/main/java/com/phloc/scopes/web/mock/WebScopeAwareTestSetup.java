@@ -32,6 +32,7 @@ import com.phloc.commons.annotations.DevelopersNote;
  */
 @NotThreadSafe
 @DevelopersNote ("It's preferred to use the WebScopeTestRule class instead!")
+@Deprecated
 public final class WebScopeAwareTestSetup
 {
   public static final String MOCK_CONTEXT = "/MockContext";

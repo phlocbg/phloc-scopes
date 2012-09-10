@@ -776,7 +776,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
    * @see #getDateHeader
    * @see #getIntHeader
    */
-  public void addHeader (@Nullable final String sName, @Nullable final Object aValue)
+  public final void addHeader (@Nullable final String sName, @Nullable final Object aValue)
   {
     m_aHeaders.putSingle (_unifyHeaderName (sName), aValue);
   }

@@ -75,16 +75,4 @@ public class SessionBackedRequestFieldData extends RequestFieldData
     return aSessionScope == null ? sSuperDefaultValue : aSessionScope.getAttributeAsString (_getSessionFieldName (),
                                                                                             sSuperDefaultValue);
   }
-
-  @Override
-  public boolean equals (final Object o)
-  {
-    return super.equals (o);
-  }
-
-  @Override
-  public int hashCode ()
-  {
-    return super.hashCode ();
-  }
 }
