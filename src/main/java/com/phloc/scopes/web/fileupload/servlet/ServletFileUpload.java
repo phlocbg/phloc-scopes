@@ -19,7 +19,9 @@ package com.phloc.scopes.web.fileupload.servlet;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
+import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletRequest;
 
 import com.phloc.scopes.web.fileupload.FileUpload;
@@ -55,9 +57,6 @@ import com.phloc.scopes.web.fileupload.IFileItemIterator;
  */
 public class ServletFileUpload extends FileUpload
 {
-
-  // ---------------------------------------------------------- Class methods
-
   /**
    * Utility method that determines whether the request contains multipart
    * content.
@@ -67,25 +66,17 @@ public class ServletFileUpload extends FileUpload
    * @return <code>true</code> if the request is multipart; <code>false</code>
    *         otherwise.
    */
-  public static final boolean isMultipartContent (final HttpServletRequest request)
+  public static final boolean isMultipartContent (@Nonnull final HttpServletRequest request)
   {
-    if (!"post".equals (request.getMethod ().toLowerCase ()))
-    {
+    if (!"post".equals (request.getMethod ().toLowerCase (Locale.US)))
       return false;
-    }
+
     final String contentType = request.getContentType ();
     if (contentType == null)
-    {
       return false;
-    }
-    if (contentType.toLowerCase ().startsWith (MULTIPART))
-    {
-      return true;
-    }
-    return false;
-  }
 
-  // ----------------------------------------------------------- Constructors
+    return contentType.toLowerCase (Locale.US).startsWith (MULTIPART);
+  }
 
   /**
    * Constructs an instance of this class which uses the supplied factory to
@@ -99,8 +90,6 @@ public class ServletFileUpload extends FileUpload
     super (fileItemFactory);
   }
 
-  // --------------------------------------------------------- Public methods
-
   /**
    * Processes an <a href="http://www.ietf.org/rfc/rfc1867.txt">RFC 1867</a>
    * compliant <code>multipart/form-data</code> stream.
@@ -112,7 +101,8 @@ public class ServletFileUpload extends FileUpload
    * @throws FileUploadException
    *         if there are problems reading/parsing the request or storing files.
    */
-  public List <IFileItem> parseRequest (final HttpServletRequest request) throws FileUploadException
+  @Nonnull
+  public List <IFileItem> parseRequest (@Nonnull final HttpServletRequest request) throws FileUploadException
   {
     return parseRequest (new ServletRequestContext (request));
   }
@@ -132,7 +122,9 @@ public class ServletFileUpload extends FileUpload
    *         communicating with the client or a problem while storing the
    *         uploaded content.
    */
-  public IFileItemIterator getItemIterator (final HttpServletRequest request) throws FileUploadException, IOException
+  @Nonnull
+  public IFileItemIterator getItemIterator (@Nonnull final HttpServletRequest request) throws FileUploadException,
+                                                                                      IOException
   {
     return super.getItemIterator (new ServletRequestContext (request));
   }

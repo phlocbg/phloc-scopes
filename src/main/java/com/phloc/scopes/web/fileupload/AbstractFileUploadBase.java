@@ -246,8 +246,6 @@ public abstract class AbstractFileUploadBase
     m_sHeaderEncoding = encoding;
   }
 
-  // --------------------------------------------------------- Public methods
-
   /**
    * Processes an <a href="http://www.ietf.org/rfc/rfc1867.txt">RFC 1867</a>
    * compliant <code>multipart/form-data</code> stream.
@@ -263,7 +261,8 @@ public abstract class AbstractFileUploadBase
    *         communicating with the client or a problem while storing the
    *         uploaded content.
    */
-  public IFileItemIterator getItemIterator (final IRequestContext ctx) throws FileUploadException, IOException
+  @Nonnull
+  public IFileItemIterator getItemIterator (@Nonnull final IRequestContext ctx) throws FileUploadException, IOException
   {
     return new FileItemIteratorImpl (ctx);
   }
@@ -279,10 +278,11 @@ public abstract class AbstractFileUploadBase
    * @throws FileUploadException
    *         if there are problems reading/parsing the request or storing files.
    */
+  @Nonnull
   public List <IFileItem> parseRequest (final IRequestContext ctx) throws FileUploadException
   {
     final List <IFileItem> items = new ArrayList <IFileItem> ();
-    boolean successful = false;
+    boolean bSuccessful = false;
     try
     {
       final IFileItemIterator iter = getItemIterator (ctx);
@@ -322,7 +322,7 @@ public abstract class AbstractFileUploadBase
           ((IFileItemHeadersSupport) fileItem).setHeaders (fih);
         }
       }
-      successful = true;
+      bSuccessful = true;
       return items;
     }
     catch (final FileUploadIOException e)
@@ -335,7 +335,7 @@ public abstract class AbstractFileUploadBase
     }
     finally
     {
-      if (!successful)
+      if (!bSuccessful)
       {
         for (final IFileItem fileItem : items)
         {
