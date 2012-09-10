@@ -24,6 +24,8 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import com.phloc.commons.charset.CCharset;
+
 /**
  * Unit tests for {@link ParameterParser}.
  * 
@@ -75,7 +77,7 @@ public final class ParameterParserTest
     final ParameterParser parser = new ParameterParser ();
     parser.setLowerCaseNames (true);
     final Map <String, String> params = parser.parse (s, ';');
-    assertEquals ("UTF-8", params.get ("charset"));
+    assertEquals (CCharset.CHARSET_UTF_8, params.get ("charset"));
   }
 
   @Test
