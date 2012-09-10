@@ -105,25 +105,34 @@ public abstract class AbstractScopeAwareFilter implements Filter
   public final void doFilter (final ServletRequest aRequest, final ServletResponse aResponse, final FilterChain aChain) throws IOException,
                                                                                                                        ServletException
   {
-    final HttpServletRequest aHttpRequest = (HttpServletRequest) aRequest;
-    final HttpServletResponse aHttpResponse = (HttpServletResponse) aResponse;
-
-    // Check if a scope needs to be created
-    final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.create (m_sApplicationID,
-                                                                                             aHttpRequest,
-                                                                                             aHttpResponse);
-
-    try
+    if (aRequest instanceof HttpServletRequest && aResponse instanceof HttpServletResponse)
     {
-      if (doFilter (aHttpRequest, aHttpResponse, aRequestScopeInitializer.getRequestScope ()).isContinue ())
+      final HttpServletRequest aHttpRequest = (HttpServletRequest) aRequest;
+      final HttpServletResponse aHttpResponse = (HttpServletResponse) aResponse;
+
+      // Check if a scope needs to be created
+      final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.create (m_sApplicationID,
+                                                                                               aHttpRequest,
+                                                                                               aHttpResponse);
+      try
       {
-        // Continue as usual
-        aChain.doFilter (aRequest, aResponse);
+        // Apply any optional filter
+        if (doFilter (aHttpRequest, aHttpResponse, aRequestScopeInitializer.getRequestScope ()).isContinue ())
+        {
+          // Continue as usual
+          aChain.doFilter (aRequest, aResponse);
+        }
+      }
+      finally
+      {
+        // And destroy the scope depending on its creation state
+        aRequestScopeInitializer.destroyScope ();
       }
     }
-    finally
+    else
     {
-      aRequestScopeInitializer.destroyScope ();
+      // No scope handling
+      aChain.doFilter (aRequest, aResponse);
     }
   }
 

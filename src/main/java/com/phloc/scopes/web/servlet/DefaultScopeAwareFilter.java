@@ -17,22 +17,12 @@
  */
 package com.phloc.scopes.web.servlet;
 
-import java.io.IOException;
-
 import javax.annotation.Nonnull;
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.phloc.commons.annotations.OverrideOnDemand;
-import com.phloc.commons.exceptions.InitializationException;
-import com.phloc.commons.lang.CGStringHelper;
-import com.phloc.commons.string.StringHelper;
+import com.phloc.commons.state.EContinue;
+import com.phloc.scopes.web.domain.IRequestWebScope;
 
 /**
  * A simple Servlet filter that surrounds each and every call with the necessary
@@ -40,54 +30,15 @@ import com.phloc.commons.string.StringHelper;
  * 
  * @author philip
  */
-public class DefaultScopeAwareFilter implements Filter
+public class DefaultScopeAwareFilter extends AbstractScopeAwareFilter
 {
-  private String m_sApplicationID;
-
-  /**
-   * Determine the application ID to be used, based on the passed filter
-   * configuration. This method is only invoked once on startup.
-   * 
-   * @param aFilterConfig
-   *        The filter configuration
-   * @return The application ID for this filter.
-   */
-  @OverrideOnDemand
-  protected String getApplicationID (@Nonnull final FilterConfig aFilterConfig)
+  @Override
+  @Nonnull
+  protected EContinue doFilter (@Nonnull final HttpServletRequest aHttpRequest,
+                                @Nonnull final HttpServletResponse aHttpResponse,
+                                @Nonnull final IRequestWebScope aRequestScope)
   {
-    return CGStringHelper.getClassLocalName (getClass ());
+    // No filtering
+    return EContinue.CONTINUE;
   }
-
-  public void init (@Nonnull final FilterConfig aFilterConfig) throws ServletException
-  {
-    m_sApplicationID = getApplicationID (aFilterConfig);
-    if (StringHelper.hasNoText (m_sApplicationID))
-      throw new InitializationException ("Failed retrieve a valid application ID!");
-  }
-
-  public final void doFilter (final ServletRequest aRequest, final ServletResponse aResponse, final FilterChain aChain) throws IOException,
-                                                                                                                       ServletException
-  {
-    final HttpServletRequest aHttpRequest = (HttpServletRequest) aRequest;
-    final HttpServletResponse aHttpResponse = (HttpServletResponse) aResponse;
-
-    // Check if a scope needs to be created
-    final RequestScopeInitializer aRequestScopeInitializer = RequestScopeInitializer.create (m_sApplicationID,
-                                                                                             aHttpRequest,
-                                                                                             aHttpResponse);
-    try
-    {
-      // Continue as usual
-      aChain.doFilter (aHttpRequest, aHttpResponse);
-    }
-    finally
-    {
-      // Destroy the scope
-      aRequestScopeInitializer.destroyScope ();
-    }
-  }
-
-  @OverrideOnDemand
-  public void destroy ()
-  {}
 }
