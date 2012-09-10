@@ -43,7 +43,7 @@ public final class ParameterParser
   /**
    * String to be parsed.
    */
-  private char [] m_aChars = null;
+  private char [] m_aChars;
 
   /**
    * Current position in the string.
