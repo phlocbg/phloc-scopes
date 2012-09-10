@@ -53,7 +53,7 @@ public class WebScopeTestRule extends ExternalResource
   }
 
   @Nonnull
-  public WebScopeTestRule setContextPath (@Nonnull final String sContextPath)
+  public WebScopeTestRule setContextPath (@Nullable final String sContextPath)
   {
     m_sContextPath = sContextPath;
     return this;

@@ -25,6 +25,8 @@ import javax.servlet.http.HttpSession;
 
 import com.phloc.commons.annotations.DevelopersNote;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /**
  * Base class for all JUnit tests requiring correct web scope handling.
  * 
@@ -33,12 +35,12 @@ import com.phloc.commons.annotations.DevelopersNote;
 @NotThreadSafe
 @DevelopersNote ("It's preferred to use the WebScopeTestRule class instead!")
 @Deprecated
+@SuppressFBWarnings ("LI_LAZY_INIT_UPDATE_STATIC")
 public final class WebScopeAwareTestSetup
 {
-  public static final String MOCK_CONTEXT = "/MockContext";
+  public static final String MOCK_CONTEXT = WebScopeTestRule.MOCK_CONTEXT_PATH;
 
-  private static volatile MockServletContext s_aServletContext;
-  private static volatile MockHttpServletRequest s_aRequest;
+  private static volatile WebScopeTestRule s_aRule;
 
   private WebScopeAwareTestSetup ()
   {}
@@ -50,45 +52,36 @@ public final class WebScopeAwareTestSetup
 
   public static void setupScopeTests (@Nullable final Map <String, String> aServletContextInitParams)
   {
-    // Start global scope -> triggers events
-    s_aServletContext = new MockServletContext (MOCK_CONTEXT, aServletContextInitParams);
-
-    // Start request scope -> triggers events
-    s_aRequest = new MockHttpServletRequest (s_aServletContext);
+    if (s_aRule != null)
+      throw new IllegalStateException ();
+    s_aRule = new WebScopeTestRule (aServletContextInitParams);
+    s_aRule.before ();
   }
 
   public static void shutdownScopeTests ()
   {
-    if (s_aRequest != null)
+    if (s_aRule != null)
     {
-      // end request -> triggers events
-      s_aRequest.invalidate ();
-      s_aRequest = null;
-    }
-
-    if (s_aServletContext != null)
-    {
-      // shutdown global context -> triggers events
-      s_aServletContext.invalidate ();
-      s_aServletContext = null;
+      s_aRule.after ();
+      s_aRule = null;
     }
   }
 
   @Nullable
   public static MockServletContext getServletContext ()
   {
-    return s_aServletContext;
+    return s_aRule.getServletContext ();
   }
 
   @Nullable
   public static MockHttpServletRequest getRequest ()
   {
-    return s_aRequest;
+    return s_aRule.getRequest ();
   }
 
   @Nullable
   public static HttpSession getSession (final boolean bCreateIfNotExisting)
   {
-    return s_aRequest == null ? null : s_aRequest.getSession (bCreateIfNotExisting);
+    return s_aRule.getSession (bCreateIfNotExisting);
   }
 }
