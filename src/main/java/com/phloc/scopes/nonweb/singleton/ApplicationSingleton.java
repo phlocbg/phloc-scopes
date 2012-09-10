@@ -20,6 +20,7 @@ package com.phloc.scopes.nonweb.singleton;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.phloc.scopes.AbstractSingleton;
 import com.phloc.scopes.nonweb.domain.IApplicationScope;
@@ -44,10 +45,10 @@ public abstract class ApplicationSingleton extends AbstractSingleton
   /**
    * @return The scope to be used for this type of singleton.
    */
-  @Nonnull
-  private static IApplicationScope _getStaticScope ()
+  @Nullable
+  private static IApplicationScope _getStaticScope (final boolean bCreateIfNotExisting)
   {
-    return ScopeManager.getApplicationScope (true);
+    return ScopeManager.getApplicationScope (bCreateIfNotExisting);
   }
 
   /**
@@ -57,23 +58,23 @@ public abstract class ApplicationSingleton extends AbstractSingleton
   @Nonnull
   protected final IApplicationScope getScope ()
   {
-    return _getStaticScope ();
-  }
-
-  public static final boolean isSingletonInstantiated (@Nonnull final Class <? extends ApplicationSingleton> aClass)
-  {
-    return isSingletonInstantiated (_getStaticScope (), aClass);
+    return _getStaticScope (true);
   }
 
   @Nonnull
   protected static final <T extends ApplicationSingleton> T getApplicationSingleton (@Nonnull final Class <T> aClass)
   {
-    return getSingleton (_getStaticScope (), aClass);
+    return getSingleton (_getStaticScope (true), aClass);
+  }
+
+  public static final boolean isSingletonInstantiated (@Nonnull final Class <? extends ApplicationSingleton> aClass)
+  {
+    return isSingletonInstantiated (_getStaticScope (false), aClass);
   }
 
   @Nonnull
   public static final List <ApplicationSingleton> getAllSingletons ()
   {
-    return getAllSingletons (_getStaticScope (), ApplicationSingleton.class);
+    return getAllSingletons (_getStaticScope (false), ApplicationSingleton.class);
   }
 }

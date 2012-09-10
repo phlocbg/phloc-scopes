@@ -62,21 +62,12 @@ public abstract class AbstractSerializableSingleton extends AbstractSingleton im
   private void readObject (@Nonnull final ObjectInputStream in) throws IOException, ClassNotFoundException
   {
     in.defaultReadObject ();
-    registerSingletonAfterRead ();
+    registerSingletonAfterRead (true);
   }
 
   private void writeObject (@Nonnull final ObjectOutputStream out) throws IOException
   {
     out.defaultWriteObject ();
-  }
-
-  /**
-   * This method is purely for registering this instance, after reading from a
-   * serialized stream.
-   */
-  protected final void registerSingletonAfterRead ()
-  {
-    registerSingletonAfterRead (true);
   }
 
   /**
@@ -91,16 +82,15 @@ public abstract class AbstractSerializableSingleton extends AbstractSingleton im
   protected final void registerSingletonAfterRead (final boolean bAllowOverwrite)
   {
     final String sSingletonScopeKey = getSingletonScopeKey (getClass ());
-    final IScope aScope = getScope ();
-    aScope.runAtomic (new INonThrowingRunnableWithParameter <IScope> ()
+    getScope ().runAtomic (new INonThrowingRunnableWithParameter <IScope> ()
     {
       public void run (@Nullable final IScope aInnerScope)
       {
         final AbstractSerializableSingleton aSingleton = AbstractSerializableSingleton.this;
-        if (aScope.containsAttribute (sSingletonScopeKey))
+        if (aInnerScope.containsAttribute (sSingletonScopeKey))
         {
           final String sMsg = "The scope " +
-                              aScope.getID () +
+                              aInnerScope.getID () +
                               " already has a singleton of class " +
                               aSingleton.getClass ();
           if (bAllowOverwrite)
@@ -110,7 +100,7 @@ public abstract class AbstractSerializableSingleton extends AbstractSingleton im
         }
 
         // Set the abstract singleton in the scope and not this runnable...
-        aScope.setAttribute (sSingletonScopeKey, aSingleton);
+        aInnerScope.setAttribute (sSingletonScopeKey, aSingleton);
       }
     });
   }

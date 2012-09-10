@@ -20,6 +20,7 @@ package com.phloc.scopes.nonweb.singleton;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.phloc.scopes.AbstractSingleton;
 import com.phloc.scopes.nonweb.domain.IRequestScope;
@@ -43,10 +44,10 @@ public abstract class RequestSingleton extends AbstractSingleton
   /**
    * @return The scope to be used for this type of singleton.
    */
-  @Nonnull
-  private static IRequestScope _getStaticScope ()
+  @Nullable
+  private static IRequestScope _getStaticScope (final boolean bMustBePresent)
   {
-    return ScopeManager.getRequestScope ();
+    return bMustBePresent ? ScopeManager.getRequestScope () : ScopeManager.getRequestScopeOrNull ();
   }
 
   /**
@@ -56,23 +57,23 @@ public abstract class RequestSingleton extends AbstractSingleton
   @Nonnull
   protected final IRequestScope getScope ()
   {
-    return _getStaticScope ();
-  }
-
-  public static final boolean isSingletonInstantiated (@Nonnull final Class <? extends RequestSingleton> aClass)
-  {
-    return isSingletonInstantiated (_getStaticScope (), aClass);
+    return _getStaticScope (true);
   }
 
   @Nonnull
   protected static final <T extends RequestSingleton> T getRequestSingleton (@Nonnull final Class <T> aClass)
   {
-    return getSingleton (_getStaticScope (), aClass);
+    return getSingleton (_getStaticScope (true), aClass);
+  }
+
+  public static final boolean isSingletonInstantiated (@Nonnull final Class <? extends RequestSingleton> aClass)
+  {
+    return isSingletonInstantiated (_getStaticScope (false), aClass);
   }
 
   @Nonnull
   public static final List <RequestSingleton> getAllSingletons ()
   {
-    return getAllSingletons (_getStaticScope (), RequestSingleton.class);
+    return getAllSingletons (_getStaticScope (false), RequestSingleton.class);
   }
 }

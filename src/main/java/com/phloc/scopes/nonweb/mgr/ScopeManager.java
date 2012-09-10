@@ -126,12 +126,9 @@ public final class ScopeManager
   public static IGlobalScope getGlobalScopeOrNull ()
   {
     final IGlobalScope ret = s_aGlobalScope;
-    if (ret == null)
-      return null;
-    if (ret.isValid ())
+    if (ret != null && ret.isValid ())
       return ret;
-    // Return null if it is in destruction or already destroyed
-    s_aLogger.warn ("Global scope is not valid any more!");
+    // Return null if it is not set, in destruction or already destroyed
     return null;
   }
 
