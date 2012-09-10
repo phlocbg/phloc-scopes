@@ -17,6 +17,8 @@
  */
 package com.phloc.scopes.web.impl;
 
+import java.io.Serializable;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
@@ -40,7 +42,7 @@ import com.phloc.scopes.web.domain.IGlobalWebScope;
 @ThreadSafe
 public final class GlobalWebScope extends GlobalScope implements IGlobalWebScope
 {
-  public interface IContextPathProvider
+  public interface IContextPathProvider extends Serializable
   {
     @Nonnull
     String getContextPath ();
