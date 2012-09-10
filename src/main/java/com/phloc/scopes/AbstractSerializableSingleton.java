@@ -23,7 +23,6 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,7 +83,7 @@ public abstract class AbstractSerializableSingleton extends AbstractSingleton im
     final String sSingletonScopeKey = getSingletonScopeKey (getClass ());
     getScope ().runAtomic (new INonThrowingRunnableWithParameter <IScope> ()
     {
-      public void run (@Nullable final IScope aInnerScope)
+      public void run (@Nonnull final IScope aInnerScope)
       {
         final AbstractSerializableSingleton aSingleton = AbstractSerializableSingleton.this;
         if (aInnerScope.containsAttribute (sSingletonScopeKey))
