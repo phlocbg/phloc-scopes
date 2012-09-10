@@ -155,6 +155,29 @@ public class SessionScope extends AbstractMapBasedScope implements ISessionScope
     return aSessionAppScope;
   }
 
+  public void restoreSessionApplicationScope (@Nonnull @Nonempty final String sScopeID,
+                                              @Nonnull final ISessionApplicationScope aScope)
+  {
+    if (StringHelper.hasNoText (sScopeID))
+      throw new IllegalArgumentException ("applicationID");
+    if (aScope == null)
+      throw new NullPointerException ("scope");
+
+    m_aRWLock.writeLock ().lock ();
+    try
+    {
+      if (m_aSessionAppScopes.containsKey (sScopeID))
+        throw new IllegalArgumentException ("A session application scope with the ID '" +
+                                            sScopeID +
+                                            "' is already contained!");
+      m_aSessionAppScopes.put (sScopeID, aScope);
+    }
+    finally
+    {
+      m_aRWLock.writeLock ().unlock ();
+    }
+  }
+
   @Nonnull
   @ReturnsMutableCopy
   public Map <String, ISessionApplicationScope> getAllSessionApplicationScopes ()
