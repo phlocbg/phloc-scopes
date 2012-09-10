@@ -352,24 +352,39 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
     return _getFullServerPath ().append (m_aHttpRequest.getContextPath ()).toString ();
   }
 
+  /**
+   * This is a heuristic method to determine whether a request is for a file
+   * (e.g. x.jsp) or for a servlet. It is assumed that regular servlets don't
+   * have a '.' in their name!
+   * 
+   * @param sServletPath
+   *        The non-<code>null</code> servlet path to check
+   * @return <code>true</code> if it is assumed that the request is file based,
+   *         <code>false</code> if it can be assumed to be a regular servlet.
+   */
+  public boolean isFileBasedRequest (@Nonnull final String sServletPath)
+  {
+    return sServletPath.indexOf ('.') >= 0;
+  }
+
   @Nonnull
   public String getContextAndServletPath ()
   {
     final String sServletPath = getServletPath ();
+    if (isFileBasedRequest (sServletPath))
+      return m_aHttpRequest.getContextPath () + sServletPath;
     // For servlets that are not files, we need to append a trailing slash
-    if (sServletPath.indexOf (".") < 0)
-      return m_aHttpRequest.getContextPath () + sServletPath + '/';
-    return m_aHttpRequest.getContextPath () + sServletPath;
+    return m_aHttpRequest.getContextPath () + sServletPath + '/';
   }
 
   @Nonnull
   public String getFullContextAndServletPath ()
   {
-    final String ret = getFullContextPath () + getServletPath ();
+    final String sServletPath = getServletPath ();
+    if (isFileBasedRequest (sServletPath))
+      return getFullContextPath () + sServletPath;
     // For servlets, we need to append a trailing slash
-    if (!ret.endsWith (".jsp"))
-      return ret + "/";
-    return ret;
+    return getFullContextPath () + sServletPath + '/';
   }
 
   @Nonnull

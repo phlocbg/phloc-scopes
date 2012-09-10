@@ -51,6 +51,45 @@ import com.phloc.scopes.web.mgr.WebScopeManager;
 @NotThreadSafe
 public class DefaultWebScopeFactory implements IWebScopeFactory
 {
+  private static final class ConstantContextPathProvider implements IContextPathProvider
+  {
+    // Store in member to avoid dependency to outer method
+    private final String m_sContextPath;
+
+    public ConstantContextPathProvider (@Nonnull final String sContextPath)
+    {
+      // May not be null, but maybe an empty String!
+      if (sContextPath == null)
+        throw new NullPointerException ("contextPath may not be null!");
+      m_sContextPath = sContextPath;
+    }
+
+    @Nonnull
+    public String getContextPath ()
+    {
+      return m_sContextPath;
+    }
+  }
+
+  private static final class ContextPathProviderFromRequest implements IContextPathProvider
+  {
+    private String m_sContextPath;
+
+    public ContextPathProviderFromRequest ()
+    {}
+
+    public String getContextPath ()
+    {
+      if (m_sContextPath == null)
+      {
+        // Get the context path from the request scope
+        // May throw an exception if no request scope is present so far
+        m_sContextPath = WebScopeManager.getRequestScope ().getRequest ().getContextPath ();
+      }
+      return m_sContextPath;
+    }
+  }
+
   private static final Logger s_aLogger = LoggerFactory.getLogger (DefaultWebScopeFactory.class);
 
   public DefaultWebScopeFactory ()
@@ -73,22 +112,7 @@ public class DefaultWebScopeFactory implements IWebScopeFactory
         final Method m = aServletContext.getClass ().getMethod ("getContextPath");
         // Servlet API >= 2.5 -> invoke once and store in member
         final String sContextPath = (String) m.invoke (aServletContext);
-
-        // May not be null, but maybe an empty String!
-        if (sContextPath == null)
-          s_aLogger.error ("getContextPath returned an illegal null object!");
-
-        aContextPathProvider = new IContextPathProvider ()
-        {
-          // Store in member to avoid dependency to outer method
-          private final String m_sContextPath = sContextPath;
-
-          @Nonnull
-          public String getContextPath ()
-          {
-            return m_sContextPath;
-          }
-        };
+        aContextPathProvider = new ConstantContextPathProvider (sContextPath);
       }
       catch (final NoSuchMethodException ex)
       {
@@ -106,21 +130,7 @@ public class DefaultWebScopeFactory implements IWebScopeFactory
     {
       // e.g. Servlet API < 2.5
       // -> Take from request scope on first call
-      aContextPathProvider = new IContextPathProvider ()
-      {
-        private String m_sContextPath;
-
-        public String getContextPath ()
-        {
-          if (m_sContextPath == null)
-          {
-            // Get the context path from the request scope
-            // May throw an exception if no request scope is present so far
-            m_sContextPath = WebScopeManager.getRequestScope ().getRequest ().getContextPath ();
-          }
-          return m_sContextPath;
-        }
-      };
+      aContextPathProvider = new ContextPathProviderFromRequest ();
     }
 
     return new GlobalWebScope (aServletContext, aContextPathProvider);
