@@ -424,8 +424,7 @@ public final class WebScopeManager
 
   public static boolean isRequestScopePresent ()
   {
-    final IRequestScope aRequestScope = ScopeManager.getRequestScopeOrNull ();
-    return aRequestScope instanceof IRequestWebScope;
+    return ScopeManager.getRequestScopeOrNull () instanceof IRequestWebScope;
   }
 
   @Nonnull

@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -54,16 +55,14 @@ public class FileItemHeadersImpl implements IFileItemHeaders, Serializable
   private final List <String> m_aHeaderNameList = new ArrayList <String> ();
 
   @Nullable
-  public String getHeader (@Nonnull final String name)
+  public String getHeader (@Nonnull final String sName)
   {
     m_aRWLock.readLock ().lock ();
     try
     {
-      final String nameLower = name.toLowerCase ();
-      final List <String> headerValueList = m_aHeaderNameToValueListMap.get (nameLower);
-      if (null == headerValueList)
-        return null;
-      return headerValueList.get (0);
+      final String sNameLower = sName.toLowerCase (Locale.US);
+      final List <String> aHeaderValueList = m_aHeaderNameToValueListMap.get (sNameLower);
+      return ContainerHelper.getFirstElement (aHeaderValueList);
     }
     finally
     {
@@ -71,6 +70,7 @@ public class FileItemHeadersImpl implements IFileItemHeaders, Serializable
     }
   }
 
+  @Nonnull
   public Iterator <String> getHeaderNames ()
   {
     m_aRWLock.readLock ().lock ();
@@ -84,16 +84,15 @@ public class FileItemHeadersImpl implements IFileItemHeaders, Serializable
     }
   }
 
+  @Nonnull
   public Iterator <String> getHeaders (@Nonnull final String name)
   {
     m_aRWLock.readLock ().lock ();
     try
     {
-      final String nameLower = name.toLowerCase ();
-      final List <String> headerValueList = m_aHeaderNameToValueListMap.get (nameLower);
-      if (headerValueList == null)
-        return ContainerHelper.<String> getEmptyIterator ();
-      return headerValueList.iterator ();
+      final String sNameLower = name.toLowerCase (Locale.US);
+      final List <String> aHeaderValueList = m_aHeaderNameToValueListMap.get (sNameLower);
+      return ContainerHelper.getIterator (aHeaderValueList);
     }
     finally
     {
@@ -114,15 +113,15 @@ public class FileItemHeadersImpl implements IFileItemHeaders, Serializable
     m_aRWLock.writeLock ().lock ();
     try
     {
-      final String nameLower = name.toLowerCase ();
-      List <String> headerValueList = m_aHeaderNameToValueListMap.get (nameLower);
-      if (null == headerValueList)
+      final String sNameLower = name.toLowerCase (Locale.US);
+      List <String> aHeaderValueList = m_aHeaderNameToValueListMap.get (sNameLower);
+      if (aHeaderValueList == null)
       {
-        headerValueList = new ArrayList <String> ();
-        m_aHeaderNameToValueListMap.put (nameLower, headerValueList);
-        m_aHeaderNameList.add (nameLower);
+        aHeaderValueList = new ArrayList <String> ();
+        m_aHeaderNameToValueListMap.put (sNameLower, aHeaderValueList);
+        m_aHeaderNameList.add (sNameLower);
       }
-      headerValueList.add (value);
+      aHeaderValueList.add (value);
     }
     finally
     {

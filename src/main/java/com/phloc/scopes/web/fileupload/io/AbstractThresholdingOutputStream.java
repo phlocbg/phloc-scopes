@@ -20,6 +20,8 @@ package com.phloc.scopes.web.fileupload.io;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import javax.annotation.Nonnull;
+
 /**
  * An output stream which triggers an event when a specified number of bytes of
  * data have been written to it. The event can be used, for example, to throw an
@@ -69,7 +71,7 @@ public abstract class AbstractThresholdingOutputStream extends OutputStream
    */
   public AbstractThresholdingOutputStream (final int threshold)
   {
-    this.m_nThreshold = threshold;
+    m_nThreshold = threshold;
   }
 
   // --------------------------------------------------- OutputStream methods
@@ -100,7 +102,7 @@ public abstract class AbstractThresholdingOutputStream extends OutputStream
    *            if an error occurs.
    */
   @Override
-  public void write (final byte b[]) throws IOException
+  public void write (final byte [] b) throws IOException
   {
     checkThreshold (b.length);
     getStream ().write (b);
@@ -121,7 +123,7 @@ public abstract class AbstractThresholdingOutputStream extends OutputStream
    *            if an error occurs.
    */
   @Override
-  public void write (final byte b[], final int off, final int len) throws IOException
+  public void write (final byte [] b, final int off, final int len) throws IOException
   {
     checkThreshold (len);
     getStream ().write (b, off, len);
@@ -193,7 +195,7 @@ public abstract class AbstractThresholdingOutputStream extends OutputStream
    */
   public boolean isThresholdExceeded ()
   {
-    return (m_nWritten > m_nThreshold);
+    return m_nWritten > m_nThreshold;
   }
 
   // ------------------------------------------------------ Protected methods
@@ -201,7 +203,7 @@ public abstract class AbstractThresholdingOutputStream extends OutputStream
   /**
    * Checks to see if writing the specified number of bytes would cause the
    * configured threshold to be exceeded. If so, triggers an event to allow a
-   * concrete implementation to take action on this.
+   * concrete implementation to take action on
    * 
    * @param count
    *        The number of bytes about to be written to the underlying output
@@ -224,8 +226,8 @@ public abstract class AbstractThresholdingOutputStream extends OutputStream
    */
   protected void resetByteCount ()
   {
-    this.m_bThresholdExceeded = false;
-    this.m_nWritten = 0;
+    m_bThresholdExceeded = false;
+    m_nWritten = 0;
   }
 
   // ------------------------------------------------------- Abstract methods
@@ -238,6 +240,7 @@ public abstract class AbstractThresholdingOutputStream extends OutputStream
    * @exception IOException
    *            if an error occurs.
    */
+  @Nonnull
   protected abstract OutputStream getStream () throws IOException;
 
   /**

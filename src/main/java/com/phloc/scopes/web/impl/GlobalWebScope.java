@@ -26,13 +26,12 @@ import com.phloc.commons.annotations.Nonempty;
 import com.phloc.commons.hash.HashCodeGenerator;
 import com.phloc.commons.string.ToStringGenerator;
 import com.phloc.scopes.MetaScopeFactory;
-import com.phloc.scopes.nonweb.domain.IGlobalScope;
 import com.phloc.scopes.nonweb.impl.GlobalScope;
 import com.phloc.scopes.web.domain.IApplicationWebScope;
 import com.phloc.scopes.web.domain.IGlobalWebScope;
 
 /**
- * Implementation of the {@link IGlobalScope} interface for web applications.<br>
+ * Implementation of the {@link IGlobalWebScope} interface for web applications.<br>
  * Note: for synchronization issues, this class does not store the attributes in
  * the passed {@link ServletContext} but in a separate map.
  * 
@@ -41,7 +40,7 @@ import com.phloc.scopes.web.domain.IGlobalWebScope;
 @ThreadSafe
 public final class GlobalWebScope extends GlobalScope implements IGlobalWebScope
 {
-  public static interface IContextPathProvider
+  public interface IContextPathProvider
   {
     @Nonnull
     String getContextPath ();

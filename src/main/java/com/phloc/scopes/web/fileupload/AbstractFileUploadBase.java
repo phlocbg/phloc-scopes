@@ -17,13 +17,19 @@
  */
 package com.phloc.scopes.web.fileupload;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import com.phloc.commons.charset.CCharset;
 import com.phloc.commons.charset.CharsetManager;
 import com.phloc.commons.string.StringParser;
 import com.phloc.scopes.web.fileupload.MultipartStream.ItemInputStream;
@@ -81,7 +87,7 @@ public abstract class AbstractFileUploadBase
     final String contentType = ctx.getContentType ();
     if (contentType == null)
       return false;
-    if (contentType.toLowerCase ().startsWith (MULTIPART))
+    if (contentType.toLowerCase (Locale.US).startsWith (MULTIPART))
       return true;
     return false;
   }
@@ -185,7 +191,7 @@ public abstract class AbstractFileUploadBase
    */
   public void setSizeMax (final long sizeMax)
   {
-    this.m_nSizeMax = sizeMax;
+    m_nSizeMax = sizeMax;
   }
 
   /**
@@ -210,7 +216,7 @@ public abstract class AbstractFileUploadBase
    */
   public void setFileSizeMax (final long fileSizeMax)
   {
-    this.m_nFileSizeMax = fileSizeMax;
+    m_nFileSizeMax = fileSizeMax;
   }
 
   /**
@@ -356,6 +362,7 @@ public abstract class AbstractFileUploadBase
    *        boundary value.
    * @return The boundary, as a byte array.
    */
+  @Nullable
   protected byte [] getBoundary (final String contentType)
   {
     final ParameterParser parser = new ParameterParser ();
@@ -365,10 +372,8 @@ public abstract class AbstractFileUploadBase
     final String boundaryStr = params.get ("boundary");
 
     if (boundaryStr == null)
-    {
       return null;
-    }
-    return CharsetManager.getAsBytes (boundaryStr, "ISO-8859-1");
+    return CharsetManager.getAsBytes (boundaryStr, CCharset.CHARSET_ISO_8859_1_OBJ);
   }
 
   /**
@@ -395,7 +400,7 @@ public abstract class AbstractFileUploadBase
     String fileName = null;
     if (pContentDisposition != null)
     {
-      final String cdl = pContentDisposition.toLowerCase ();
+      final String cdl = pContentDisposition.toLowerCase (Locale.US);
       if (cdl.startsWith (FORM_DATA) || cdl.startsWith (ATTACHMENT))
       {
         final ParameterParser parser = new ParameterParser ();
@@ -444,7 +449,7 @@ public abstract class AbstractFileUploadBase
   private String _getFieldName (final String pContentDisposition)
   {
     String fieldName = null;
-    if (pContentDisposition != null && pContentDisposition.toLowerCase ().startsWith (FORM_DATA))
+    if (pContentDisposition != null && pContentDisposition.toLowerCase (Locale.US).startsWith (FORM_DATA))
     {
       final ParameterParser parser = new ParameterParser ();
       parser.setLowerCaseNames (true);
@@ -579,7 +584,7 @@ public abstract class AbstractFileUploadBase
     /**
      * Default implementation of {@link IFileItemStream}.
      */
-    class FileItemStreamImpl implements IFileItemStream
+    class FileItemStreamImpl implements IFileItemStream, Closeable
     {
       /**
        * The file items content type.
@@ -601,10 +606,6 @@ public abstract class AbstractFileUploadBase
        * The file items input stream.
        */
       private final InputStream m_aStream;
-      /**
-       * Whether the file item was already opened.
-       */
-      private boolean m_bOpened;
       /**
        * The headers, if any.
        */
@@ -729,10 +730,9 @@ public abstract class AbstractFileUploadBase
        * @throws IOException
        *         An I/O error occurred.
        */
+      @Nonnull
       public InputStream openStream () throws IOException
       {
-        if (m_bOpened)
-          throw new IllegalStateException ("The stream was already opened.");
         if (((ICloseable) m_aStream).isClosed ())
           throw new IFileItemStream.ItemSkippedException ();
         return m_aStream;
@@ -744,7 +744,7 @@ public abstract class AbstractFileUploadBase
        * @throws IOException
        *         An I/O error occurred.
        */
-      void close () throws IOException
+      public void close () throws IOException
       {
         m_aStream.close ();
       }
@@ -814,22 +814,20 @@ public abstract class AbstractFileUploadBase
      * @throws IOException
      *         An I/O error occurred.
      */
-    FileItemIteratorImpl (final IRequestContext ctx) throws FileUploadException, IOException
+    FileItemIteratorImpl (@Nonnull final IRequestContext ctx) throws FileUploadException, IOException
     {
       if (ctx == null)
-      {
         throw new NullPointerException ("ctx parameter");
-      }
 
-      final String contentType = ctx.getContentType ();
-      if ((null == contentType) || (!contentType.toLowerCase ().startsWith (MULTIPART)))
+      final String sContentType = ctx.getContentType ();
+      if (sContentType == null || !sContentType.toLowerCase (Locale.US).startsWith (MULTIPART))
       {
         throw new InvalidContentTypeException ("the request doesn't contain a " +
                                                MULTIPART_FORM_DATA +
                                                " or " +
                                                MULTIPART_MIXED +
                                                " stream, content type header is " +
-                                               contentType);
+                                               sContentType);
       }
 
       InputStream input = ctx.getInputStream ();
@@ -874,7 +872,7 @@ public abstract class AbstractFileUploadBase
         charEncoding = ctx.getCharacterEncoding ();
       }
 
-      m_aBoundary = getBoundary (contentType);
+      m_aBoundary = getBoundary (sContentType);
       if (m_aBoundary == null)
       {
         throw new FileUploadException ("the request was rejected because " + "no multipart boundary was found");
@@ -898,9 +896,8 @@ public abstract class AbstractFileUploadBase
     private boolean findNextItem () throws IOException
     {
       if (m_bEof)
-      {
         return false;
-      }
+
       if (m_aCurrentItem != null)
       {
         m_aCurrentItem.close ();
@@ -996,13 +993,9 @@ public abstract class AbstractFileUploadBase
     public boolean hasNext () throws FileUploadException, IOException
     {
       if (m_bEof)
-      {
         return false;
-      }
       if (m_bItemValid)
-      {
         return true;
-      }
       return findNextItem ();
     }
 
@@ -1022,9 +1015,7 @@ public abstract class AbstractFileUploadBase
     public IFileItemStream next () throws FileUploadException, IOException
     {
       if (m_bEof || (!m_bItemValid && !hasNext ()))
-      {
         throw new NoSuchElementException ();
-      }
       m_bItemValid = false;
       return m_aCurrentItem;
     }
@@ -1139,8 +1130,8 @@ public abstract class AbstractFileUploadBase
     protected SizeException (final String message, final long actual, final long permitted)
     {
       super (message);
-      this.m_nActual = actual;
-      this.m_nPermitted = permitted;
+      m_nActual = actual;
+      m_nPermitted = permitted;
     }
 
     /**

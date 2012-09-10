@@ -21,10 +21,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import javax.annotation.Nonnull;
+
 import com.phloc.commons.io.streams.NonBlockingByteArrayOutputStream;
 import com.phloc.commons.system.SystemHelper;
 import com.phloc.scopes.web.fileupload.util.ICloseable;
 import com.phloc.scopes.web.fileupload.util.Streams;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
  * <p>
@@ -189,7 +193,7 @@ public final class MultipartStream
   /**
    * The default length of the buffer used for processing a request.
    */
-  protected static final int DEFAULT_BUFSIZE = 4096;
+  private static final int DEFAULT_BUFSIZE = 4096;
 
   /**
    * A byte sequence that marks the end of <code>header-part</code> (
@@ -432,7 +436,7 @@ public final class MultipartStream
     }
     catch (final IOException e)
     {
-      throw new MalformedStreamException ("Stream ended unexpectedly");
+      throw new MalformedStreamException ("Stream ended unexpectedly", e);
     }
     return nextChunk;
   }
@@ -496,7 +500,7 @@ public final class MultipartStream
         }
         catch (final IOException e)
         {
-          throw new MalformedStreamException ("Stream ended unexpectedly");
+          throw new MalformedStreamException ("Stream ended unexpectedly", e);
         }
         if (++size > HEADER_PART_SIZE_MAX)
         {
@@ -563,6 +567,7 @@ public final class MultipartStream
    * 
    * @return A new instance of {@link ItemInputStream}.
    */
+  @Nonnull
   ItemInputStream newInputStream ()
   {
     return new ItemInputStream ();
@@ -731,6 +736,20 @@ public final class MultipartStream
     {
       super (message);
     }
+
+    /**
+     * Constructs an <code>MalformedStreamException</code> with the specified
+     * detail message.
+     * 
+     * @param message
+     *        The detail message.
+     * @param aCause
+     *        The cause of the exception
+     */
+    public MalformedStreamException (final String message, final Throwable aCause)
+    {
+      super (message, aCause);
+    }
   }
 
   /**
@@ -860,7 +879,7 @@ public final class MultipartStream
       }
       if (available () == 0)
       {
-        if (makeAvailable () == 0)
+        if (_makeAvailable () == 0)
         {
           return -1;
         }
@@ -901,11 +920,9 @@ public final class MultipartStream
       int res = available ();
       if (res == 0)
       {
-        res = makeAvailable ();
+        res = _makeAvailable ();
         if (res == 0)
-        {
           return -1;
-        }
       }
       res = Math.min (res, len);
       System.arraycopy (m_aBuffer, m_nHead, b, off, res);
@@ -934,12 +951,12 @@ public final class MultipartStream
      * @throws IOException
      *         An I/O error occurred.
      */
+    @SuppressFBWarnings ("SR_NOT_CHECKED")
     public void close (final boolean pCloseUnderlying) throws IOException
     {
       if (m_bClosed)
-      {
         return;
-      }
+
       if (pCloseUnderlying)
       {
         m_bClosed = true;
@@ -952,11 +969,9 @@ public final class MultipartStream
           int av = available ();
           if (av == 0)
           {
-            av = makeAvailable ();
+            av = _makeAvailable ();
             if (av == 0)
-            {
               break;
-            }
           }
           skip (av);
         }
@@ -977,17 +992,14 @@ public final class MultipartStream
     public long skip (final long bytes) throws IOException
     {
       if (m_bClosed)
-      {
         throw new IFileItemStream.ItemSkippedException ();
-      }
+
       int av = available ();
       if (av == 0)
       {
-        av = makeAvailable ();
+        av = _makeAvailable ();
         if (av == 0)
-        {
           return 0;
-        }
       }
       final long res = Math.min (av, bytes);
       m_nHead += res;
@@ -1001,12 +1013,10 @@ public final class MultipartStream
      * @throws IOException
      *         An I/O error occurred.
      */
-    private int makeAvailable () throws IOException
+    private int _makeAvailable () throws IOException
     {
       if (m_nPos != -1)
-      {
         return 0;
-      }
 
       // Move the data to the beginning of the buffer.
       m_nTotal += m_nTail - m_nHead - m_nPad;
@@ -1024,8 +1034,7 @@ public final class MultipartStream
           // The last pad amount is left in the buffer.
           // Boundary can't be in there so signal an error
           // condition.
-          final String msg = "Stream ended unexpectedly";
-          throw new MalformedStreamException (msg);
+          throw new MalformedStreamException ("Stream ended unexpectedly");
         }
         if (m_aNotifier != null)
         {
@@ -1037,9 +1046,7 @@ public final class MultipartStream
         final int av = available ();
 
         if (av > 0 || m_nPos != -1)
-        {
           return av;
-        }
       }
     }
 

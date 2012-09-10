@@ -21,14 +21,13 @@ import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
 
 import com.phloc.commons.annotations.Nonempty;
-import com.phloc.scopes.IWebScope;
 import com.phloc.scopes.nonweb.impl.ApplicationScope;
 import com.phloc.scopes.web.domain.IApplicationWebScope;
 
 /**
  * Represents a single application web scope. It has no additional features
  * compared to the regular {@link ApplicationScope} but implements the specific
- * {@link IWebScope} interface.
+ * {@link IApplicationWebScope} interface.
  * 
  * @author philip
  */

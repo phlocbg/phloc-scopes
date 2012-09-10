@@ -55,6 +55,8 @@ import com.phloc.scopes.web.fileupload.IFileItem;
  */
 public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements IRequestWebScope
 {
+  private static final int PORT_HTTPS = 443;
+  private static final int PORT_HTTP = 80;
   private static final Logger s_aLogger = LoggerFactory.getLogger (RequestWebScopeNoMultipart.class);
   private static final String REQUEST_ATTR_SCOPE_INITED = "$request.scope.inited";
 
@@ -325,14 +327,14 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
     if (sScheme.equals ("http"))
     {
       // Do not print default HTTP port
-      if (nPort != 80)
+      if (nPort != PORT_HTTP)
         aSB.append (':').append (nPort);
     }
     else
       if (sScheme.equals ("https"))
       {
         // Do not print default HTTPS port
-        if (nPort != 443)
+        if (nPort != PORT_HTTPS)
           aSB.append (':').append (nPort);
       }
       else
