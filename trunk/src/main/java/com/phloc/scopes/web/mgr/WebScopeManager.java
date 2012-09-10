@@ -32,6 +32,7 @@ import com.phloc.commons.annotations.DevelopersNote;
 import com.phloc.commons.annotations.Nonempty;
 import com.phloc.scopes.MetaScopeFactory;
 import com.phloc.scopes.nonweb.domain.IGlobalScope;
+import com.phloc.scopes.nonweb.domain.IRequestScope;
 import com.phloc.scopes.nonweb.domain.ISessionScope;
 import com.phloc.scopes.nonweb.mgr.ScopeManager;
 import com.phloc.scopes.nonweb.mgr.ScopeSessionManager;
@@ -84,26 +85,38 @@ public final class WebScopeManager
   }
 
   /**
-   * @return The global scope object.
-   * @throws IllegalStateException
-   *         If no global web scope object is present
+   * @return The global scope object or <code>null</code> if no global web scope
+   *         is present.
    */
-  @Nonnull
-  public static IGlobalWebScope getGlobalScope ()
+  @Nullable
+  public static IGlobalWebScope getGlobalScopeOrNull ()
   {
     // Note: if you get an exception here, and you're in the unit test, please
     // derived from AbstractWebScopeAwareTestCase
     final IGlobalScope aGlobalScope = ScopeManager.getGlobalScopeOrNull ();
-    if (aGlobalScope == null)
-      throw new IllegalStateException ("No global web scope object has been set!");
     try
     {
       return (IGlobalWebScope) aGlobalScope;
     }
     catch (final ClassCastException ex)
     {
-      throw new IllegalStateException ("Gobal scope object is not a web scope!");
+      s_aLogger.warn ("Gobal scope object is not a web scope: " + aGlobalScope);
+      return null;
     }
+  }
+
+  /**
+   * @return The global scope object and never <code>null</code>.
+   * @throws IllegalStateException
+   *         If no global web scope object is present
+   */
+  @Nonnull
+  public static IGlobalWebScope getGlobalScope ()
+  {
+    final IGlobalWebScope aGlobalScope = getGlobalScopeOrNull ();
+    if (aGlobalScope == null)
+      throw new IllegalStateException ("No global web scope object has been set!");
+    return aGlobalScope;
   }
 
   /**
@@ -370,13 +383,15 @@ public final class WebScopeManager
   @Nullable
   public static IRequestWebScope getRequestScopeOrNull ()
   {
+    final IRequestScope aRequestScope = ScopeManager.getRequestScopeOrNull ();
     try
     { // Just cast
-      return (IRequestWebScope) ScopeManager.getRequestScopeOrNull ();
+      return (IRequestWebScope) aRequestScope;
     }
     catch (final ClassCastException ex)
     {
-      throw new IllegalStateException ("Request scope object is not a web scope!");
+      s_aLogger.warn ("Request scope object is not a request web scope: " + aRequestScope);
+      return null;
     }
   }
 

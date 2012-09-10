@@ -31,6 +31,7 @@ import org.slf4j.LoggerFactory;
 
 import com.phloc.commons.GlobalDebug;
 import com.phloc.commons.annotations.OverrideOnDemand;
+import com.phloc.commons.annotations.ReturnsMutableCopy;
 import com.phloc.commons.annotations.UsedViaReflection;
 import com.phloc.commons.callback.INonThrowingCallableWithParameter;
 import com.phloc.commons.exceptions.LoggedRuntimeException;
@@ -40,6 +41,7 @@ import com.phloc.commons.priviledged.PrivilegedActionAccessibleObjectSetAccessib
 import com.phloc.commons.stats.IStatisticsHandlerKeyedCounter;
 import com.phloc.commons.stats.StatisticsManager;
 import com.phloc.commons.string.StringHelper;
+import com.phloc.commons.string.ToStringGenerator;
 
 /**
  * Base class for all singletons.
@@ -161,20 +163,20 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
    * Check if a singleton is already instantiated inside a scope
    * 
    * @param aScope
-   *        The scope to check. May not be <code>null</code>.
+   *        The scope to check. May be <code>null</code>.
    * @param aClass
    *        The class to be checked.
    * @return <code>true</code> if the singleton for the specified class is
    *         already instantiated, <code>false</code> otherwise.
    */
-  protected static final boolean isSingletonInstantiated (@Nonnull final IScope aScope,
+  protected static final boolean isSingletonInstantiated (@Nullable final IScope aScope,
                                                           @Nonnull final Class <? extends AbstractSingleton> aClass)
   {
-    if (aScope == null)
-      throw new NullPointerException ("scope");
     if (aClass == null)
       throw new NullPointerException ("class");
 
+    if (aScope == null)
+      return false;
     final String sSingletonScopeKey = getSingletonScopeKey (aClass);
     final AbstractSingleton aInstance = aClass.cast (aScope.getAttributeObject (sSingletonScopeKey));
     return aInstance != null;
@@ -274,21 +276,28 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
   }
 
   @Nonnull
-  protected static final <T extends AbstractSingleton> List <T> getAllSingletons (@Nonnull final IScope aScope,
+  @ReturnsMutableCopy
+  protected static final <T extends AbstractSingleton> List <T> getAllSingletons (@Nullable final IScope aScope,
                                                                                   @Nonnull final Class <T> aDesiredClass)
   {
-    if (aScope == null)
-      throw new NullPointerException ("scope");
     if (aDesiredClass == null)
       throw new NullPointerException ("desiredClass");
 
     final List <T> ret = new ArrayList <T> ();
-    for (final String sAttrName : aScope.getAllAttributeNames ())
-    {
-      final Object aScopeValue = aScope.getAttributeObject (sAttrName);
-      if (aScopeValue != null && aDesiredClass.isAssignableFrom (aScopeValue.getClass ()))
-        ret.add (aDesiredClass.cast (aScopeValue));
-    }
+    if (aScope != null)
+      for (final String sAttrName : aScope.getAllAttributeNames ())
+      {
+        final Object aScopeValue = aScope.getAttributeObject (sAttrName);
+        if (aScopeValue != null && aDesiredClass.isAssignableFrom (aScopeValue.getClass ()))
+          ret.add (aDesiredClass.cast (aScopeValue));
+      }
     return ret;
+  }
+
+  @Override
+  @Nonnull
+  public String toString ()
+  {
+    return new ToStringGenerator (this).toString ();
   }
 }

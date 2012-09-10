@@ -47,7 +47,7 @@ public abstract class SessionApplicationSingleton extends AbstractSerializableSi
   @Nonnull
   private static ISessionApplicationScope _getStaticScope ()
   {
-    return ScopeManager.getSessionApplicationScope ();
+    return ScopeManager.getSessionApplicationScope (true);
   }
 
   /**

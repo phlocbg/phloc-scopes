@@ -47,7 +47,7 @@ public abstract class SessionSingleton extends AbstractSerializableSingleton
   @Nonnull
   private static ISessionScope _getStaticScope ()
   {
-    return ScopeManager.getSessionScope ();
+    return ScopeManager.getSessionScope (true);
   }
 
   /**
