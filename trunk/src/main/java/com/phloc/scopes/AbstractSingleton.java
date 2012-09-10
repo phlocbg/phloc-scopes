@@ -33,7 +33,6 @@ import com.phloc.commons.GlobalDebug;
 import com.phloc.commons.annotations.OverrideOnDemand;
 import com.phloc.commons.annotations.UsedViaReflection;
 import com.phloc.commons.callback.INonThrowingCallableWithParameter;
-import com.phloc.commons.callback.INonThrowingRunnableWithParameter;
 import com.phloc.commons.exceptions.LoggedRuntimeException;
 import com.phloc.commons.lang.ClassHelper;
 import com.phloc.commons.mutable.MutableBoolean;
@@ -156,47 +155,6 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
 
     // Preallocate some bytes
     return new StringBuilder (255).append ("singleton.").append (aClass.getName ()).toString ();
-  }
-
-  /**
-   * This method is purely for registering this instance, after reading from a
-   * serialized stream.
-   */
-  protected final void registerSingletonAfterRead ()
-  {
-    registerSingletonAfterRead (true);
-  }
-
-  /**
-   * This method is purely for registering this instance, after reading from a
-   * serialized stream.
-   * 
-   * @param bAllowOverwrite
-   *        if <code>true</code> only a warning is emitted, if the scope of this
-   *        object already contains another singleton of this class and
-   *        therefore overwrites this assignment, else and exception is thrown.
-   */
-  protected final void registerSingletonAfterRead (final boolean bAllowOverwrite)
-  {
-    final String sSingletonScopeKey = getSingletonScopeKey (getClass ());
-    final IScope aScope = getScope ();
-    aScope.runAtomic (new INonThrowingRunnableWithParameter <IScope> ()
-    {
-      public void run (@Nullable final IScope aInnerScope)
-      {
-        if (aScope.containsAttribute (sSingletonScopeKey))
-        {
-          final String sMsg = "The scope " + aScope.getID () + " already has a singleton of class " + getClass ();
-          if (bAllowOverwrite)
-            s_aLogger.warn (sMsg + " - overwriting it!");
-          else
-            throw new IllegalStateException (sMsg);
-        }
-
-        // Set the abstract singleton in the scope and not this runnable...
-        aScope.setAttribute (sSingletonScopeKey, AbstractSingleton.this);
-      }
-    });
   }
 
   /**

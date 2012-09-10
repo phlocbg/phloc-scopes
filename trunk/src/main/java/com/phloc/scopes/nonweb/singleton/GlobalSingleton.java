@@ -39,12 +39,18 @@ public abstract class GlobalSingleton extends AbstractSingleton
     super ("getGlobalSingleton");
   }
 
+  /**
+   * @return The scope to be used for this type of singleton.
+   */
   @Nonnull
   private static IGlobalScope _getStaticScope ()
   {
     return ScopeManager.getGlobalScope ();
   }
 
+  /**
+   * @return The scope to be used for this type of singleton.
+   */
   @Override
   @Nonnull
   protected final IGlobalScope getScope ()
@@ -52,9 +58,10 @@ public abstract class GlobalSingleton extends AbstractSingleton
     return _getStaticScope ();
   }
 
-  protected static final boolean isSingletonInstantiated (@Nonnull final Class <? extends GlobalSingleton> aClass)
+  public static final boolean isSingletonInstantiated (@Nonnull final Class <? extends GlobalSingleton> aClass)
   {
-    return isSingletonInstantiated (_getStaticScope (), aClass);
+    final IGlobalScope aScope = ScopeManager.getGlobalScopeOrNull ();
+    return aScope != null && isSingletonInstantiated (aScope, aClass);
   }
 
   @Nonnull

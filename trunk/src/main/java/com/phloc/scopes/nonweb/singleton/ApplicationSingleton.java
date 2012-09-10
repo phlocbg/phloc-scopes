@@ -41,12 +41,18 @@ public abstract class ApplicationSingleton extends AbstractSingleton
     super ("getApplicationSingleton");
   }
 
+  /**
+   * @return The scope to be used for this type of singleton.
+   */
   @Nonnull
   private static IApplicationScope _getStaticScope ()
   {
     return ScopeManager.getApplicationScope (true);
   }
 
+  /**
+   * @return The scope to be used for this type of singleton.
+   */
   @Override
   @Nonnull
   protected final IApplicationScope getScope ()
@@ -54,7 +60,7 @@ public abstract class ApplicationSingleton extends AbstractSingleton
     return _getStaticScope ();
   }
 
-  protected static final boolean isSingletonInstantiated (@Nonnull final Class <? extends ApplicationSingleton> aClass)
+  public static final boolean isSingletonInstantiated (@Nonnull final Class <? extends ApplicationSingleton> aClass)
   {
     return isSingletonInstantiated (_getStaticScope (), aClass);
   }
