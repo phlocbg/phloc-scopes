@@ -68,9 +68,11 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
  * @since FileUpload 1.1
  * @version $Id: DiskFileItem.java 963609 2010-07-13 06:56:47Z jochen $
  */
-@SuppressFBWarnings ("SE_NO_SERIALVERSIONID")
 public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
 {
+  // Because of transient field
+  private static final long serialVersionUID = 1379943273879417L;
+
   /**
    * Default content charset to be used when no explicit charset parameter is
    * provided by the sender. Media subtypes of the "text" type are defined to
