@@ -264,8 +264,8 @@ public final class ParameterParser
     final HashMap <String, String> params = new HashMap <String, String> ();
     if (str != null)
     {
-      char [] chars;
-      m_aChars = chars = str.toCharArray ();
+      final char [] chars = str.toCharArray ();
+      m_aChars = chars;
       m_nPos = 0;
       m_nLen = str.length ();
 
