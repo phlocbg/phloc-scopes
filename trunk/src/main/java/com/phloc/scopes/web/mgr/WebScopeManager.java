@@ -17,6 +17,8 @@
  */
 package com.phloc.scopes.web.mgr;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
@@ -41,7 +43,7 @@ import com.phloc.scopes.web.domain.IGlobalWebScope;
 import com.phloc.scopes.web.domain.IRequestWebScope;
 import com.phloc.scopes.web.domain.ISessionApplicationWebScope;
 import com.phloc.scopes.web.domain.ISessionWebScope;
-import com.phloc.scopes.web.impl.SessionWebScopePassivator;
+import com.phloc.scopes.web.impl.SessionWebScopeActivator;
 
 /**
  * This is the main manager class for web scope handling.
@@ -51,10 +53,59 @@ import com.phloc.scopes.web.impl.SessionWebScopePassivator;
 @Immutable
 public final class WebScopeManager
 {
+  // For backward compatibility passivation is disabled
+  public static final boolean DEFAULT_SESSION_PASSIVATION_ALLOWED = false;
+  private static final String SESSION_ATTR_SESSION_SCOPE_ACTIVATOR = "$phloc.sessionwebscope.activator";
   private static final Logger s_aLogger = LoggerFactory.getLogger (WebScopeManager.class);
+  private static final AtomicBoolean s_aSessionPassivationAllowed = new AtomicBoolean (DEFAULT_SESSION_PASSIVATION_ALLOWED);
 
   private WebScopeManager ()
   {}
+
+  // --- settings ---
+
+  /**
+   * @return <code>true</code> if session passivation is allowed. Default is
+   *         {@link #DEFAULT_SESSION_PASSIVATION_ALLOWED}
+   */
+  public static boolean isSessionPassivationAllowed ()
+  {
+    return s_aSessionPassivationAllowed.get ();
+  }
+
+  /**
+   * Allow or disallow session passivation
+   * 
+   * @param bSessionPassivationAllowed
+   */
+  public static void setSessionPassivationAllowed (final boolean bSessionPassivationAllowed)
+  {
+    s_aSessionPassivationAllowed.set (bSessionPassivationAllowed);
+
+    // For passivation to work, the session scopes may not be invalidated at the
+    // end of the global scope!
+    final ScopeSessionManager aSSM = ScopeSessionManager.getInstance ();
+    aSSM.setDestroyAllSessionsOnScopeEnd (!bSessionPassivationAllowed);
+    aSSM.setEndAllSessionsOnScopeEnd (!bSessionPassivationAllowed);
+
+    // Ensure that all session web scopes have the activator set or removed
+    for (final ISessionWebScope aSessionWebScope : WebScopeSessionManager.getAllSessionWebScopes ())
+    {
+      final HttpSession aHttpSession = aSessionWebScope.getSession ();
+      if (bSessionPassivationAllowed)
+      {
+        // Ensure the activator is present
+        if (aHttpSession.getAttribute (SESSION_ATTR_SESSION_SCOPE_ACTIVATOR) == null)
+          aHttpSession.setAttribute (SESSION_ATTR_SESSION_SCOPE_ACTIVATOR,
+                                     new SessionWebScopeActivator (aSessionWebScope));
+      }
+      else
+      {
+        // Ensure the activator is not present
+        aHttpSession.removeAttribute (SESSION_ATTR_SESSION_SCOPE_ACTIVATOR);
+      }
+    }
+  }
 
   // --- global scope ---
 
@@ -208,7 +259,11 @@ public final class WebScopeManager
   {
     final ISessionWebScope aSessionWebScope = MetaScopeFactory.getWebScopeFactory ().createSessionScope (aHttpSession);
     ScopeSessionManager.getInstance ().onScopeBegin (aSessionWebScope);
-    aHttpSession.setAttribute ("$phloc.sessionwebscope", new SessionWebScopePassivator (aSessionWebScope));
+    if (isSessionPassivationAllowed ())
+    {
+      // Add the special session activator
+      aHttpSession.setAttribute (SESSION_ATTR_SESSION_SCOPE_ACTIVATOR, new SessionWebScopeActivator (aSessionWebScope));
+    }
     return aSessionWebScope;
   }
 

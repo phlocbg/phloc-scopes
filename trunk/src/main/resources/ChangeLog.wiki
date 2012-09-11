@@ -1,7 +1,10 @@
 #summary Change log of phloc-scopes
 = Change log =
 <wiki:comment>This content is generated. Do not modify!</wiki:comment>
-<table border="1" cellspacing="0"><thead><tr><th>Date</th><th>Action</th><th>Category</th><th>Incompatible?</th><th>Description</th></tr></thead><tbody><tr><td>9/10/12</td><td>add</td><td>api</td><td></td><td>Added support for session passivation and activation for session web scopes</td></tr>
+<table border="1" cellspacing="0"><thead><tr><th>Date</th><th>Action</th><th>Category</th><th>Incompatible?</th><th>Description</th></tr></thead><tbody><tr border="1"><td>9/10/12</td><td colspan="4">_Release *4.1.1*_</td></tr>
+<tr><td>9/10/12</td><td>add</td><td>api</td><td></td><td>Made session passivation/activation customizable in WebScopeManager. It is disabled by default.</td></tr>
+<tr><td>9/10/12</td><td>remove</td><td>api</td><td>*yes*</td><td>Removed the AbstractSerializableSingleton class again because it was of no use</td></tr>
+<tr><td>9/10/12</td><td>add</td><td>api</td><td></td><td>Added support for session passivation and activation for session web scopes</td></tr>
 <tr><td>9/10/12</td><td>add</td><td>api</td><td></td><td>Extended WebScopeTestRule so that context path and init parameters can be set explicitly</td></tr>
 <tr border="1"><td>9/10/12</td><td colspan="4">_Release *4.1.0*_</td></tr>
 <tr><td>9/10/12</td><td>fix</td><td>tech</td><td></td><td>Fixed the session destruction because ScopeSessionManager.getInstance was not accessible upon shutdown</td></tr>
