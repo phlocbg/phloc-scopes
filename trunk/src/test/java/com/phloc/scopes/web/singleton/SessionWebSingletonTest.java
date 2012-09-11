@@ -22,7 +22,6 @@ import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
 
-import com.phloc.commons.mock.PhlocTestUtils;
 import com.phloc.scopes.web.mock.AbstractWebScopeAwareTestCase;
 
 /**
@@ -40,15 +39,6 @@ public final class SessionWebSingletonTest extends AbstractWebScopeAwareTestCase
     assertEquals (0, a.get ());
     a.inc ();
     assertEquals (1, a.get ());
-    final MockSessionWebSingleton b = PhlocTestUtils.testDefaultSerialization (a);
-    assertEquals (1, a.get ());
-    assertEquals (1, b.get ());
-    a.inc ();
-    assertEquals (2, a.get ());
-    assertEquals (1, b.get ());
-
-    // Now we will retrieve b instead of a, because the serialization overwrote
-    // the scope entry!
-    assertSame (b, MockSessionWebSingleton.getInstance ());
+    assertSame (a, MockSessionWebSingleton.getInstance ());
   }
 }
