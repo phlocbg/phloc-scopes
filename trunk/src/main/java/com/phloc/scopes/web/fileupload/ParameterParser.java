@@ -18,6 +18,7 @@
 package com.phloc.scopes.web.fileupload;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
@@ -287,7 +288,7 @@ public final class ParameterParser
         if (StringHelper.hasText (sParamName))
         {
           if (m_bLowerCaseNames)
-            sParamName = sParamName.toLowerCase ();
+            sParamName = sParamName.toLowerCase (Locale.US);
           params.put (sParamName, sParamValue);
         }
       }

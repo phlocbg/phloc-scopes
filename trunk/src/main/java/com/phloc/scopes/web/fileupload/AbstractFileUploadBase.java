@@ -935,7 +935,7 @@ public abstract class AbstractFileUploadBase
           if (fieldName != null)
           {
             final String subContentType = headers.getHeader (CONTENT_TYPE);
-            if (subContentType != null && subContentType.toLowerCase ().startsWith (MULTIPART_MIXED))
+            if (subContentType != null && subContentType.toLowerCase (Locale.US).startsWith (MULTIPART_MIXED))
             {
               m_sCurrentFieldName = fieldName;
               // Multiple files associated with this field name

@@ -46,10 +46,13 @@ import com.phloc.scopes.web.domain.ISessionWebScope;
 @ThreadSafe
 public class SessionWebScope extends SessionScope implements ISessionWebScope
 {
+  // Because of transient field
+  private static final long serialVersionUID = 8912368923565761267L;
+
   private static final Logger s_aLogger = LoggerFactory.getLogger (SessionWebScope.class);
 
   // Do not serialize the session
-  private final HttpSession m_aHttpSession;
+  private final transient HttpSession m_aHttpSession;
 
   public SessionWebScope (@Nonnull final HttpSession aHttpSession)
   {

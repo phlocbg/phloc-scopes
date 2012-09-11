@@ -209,7 +209,7 @@ public final class MockHttpServletResponse implements HttpServletResponse, IHasL
     m_sContentType = sContentType;
     if (sContentType != null)
     {
-      final int nCharsetIndex = sContentType.toLowerCase ().indexOf (CMimeType.CHARSET_PREFIX);
+      final int nCharsetIndex = sContentType.toLowerCase (Locale.US).indexOf (CMimeType.CHARSET_PREFIX);
       if (nCharsetIndex != -1)
       {
         final String sEncoding = sContentType.substring (nCharsetIndex + CMimeType.CHARSET_PREFIX.length ());

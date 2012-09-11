@@ -55,13 +55,16 @@ import com.phloc.scopes.web.fileupload.IFileItem;
  */
 public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements IRequestWebScope
 {
-  private static final int PORT_HTTPS = 443;
+  // Because of transient field
+  private static final long serialVersionUID = 78563987233146L;
+
   private static final int PORT_HTTP = 80;
+  private static final int PORT_HTTPS = 443;
   private static final Logger s_aLogger = LoggerFactory.getLogger (RequestWebScopeNoMultipart.class);
   private static final String REQUEST_ATTR_SCOPE_INITED = "$request.scope.inited";
 
-  protected final HttpServletRequest m_aHttpRequest;
-  protected final HttpServletResponse m_aHttpResponse;
+  protected final transient HttpServletRequest m_aHttpRequest;
+  protected final transient HttpServletResponse m_aHttpResponse;
 
   @Nonnull
   @Nonempty
