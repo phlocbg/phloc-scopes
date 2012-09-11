@@ -1,0 +1,616 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (C) 2006-2012 phloc systems
+    http://www.phloc.com
+    office[at]phloc[dot]com
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<changelog xmlns="http://www.phloc.com/ns/changelog/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.phloc.com/ns/changelog/1.0 schemas/changelog-1.0.xsd" version="1.0" component="phloc-scopes">
+  <release date="2012-09-10" version="4.1.1" />
+  <entry date="2012-09-10" category="api" action="add">
+    <change>
+      <text locale="en">Made session passivation/activation customizable in WebScopeManager. It is disabled by default.</text>
+    </change>
+  </entry>
+  <entry date="2012-09-10" category="api" action="remove" incompatible="true">
+    <change>
+      <text locale="en">Removed the AbstractSerializableSingleton class again because it was of no use</text>
+    </change>
+  </entry>
+  <entry date="2012-09-10" category="api" action="add">
+    <change>
+      <text locale="en">Added support for session passivation and activation for session web scopes</text>
+    </change>
+  </entry>
+  <entry date="2012-09-10" category="api" action="add">
+    <change>
+      <text locale="en">Extended WebScopeTestRule so that context path and init parameters can be set explicitly</text>
+    </change>
+  </entry>
+  <release date="2012-09-10" version="4.1.0" />
+  <entry date="2012-09-10" category="tech" action="fix">
+    <change>
+      <text locale="en">Fixed the session destruction because ScopeSessionManager.getInstance was not accessible upon shutdown</text>
+    </change>
+  </entry>
+  <entry date="2012-09-10" category="api" action="change">
+    <change>
+      <text locale="en">Made AbstractSingleton.getAllSingletons and isSingletonInstantiated work without a scope</text>
+    </change>
+  </entry>
+  <entry date="2012-09-10" category="api" action="change">
+    <change>
+      <text locale="en">Extracted new base class AbstractSerializableSingleton</text>
+    </change>
+  </entry>
+  <release date="2012-09-06" version="4.0.15" />
+  <entry date="2012-09-06" category="tech" action="update">
+    <change>
+      <text locale="en">Updated to phloc-commons 3.8.0</text>
+    </change>
+  </entry>
+  <release date="2012-09-05" version="4.0.13" />
+  <entry date="2012-09-05" category="api" action="add">
+    <change>
+      <text locale="en">ScopeSessionManager now has a possibility to prevent all sessions from being ended upon global scope destruction when session destruction is prohibited so that the singletons are stored</text>
+    </change>
+  </entry>
+  <release date="2012-08-31" version="4.0.12" />
+  <entry date="2012-08-31" category="tech" action="change">
+    <change>
+      <text locale="en">Once again tried to resolve potential deadlock in GlobalScope handling</text>
+    </change>
+  </entry>
+  <release date="2012-08-30" version="4.0.11" />
+  <entry date="2012-08-30" category="tech" action="change">
+    <change>
+      <text locale="en">Really Fixed potential deadlock in GlobalScope handling</text>
+    </change>
+  </entry>
+  <release date="2012-08-30" version="4.0.10" />
+  <entry date="2012-08-30" category="tech" action="change">
+    <change>
+      <text locale="en">Fixed potential deadlock in GlobalScope handling, if one thread is trying to access the global scope while it is shutdown in another thread</text>
+    </change>
+  </entry>
+  <entry date="2012-08-19" category="api" action="add">
+    <change>
+      <text locale="en">ScopeSessionManager now has a possibility to prevent all sessions from being destroyed upon global scope destruction</text>
+    </change>
+  </entry>
+  <release date="2012-08-19" version="4.0.9" />
+  <entry date="2012-08-19" category="api" action="add">
+    <change>
+      <text locale="en">Added the possibility to disable HTTP event triggering in MockHttpServletRequest and OfflineHttpServletRequest</text>
+    </change>
+  </entry>
+  <entry date="2012-08-19" category="api" action="change">
+    <change>
+      <text locale="en">Made MockEventListenerList thread safe</text>
+    </change>
+  </entry>
+  <entry date="2012-08-19" category="tech" action="change">
+    <change>
+      <text locale="en">By default MockHttpListener does not contain any default listener</text>
+    </change>
+  </entry>
+  <release date="2012-08-18" version="4.0.8" />
+  <entry date="2012-08-18" category="tech" action="fix">
+    <change>
+      <text locale="en">Fixed testability with different mock HTTP listener configurations</text>
+    </change>
+  </entry>
+  <entry date="2012-08-18" category="tech" action="fix">
+    <change>
+      <text locale="en">Fixed missing debug message when destructing request web scopes</text>
+    </change>
+  </entry>
+  <release date="2012-08-17" version="4.0.7" />
+  <entry date="2012-08-17" category="tech" action="change">
+    <change>
+      <text locale="en">WebScopeTestRule now sets the MockHttpListeners to default on every invocation</text>
+    </change>
+  </entry>
+  <entry date="2012-08-17" category="api" action="add">
+    <change>
+      <text locale="en">The application ID of MockServletRequestListener can now be customized</text>
+    </change>
+  </entry>
+  <entry date="2012-08-17" category="api" action="add">
+    <change>
+      <text locale="en">Added method MockServletRequestListener.getCurrentMockResponse () to retrieve the current response</text>
+    </change>
+  </entry>
+  <release date="2012-08-16" version="4.0.6" />
+  <entry date="2012-08-16" category="api" action="change">
+    <change>
+      <text locale="en">WebScopeAwareTestSetup does not depend on JUnit</text>
+    </change>
+  </entry>
+  <entry date="2012-08-16" category="api" action="change">
+    <change>
+      <text locale="en">Some visibility and exception changes</text>
+    </change>
+  </entry>
+  <release date="2012-08-16" version="4.0.5" />
+  <entry date="2012-08-15" category="api" action="add">
+    <change>
+      <text locale="en">Added JUnit TestRule implementations for Scope and WebScope</text>
+    </change>
+  </entry>
+  <entry date="2012-08-15" category="api" action="remove" incompatible="true">
+    <change>
+      <text locale="en">Removed *ScopeAwareTestSuite classes</text>
+    </change>
+  </entry>
+  <entry date="2012-08-15" category="api" action="update">
+    <change>
+      <text locale="en">Improved testability of scope stuff</text>
+    </change>
+  </entry>
+  <entry date="2012-08-15" category="api" action="add">
+    <change>
+      <text locale="en">Made MockHttpListener default values customizable</text>
+    </change>
+  </entry>
+  <release date="2012-08-10" version="4.0.4" />
+  <entry date="2012-08-10" category="tech" action="fix">
+    <change>
+      <text locale="en">MockHttpServletRequest now disables x-gzip and x-compress accept encoding</text>
+    </change>
+  </entry>
+  <entry date="2012-08-10" category="api" action="add">
+    <change>
+      <text locale="en">Added some more MockHttpServletResponse sanity methods</text>
+    </change>
+  </entry>
+  <entry date="2012-08-10" category="tech" action="fix">
+    <change>
+      <text locale="en">Fixed MockHttpServletResponse.getContentAsString if no charset is defined</text>
+    </change>
+  </entry>
+  <entry date="2012-08-08" category="tech" action="change">
+    <change>
+      <text locale="en">SessionBackedRequestFieldData now allows for empty request values</text>
+    </change>
+  </entry>
+  <release date="2012-08-08" version="4.0.3" />
+  <entry date="2012-08-06" category="tech" action="fix">
+    <change>
+      <text locale="en">Fixed exception when creating a global web scope where the servlet context does not have a servlet context name</text>
+    </change>
+  </entry>
+  <entry date="2012-08-03" category="api" action="change">
+    <change>
+      <text locale="en">IFileItem.write now returns a success indicator</text>
+    </change>
+  </entry>
+  <release date="2012-07-24" version="4.0.2" />
+  <entry date="2012-07-24" category="api" action="add">
+    <change>
+      <text locale="en">Added methods in WebScopeSessionManager to handle ISessionWebScope objects only</text>
+    </change>
+  </entry>
+  <entry date="2012-07-24" category="api" action="change">
+    <change>
+      <text locale="en">Undeprecated WebScopeSessionManager</text>
+    </change>
+  </entry>
+  <release date="2012-07-23" version="4.0.1" />
+  <entry date="2012-07-23" category="api" action="add">
+    <change>
+      <text locale="en">Added new method ScopeSessionManager.destroyAllSessions</text>
+    </change>
+  </entry>
+  <entry date="2012-07-23" category="api" action="add">
+    <change>
+      <text locale="en">Added new method IGlobalScope.getApplicationScopeCount</text>
+    </change>
+  </entry>
+  <entry date="2012-07-23" category="api" action="add">
+    <change>
+      <text locale="en">Added new method ISessionScope.getSessionApplicationScopeCount</text>
+    </change>
+  </entry>
+  <entry date="2012-07-23" category="api" action="add">
+    <change>
+      <text locale="en">Extended MockHttpServletRequest so that a certain session ID can be used instead of always creating a new one</text>
+    </change>
+  </entry>
+  <entry date="2012-07-23" category="api" action="add">
+    <change>
+      <text locale="en">Improved API of AbstractWebScopeAwareTest(Suite|Case) and WebScopeAwareTestSetup</text>
+    </change>
+  </entry>
+  <entry date="2012-07-23" category="api" action="add">
+    <change>
+      <text locale="en">Added new method WebScopeSessionHelper.renewSessionScope(HttpSession,boolean)</text>
+    </change>
+  </entry>
+  <release date="2012-07-12" version="4.0.0" />
+  <entry date="2012-07-11" category="api" action="update">
+    <change>
+      <text locale="en">Improved backward compatibility</text>
+    </change>
+  </entry>
+  <release date="2012-07-10" version="4.0.0-RC1" />
+  <entry date="2012-07-10" category="api" action="add">
+    <change>
+      <text locale="en">Added class SessionApplicationSingleton</text>
+    </change>
+  </entry>
+  <entry date="2012-07-10" category="api" action="change" incompatible="true">
+    <change>
+      <text locale="en">Renamed SessionApplicationSingleton to SessionApplicationWebSingleton</text>
+    </change>
+  </entry>
+  <entry date="2012-07-10" category="api" action="change">
+    <change>
+      <text locale="en">SessionApplicationWebScope is now derived from SessionApplicationScope</text>
+    </change>
+  </entry>
+  <entry date="2012-07-10" category="tech" action="change" incompatible="true">
+    <change>
+      <text locale="en">Not storing request parameters in the HttpServletRequest itself but in a Map</text>
+    </change>
+  </entry>
+  <entry date="2012-07-10" category="api" action="change">
+    <change>
+      <text locale="en">Made WebScopeListener non-final</text>
+    </change>
+  </entry>
+  <entry date="2012-07-09" category="api" action="change">
+    <change>
+      <text locale="en">Default scope factories are non-final</text>
+    </change>
+  </entry>
+  <entry date="2012-06-25" category="feature" action="add">
+    <change>
+      <text locale="en">Started adding Session and SessionApplication scopes for non-web applications</text>
+    </change>
+  </entry>
+  <release date="2012-06-25" version="3.9.7" />
+  <entry date="2012-06-25" category="tech" action="update">
+    <change>
+      <text locale="en">Minor improvement in lock handling of RequestWebScopeNoMultipart</text>
+    </change>
+  </entry>
+  <entry date="2012-06-25" category="tech" action="update">
+    <change>
+      <text locale="en">Updated to phloc-commons 3.6.1</text>
+    </change>
+  </entry>
+  <entry date="2012-06-06" category="api" action="add">
+    <change>
+      <text locale="en">Added new class GlobalSingletonTreeWithUniqueID</text>
+    </change>
+  </entry>
+  <entry date="2012-05-29" category="api" action="add">
+    <change>
+      <text locale="en">Added new method IRequestWebScope.getAllUploadedFileItemValues ()</text>
+    </change>
+  </entry>
+  <release date="2012-05-28" version="3.9.6" />
+  <entry date="2012-05-28" category="tech" action="fix">
+    <change>
+      <text locale="en">Fixed locking call in RequestWebScopeNoMultipart.destroyScope (was lock/lock instead of lock/unlock)</text>
+    </change>
+  </entry>
+  <entry date="2012-05-25" category="api" action="add">
+    <change>
+      <text locale="en">Added new MockServletContext constructor</text>
+    </change>
+  </entry>
+  <release date="2012-05-24" version="3.9.5" />
+  <entry date="2012-05-24" category="tech" action="update">
+    <change>
+      <text locale="en">Updated to phloc-commons 3.5.6</text>
+    </change>
+  </entry>
+  <release date="2012-05-23" version="3.9.4" />
+  <entry date="2012-05-21" category="tech" action="change">
+    <change>
+      <text locale="en">Made WebScopeManager.getSessionScope(false) more robust</text>
+    </change>
+  </entry>
+  <entry date="2012-05-21" category="api" action="add">
+    <change>
+      <text locale="en">Added new method (Web)ScopeManager.getRequestScopeOrNull ()</text>
+    </change>
+  </entry>
+  <entry date="2012-05-11" category="api" action="add">
+    <change>
+      <text locale="en">Extended AbstractSingleton with a method isSingletonInstantiated</text>
+    </change>
+  </entry>
+  <entry date="2012-05-11" category="api" action="add">
+    <change>
+      <text locale="en">Extended IScope with a method runAtomic(INonThrowingCallableWithParameter)</text>
+    </change>
+  </entry>
+  <release date="2012-05-03" version="3.9.3" />
+  <entry date="2012-05-03" category="api" action="update">
+    <change>
+      <text locale="en">Made API of ScopeManager and WebScopeManager more complete</text>
+    </change>
+  </entry>
+  <entry date="2012-05-03" category="tech" action="add">
+    <change>
+      <text locale="en">Added SPI support for handling the scope lifecycle of all scope types</text>
+    </change>
+  </entry>
+  <release date="2012-04-26" version="3.9.2" />
+  <entry date="2012-04-26" category="api" action="add">
+    <change>
+      <text locale="en">Renamed utility classes (SessionBacked)RequestField to (SessionBacked)RequestFieldData</text>
+    </change>
+  </entry>
+  <release date="2012-04-26" version="3.9.1" />
+  <entry date="2012-04-26" category="api" action="add">
+    <change>
+      <text locale="en">Added new utility classes RequestField and SessionBackedRequestField</text>
+    </change>
+  </entry>
+  <entry date="2012-04-25" category="api" action="add">
+    <change>
+      <text locale="en">Added method getAllUploadedFileItems to class IRequestWebScope</text>
+    </change>
+  </entry>
+  <release date="2012-04-23" version="3.9.0" />
+  <entry date="2012-04-23" category="tech" action="update" incompatible="true">
+    <change>
+      <text locale="en">Updated to phloc-commons 3.5.0</text>
+    </change>
+  </entry>
+  <release date="2012-04-04" version="3.8.5" />
+  <entry date="2012-04-04" category="tech" action="update">
+    <change>
+      <text locale="en">Updated to phloc-commons 3.4.9</text>
+    </change>      
+  </entry>
+  <release date="2012-04-03" version="3.8.4" />
+  <entry date="2012-04-03" category="api" action="change" incompatible="true">
+    <change>
+      <text locale="en">Renamed RequestWebScopeNoFileItems to RequestWebScopeNoMultipart</text>
+    </change>      
+  </entry>
+  <entry date="2012-04-03" category="tech" action="add">
+    <change>
+      <text locale="en">Added a warning in case a request scope application ID is not used</text>
+    </change>      
+  </entry>
+  <release date="2012-04-03" version="3.8.3" />
+  <entry date="2012-04-03" category="api" action="add">
+    <change>
+      <text locale="en">Made class ScopeRenewalAwareWrapper Serializable</text>
+    </change>      
+  </entry>
+  <release date="2012-04-03" version="3.8.2" />
+  <entry date="2012-04-03" category="api" action="add">
+    <change>
+      <text locale="en">Added new class ScopeRenewalAwareWrapper</text>
+    </change>      
+  </entry>
+  <entry date="2012-04-03" category="api" action="add">
+    <change>
+      <text locale="en">Added new class DefaultScopeAwareFilter as the most simple scope aware filter</text>
+    </change>      
+  </entry>
+  <release date="2012-04-03" version="3.8.1" />
+  <entry date="2012-04-03" category="api" action="change">
+    <change>
+      <text locale="en">Made method AbstractSingleton.getSingletonScopeKey(Class) public</text>
+    </change>      
+  </entry>
+  <entry date="2012-04-03" category="api" action="add">
+    <change>
+      <text locale="en">Added new class RequestWebScopeNoFileUpload that does not try to parse multipart requests</text>
+    </change>      
+  </entry>
+  <entry date="2012-04-03" category="api" action="add">
+    <change>
+      <text locale="en">Added the class FileItemResource that encapsulates an IFileItem within an IReadableResource</text>
+    </change>      
+  </entry>
+  <release date="2012-04-03" version="3.8.0" />
+  <entry date="2012-04-03" category="tech" action="change" incompatible="true">
+    <change>
+      <text locale="en">Changed the way how temporary files are deleted without using a separate thread, using a GlobalSingleton</text>
+    </change>      
+  </entry>
+  <entry date="2012-04-03" category="tech" action="change" incompatible="true">
+    <change>
+      <text locale="en">Changed the naming of the fileupload interfaces</text>
+    </change>      
+  </entry>
+  <release date="2012-04-02" version="3.7.3" />
+  <entry date="2012-04-02" category="tech" action="add">
+    <change>
+      <text locale="en">Added a new class WebScopeListener that solely handles global and session scope initialization an destruction</text>
+    </change>      
+  </entry>
+  <entry date="2012-04-02" category="api" action="add">
+    <change>
+      <text locale="en">Added a new method WebScopeSessionManager.getSessionScopeOfID</text>
+    </change>      
+  </entry>
+  <entry date="2012-04-02" category="tech" action="add">
+    <change>
+      <text locale="en">Added the possibility to dynamically enable/disable scope lifecycle debugging via ScopeUtils class</text>
+    </change>      
+  </entry>
+  <release date="2012-03-29" version="3.7.2" />
+  <entry date="2012-03-29" category="tech" action="fix">
+    <change>
+      <text locale="en">Caught wrong exception in WebScopeSessionManager.onDestroy</text>
+    </change>      
+  </entry>
+  <release date="2012-03-27" version="3.7.1" />
+  <entry date="2012-03-27" category="tech" action="fix">
+    <change>
+      <text locale="en">Fixed dynamic determination of servlet context ContextPath for Jetty</text>
+    </change>      
+  </entry>
+  <release date="2012-03-27" version="3.7.0" />
+  <entry date="2012-03-27" category="api" action="add">
+    <change>
+      <text locale="en">Added the method IScope.getAllScopeRenewalAwareAttributes ()</text>
+    </change>      
+  </entry>
+  <entry date="2012-03-27" category="api" action="add">
+    <change>
+      <text locale="en">Added the method WebScopeSessionHelper.renewSessionScope that correctly handles all session application scopes</text>
+    </change>      
+  </entry>
+  <entry date="2012-03-27" category="api" action="change" incompatible="true">
+    <change>
+      <text locale="en">Renamed ISurvivingSessionRenewal to IScopeRenewalAware</text>
+    </change>      
+  </entry>
+  <entry date="2012-03-27" category="api" action="add">
+    <change>
+      <text locale="en">Added new method ISessionWebScope.getAllSessionApplicationScopes ()</text>
+    </change>      
+  </entry>
+  <entry date="2012-03-27" category="api" action="add">
+    <change>
+      <text locale="en">Added new method IGlobalScope.getAllApplicationScopes ()</text>
+    </change>      
+  </entry>
+  <entry date="2012-03-27" category="api" action="add">
+    <change>
+      <text locale="en">Extended WebScopeSessionManager API with retrieval methods</text>
+    </change>      
+  </entry>
+  <entry date="2012-03-27" category="tech" action="fix">
+    <change>
+      <text locale="en">Tried to add support for Servlet API 2.4 (no ServletContext.getContextPath method)</text>
+    </change>      
+  </entry>
+  <release date="2012-03-26" version="3.6.0" />
+  <entry date="2012-03-26" category="tech" action="add">
+    <change>
+      <text locale="en">Added file upload handling into this project (based on commons-fileupload and commons-io)</text>
+    </change>      
+  </entry>
+  <entry date="2012-03-26" category="tech" action="fix">
+    <change>
+      <text locale="en">Fixed some minor FindBugs issues</text>
+    </change>      
+  </entry>
+  <release date="2012-03-23" version="3.5.3" />
+  <entry date="2012-03-23" category="api" action="add">
+    <change>
+      <text locale="en">Added new class RequestScopeInitializer to consistently handle nested request scopes.</text>
+    </change>      
+  </entry>
+  <release date="2012-03-23" version="3.5.2" />
+  <entry date="2012-03-23" category="tech" action="fix">
+    <change>
+      <text locale="en">AbstractScopeAwareFilter can now handle multiple scope aware filters within a servlet filter chain</text>
+    </change>      
+  </entry>
+  <entry date="2012-03-23" category="api" action="add">
+    <change>
+      <text locale="en">(Web)ScopeManager now has the methods isRequestScopePresent and isGlobalScopePresent</text>
+    </change>      
+  </entry>
+  <entry date="2012-03-23" category="api" action="change">
+    <change>
+      <text locale="en">Added special base classes for Servlet filters and HTTP servlets handling the scopes</text>
+    </change>      
+  </entry>
+  <release date="2012-03-23" version="3.5.1" />
+  <entry date="2012-03-22" category="api" action="change">
+    <change>
+      <text locale="en">Added special web scope test base classes AbstractWebScopeAwareTest*</text>
+    </change>      
+  </entry>
+  <entry date="2012-03-22" category="api" action="change">
+    <change>
+      <text locale="en">Moved servlet API here from phloc-net</text>
+    </change>      
+  </entry>
+  <entry date="2012-03-22" category="tech" action="fix">
+    <change>
+      <text locale="en">Fixed error in locking</text>
+    </change>
+  </entry>
+  <release date="2012-03-22" version="3.5.0" />
+  <entry date="2012-03-22" category="api" action="change" incompatible="true">
+    <change>
+      <text locale="en">Total change of package structure to clearly reflect the changes between web and nonweb</text>
+    </change>
+  </entry>
+  <release date="2012-03-20" version="3.0.0" />
+  <entry date="2012-03-19" category="tech" action="change" incompatible="true">
+    <change>
+      <text locale="en">The SessionWebScope no longer directly operates on the HTTP Session but on a Map</text>
+    </change>
+  </entry>
+  <entry date="2012-03-19" category="api" action="change" incompatible="true">
+    <change>
+      <text locale="en">Swapped the dependency direction between phloc-events and phloc-scopes</text>
+    </change>
+  </entry>
+  <entry date="2012-03-19" category="api" action="add">
+    <change>
+      <text locale="en">Moved the web scopes + manager to this project</text>
+    </change>
+  </entry>
+  <entry date="2012-03-19" category="api" action="add">
+    <change>
+      <text locale="en">Added isValid and isInDestruction methods into IScope</text>
+    </change>
+  </entry>
+  <release date="2012-03-14" version="2.8.0" />
+  <entry date="2012-03-14" category="tech" action="fix">
+    <change>
+      <text locale="en">Fixed synchronization handling of scopes</text>
+    </change>
+  </entry>
+  <entry date="2012-03-14" category="api" action="add" incompatible="true">
+    <change>
+      <text locale="en">Added new method runAtomic in IScope to perform multiple actions in one write lock</text>
+    </change>
+  </entry>
+  <entry date="2012-03-13" category="tech" action="change">
+    <change>
+      <text locale="en">Made exception handling in scope destruction for invocation of IScopeDestructionAware more narrow and flexible</text>
+    </change>
+  </entry>
+  <release date="2012-02-23" version="2.7.0" />
+  <entry date="2012-02-23" category="api" action="add">
+    <change>
+      <text locale="en">Added new IScope method boolean isDestroyed()</text>
+    </change>
+  </entry>
+  <release date="2012-01-27" version="2.6.0" />
+  <entry date="2012-01-27" category="tech" action="change">
+    <change>
+      <text locale="en">Removed POM dependency from phloc-datetime</text>
+    </change>
+  </entry>
+  <release date="2012-01-21" version="2.5.3" />
+  <release date="2012-01-21" version="2.5.2" />
+  <release date="2011-09-12" version="2.5.1" />
+  <entry date="2011-09-12" category="api" action="update">
+    <change>
+      <text locale="en">Updated to phloc-commons 3.1.0</text>
+    </change>
+  </entry>
+</changelog>
