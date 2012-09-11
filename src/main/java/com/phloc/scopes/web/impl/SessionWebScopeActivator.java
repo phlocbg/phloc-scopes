@@ -39,19 +39,21 @@ import com.phloc.scopes.web.mgr.WebScopeManager;
 
 /**
  * This class is responsible for passivating and activating session web scopes.
+ * The passivation itself is empty, because everything is done in the serialzing
+ * code
  * 
  * @author philip
  */
-public final class SessionWebScopePassivator implements Serializable, HttpSessionActivationListener
+public final class SessionWebScopeActivator implements Serializable, HttpSessionActivationListener
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (SessionWebScopePassivator.class);
+  private static final Logger s_aLogger = LoggerFactory.getLogger (SessionWebScopeActivator.class);
   private ISessionWebScope m_aSessionWebScope;
   private Map <String, Object> m_aAttrs;
   private Map <String, ISessionApplicationScope> m_aSessionApplicationScopes;
 
   @Deprecated
   @DevelopersNote ("For reading only")
-  public SessionWebScopePassivator ()
+  public SessionWebScopeActivator ()
   {}
 
   /**
@@ -60,7 +62,7 @@ public final class SessionWebScopePassivator implements Serializable, HttpSessio
    * @param aSessionWebScope
    *        the scope to be written
    */
-  public SessionWebScopePassivator (@Nonnull final ISessionWebScope aSessionWebScope)
+  public SessionWebScopeActivator (@Nonnull final ISessionWebScope aSessionWebScope)
   {
     if (aSessionWebScope == null)
       throw new NullPointerException ("sessionWebScope");
