@@ -48,7 +48,10 @@ public final class GlobalWebScope extends GlobalScope implements IGlobalWebScope
     String getContextPath ();
   }
 
-  private final ServletContext m_aSC;
+  // Because of transient field
+  private static final long serialVersionUID = 15665138713664L;
+
+  private final transient ServletContext m_aSC;
   private final IContextPathProvider m_aContextPathProvider;
 
   @Nonnull

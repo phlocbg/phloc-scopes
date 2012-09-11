@@ -51,6 +51,9 @@ import com.phloc.scopes.web.mgr.WebScopeManager;
 @NotThreadSafe
 public class DefaultWebScopeFactory implements IWebScopeFactory
 {
+  private static final int SERVLET_SPEC_GETCONTEXTPATH_MAJOR = 2;
+  private static final int SERVLET_SPEC_GETCONTEXTPATH_MINOR = 5;
+
   private static final class ConstantContextPathProvider implements IContextPathProvider
   {
     // Store in member to avoid dependency to outer method
@@ -104,8 +107,8 @@ public class DefaultWebScopeFactory implements IWebScopeFactory
     IContextPathProvider aContextPathProvider = null;
 
     // Using getContextPath for Servlet API >= 2.5:
-    if ((aServletContext.getMajorVersion () == 2 && aServletContext.getMinorVersion () >= 5) ||
-        aServletContext.getMajorVersion () > 2)
+    if ((aServletContext.getMajorVersion () == SERVLET_SPEC_GETCONTEXTPATH_MAJOR && aServletContext.getMinorVersion () >= SERVLET_SPEC_GETCONTEXTPATH_MINOR) ||
+        aServletContext.getMajorVersion () > SERVLET_SPEC_GETCONTEXTPATH_MAJOR)
     {
       try
       {
