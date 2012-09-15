@@ -20,6 +20,16 @@
 -->
 <changelog xmlns="http://www.phloc.com/ns/changelog/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.phloc.com/ns/changelog/1.0 schemas/changelog-1.0.xsd" version="1.0" component="phloc-scopes">
+  <entry date="2012-09-15" category="tech" action="change">
+    <change>
+      <text locale="en">Set default method in MockHttpServletRequest to "GET"</text>
+    </change>
+  </entry>
+  <entry date="2012-09-15" category="tech" action="fix">
+    <change>
+      <text locale="en">Fixed incorrect initialization of protocol value in MockHttpServletRequest</text>
+    </change>
+  </entry>
   <release date="2012-09-13" version="4.1.2" />
   <entry date="2012-09-13" category="api" action="change">
     <change>

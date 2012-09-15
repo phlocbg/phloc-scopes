@@ -69,12 +69,14 @@ import com.phloc.commons.system.SystemHelper;
 public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
 {
   public static final boolean DEFAULT_INVOKE_HTTP_LISTENER = true;
-  public static final String DEFAULT_PROTOCOL = "http";
+  public static final String DEFAULT_PROTOCOL = "HTTP/1.1";
+  public static final String DEFAULT_SCHEME = "http";
   public static final String DEFAULT_SERVER_ADDR = "127.0.0.1";
   public static final String DEFAULT_SERVER_NAME = "localhost";
   public static final int DEFAULT_SERVER_PORT = 80;
   public static final String DEFAULT_REMOTE_ADDR = "127.0.0.1";
   public static final String DEFAULT_REMOTE_HOST = "localhost";
+  public static final String DEFAULT_METHOD = "GET";
 
   private boolean m_bInvalidated = false;
   private boolean m_bActive = true;
@@ -84,14 +86,14 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   private String m_sContentType;
   private final Map <String, String []> m_aParameters = new LinkedHashMap <String, String []> (16);
   private String m_sProtocol = DEFAULT_PROTOCOL;
-  private String m_sScheme = DEFAULT_PROTOCOL;
+  private String m_sScheme = DEFAULT_SCHEME;
   private String m_sServerName = DEFAULT_SERVER_NAME;
   private int m_nServerPort = DEFAULT_SERVER_PORT;
-  private String m_sRemoteAddr = DEFAULT_REMOTE_ADDR;
-  private String m_sRemoteHost = DEFAULT_REMOTE_HOST;
   private final List <Locale> m_aLocales = new ArrayList <Locale> ();
   private boolean m_bSecure = false;
   private final ServletContext m_aServletContext;
+  private String m_sRemoteAddr = DEFAULT_REMOTE_ADDR;
+  private String m_sRemoteHost = DEFAULT_REMOTE_HOST;
   private int m_nRemotePort = DEFAULT_SERVER_PORT;
   private String m_sLocalName = DEFAULT_SERVER_NAME;
   private String m_sLocalAddr = DEFAULT_SERVER_ADDR;
@@ -99,7 +101,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   private String m_sAuthType;
   private Cookie [] m_aCookies;
   private final IMultiMapSetBased <String, Object> m_aHeaders = new MultiHashMapLinkedHashSetBased <String, Object> ();
-  private String m_sMethod;
+  private String m_sMethod = DEFAULT_METHOD;
   private String m_sPathInfo;
   private String m_sContextPath = "";
   private String m_sQueryString;
