@@ -107,12 +107,11 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
     // parameters can only be extracted once!
     // As the parameters are stored directly in the HTTP request, we're not
     // loosing any data here!
-    if (getAttributeObject (REQUEST_ATTR_SCOPE_INITED) != null)
+    if (getAndSetAttributeFlag (REQUEST_ATTR_SCOPE_INITED))
     {
       s_aLogger.warn ("Scope was already inited: " + toString ());
       return;
     }
-    setAttribute (REQUEST_ATTR_SCOPE_INITED, Boolean.TRUE);
 
     // where some extra items (like file items) handled?
     final boolean bAddedSpecialRequestAttrs = addSpecialRequestAttributes ();
