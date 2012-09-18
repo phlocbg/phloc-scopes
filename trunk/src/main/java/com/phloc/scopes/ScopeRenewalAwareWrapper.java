@@ -23,14 +23,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
 
-import com.phloc.commons.ICloneable;
 import com.phloc.commons.annotations.ReturnsMutableCopy;
-import com.phloc.commons.equals.EqualsUtils;
-import com.phloc.commons.hash.HashCodeGenerator;
 import com.phloc.commons.mutable.IReadonlyWrapper;
-import com.phloc.commons.mutable.IWrapper;
-import com.phloc.commons.state.EChange;
-import com.phloc.commons.string.ToStringGenerator;
+import com.phloc.commons.mutable.Wrapper;
 
 /**
  * This is a wrapper around any object that is scope renewal aware.
@@ -40,14 +35,8 @@ import com.phloc.commons.string.ToStringGenerator;
  *        The type of object to be wrapped. Must implement {@link Serializable}.
  */
 @NotThreadSafe
-public final class ScopeRenewalAwareWrapper <DATATYPE extends Serializable> implements
-                                                                            IWrapper <DATATYPE>,
-                                                                            ICloneable <ScopeRenewalAwareWrapper <DATATYPE>>,
-                                                                            IScopeRenewalAware,
-                                                                            Serializable
+public final class ScopeRenewalAwareWrapper <DATATYPE extends Serializable> extends Wrapper <DATATYPE> implements IScopeRenewalAware, Serializable
 {
-  private DATATYPE m_aObj;
-
   /**
    * Default constructor.
    */
@@ -62,7 +51,7 @@ public final class ScopeRenewalAwareWrapper <DATATYPE extends Serializable> impl
    */
   public ScopeRenewalAwareWrapper (@Nullable final DATATYPE aObj)
   {
-    m_aObj = aObj;
+    super (aObj);
   }
 
   /**
@@ -73,54 +62,15 @@ public final class ScopeRenewalAwareWrapper <DATATYPE extends Serializable> impl
    */
   public ScopeRenewalAwareWrapper (@Nonnull final IReadonlyWrapper <DATATYPE> rhs)
   {
-    if (rhs == null)
-      throw new NullPointerException ("rhs");
-    m_aObj = rhs.get ();
+    super (rhs);
   }
 
-  @Nullable
-  public DATATYPE get ()
-  {
-    return m_aObj;
-  }
-
-  @Nonnull
-  public EChange set (@Nullable final DATATYPE aObj)
-  {
-    if (EqualsUtils.equals (m_aObj, aObj))
-      return EChange.UNCHANGED;
-    m_aObj = aObj;
-    return EChange.CHANGED;
-  }
-
+  @Override
   @Nonnull
   @ReturnsMutableCopy
   public ScopeRenewalAwareWrapper <DATATYPE> getClone ()
   {
-    return new ScopeRenewalAwareWrapper <DATATYPE> (m_aObj);
-  }
-
-  @Override
-  public boolean equals (final Object o)
-  {
-    if (o == this)
-      return true;
-    if (!(o instanceof ScopeRenewalAwareWrapper <?>))
-      return false;
-    final ScopeRenewalAwareWrapper <?> rhs = (ScopeRenewalAwareWrapper <?>) o;
-    return EqualsUtils.equals (m_aObj, rhs.m_aObj);
-  }
-
-  @Override
-  public int hashCode ()
-  {
-    return new HashCodeGenerator (this).append (m_aObj).getHashCode ();
-  }
-
-  @Override
-  public String toString ()
-  {
-    return new ToStringGenerator (this).append ("obj", m_aObj).toString ();
+    return new ScopeRenewalAwareWrapper <DATATYPE> (get ());
   }
 
   /**
