@@ -35,7 +35,7 @@ import com.phloc.commons.mutable.Wrapper;
  *        The type of object to be wrapped. Must implement {@link Serializable}.
  */
 @NotThreadSafe
-public final class ScopeRenewalAwareWrapper <DATATYPE extends Serializable> extends Wrapper <DATATYPE> implements IScopeRenewalAware, Serializable
+public class ScopeRenewalAwareWrapper <DATATYPE extends Serializable> extends Wrapper <DATATYPE> implements IScopeRenewalAware, Serializable
 {
   /**
    * Default constructor.
