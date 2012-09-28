@@ -351,6 +351,12 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
   }
 
   @Nonnull
+  public String getContextPath ()
+  {
+    return m_aHttpRequest.getContextPath ();
+  }
+
+  @Nonnull
   public String getFullContextPath ()
   {
     return _getFullServerPath ().append (m_aHttpRequest.getContextPath ()).toString ();

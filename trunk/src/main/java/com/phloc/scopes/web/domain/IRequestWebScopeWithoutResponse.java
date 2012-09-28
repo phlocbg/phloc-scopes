@@ -266,6 +266,12 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
   String getFullServerPath ();
 
   /**
+   * @return Return the relative context path. E.g. <code>/context</code> or an
+   *         empty string for the root context. Never with a trailing slash.
+   */
+  String getContextPath ();
+
+  /**
    * @return Return the absolute context path. E.g.
    *         <code>http://localhost:8080/context</code>. Never with a trailing
    *         slash.
