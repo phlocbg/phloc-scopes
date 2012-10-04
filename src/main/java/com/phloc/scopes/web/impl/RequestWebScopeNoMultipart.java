@@ -400,7 +400,7 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
   @Nonnull
   public String getURL ()
   {
-    final StringBuilder aReqUrl = new StringBuilder (m_aHttpRequest.getRequestURL ());
+    final StringBuffer aReqUrl = m_aHttpRequest.getRequestURL ();
     final String sQueryString = m_aHttpRequest.getQueryString (); // d=789
     if (StringHelper.hasText (sQueryString))
       aReqUrl.append ('?').append (sQueryString);
