@@ -31,6 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.phloc.commons.CGlobal;
+import com.phloc.commons.annotations.IsSPIImplementation;
 import com.phloc.commons.annotations.OverrideOnDemand;
 import com.phloc.commons.annotations.ReturnsMutableCopy;
 import com.phloc.commons.annotations.UsedViaReflection;
@@ -40,6 +41,8 @@ import com.phloc.commons.collections.ContainerHelper;
 import com.phloc.commons.collections.multimap.IMultiMapListBased;
 import com.phloc.commons.collections.multimap.MultiHashMapArrayListBased;
 import com.phloc.commons.io.streams.StreamUtils;
+import com.phloc.commons.lang.ServiceLoaderBackport;
+import com.phloc.scopes.spi.IFileItemFactoryProviderSPI;
 import com.phloc.scopes.web.fileupload.FileUploadException;
 import com.phloc.scopes.web.fileupload.IFileItem;
 import com.phloc.scopes.web.fileupload.IFileItemFactory;
@@ -62,6 +65,7 @@ public class RequestWebScope extends RequestWebScopeNoMultipart
    * 
    * @author philip
    */
+  @IsSPIImplementation
   public static final class GlobalDiskFileItemFactory extends GlobalWebSingleton implements IFileItemFactory
   {
     private final DiskFileItemFactory m_aFactory = new DiskFileItemFactory (CGlobal.BYTES_PER_MEGABYTE, null);
@@ -129,6 +133,13 @@ public class RequestWebScope extends RequestWebScopeNoMultipart
     return !(m_aHttpRequest instanceof MockHttpServletRequest) && ServletFileUpload.isMultipartContent (m_aHttpRequest);
   }
 
+  private IFileItemFactory _getFactory ()
+  {
+    for (final IFileItemFactoryProviderSPI aSPI : ServiceLoaderBackport.load (IFileItemFactoryProviderSPI.class))
+      return aSPI.getCustomFactory ();
+    return GlobalDiskFileItemFactory.getInstance ();
+  }
+
   @Override
   @OverrideOnDemand
   protected boolean addSpecialRequestAttributes ()
@@ -141,7 +152,7 @@ public class RequestWebScope extends RequestWebScopeNoMultipart
       try
       {
         // Setup the ServletFileUpload....
-        final ServletFileUpload aUpload = new ServletFileUpload (GlobalDiskFileItemFactory.getInstance ());
+        final ServletFileUpload aUpload = new ServletFileUpload (_getFactory ());
         aUpload.setSizeMax (MAX_REQUEST_SIZE);
         aUpload.setHeaderEncoding (CCharset.CHARSET_UTF_8);
         try
