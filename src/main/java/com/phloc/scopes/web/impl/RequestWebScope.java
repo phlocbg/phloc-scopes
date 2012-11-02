@@ -42,10 +42,10 @@ import com.phloc.commons.collections.multimap.IMultiMapListBased;
 import com.phloc.commons.collections.multimap.MultiHashMapArrayListBased;
 import com.phloc.commons.io.streams.StreamUtils;
 import com.phloc.commons.lang.ServiceLoaderBackport;
-import com.phloc.scopes.spi.IFileItemFactoryProviderSPI;
 import com.phloc.scopes.web.fileupload.FileUploadException;
 import com.phloc.scopes.web.fileupload.IFileItem;
 import com.phloc.scopes.web.fileupload.IFileItemFactory;
+import com.phloc.scopes.web.fileupload.IFileItemFactoryProviderSPI;
 import com.phloc.scopes.web.fileupload.io.DiskFileItem;
 import com.phloc.scopes.web.fileupload.io.DiskFileItemFactory;
 import com.phloc.scopes.web.fileupload.servlet.ServletFileUpload;
@@ -109,12 +109,26 @@ public class RequestWebScope extends RequestWebScopeNoMultipart
     }
   }
 
-  private static final Logger s_aLogger = LoggerFactory.getLogger (RequestWebScope.class);
-
   /**
    * The maximum size of a single file (in bytes) that will be handled
    */
   public static final long MAX_REQUEST_SIZE = 5 * CGlobal.BYTES_PER_GIGABYTE;
+
+  private static final Logger s_aLogger = LoggerFactory.getLogger (RequestWebScope.class);
+  private static IFileItemFactoryProviderSPI s_aFIFP;
+
+  static
+  {
+    final List <IFileItemFactoryProviderSPI> aFIFPList = ContainerHelper.newList (ServiceLoaderBackport.load (IFileItemFactoryProviderSPI.class));
+    if (aFIFPList.isEmpty ())
+      s_aFIFP = null;
+    else
+    {
+      s_aFIFP = aFIFPList.get (0);
+      if (aFIFPList.size () > 1)
+        s_aLogger.warn ("More than one IFileItemFactoryProviderSPI implementation found! Using " + s_aFIFP);
+    }
+  }
 
   public RequestWebScope (@Nonnull final HttpServletRequest aHttpRequest,
                           @Nonnull final HttpServletResponse aHttpResponse)
@@ -135,8 +149,8 @@ public class RequestWebScope extends RequestWebScopeNoMultipart
 
   private IFileItemFactory _getFactory ()
   {
-    for (final IFileItemFactoryProviderSPI aSPI : ServiceLoaderBackport.load (IFileItemFactoryProviderSPI.class))
-      return aSPI.getCustomFactory ();
+    if (s_aFIFP != null)
+      return s_aFIFP.getCustomFactory ();
     return GlobalDiskFileItemFactory.getInstance ();
   }
 
