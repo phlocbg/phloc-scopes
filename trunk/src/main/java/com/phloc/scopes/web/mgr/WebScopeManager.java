@@ -77,6 +77,8 @@ public final class WebScopeManager
    * Allow or disallow session passivation
    * 
    * @param bSessionPassivationAllowed
+   *        <code>true</code> to enable session passivation, <code>false</code>
+   *        to disable it
    */
   public static void setSessionPassivationAllowed (final boolean bSessionPassivationAllowed)
   {

@@ -100,7 +100,7 @@ public final class MockServletContext implements ServletContext
    * Create a new MockServletContext.
    * 
    * @param sContextPath
-   *        The context path to use
+   *        The context path to use. May be <code>null</code>.
    */
   public MockServletContext (@Nullable final String sContextPath)
   {
@@ -111,6 +111,7 @@ public final class MockServletContext implements ServletContext
    * Create a new MockServletContext.
    * 
    * @param sContextPath
+   *        Context path to use. May be <code>null</code>.
    * @param aInitParams
    *        The init parameter The context path to use
    */
