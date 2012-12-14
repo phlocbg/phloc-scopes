@@ -37,6 +37,7 @@ public final class FileItemHeadersImplTest
 {
   /**
    * @throws Exception
+   *         Never
    */
   @Test
   public void testFileItemHeaders () throws Exception

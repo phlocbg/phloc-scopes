@@ -503,6 +503,7 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
    * Removes the file contents from the temporary storage.
    * 
    * @throws Throwable
+   *         as declared by super.finalize()
    */
   @Override
   protected void finalize () throws Throwable
