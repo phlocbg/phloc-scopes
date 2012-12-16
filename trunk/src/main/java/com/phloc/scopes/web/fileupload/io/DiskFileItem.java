@@ -359,16 +359,16 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
    * method renames a temporary file, that file will no longer be available to
    * copy or rename again at a later time.
    * 
-   * @param file
+   * @param aFile
    *        The <code>File</code> into which the uploaded item should be stored.
-   * @throws Exception
+   * @throws FileUploadException
    *         if an error occurs.
    */
   @Nonnull
-  public ISuccessIndicator write (final File file) throws Exception
+  public ISuccessIndicator write (@Nonnull final File aFile) throws FileUploadException
   {
     if (isInMemory ())
-      return SimpleFileIO.writeFile (file, get ());
+      return SimpleFileIO.writeFile (aFile, get ());
 
     final File aOutputFile = getStoreLocation ();
     if (aOutputFile != null)
@@ -380,11 +380,11 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
        * The uploaded file is being stored on disk in a temporary location so
        * move it to the desired file.
        */
-      if (FileOperations.renameFile (aOutputFile, file).isSuccess ())
+      if (FileOperations.renameFile (aOutputFile, aFile).isSuccess ())
         return ESuccess.SUCCESS;
 
       // Copying needed
-      return FileOperations.copyFile (aOutputFile, file);
+      return FileOperations.copyFile (aOutputFile, aFile);
     }
 
     // For whatever reason we cannot write the file to disk.
