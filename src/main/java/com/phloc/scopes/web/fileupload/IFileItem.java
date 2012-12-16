@@ -164,11 +164,11 @@ public interface IFileItem extends Serializable, DataSource
    * @param file
    *        The <code>File</code> into which the uploaded item should be stored.
    * @return Never null
-   * @throws Exception
+   * @throws FileUploadException
    *         if an error occurs.
    */
   @Nonnull
-  ISuccessIndicator write (File file) throws Exception;
+  ISuccessIndicator write (@Nonnull File file) throws FileUploadException;
 
   /**
    * Deletes the underlying storage for a file item, including deleting any
