@@ -28,6 +28,8 @@ import com.phloc.commons.tree.withid.unique.DefaultTreeWithGlobalUniqueID;
 import com.phloc.commons.tree.withid.unique.ITreeWithGlobalUniqueID;
 import com.phloc.scopes.nonweb.singleton.SessionApplicationSingleton;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /**
  * Represents a global singleton tree with a unique ID. It basically is a
  * {@link SessionApplicationSingleton} wrapping a
@@ -35,6 +37,7 @@ import com.phloc.scopes.nonweb.singleton.SessionApplicationSingleton;
  * 
  * @author philip
  */
+@SuppressFBWarnings ("SE_BAD_FIELD")
 public class SessionApplicationSingletonTreeWithUniqueID <KEYTYPE, VALUETYPE> extends SessionApplicationSingleton implements ITreeWithGlobalUniqueID <KEYTYPE, VALUETYPE, DefaultTreeItemWithID <KEYTYPE, VALUETYPE>>
 {
   protected final DefaultTreeWithGlobalUniqueID <KEYTYPE, VALUETYPE> m_aTree = new DefaultTreeWithGlobalUniqueID <KEYTYPE, VALUETYPE> ();
