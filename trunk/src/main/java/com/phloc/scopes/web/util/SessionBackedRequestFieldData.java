@@ -55,7 +55,7 @@ public class SessionBackedRequestFieldData extends RequestFieldData
   @Nonempty
   private String _getSessionFieldName ()
   {
-    return "$$requestfield." + getFieldName ();
+    return "$phloc.$requestfield." + getFieldName ();
   }
 
   private void _init ()
