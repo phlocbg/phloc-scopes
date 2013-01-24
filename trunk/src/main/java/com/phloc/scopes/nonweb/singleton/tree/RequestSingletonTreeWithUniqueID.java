@@ -23,6 +23,7 @@ import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.phloc.commons.state.EChange;
 import com.phloc.commons.tree.withid.DefaultTreeItemWithID;
 import com.phloc.commons.tree.withid.unique.DefaultTreeWithGlobalUniqueID;
 import com.phloc.commons.tree.withid.unique.ITreeWithGlobalUniqueID;
@@ -87,5 +88,28 @@ public class RequestSingletonTreeWithUniqueID <KEYTYPE, VALUETYPE> extends Reque
   public boolean isItemSameOrDescendant (@Nullable final KEYTYPE aParentItemID, @Nullable final KEYTYPE aChildItemID)
   {
     return m_aTree.isItemSameOrDescendant (aParentItemID, aChildItemID);
+  }
+
+  public boolean containsItemWithID (@Nullable final KEYTYPE aDataID)
+  {
+    return m_aTree.containsItemWithID (aDataID);
+  }
+
+  @Nullable
+  public VALUETYPE getItemDataWithID (@Nullable final KEYTYPE aDataID)
+  {
+    return m_aTree.getItemDataWithID (aDataID);
+  }
+
+  @Nonnull
+  public Collection <VALUETYPE> getAllItemDatas ()
+  {
+    return m_aTree.getAllItemDatas ();
+  }
+
+  @Nonnull
+  public EChange removeItemWithID (@Nullable final KEYTYPE aDataID)
+  {
+    return m_aTree.removeItemWithID (aDataID);
   }
 }
