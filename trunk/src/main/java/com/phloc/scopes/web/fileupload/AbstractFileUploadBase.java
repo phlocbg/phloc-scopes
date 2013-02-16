@@ -31,6 +31,7 @@ import javax.annotation.Nullable;
 
 import com.phloc.commons.charset.CCharset;
 import com.phloc.commons.charset.CharsetManager;
+import com.phloc.commons.math.MathHelper;
 import com.phloc.commons.string.StringParser;
 import com.phloc.scopes.web.fileupload.MultipartStream.ItemInputStream;
 import com.phloc.scopes.web.fileupload.util.AbstractLimitedInputStream;
@@ -878,7 +879,10 @@ public abstract class AbstractFileUploadBase
         throw new FileUploadException ("the request was rejected because " + "no multipart boundary was found");
       }
 
-      m_aNotifier = new MultipartStream.ProgressNotifier (m_aListener, ctx.getContentLength ());
+      // convert to long to try to fix over-flown integer (only possible if not
+      // more than one overflow)
+      m_aNotifier = new MultipartStream.ProgressNotifier (m_aListener,
+                                                          MathHelper.getUnsignedInt (ctx.getContentLength ()));
       m_aMulti = new MultipartStream (input, m_aBoundary, m_aNotifier);
       m_aMulti.setHeaderEncoding (charEncoding);
 

@@ -46,6 +46,8 @@ import com.phloc.scopes.web.fileupload.FileUploadException;
 import com.phloc.scopes.web.fileupload.IFileItem;
 import com.phloc.scopes.web.fileupload.IFileItemFactory;
 import com.phloc.scopes.web.fileupload.IFileItemFactoryProviderSPI;
+import com.phloc.scopes.web.fileupload.IProgressListener;
+import com.phloc.scopes.web.fileupload.ProgressListenerProvider;
 import com.phloc.scopes.web.fileupload.io.DiskFileItem;
 import com.phloc.scopes.web.fileupload.io.DiskFileItemFactory;
 import com.phloc.scopes.web.fileupload.servlet.ServletFileUpload;
@@ -169,6 +171,11 @@ public class RequestWebScope extends RequestWebScopeNoMultipart
         final ServletFileUpload aUpload = new ServletFileUpload (_getFactory ());
         aUpload.setSizeMax (MAX_REQUEST_SIZE);
         aUpload.setHeaderEncoding (CCharset.CHARSET_UTF_8);
+        final IProgressListener aListener = ProgressListenerProvider.getInstance ().getProgressListener ();
+        if (aListener != null)
+        {
+          aUpload.setProgressListener (aListener);
+        }
         try
         {
           m_aHttpRequest.setCharacterEncoding (CCharset.CHARSET_UTF_8);
