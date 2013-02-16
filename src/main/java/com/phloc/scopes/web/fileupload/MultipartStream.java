@@ -23,7 +23,11 @@ import java.io.OutputStream;
 
 import javax.annotation.Nonnull;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.phloc.commons.io.streams.NonBlockingByteArrayOutputStream;
+import com.phloc.commons.math.MathHelper;
 import com.phloc.commons.system.SystemHelper;
 import com.phloc.scopes.web.fileupload.util.ICloseable;
 import com.phloc.scopes.web.fileupload.util.Streams;
@@ -99,6 +103,7 @@ public final class MultipartStream
    */
   public static final class ProgressNotifier
   {
+    private static final Logger s_aLogger = LoggerFactory.getLogger (MultipartStream.ProgressNotifier.class);
     /**
      * The listener to invoke.
      */
@@ -126,6 +131,7 @@ public final class MultipartStream
      */
     ProgressNotifier (final IProgressListener pListener, final long pContentLength)
     {
+      s_aLogger.info ("setting listener " + pListener.getClass ().getName ());
       m_aListener = pListener;
       m_nContentLength = pContentLength;
     }
@@ -142,7 +148,7 @@ public final class MultipartStream
        * Indicates, that the given number of bytes have been read from the input
        * stream.
        */
-      m_nBytesRead += pBytes;
+      m_nBytesRead += MathHelper.getUnsignedInt (pBytes);
       _notifyListener ();
     }
 
