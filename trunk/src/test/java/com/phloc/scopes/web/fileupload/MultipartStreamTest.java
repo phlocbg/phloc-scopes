@@ -31,7 +31,7 @@ import org.junit.Test;
  */
 public final class MultipartStreamTest
 {
-  static private final String BOUNDARY_TEXT = "myboundary";
+  private static final String BOUNDARY_TEXT = "myboundary";
 
   @Test
   public void testThreeParamConstructor () throws Exception
