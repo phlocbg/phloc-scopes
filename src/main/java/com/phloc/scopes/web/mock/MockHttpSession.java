@@ -41,6 +41,7 @@ import com.phloc.commons.idfactory.GlobalIDFactory;
 import com.phloc.commons.string.StringHelper;
 import com.phloc.commons.string.ToStringGenerator;
 
+// ESCA-JAVA0116:
 /**
  * Mock implementation of {@link HttpSession}.
  * 

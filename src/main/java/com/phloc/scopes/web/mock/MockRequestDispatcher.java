@@ -81,6 +81,10 @@ public class MockRequestDispatcher implements RequestDispatcher
   /**
    * Obtain the underlying MockHttpServletResponse, unwrapping
    * {@link HttpServletResponseWrapper} decorators if necessary.
+   * 
+   * @param aResponse
+   *        Original response
+   * @return The matching {@link MockHttpServletResponse}
    */
   @Nonnull
   protected MockHttpServletResponse getMockHttpServletResponse (@Nonnull final ServletResponse aResponse)

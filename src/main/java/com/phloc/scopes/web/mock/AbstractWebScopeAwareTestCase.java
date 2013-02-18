@@ -35,6 +35,7 @@ public abstract class AbstractWebScopeAwareTestCase extends AbstractPhlocTestCas
 {
   protected static final String MOCK_CONTEXT = WebScopeTestRule.MOCK_CONTEXT_PATH;
 
+  /** JUNit test rule */
   @Rule
   public final WebScopeTestRule m_aWebScope = new WebScopeTestRule ();
 

@@ -60,6 +60,7 @@ import com.phloc.commons.io.streams.StreamUtils;
 import com.phloc.commons.lang.CGStringHelper;
 import com.phloc.commons.system.SystemHelper;
 
+// ESCA-JAVA0116:
 /**
  * Mock implementation of {@link HttpServletRequest}.
  * 
@@ -147,6 +148,9 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
    * @param aServletContext
    *        the ServletContext that the request runs in (may be
    *        <code>null</code> to use a default MockServletContext)
+   * @param bInvokeHttpListeners
+   *        <code>true</code> to invoke the HTTP listeners, <code>false</code>
+   *        to not do it
    * @see MockServletContext
    */
   public MockHttpServletRequest (@Nullable final ServletContext aServletContext, final boolean bInvokeHttpListeners)
@@ -265,8 +269,9 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   }
 
   /**
-   * Return the ServletContext that this request is associated with. (Not
-   * available in the standard HttpServletRequest interface for some reason.)
+   * @return the ServletContext that this request is associated with. (Not
+   *         available in the standard HttpServletRequest interface for some
+   *         reason.). Never <code>null</code>.
    */
   @Nonnull
   public ServletContext getServletContext ()
@@ -277,7 +282,7 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   }
 
   /**
-   * Return whether this request is still active (that is, not completed yet).
+   * @return whether this request is still active (that is, not completed yet).
    */
   public boolean isActive ()
   {
@@ -375,6 +380,8 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   /**
    * Note: do not change the content via {@link #setContent(byte[])}, while an
    * input stream is open, because this may lead to indeterministic results!
+   * 
+   * @return <code>null</code> if no content is present
    */
   @Nullable
   public ServletInputStream getInputStream ()
@@ -398,6 +405,11 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
    * <p>
    * If there are already one or more values registered for the given parameter
    * name, they will be replaced.
+   * 
+   * @param sName
+   *        Parameter name
+   * @param sValue
+   *        Parameter value
    */
   public void setParameter (@Nonnull final String sName, @Nullable final String sValue)
   {
@@ -409,6 +421,11 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
    * <p>
    * If there are already one or more values registered for the given parameter
    * name, they will be replaced.
+   * 
+   * @param sName
+   *        Parameter name
+   * @param aValues
+   *        Parameter values
    */
   public void setParameter (@Nonnull final String sName, @Nullable final String [] aValues)
   {
@@ -421,6 +438,9 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
    * Sets all provided parameters <emphasis>replacing</emphasis> any existing
    * values for the provided parameter names. To add without replacing existing
    * values, use {@link #addParameters(Map)}.
+   * 
+   * @param aParams
+   *        Parameter name value map
    */
   public void setParameters (@Nonnull final Map <String, ? extends Object> aParams)
   {
@@ -445,6 +465,11 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
    * <p>
    * If there are already one or more values registered for the given parameter
    * name, the given value will be added to the end of the list.
+   * 
+   * @param sName
+   *        Parameter name
+   * @param sValue
+   *        Parameter value
    */
   public final void addParameter (@Nonnull final String sName, @Nullable final String sValue)
   {
@@ -456,6 +481,11 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
    * <p>
    * If there are already one or more values registered for the given parameter
    * name, the given values will be added to the end of the list.
+   * 
+   * @param sName
+   *        Parameter name
+   * @param aValues
+   *        Parameter values
    */
   public final void addParameter (@Nonnull final String sName, @Nullable final String [] aValues)
   {
@@ -470,6 +500,9 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
    * Adds all provided parameters <emphasis>without</emphasis> replacing any
    * existing values. To replace existing values, use
    * {@link #setParameters(Map)}.
+   * 
+   * @param aParams
+   *        Parameter name value map
    */
   public void addParameters (@Nonnull final Map <String, ? extends Object> aParams)
   {
@@ -491,6 +524,9 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
 
   /**
    * Remove already registered values for the specified HTTP parameter, if any.
+   * 
+   * @param sName
+   *        Parameter name
    */
   public void removeParameter (@Nonnull final String sName)
   {
@@ -645,6 +681,9 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
 
   /**
    * Add a new preferred locale, before any existing locales.
+   * 
+   * @param aLocale
+   *        preferred locale
    */
   public void addPreferredLocale (@Nonnull final Locale aLocale)
   {
@@ -772,6 +811,10 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
    * repeated <code>addHeader</code> calls for individual elements, you can use
    * a single call with an entire array or Collection of values as parameter.
    * 
+   * @param sName
+   *        header name
+   * @param aValue
+   *        header value
    * @see #getHeaderNames
    * @see #getHeader
    * @see #getHeaders
