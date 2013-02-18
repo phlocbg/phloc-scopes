@@ -43,6 +43,8 @@ public abstract class ApplicationWebSingleton extends AbstractSingleton
   }
 
   /**
+   * @param bCreateIfNotExisting
+   *        if <code>true</code> the scope will be created if it is not existing
    * @return The scope to be used for this type of singleton.
    */
   @Nullable

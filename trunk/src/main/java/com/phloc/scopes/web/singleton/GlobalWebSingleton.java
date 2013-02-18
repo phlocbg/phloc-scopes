@@ -40,6 +40,9 @@ public abstract class GlobalWebSingleton extends AbstractSingleton
   }
 
   /**
+   * @param bMustBePresent
+   *        if <code>true</code> the scope must be present, <code>false</code>
+   *        if it may be <code>null</code>.
    * @return The scope to be used for this type of singleton.
    */
   @Nonnull

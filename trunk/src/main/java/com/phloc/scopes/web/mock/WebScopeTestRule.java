@@ -35,6 +35,7 @@ import com.phloc.commons.string.ToStringGenerator;
 @NotThreadSafe
 public class WebScopeTestRule extends ExternalResource
 {
+  /** Mock servlet context name */
   public static final String MOCK_CONTEXT_PATH = "/MockContext";
 
   private String m_sContextPath = MOCK_CONTEXT_PATH;

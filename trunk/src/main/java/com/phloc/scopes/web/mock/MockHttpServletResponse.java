@@ -45,6 +45,7 @@ import com.phloc.commons.io.streams.StreamUtils;
 import com.phloc.commons.mime.CMimeType;
 import com.phloc.commons.system.SystemHelper;
 
+// ESCA-JAVA0116:
 /**
  * Mock implementation of {@link HttpServletResponse}.
  * 
@@ -97,6 +98,8 @@ public final class MockHttpServletResponse implements HttpServletResponse, IHasL
    * Set whether {@link #getOutputStream()} access is allowed.
    * <p>
    * Default is <code>true</code>.
+   * 
+   * @param bOutputStreamAccessAllowed
    */
   public void setOutputStreamAccessAllowed (final boolean bOutputStreamAccessAllowed)
   {
@@ -104,7 +107,7 @@ public final class MockHttpServletResponse implements HttpServletResponse, IHasL
   }
 
   /**
-   * Return whether {@link #getOutputStream()} access is allowed.
+   * @return whether {@link #getOutputStream()} access is allowed.
    */
   public boolean isOutputStreamAccessAllowed ()
   {
@@ -122,7 +125,7 @@ public final class MockHttpServletResponse implements HttpServletResponse, IHasL
   }
 
   /**
-   * Return whether {@link #getOutputStream()} access is allowed.
+   * @return whether {@link #getOutputStream()} access is allowed.
    */
   public boolean isWriterAccessAllowed ()
   {
@@ -380,6 +383,8 @@ public final class MockHttpServletResponse implements HttpServletResponse, IHasL
    * The default implementation returns the given URL String as-is.
    * <p>
    * Can be overridden in subclasses, appending a session id or the like.
+   * 
+   * @return the encoded URL
    */
   @Nullable
   public String encodeURL (@Nullable final String sUrl)
@@ -395,6 +400,8 @@ public final class MockHttpServletResponse implements HttpServletResponse, IHasL
    * redirect-specific fashion. For general URL encoding rules, override the
    * common {@link #encodeURL} method instead, appyling to redirect URLs as well
    * as to general URLs.
+   * 
+   * @return the encoded URL
    */
   @Nullable
   public String encodeRedirectURL (@Nullable final String sUrl)

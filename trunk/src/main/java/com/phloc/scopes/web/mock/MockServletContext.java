@@ -52,6 +52,7 @@ import com.phloc.commons.string.StringHelper;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
+//ESCA-JAVA0116:
 /**
  * Mock implementation of the {@link ServletContext} interface.
  * 

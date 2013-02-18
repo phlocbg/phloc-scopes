@@ -38,6 +38,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 @SuppressFBWarnings ("LI_LAZY_INIT_UPDATE_STATIC")
 public final class WebScopeAwareTestSetup
 {
+  /** Mock servlet context name */
   public static final String MOCK_CONTEXT = WebScopeTestRule.MOCK_CONTEXT_PATH;
 
   private static volatile WebScopeTestRule s_aRule;
