@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 
 import javax.activation.DataSource;
 import javax.annotation.Nonnull;
@@ -139,7 +140,20 @@ public interface IFileItem extends Serializable, DataSource
    * @throws UnsupportedEncodingException
    *         if the requested character encoding is not available.
    */
+  @Nonnull
   String getString (String encoding) throws UnsupportedEncodingException;
+
+  /**
+   * Returns the contents of the file item as a String, using the specified
+   * encoding. This method uses {@link #get()} to retrieve the contents of the
+   * item.
+   * 
+   * @param aEncoding
+   *        The character encoding to use.
+   * @return The contents of the item, as a string.
+   */
+  @Nonnull
+  String getString (@Nonnull Charset aEncoding);
 
   /**
    * Returns the contents of the file item as a String, using the default

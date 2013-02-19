@@ -17,6 +17,8 @@
  */
 package com.phloc.scopes.web.fileupload;
 
+import javax.annotation.Nullable;
+
 import com.phloc.commons.annotations.IsSPIInterface;
 
 @IsSPIInterface
@@ -25,5 +27,6 @@ public interface IProgressListenerProvider
   /**
    * @return A progress listener instance for handling file uploads
    */
+  @Nullable
   IProgressListener getProgressListener ();
 }

@@ -28,9 +28,14 @@ import org.slf4j.LoggerFactory;
 import com.phloc.commons.annotations.UsedViaReflection;
 import com.phloc.commons.collections.ContainerHelper;
 import com.phloc.commons.lang.ServiceLoaderUtils;
-import com.phloc.scopes.nonweb.singleton.GlobalSingleton;
+import com.phloc.scopes.web.singleton.GlobalWebSingleton;
 
-public class ProgressListenerProvider extends GlobalSingleton
+/**
+ * SPI handler for {@link IProgressListenerProvider} implementations
+ * 
+ * @author philip
+ */
+public final class ProgressListenerProvider extends GlobalWebSingleton
 {
   private final IProgressListenerProvider m_aListernerProvider;
   private static final Logger s_aLogger = LoggerFactory.getLogger (ProgressListenerProvider.class);

@@ -173,9 +173,8 @@ public class RequestWebScope extends RequestWebScopeNoMultipart
         aUpload.setHeaderEncoding (CCharset.CHARSET_UTF_8);
         final IProgressListener aListener = ProgressListenerProvider.getInstance ().getProgressListener ();
         if (aListener != null)
-        {
           aUpload.setProgressListener (aListener);
-        }
+
         try
         {
           m_aHttpRequest.setCharacterEncoding (CCharset.CHARSET_UTF_8);
@@ -192,17 +191,9 @@ public class RequestWebScope extends RequestWebScopeNoMultipart
         {
           if (aFileItem.isFormField ())
           {
-            try
-            {
-              // We need to explicitly use the charset, as by default only the
-              // charset from the content type is used!
-              aFormFields.putSingle (aFileItem.getFieldName (), aFileItem.getString (CCharset.CHARSET_UTF_8));
-            }
-            catch (final UnsupportedEncodingException ex)
-            {
-              throw new IllegalStateException ("Failed to use multipart charset using " + CCharset.CHARSET_UTF_8 + "!",
-                                               ex);
-            }
+            // We need to explicitly use the charset, as by default only the
+            // charset from the content type is used!
+            aFormFields.putSingle (aFileItem.getFieldName (), aFileItem.getString (CCharset.CHARSET_UTF_8_OBJ));
           }
           else
             aFormFiles.putSingle (aFileItem.getFieldName (), aFileItem);

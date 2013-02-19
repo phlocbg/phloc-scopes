@@ -25,6 +25,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.UUID;
 
@@ -323,6 +324,20 @@ public class DiskFileItem implements IFileItem, IFileItemHeadersSupport
   public String getString (final String charset) throws UnsupportedEncodingException
   {
     return new String (get (), charset);
+  }
+
+  /**
+   * Returns the contents of the file as a String, using the specified encoding.
+   * This method uses {@link #get()} to retrieve the contents of the file.
+   * 
+   * @param aCharset
+   *        The charset to use.
+   * @return The contents of the file, as a string.
+   */
+  @Nonnull
+  public String getString (@Nonnull final Charset aCharset)
+  {
+    return new String (get (), aCharset);
   }
 
   /**
