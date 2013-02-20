@@ -24,9 +24,11 @@ import static org.junit.Assert.fail;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 
 import org.junit.Test;
 
+import com.phloc.commons.charset.CCharset;
 import com.phloc.scopes.web.fileupload.servlet.ServletFileUpload;
 import com.phloc.scopes.web.mock.MockHttpServletRequest;
 
@@ -35,6 +37,8 @@ import com.phloc.scopes.web.mock.MockHttpServletRequest;
  */
 public final class IProgressListenerTest extends AbstractFileUploadTestCase
 {
+  private static final Charset US_ASCII = CCharset.CHARSET_US_ASCII_OBJ;
+
   private static class ProgressListenerImpl implements IProgressListener
   {
     private final long expectedContentLength;
@@ -82,14 +86,14 @@ public final class IProgressListenerTest extends AbstractFileUploadTestCase
                             (i + 1) +
                             "\"\r\n" +
                             "\r\n";
-      baos.write (header.getBytes ("US-ASCII"));
+      baos.write (header.getBytes (US_ASCII));
       for (int j = 0; j < 16384 + i; j++)
       {
         baos.write ((byte) j);
       }
-      baos.write ("\r\n".getBytes ("US-ASCII"));
+      baos.write ("\r\n".getBytes (US_ASCII));
     }
-    baos.write ("-----1234--\r\n".getBytes ("US-ASCII"));
+    baos.write ("-----1234--\r\n".getBytes (US_ASCII));
     final byte [] contents = baos.toByteArray ();
 
     MockHttpServletRequest request = MockHttpServletRequest.createWithContent (contents,
@@ -109,7 +113,7 @@ public final class IProgressListenerTest extends AbstractFileUploadTestCase
   }
 
   private void _runTest (final int NUM_ITEMS, final long pContentLength, final MockHttpServletRequest request) throws FileUploadException,
-                                                                                                             IOException
+                                                                                                              IOException
   {
     final ServletFileUpload upload = new ServletFileUpload (null);
     final ProgressListenerImpl listener = new ProgressListenerImpl (pContentLength, NUM_ITEMS);

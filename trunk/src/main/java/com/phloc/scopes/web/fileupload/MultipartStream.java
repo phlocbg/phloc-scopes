@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -129,9 +130,10 @@ public final class MultipartStream
      * @param pContentLength
      *        The expected content length.
      */
-    ProgressNotifier (@Nonnull final IProgressListener pListener, final long pContentLength)
+    ProgressNotifier (@Nullable final IProgressListener pListener, final long pContentLength)
     {
-      s_aLogger.info ("setting listener " + pListener.getClass ().getName ());
+      if (pListener != null)
+        s_aLogger.info ("setting listener " + pListener.getClass ().getName ());
       m_aListener = pListener;
       m_nContentLength = pContentLength;
     }
