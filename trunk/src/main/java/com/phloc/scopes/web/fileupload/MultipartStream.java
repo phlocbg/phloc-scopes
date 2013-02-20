@@ -129,7 +129,7 @@ public final class MultipartStream
      * @param pContentLength
      *        The expected content length.
      */
-    ProgressNotifier (final IProgressListener pListener, final long pContentLength)
+    ProgressNotifier (@Nonnull final IProgressListener pListener, final long pContentLength)
     {
       s_aLogger.info ("setting listener " + pListener.getClass ().getName ());
       m_aListener = pListener;
