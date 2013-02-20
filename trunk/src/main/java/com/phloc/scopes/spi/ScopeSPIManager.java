@@ -19,6 +19,7 @@ package com.phloc.scopes.spi;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ServiceLoader;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
@@ -26,7 +27,6 @@ import javax.annotation.concurrent.Immutable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.phloc.commons.lang.ServiceLoaderBackport;
 import com.phloc.commons.mock.IMockException;
 import com.phloc.scopes.nonweb.domain.IApplicationScope;
 import com.phloc.scopes.nonweb.domain.IGlobalScope;
@@ -68,27 +68,27 @@ public final class ScopeSPIManager
   static
   {
     // non-web scopes
-    for (final IGlobalScopeSPI aSPI : ServiceLoaderBackport.load (IGlobalScopeSPI.class))
+    for (final IGlobalScopeSPI aSPI : ServiceLoader.load (IGlobalScopeSPI.class))
       s_aGlobalSPIs.add (aSPI);
-    for (final IApplicationScopeSPI aSPI : ServiceLoaderBackport.load (IApplicationScopeSPI.class))
+    for (final IApplicationScopeSPI aSPI : ServiceLoader.load (IApplicationScopeSPI.class))
       s_aApplicationSPIs.add (aSPI);
-    for (final ISessionScopeSPI aSPI : ServiceLoaderBackport.load (ISessionScopeSPI.class))
+    for (final ISessionScopeSPI aSPI : ServiceLoader.load (ISessionScopeSPI.class))
       s_aSessionSPIs.add (aSPI);
-    for (final ISessionApplicationScopeSPI aSPI : ServiceLoaderBackport.load (ISessionApplicationScopeSPI.class))
+    for (final ISessionApplicationScopeSPI aSPI : ServiceLoader.load (ISessionApplicationScopeSPI.class))
       s_aSessionApplicationSPIs.add (aSPI);
-    for (final IRequestScopeSPI aSPI : ServiceLoaderBackport.load (IRequestScopeSPI.class))
+    for (final IRequestScopeSPI aSPI : ServiceLoader.load (IRequestScopeSPI.class))
       s_aRequestSPIs.add (aSPI);
 
     // web scopes
-    for (final IGlobalWebScopeSPI aSPI : ServiceLoaderBackport.load (IGlobalWebScopeSPI.class))
+    for (final IGlobalWebScopeSPI aSPI : ServiceLoader.load (IGlobalWebScopeSPI.class))
       s_aGlobalWebSPIs.add (aSPI);
-    for (final IApplicationWebScopeSPI aSPI : ServiceLoaderBackport.load (IApplicationWebScopeSPI.class))
+    for (final IApplicationWebScopeSPI aSPI : ServiceLoader.load (IApplicationWebScopeSPI.class))
       s_aApplicationWebSPIs.add (aSPI);
-    for (final ISessionWebScopeSPI aSPI : ServiceLoaderBackport.load (ISessionWebScopeSPI.class))
+    for (final ISessionWebScopeSPI aSPI : ServiceLoader.load (ISessionWebScopeSPI.class))
       s_aSessionWebSPIs.add (aSPI);
-    for (final ISessionApplicationWebScopeSPI aSPI : ServiceLoaderBackport.load (ISessionApplicationWebScopeSPI.class))
+    for (final ISessionApplicationWebScopeSPI aSPI : ServiceLoader.load (ISessionApplicationWebScopeSPI.class))
       s_aSessionApplicationWebSPIs.add (aSPI);
-    for (final IRequestWebScopeSPI aSPI : ServiceLoaderBackport.load (IRequestWebScopeSPI.class))
+    for (final IRequestWebScopeSPI aSPI : ServiceLoader.load (IRequestWebScopeSPI.class))
       s_aRequestWebSPIs.add (aSPI);
   }
 
