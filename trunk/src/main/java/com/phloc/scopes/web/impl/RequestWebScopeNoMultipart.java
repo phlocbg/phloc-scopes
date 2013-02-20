@@ -56,11 +56,12 @@ import com.phloc.scopes.web.fileupload.IFileItem;
  */
 public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements IRequestWebScope
 {
+  public static final int PORT_HTTP = 80;
+  public static final int PORT_HTTPS = 443;
+
   // Because of transient field
   private static final long serialVersionUID = 78563987233146L;
 
-  private static final int PORT_HTTP = 80;
-  private static final int PORT_HTTPS = 443;
   private static final Logger s_aLogger = LoggerFactory.getLogger (RequestWebScopeNoMultipart.class);
   private static final String REQUEST_ATTR_SCOPE_INITED = "$request.scope.inited";
 
@@ -304,10 +305,21 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
     return m_aHttpRequest.getContentType ();
   }
 
+  public static long getContentLength (@Nonnull final HttpServletRequest aHttpRequest)
+  {
+    if (false)
+    {
+      // Missing support > 2GB!!!
+      return aHttpRequest.getContentLength ();
+    }
+
+    final String sContentLength = aHttpRequest.getHeader ("Content-Length");
+    return StringParser.parseLong (sContentLength, -1L);
+  }
+
   public long getContentLength ()
   {
-    final String sContentLength = m_aHttpRequest.getHeader ("Content-Length");
-    return StringParser.parseLong (sContentLength, -1L);
+    return getContentLength (m_aHttpRequest);
   }
 
   public String getServletPath ()

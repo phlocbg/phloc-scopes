@@ -23,8 +23,8 @@ import java.io.InputStream;
 import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletRequest;
 
-import com.phloc.commons.string.StringParser;
 import com.phloc.scopes.web.fileupload.IRequestContext;
+import com.phloc.scopes.web.impl.RequestWebScopeNoMultipart;
 
 /**
  * <p>
@@ -81,8 +81,7 @@ public final class ServletRequestContext implements IRequestContext
    */
   public long getContentLength ()
   {
-    final String sContentLength = m_aHttpRequest.getHeader ("Content-Length");
-    return StringParser.parseLong (sContentLength, -1L);
+    return RequestWebScopeNoMultipart.getContentLength (m_aHttpRequest);
   }
 
   /**
