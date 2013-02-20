@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
+import java.util.ServiceLoader;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -41,7 +42,6 @@ import com.phloc.commons.collections.ContainerHelper;
 import com.phloc.commons.collections.multimap.IMultiMapListBased;
 import com.phloc.commons.collections.multimap.MultiHashMapArrayListBased;
 import com.phloc.commons.io.streams.StreamUtils;
-import com.phloc.commons.lang.ServiceLoaderBackport;
 import com.phloc.scopes.web.fileupload.FileUploadException;
 import com.phloc.scopes.web.fileupload.IFileItem;
 import com.phloc.scopes.web.fileupload.IFileItemFactory;
@@ -121,7 +121,7 @@ public class RequestWebScope extends RequestWebScopeNoMultipart
 
   static
   {
-    final List <IFileItemFactoryProviderSPI> aFIFPList = ContainerHelper.newList (ServiceLoaderBackport.load (IFileItemFactoryProviderSPI.class));
+    final List <IFileItemFactoryProviderSPI> aFIFPList = ContainerHelper.newList (ServiceLoader.load (IFileItemFactoryProviderSPI.class));
     if (aFIFPList.isEmpty ())
       s_aFIFP = null;
     else
