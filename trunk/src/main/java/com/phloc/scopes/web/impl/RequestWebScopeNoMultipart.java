@@ -42,6 +42,7 @@ import com.phloc.commons.equals.EqualsUtils;
 import com.phloc.commons.idfactory.GlobalIDFactory;
 import com.phloc.commons.lang.GenericReflection;
 import com.phloc.commons.string.StringHelper;
+import com.phloc.commons.string.StringParser;
 import com.phloc.commons.string.ToStringGenerator;
 import com.phloc.scopes.AbstractMapBasedScope;
 import com.phloc.scopes.ScopeUtils;
@@ -303,9 +304,10 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
     return m_aHttpRequest.getContentType ();
   }
 
-  public int getContentLength ()
+  public long getContentLength ()
   {
-    return m_aHttpRequest.getContentLength ();
+    final String sContentLength = m_aHttpRequest.getHeader ("Content-Length");
+    return StringParser.parseLong (sContentLength, -1L);
   }
 
   public String getServletPath ()

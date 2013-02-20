@@ -217,7 +217,7 @@ public interface IRequestWebScopeWithoutResponse extends IRequestScope, IWebScop
    * @return an integer containing the length of the request body or -1 if the
    *         length is not known
    */
-  int getContentLength ();
+  long getContentLength ();
 
   /**
    * Returns the part of this request's URL that calls the servlet. This path
