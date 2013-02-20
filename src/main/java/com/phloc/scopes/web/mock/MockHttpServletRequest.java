@@ -355,6 +355,8 @@ public class MockHttpServletRequest implements HttpServletRequest, IHasLocale
   public void setContent (@Nullable final byte [] aContent)
   {
     m_aContent = ArrayHelper.getCopy (aContent);
+    removeHeader ("Content-Length");
+    addHeader ("Content-Length", Integer.toString (m_aContent.length));
   }
 
   @CheckForSigned

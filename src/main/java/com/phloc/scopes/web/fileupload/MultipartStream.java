@@ -959,7 +959,7 @@ public final class MultipartStream
       }
       else
       {
-        for (;;)
+        while (true)
         {
           int av = available ();
           if (av == 0)
@@ -1021,7 +1021,7 @@ public final class MultipartStream
       m_nHead = 0;
       m_nTail = m_nPad;
 
-      for (;;)
+      while (true)
       {
         final int nBytesRead = m_aInput.read (m_aBuffer, m_nTail, m_nBufSize - m_nTail);
         if (nBytesRead == -1)

@@ -31,7 +31,6 @@ import javax.annotation.Nullable;
 
 import com.phloc.commons.charset.CCharset;
 import com.phloc.commons.charset.CharsetManager;
-import com.phloc.commons.math.MathHelper;
 import com.phloc.commons.string.StringParser;
 import com.phloc.scopes.web.fileupload.MultipartStream.ItemInputStream;
 import com.phloc.scopes.web.fileupload.util.AbstractLimitedInputStream;
@@ -830,7 +829,7 @@ public abstract class AbstractFileUploadBase
 
       if (m_nSizeMax >= 0)
       {
-        final int requestSize = ctx.getContentLength ();
+        final long requestSize = ctx.getContentLength ();
         if (requestSize == -1)
         {
           input = new AbstractLimitedInputStream (input, m_nSizeMax)
@@ -874,13 +873,8 @@ public abstract class AbstractFileUploadBase
         throw new FileUploadException ("the request was rejected because " + "no multipart boundary was found");
       }
 
-      final int nContentLength = ctx.getContentLength ();
-      // convert to long to try to fix over-flown integer (only possible if not
-      // more than one overflow).
-      // But only if the content length is != -1, as -1 indicates an unknown
-      // length!
-      final long nRealContentLength = nContentLength == -1 ? -1 : MathHelper.getUnsignedInt (nContentLength);
-      m_aNotifier = new MultipartStream.ProgressNotifier (m_aListener, nRealContentLength);
+      final long nContentLength = ctx.getContentLength ();
+      m_aNotifier = new MultipartStream.ProgressNotifier (m_aListener, nContentLength);
       m_aMulti = new MultipartStream (input, m_aBoundary, m_aNotifier);
       m_aMulti.setHeaderEncoding (charEncoding);
 
