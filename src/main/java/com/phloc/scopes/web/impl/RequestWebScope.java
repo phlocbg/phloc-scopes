@@ -112,9 +112,12 @@ public class RequestWebScope extends RequestWebScopeNoMultipart
   }
 
   /**
-   * The maximum size of a single file (in bytes) that will be handled
+   * The maximum size of a single file (in bytes) that will be handled. May not
+   * be larger than 2 GB as browsers cannot handle more than 2GB. See e.g.
+   * http://www.motobit.com/help/ScptUtl/pa33.htm or
+   * https://bugzilla.mozilla.org/show_bug.cgi?id=215450
    */
-  public static final long MAX_REQUEST_SIZE = 5 * CGlobal.BYTES_PER_GIGABYTE;
+  public static final int MAX_REQUEST_SIZE = Integer.MAX_VALUE;
 
   private static final Logger s_aLogger = LoggerFactory.getLogger (RequestWebScope.class);
   private static IFileItemFactoryProviderSPI s_aFIFP;

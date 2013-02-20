@@ -63,9 +63,6 @@ import com.phloc.scopes.web.fileupload.util.Streams;
  */
 public abstract class AbstractFileUploadBase
 {
-
-  // ---------------------------------------------------------- Class methods
-
   /**
    * <p>
    * Utility method that determines whether the request contains multipart
@@ -83,7 +80,7 @@ public abstract class AbstractFileUploadBase
    * @return <code>true</code> if the request is multipart; <code>false</code>
    *         otherwise.
    */
-  public static final boolean isMultipartContent (final IRequestContext ctx)
+  public static final boolean isMultipartContent (@Nonnull final IRequestContext ctx)
   {
     final String contentType = ctx.getContentType ();
     if (contentType == null)
@@ -92,8 +89,6 @@ public abstract class AbstractFileUploadBase
       return true;
     return false;
   }
-
-  // ----------------------------------------------------- Manifest constants
 
   /**
    * HTTP content type header name.
@@ -879,10 +874,13 @@ public abstract class AbstractFileUploadBase
         throw new FileUploadException ("the request was rejected because " + "no multipart boundary was found");
       }
 
+      final int nContentLength = ctx.getContentLength ();
       // convert to long to try to fix over-flown integer (only possible if not
-      // more than one overflow)
-      m_aNotifier = new MultipartStream.ProgressNotifier (m_aListener,
-                                                          MathHelper.getUnsignedInt (ctx.getContentLength ()));
+      // more than one overflow).
+      // But only if the content length is != -1, as -1 indicates an unknown
+      // length!
+      final long nRealContentLength = nContentLength == -1 ? -1 : MathHelper.getUnsignedInt (nContentLength);
+      m_aNotifier = new MultipartStream.ProgressNotifier (m_aListener, nRealContentLength);
       m_aMulti = new MultipartStream (input, m_aBoundary, m_aNotifier);
       m_aMulti.setHeaderEncoding (charEncoding);
 
