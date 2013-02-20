@@ -117,7 +117,7 @@ public class RequestWebScope extends RequestWebScopeNoMultipart
    * http://www.motobit.com/help/ScptUtl/pa33.htm or
    * https://bugzilla.mozilla.org/show_bug.cgi?id=215450
    */
-  public static final int MAX_REQUEST_SIZE = Integer.MAX_VALUE;
+  public static final long MAX_REQUEST_SIZE = 5 * CGlobal.BYTES_PER_GIGABYTE;
 
   private static final Logger s_aLogger = LoggerFactory.getLogger (RequestWebScope.class);
   private static IFileItemFactoryProviderSPI s_aFIFP;
