@@ -873,6 +873,7 @@ public abstract class AbstractFileUploadBase
         throw new FileUploadException ("the request was rejected because " + "no multipart boundary was found");
       }
 
+      // Content length may be -1 if not specified by sender
       final long nContentLength = ctx.getContentLength ();
       m_aNotifier = new MultipartStream.ProgressNotifier (m_aListener, nContentLength);
       m_aMulti = new MultipartStream (input, m_aBoundary, m_aNotifier);

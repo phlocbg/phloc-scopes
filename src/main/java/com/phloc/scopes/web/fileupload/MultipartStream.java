@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -28,7 +29,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.phloc.commons.io.streams.NonBlockingByteArrayOutputStream;
-import com.phloc.commons.math.MathHelper;
 import com.phloc.commons.system.SystemHelper;
 import com.phloc.scopes.web.fileupload.util.ICloseable;
 import com.phloc.scopes.web.fileupload.util.Streams;
@@ -144,13 +144,15 @@ public final class MultipartStream
      * @param pBytes
      *        Number of bytes, which have been read.
      */
-    void noteBytesRead (final int pBytes)
+    void noteBytesRead (@Nonnegative final int pBytes)
     {
+      if (pBytes < 0)
+        throw new IllegalArgumentException ("Bytes negative: " + pBytes);
       /*
        * Indicates, that the given number of bytes have been read from the input
        * stream.
        */
-      m_nBytesRead += MathHelper.getUnsignedInt (pBytes);
+      m_nBytesRead += pBytes;
       _notifyListener ();
     }
 
