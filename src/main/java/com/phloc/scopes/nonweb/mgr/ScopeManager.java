@@ -296,6 +296,8 @@ public final class ScopeManager
       ISessionScope aSessionScope = aSSM.getSessionScopeOfID (sSessionID);
       if (aSessionScope == null && bCreateIfNotExisting)
       {
+        if (sSessionID == null)
+          throw new IllegalStateException ("Cannot create a SessionScope without a known session ID!");
         aSessionScope = MetaScopeFactory.getScopeFactory ().createSessionScope (sSessionID);
         aSSM.onScopeBegin (aSessionScope);
       }

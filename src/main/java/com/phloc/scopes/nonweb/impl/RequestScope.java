@@ -56,7 +56,8 @@ public class RequestScope extends AbstractMapBasedScope implements IRequestScope
       s_aLogger.info ("Created request scope '" + sScopeID + "'");
   }
 
-  @Nullable
+  @Nonnull
+  @Nonempty
   public final String getSessionID ()
   {
     return m_sSessionID;
