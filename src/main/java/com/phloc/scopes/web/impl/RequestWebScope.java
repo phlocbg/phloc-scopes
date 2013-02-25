@@ -42,16 +42,16 @@ import com.phloc.commons.collections.multimap.IMultiMapListBased;
 import com.phloc.commons.collections.multimap.MultiHashMapArrayListBased;
 import com.phloc.commons.io.streams.StreamUtils;
 import com.phloc.commons.lang.ServiceLoaderUtils;
-import com.phloc.scopes.web.fileupload.FileUploadException;
-import com.phloc.scopes.web.fileupload.IFileItem;
-import com.phloc.scopes.web.fileupload.IFileItemFactory;
-import com.phloc.scopes.web.fileupload.IFileItemFactoryProviderSPI;
-import com.phloc.scopes.web.fileupload.IProgressListener;
 import com.phloc.scopes.web.fileupload.ProgressListenerProvider;
-import com.phloc.scopes.web.fileupload.io.DiskFileItem;
-import com.phloc.scopes.web.fileupload.io.DiskFileItemFactory;
-import com.phloc.scopes.web.fileupload.servlet.ServletFileUpload;
 import com.phloc.scopes.web.singleton.GlobalWebSingleton;
+import com.phloc.web.fileupload.FileUploadException;
+import com.phloc.web.fileupload.IFileItem;
+import com.phloc.web.fileupload.IFileItemFactory;
+import com.phloc.web.fileupload.IFileItemFactoryProviderSPI;
+import com.phloc.web.fileupload.IProgressListener;
+import com.phloc.web.fileupload.io.DiskFileItem;
+import com.phloc.web.fileupload.io.DiskFileItemFactory;
+import com.phloc.web.fileupload.servlet.ServletFileUpload;
 import com.phloc.web.mock.MockHttpServletRequest;
 
 /**
