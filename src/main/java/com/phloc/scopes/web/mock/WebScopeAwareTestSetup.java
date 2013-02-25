@@ -24,6 +24,8 @@ import javax.annotation.concurrent.NotThreadSafe;
 import javax.servlet.http.HttpSession;
 
 import com.phloc.commons.annotations.DevelopersNote;
+import com.phloc.web.mock.MockHttpServletRequest;
+import com.phloc.web.mock.MockServletContext;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 

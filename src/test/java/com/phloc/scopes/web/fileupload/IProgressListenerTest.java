@@ -30,7 +30,7 @@ import org.junit.Test;
 
 import com.phloc.commons.charset.CCharset;
 import com.phloc.scopes.web.fileupload.servlet.ServletFileUpload;
-import com.phloc.scopes.web.mock.MockHttpServletRequest;
+import com.phloc.web.mock.MockHttpServletRequest;
 
 /**
  * Tests the progress listener.

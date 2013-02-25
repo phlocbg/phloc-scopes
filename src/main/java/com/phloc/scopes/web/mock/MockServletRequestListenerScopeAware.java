@@ -18,15 +18,14 @@
 package com.phloc.scopes.web.mock;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
 import javax.servlet.ServletRequestEvent;
-import javax.servlet.ServletRequestListener;
 import javax.servlet.http.HttpServletRequest;
 
 import com.phloc.commons.annotations.Nonempty;
 import com.phloc.commons.string.StringHelper;
 import com.phloc.scopes.web.mgr.WebScopeManager;
+import com.phloc.web.mock.MockServletRequestListener;
 
 /**
  * This mock listeners is responsible for creating
@@ -34,20 +33,19 @@ import com.phloc.scopes.web.mgr.WebScopeManager;
  * @author philip
  */
 @ThreadSafe
-public final class MockServletRequestListener implements ServletRequestListener
+public class MockServletRequestListenerScopeAware extends MockServletRequestListener
 {
   /** The application ID to use. */
   public static final String MOCK_APPLICATION_ID = "mock.appid";
 
   private final String m_sApplicationID;
-  private MockHttpServletResponse m_aResp;
 
-  public MockServletRequestListener ()
+  public MockServletRequestListenerScopeAware ()
   {
     this (MOCK_APPLICATION_ID);
   }
 
-  public MockServletRequestListener (@Nonnull @Nonempty final String sApplicationID)
+  public MockServletRequestListenerScopeAware (@Nonnull @Nonempty final String sApplicationID)
   {
     if (StringHelper.hasNoText (sApplicationID))
       throw new IllegalArgumentException ("applicationID");
@@ -61,21 +59,19 @@ public final class MockServletRequestListener implements ServletRequestListener
     return m_sApplicationID;
   }
 
+  @Override
   public void requestInitialized (@Nonnull final ServletRequestEvent aEvent)
   {
-    m_aResp = new MockHttpServletResponse ();
-    WebScopeManager.onRequestBegin (m_sApplicationID, (HttpServletRequest) aEvent.getServletRequest (), m_aResp);
+    super.requestInitialized (aEvent);
+    WebScopeManager.onRequestBegin (m_sApplicationID,
+                                    (HttpServletRequest) aEvent.getServletRequest (),
+                                    getCurrentMockResponse ());
   }
 
-  @Nullable
-  public MockHttpServletResponse getCurrentMockResponse ()
-  {
-    return m_aResp;
-  }
-
+  @Override
   public void requestDestroyed (@Nonnull final ServletRequestEvent aEvent)
   {
     WebScopeManager.onRequestEnd ();
-    m_aResp = null;
+    super.requestDestroyed (aEvent);
   }
 }

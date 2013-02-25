@@ -51,8 +51,8 @@ import com.phloc.scopes.web.fileupload.ProgressListenerProvider;
 import com.phloc.scopes.web.fileupload.io.DiskFileItem;
 import com.phloc.scopes.web.fileupload.io.DiskFileItemFactory;
 import com.phloc.scopes.web.fileupload.servlet.ServletFileUpload;
-import com.phloc.scopes.web.mock.MockHttpServletRequest;
 import com.phloc.scopes.web.singleton.GlobalWebSingleton;
+import com.phloc.web.mock.MockHttpServletRequest;
 
 /**
  * The default request web scope that also tries to parse multi part requests.

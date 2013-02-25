@@ -31,6 +31,9 @@ import com.phloc.commons.annotations.OverrideOnDemand;
 import com.phloc.commons.annotations.ReturnsMutableCopy;
 import com.phloc.commons.collections.ContainerHelper;
 import com.phloc.commons.string.ToStringGenerator;
+import com.phloc.web.mock.MockHttpListener;
+import com.phloc.web.mock.MockHttpServletRequest;
+import com.phloc.web.mock.MockServletContext;
 
 @NotThreadSafe
 public class WebScopeTestRule extends ExternalResource

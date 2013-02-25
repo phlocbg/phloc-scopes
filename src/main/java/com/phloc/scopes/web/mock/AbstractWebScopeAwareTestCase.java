@@ -24,6 +24,8 @@ import javax.servlet.http.HttpSession;
 import org.junit.Rule;
 
 import com.phloc.commons.mock.AbstractPhlocTestCase;
+import com.phloc.web.mock.MockHttpServletRequest;
+import com.phloc.web.mock.MockServletContext;
 
 /**
  * Base class where the initialization of the scopes happens before each test

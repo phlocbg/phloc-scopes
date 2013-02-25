@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.phloc.scopes.web.fileupload.io.DiskFileItemFactory;
 import com.phloc.scopes.web.fileupload.servlet.ServletFileUpload;
-import com.phloc.scopes.web.mock.MockHttpServletRequest;
+import com.phloc.web.mock.MockHttpServletRequest;
 
 /**
  * Base class for deriving test cases.

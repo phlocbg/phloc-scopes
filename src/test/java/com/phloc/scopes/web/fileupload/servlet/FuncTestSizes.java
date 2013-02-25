@@ -36,7 +36,7 @@ import com.phloc.scopes.web.fileupload.AbstractFileUploadTestCase;
 import com.phloc.scopes.web.fileupload.FileUploadException;
 import com.phloc.scopes.web.fileupload.IFileItem;
 import com.phloc.scopes.web.fileupload.io.DiskFileItemFactory;
-import com.phloc.scopes.web.mock.MockHttpServletRequest;
+import com.phloc.web.mock.MockHttpServletRequest;
 
 /**
  * Unit test for items with varying sizes.
