@@ -19,10 +19,8 @@ package com.phloc.scopes.nonweb.domain;
 
 import java.util.List;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.phloc.commons.annotations.Nonempty;
 import com.phloc.scopes.IScope;
 
 /**
@@ -33,12 +31,14 @@ import com.phloc.scopes.IScope;
 public interface IRequestScope extends IScope
 {
   /**
-   * @return The session ID associated with this request. May neither be
-   *         <code>null</code> nor empty.
+   * @param bCreateIfNotExisting
+   *        if <code>true</code> a session ID is created if needed
+   * @return The session ID associated with this request. May be
+   *         <code>null</code> if no session ID is present and no session should
+   *         be created.
    */
-  @Nonnull
-  @Nonempty
-  String getSessionID ();
+  @Nullable
+  String getSessionID (boolean bCreateIfNotExisting);
 
   /**
    * Get a list of all attribute values with the same name.

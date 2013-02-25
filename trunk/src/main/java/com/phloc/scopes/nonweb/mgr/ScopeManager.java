@@ -292,7 +292,7 @@ public final class ScopeManager
       final ScopeSessionManager aSSM = ScopeSessionManager.getInstance ();
 
       // Check if a matching session scope is present
-      final String sSessionID = aRequestScope.getSessionID ();
+      final String sSessionID = aRequestScope.getSessionID (bCreateIfNotExisting);
       ISessionScope aSessionScope = aSSM.getSessionScopeOfID (sSessionID);
       if (aSessionScope == null && bCreateIfNotExisting)
       {
