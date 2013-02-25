@@ -42,12 +42,13 @@ import com.phloc.commons.equals.EqualsUtils;
 import com.phloc.commons.idfactory.GlobalIDFactory;
 import com.phloc.commons.lang.GenericReflection;
 import com.phloc.commons.string.StringHelper;
-import com.phloc.commons.string.StringParser;
 import com.phloc.commons.string.ToStringGenerator;
 import com.phloc.scopes.AbstractMapBasedScope;
 import com.phloc.scopes.ScopeUtils;
 import com.phloc.scopes.web.domain.IRequestWebScope;
+import com.phloc.web.CWeb;
 import com.phloc.web.fileupload.IFileItem;
+import com.phloc.web.servlet.request.RequestHelper;
 
 /**
  * A request web scopes that does not parse multipart requests.
@@ -56,9 +57,6 @@ import com.phloc.web.fileupload.IFileItem;
  */
 public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements IRequestWebScope
 {
-  public static final int PORT_HTTP = 80;
-  public static final int PORT_HTTPS = 443;
-
   // Because of transient field
   private static final long serialVersionUID = 78563987233146L;
 
@@ -306,21 +304,9 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
     return m_aHttpRequest.getContentType ();
   }
 
-  public static long getContentLength (@Nonnull final HttpServletRequest aHttpRequest)
-  {
-    if (false)
-    {
-      // Missing support > 2GB!!!
-      return aHttpRequest.getContentLength ();
-    }
-
-    final String sContentLength = aHttpRequest.getHeader ("Content-Length");
-    return StringParser.parseLong (sContentLength, -1L);
-  }
-
   public long getContentLength ()
   {
-    return getContentLength (m_aHttpRequest);
+    return RequestHelper.getContentLength (m_aHttpRequest);
   }
 
   public String getServletPath ()
@@ -344,14 +330,14 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
     if (sScheme.equals ("http"))
     {
       // Do not print default HTTP port
-      if (nPort != PORT_HTTP)
+      if (nPort != CWeb.DEFAULT_PORT_HTTP)
         aSB.append (':').append (nPort);
     }
     else
       if (sScheme.equals ("https"))
       {
         // Do not print default HTTPS port
-        if (nPort != PORT_HTTPS)
+        if (nPort != CWeb.DEFAULT_PORT_HTTPS)
           aSB.append (':').append (nPort);
       }
       else
