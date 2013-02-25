@@ -26,6 +26,7 @@ import org.junit.Test;
 
 import com.phloc.commons.charset.CCharset;
 import com.phloc.commons.system.SystemHelper;
+import com.phloc.web.mock.MockHttpServletResponse;
 
 /**
  * Test class for class {@link MockHttpServletResponse}.

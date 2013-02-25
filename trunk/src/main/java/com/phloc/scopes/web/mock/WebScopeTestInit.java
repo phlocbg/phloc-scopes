@@ -20,6 +20,7 @@ package com.phloc.scopes.web.mock;
 import javax.annotation.concurrent.Immutable;
 
 import com.phloc.scopes.web.servlet.WebScopeListener;
+import com.phloc.web.mock.MockHttpListener;
 
 @Immutable
 public final class WebScopeTestInit
@@ -35,7 +36,7 @@ public final class WebScopeTestInit
     // Web listeners
     MockHttpListener.removeAllDefaultListeners ();
     MockHttpListener.addDefaultListener (new WebScopeListener ());
-    MockHttpListener.addDefaultListener (new MockServletRequestListener ());
+    MockHttpListener.addDefaultListener (new MockServletRequestListenerScopeAware ());
     MockHttpListener.setToDefault ();
   }
 }

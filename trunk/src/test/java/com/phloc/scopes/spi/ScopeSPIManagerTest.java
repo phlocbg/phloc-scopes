@@ -27,10 +27,10 @@ import org.junit.Test;
 import com.phloc.scopes.ScopeUtils;
 import com.phloc.scopes.nonweb.mgr.ScopeManager;
 import com.phloc.scopes.web.mgr.WebScopeManager;
-import com.phloc.scopes.web.mock.MockHttpServletRequest;
-import com.phloc.scopes.web.mock.MockHttpServletResponse;
-import com.phloc.scopes.web.mock.MockServletContext;
 import com.phloc.scopes.web.mock.WebScopeTestInit;
+import com.phloc.web.mock.MockHttpServletRequest;
+import com.phloc.web.mock.MockHttpServletResponse;
+import com.phloc.web.mock.MockServletContext;
 
 /**
  * Test class for class {@link ScopeSPIManager}.

@@ -20,7 +20,7 @@ package com.phloc.scopes.web.fileupload;
 import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletRequest;
 
-import com.phloc.scopes.web.mock.MockHttpServletRequest;
+import com.phloc.web.mock.MockHttpServletRequest;
 
 final class MockHttpServletRequestFactory
 {

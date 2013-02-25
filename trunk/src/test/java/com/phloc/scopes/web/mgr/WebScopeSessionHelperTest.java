@@ -37,7 +37,7 @@ import com.phloc.scopes.nonweb.mgr.ScopeSessionManager;
 import com.phloc.scopes.web.domain.ISessionApplicationWebScope;
 import com.phloc.scopes.web.domain.ISessionWebScope;
 import com.phloc.scopes.web.mock.AbstractWebScopeAwareTestCase;
-import com.phloc.scopes.web.mock.MockHttpServletRequest;
+import com.phloc.web.mock.MockHttpServletRequest;
 
 /**
  * Test class for class {@link WebScopeSessionHelper}.
