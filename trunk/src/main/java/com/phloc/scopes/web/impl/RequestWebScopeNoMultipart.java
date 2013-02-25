@@ -148,6 +148,13 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
       s_aLogger.info ("Destroyed request web scope '" + getID () + "'");
   }
 
+  @Nonnull
+  @Nonempty
+  public final String getSessionID ()
+  {
+    return getSessionID (true);
+  }
+
   @Nullable
   public final String getSessionID (final boolean bCreateIfNotExisting)
   {

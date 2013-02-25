@@ -17,8 +17,6 @@
  */
 package com.phloc.scopes.web.fileupload;
 
-import java.util.Collection;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -26,7 +24,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.phloc.commons.annotations.UsedViaReflection;
-import com.phloc.commons.collections.ContainerHelper;
 import com.phloc.commons.lang.ServiceLoaderUtils;
 import com.phloc.scopes.web.singleton.GlobalWebSingleton;
 import com.phloc.web.fileupload.IProgressListener;
@@ -39,17 +36,15 @@ import com.phloc.web.fileupload.IProgressListenerProvider;
  */
 public final class ProgressListenerProvider extends GlobalWebSingleton
 {
-  private final IProgressListenerProvider m_aListernerProvider;
   private static final Logger s_aLogger = LoggerFactory.getLogger (ProgressListenerProvider.class);
+
+  private final IProgressListenerProvider m_aListernerProvider;
 
   @Deprecated
   @UsedViaReflection
   public ProgressListenerProvider ()
   {
-    final Collection <IProgressListenerProvider> aProviders = ServiceLoaderUtils.getAllSPIImplementations (IProgressListenerProvider.class);
-    if (aProviders.size () > 1)
-      s_aLogger.warn ("Found multiple providers for upload progress listeners, taking first one!");
-    m_aListernerProvider = ContainerHelper.getFirstElement (aProviders);
+    m_aListernerProvider = ServiceLoaderUtils.getFirstSPIImplementation (IProgressListenerProvider.class);
     if (m_aListernerProvider != null)
       s_aLogger.info ("Using progress listener provider: " + m_aListernerProvider.getClass ().getName ());
   }
