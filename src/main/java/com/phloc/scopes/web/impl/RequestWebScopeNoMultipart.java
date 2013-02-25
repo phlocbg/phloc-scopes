@@ -149,9 +149,9 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
   }
 
   @Nullable
-  public final String getSessionID ()
+  public final String getSessionID (final boolean bCreateIfNotExisting)
   {
-    final HttpSession aSession = m_aHttpRequest.getSession (false);
+    final HttpSession aSession = m_aHttpRequest.getSession (bCreateIfNotExisting);
     return aSession == null ? null : aSession.getId ();
   }
 
