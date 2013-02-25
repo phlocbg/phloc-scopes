@@ -47,7 +47,7 @@ import com.phloc.commons.string.ToStringGenerator;
 import com.phloc.scopes.AbstractMapBasedScope;
 import com.phloc.scopes.ScopeUtils;
 import com.phloc.scopes.web.domain.IRequestWebScope;
-import com.phloc.scopes.web.fileupload.IFileItem;
+import com.phloc.web.fileupload.IFileItem;
 
 /**
  * A request web scopes that does not parse multipart requests.

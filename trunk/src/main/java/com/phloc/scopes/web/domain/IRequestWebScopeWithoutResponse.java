@@ -28,7 +28,7 @@ import javax.servlet.http.HttpSession;
 
 import com.phloc.scopes.IWebScope;
 import com.phloc.scopes.nonweb.domain.IRequestScope;
-import com.phloc.scopes.web.fileupload.IFileItem;
+import com.phloc.web.fileupload.IFileItem;
 
 /**
  * Interface for a single web request scope object that does not offer access to

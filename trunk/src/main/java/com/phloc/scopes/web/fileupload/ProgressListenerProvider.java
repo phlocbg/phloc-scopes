@@ -29,6 +29,8 @@ import com.phloc.commons.annotations.UsedViaReflection;
 import com.phloc.commons.collections.ContainerHelper;
 import com.phloc.commons.lang.ServiceLoaderUtils;
 import com.phloc.scopes.web.singleton.GlobalWebSingleton;
+import com.phloc.web.fileupload.IProgressListener;
+import com.phloc.web.fileupload.IProgressListenerProvider;
 
 /**
  * SPI handler for {@link IProgressListenerProvider} implementations
