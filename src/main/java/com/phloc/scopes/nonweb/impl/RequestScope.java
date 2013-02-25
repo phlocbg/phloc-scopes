@@ -58,6 +58,13 @@ public class RequestScope extends AbstractMapBasedScope implements IRequestScope
 
   @Nonnull
   @Nonempty
+  public final String getSessionID ()
+  {
+    return getSessionID (true);
+  }
+
+  @Nonnull
+  @Nonempty
   public final String getSessionID (final boolean bCreateIfNotExisting)
   {
     return m_sSessionID;

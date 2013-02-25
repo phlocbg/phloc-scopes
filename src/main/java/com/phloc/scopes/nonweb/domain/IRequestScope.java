@@ -19,8 +19,10 @@ package com.phloc.scopes.nonweb.domain;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.phloc.commons.annotations.Nonempty;
 import com.phloc.scopes.IScope;
 
 /**
@@ -30,6 +32,17 @@ import com.phloc.scopes.IScope;
  */
 public interface IRequestScope extends IScope
 {
+  /**
+   * Shortcut for <code>getSessionID(true)</code>
+   * 
+   * @return The session ID associated with this request. May be
+   *         <code>null</code> if no session ID is present and no session should
+   *         be created.
+   */
+  @Nonnull
+  @Nonempty
+  String getSessionID ();
+
   /**
    * @param bCreateIfNotExisting
    *        if <code>true</code> a session ID is created if needed
