@@ -21,7 +21,7 @@ import com.phloc.commons.annotations.IsSPIImplementation;
 import com.phloc.scopes.web.domain.ISessionApplicationWebScope;
 
 @IsSPIImplementation
-public final class MockSessionApplicationWebScopeSPI extends AbstractScopeSPI implements ISessionApplicationWebScopeSPI
+public final class MockSessionApplicationWebScopeSPI extends AbstractWebScopeSPI implements ISessionApplicationWebScopeSPI
 {
   public void onSessionApplicationWebScopeBegin (final ISessionApplicationWebScope aScope)
   {

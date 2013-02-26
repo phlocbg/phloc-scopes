@@ -21,7 +21,7 @@ import com.phloc.commons.annotations.IsSPIImplementation;
 import com.phloc.scopes.web.domain.IGlobalWebScope;
 
 @IsSPIImplementation
-public final class MockGlobalWebScopeSPI extends AbstractScopeSPI implements IGlobalWebScopeSPI
+public final class MockGlobalWebScopeSPI extends AbstractWebScopeSPI implements IGlobalWebScopeSPI
 {
   public void onGlobalWebScopeBegin (final IGlobalWebScope aScope)
   {
