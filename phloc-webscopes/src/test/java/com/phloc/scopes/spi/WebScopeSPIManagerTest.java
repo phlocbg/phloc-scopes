@@ -50,12 +50,12 @@ public final class WebScopeSPIManagerTest
     // Create global scope only
     int nPrev = AbstractWebScopeSPI.getBegin ();
     new MockServletContext ();
-    assertEquals (nPrev + 2, AbstractWebScopeSPI.getBegin ());
+    assertEquals (nPrev + 1, AbstractWebScopeSPI.getBegin ());
 
     // End global scope
     nPrev = AbstractWebScopeSPI.getEnd ();
     WebScopeManager.onGlobalEnd ();
-    assertEquals (nPrev + 2, AbstractWebScopeSPI.getEnd ());
+    assertEquals (nPrev + 1, AbstractWebScopeSPI.getEnd ());
   }
 
   @Test
@@ -64,22 +64,22 @@ public final class WebScopeSPIManagerTest
     // Create global scope
     int nPrev = AbstractWebScopeSPI.getBegin ();
     new MockServletContext ();
-    assertEquals (nPrev + 2, AbstractWebScopeSPI.getBegin ());
+    assertEquals (nPrev + 1, AbstractWebScopeSPI.getBegin ());
 
     // Create request scope
     nPrev = AbstractWebScopeSPI.getBegin ();
     WebScopeManager.onRequestBegin ("appid", new MockHttpServletRequest (), new MockHttpServletResponse ());
-    assertEquals (nPrev + 2, AbstractWebScopeSPI.getBegin ());
+    assertEquals (nPrev + 1, AbstractWebScopeSPI.getBegin ());
 
     // End request scope
     nPrev = AbstractWebScopeSPI.getEnd ();
     WebScopeManager.onRequestEnd ();
-    assertEquals (nPrev + 2, AbstractWebScopeSPI.getEnd ());
+    assertEquals (nPrev + 1, AbstractWebScopeSPI.getEnd ());
 
     // End global scope
     nPrev = AbstractWebScopeSPI.getEnd ();
     WebScopeManager.onGlobalEnd ();
-    assertEquals (nPrev + 2, AbstractWebScopeSPI.getEnd ());
+    assertEquals (nPrev + 1, AbstractWebScopeSPI.getEnd ());
   }
 
   @Test
@@ -88,27 +88,27 @@ public final class WebScopeSPIManagerTest
     // Create global scope
     int nPrev = AbstractWebScopeSPI.getBegin ();
     new MockServletContext ();
-    assertEquals (nPrev + 2, AbstractWebScopeSPI.getBegin ());
+    assertEquals (nPrev + 1, AbstractWebScopeSPI.getBegin ());
 
     // Create request scope
     nPrev = AbstractWebScopeSPI.getBegin ();
     WebScopeManager.onRequestBegin ("appid", new MockHttpServletRequest (), new MockHttpServletResponse ());
-    assertEquals (nPrev + 2, AbstractWebScopeSPI.getBegin ());
+    assertEquals (nPrev + 1, AbstractWebScopeSPI.getBegin ());
 
     // Create application scope
     nPrev = AbstractWebScopeSPI.getBegin ();
     WebScopeManager.getApplicationScope ();
-    assertEquals (nPrev + 2, AbstractWebScopeSPI.getBegin ());
+    assertEquals (nPrev + 1, AbstractWebScopeSPI.getBegin ());
 
     // End request scope
     nPrev = AbstractWebScopeSPI.getEnd ();
     WebScopeManager.onRequestEnd ();
-    assertEquals (nPrev + 2, AbstractWebScopeSPI.getEnd ());
+    assertEquals (nPrev + 1, AbstractWebScopeSPI.getEnd ());
 
     // End global scope and application scope
     nPrev = AbstractWebScopeSPI.getEnd ();
     WebScopeManager.onGlobalEnd ();
-    assertEquals (nPrev + 4, AbstractWebScopeSPI.getEnd ());
+    assertEquals (nPrev + 2, AbstractWebScopeSPI.getEnd ());
   }
 
   @Test
@@ -117,32 +117,32 @@ public final class WebScopeSPIManagerTest
     // Create global scope
     int nPrev = AbstractWebScopeSPI.getBegin ();
     final ServletContext aSC = new MockServletContext ();
-    assertEquals (nPrev + 2, AbstractWebScopeSPI.getBegin ());
+    assertEquals (nPrev + 1, AbstractWebScopeSPI.getBegin ());
 
     // Create request scope
     nPrev = AbstractWebScopeSPI.getBegin ();
     new MockHttpServletRequest (aSC);
-    assertEquals (nPrev + 2, AbstractWebScopeSPI.getBegin ());
+    assertEquals (nPrev + 1, AbstractWebScopeSPI.getBegin ());
 
     // Create application scope
     nPrev = AbstractWebScopeSPI.getBegin ();
     WebScopeManager.getApplicationScope ();
-    assertEquals (nPrev + 2, AbstractWebScopeSPI.getBegin ());
+    assertEquals (nPrev + 1, AbstractWebScopeSPI.getBegin ());
 
     // Create second application scope
     nPrev = AbstractWebScopeSPI.getBegin ();
     WebScopeManager.getApplicationScope ("any other blabla");
-    assertEquals (nPrev + 2, AbstractWebScopeSPI.getBegin ());
+    assertEquals (nPrev + 1, AbstractWebScopeSPI.getBegin ());
 
     // End request scope
     nPrev = AbstractWebScopeSPI.getEnd ();
     WebScopeManager.onRequestEnd ();
-    assertEquals (nPrev + 2, AbstractWebScopeSPI.getEnd ());
+    assertEquals (nPrev + 1, AbstractWebScopeSPI.getEnd ());
 
     // End global scope and application scopes
     nPrev = AbstractWebScopeSPI.getEnd ();
     WebScopeManager.onGlobalEnd ();
-    assertEquals (nPrev + 6, AbstractWebScopeSPI.getEnd ());
+    assertEquals (nPrev + 3, AbstractWebScopeSPI.getEnd ());
   }
 
   @Test
@@ -151,22 +151,22 @@ public final class WebScopeSPIManagerTest
     // Create global scope
     int nPrev = AbstractWebScopeSPI.getBegin ();
     final ServletContext aSC = new MockServletContext ();
-    assertEquals (nPrev + 2, AbstractWebScopeSPI.getBegin ());
+    assertEquals (nPrev + 1, AbstractWebScopeSPI.getBegin ());
 
     // Create request scope
     nPrev = AbstractWebScopeSPI.getBegin ();
     final HttpServletRequest aRequest = new MockHttpServletRequest (aSC);
-    assertEquals (nPrev + 2, AbstractWebScopeSPI.getBegin ());
+    assertEquals (nPrev + 1, AbstractWebScopeSPI.getBegin ());
 
     // Create application scope
     nPrev = AbstractWebScopeSPI.getBegin ();
     WebScopeManager.getApplicationScope ();
-    assertEquals (nPrev + 2, AbstractWebScopeSPI.getBegin ());
+    assertEquals (nPrev + 1, AbstractWebScopeSPI.getBegin ());
 
     // Create second application scope
     nPrev = AbstractWebScopeSPI.getBegin ();
     WebScopeManager.getApplicationScope ("any other blabla");
-    assertEquals (nPrev + 2, AbstractWebScopeSPI.getBegin ());
+    assertEquals (nPrev + 1, AbstractWebScopeSPI.getBegin ());
 
     // Begin session scope
     nPrev = AbstractWebScopeSPI.getBegin ();
@@ -176,7 +176,7 @@ public final class WebScopeSPIManagerTest
     // End request scope
     nPrev = AbstractWebScopeSPI.getEnd ();
     WebScopeManager.onRequestEnd ();
-    assertEquals (nPrev + 2, AbstractWebScopeSPI.getEnd ());
+    assertEquals (nPrev + 1, AbstractWebScopeSPI.getEnd ());
 
     // End session scope
     nPrev = AbstractWebScopeSPI.getEnd ();
@@ -186,7 +186,7 @@ public final class WebScopeSPIManagerTest
     // End global scope and application scopes
     nPrev = AbstractWebScopeSPI.getEnd ();
     WebScopeManager.onGlobalEnd ();
-    assertEquals (nPrev + 6, AbstractWebScopeSPI.getEnd ());
+    assertEquals (nPrev + 3, AbstractWebScopeSPI.getEnd ());
   }
 
   @Test
@@ -195,22 +195,22 @@ public final class WebScopeSPIManagerTest
     // Create global scope
     int nPrev = AbstractWebScopeSPI.getBegin ();
     final ServletContext aSC = new MockServletContext ();
-    assertEquals (nPrev + 2, AbstractWebScopeSPI.getBegin ());
+    assertEquals (nPrev + 1, AbstractWebScopeSPI.getBegin ());
 
     // Create request scope
     nPrev = AbstractWebScopeSPI.getBegin ();
     final HttpServletRequest aRequest = new MockHttpServletRequest (aSC);
-    assertEquals (nPrev + 2, AbstractWebScopeSPI.getBegin ());
+    assertEquals (nPrev + 1, AbstractWebScopeSPI.getBegin ());
 
     // Create application scope
     nPrev = AbstractWebScopeSPI.getBegin ();
     WebScopeManager.getApplicationScope ();
-    assertEquals (nPrev + 2, AbstractWebScopeSPI.getBegin ());
+    assertEquals (nPrev + 1, AbstractWebScopeSPI.getBegin ());
 
     // Create second application scope
     nPrev = AbstractWebScopeSPI.getBegin ();
     WebScopeManager.getApplicationScope ("any other blabla");
-    assertEquals (nPrev + 2, AbstractWebScopeSPI.getBegin ());
+    assertEquals (nPrev + 1, AbstractWebScopeSPI.getBegin ());
 
     // Begin session scope
     nPrev = AbstractWebScopeSPI.getBegin ();
@@ -230,7 +230,7 @@ public final class WebScopeSPIManagerTest
     // End request scope
     nPrev = AbstractWebScopeSPI.getEnd ();
     WebScopeManager.onRequestEnd ();
-    assertEquals (nPrev + 2, AbstractWebScopeSPI.getEnd ());
+    assertEquals (nPrev + 1, AbstractWebScopeSPI.getEnd ());
 
     // End session scope and session application scopes
     nPrev = AbstractWebScopeSPI.getEnd ();
@@ -240,6 +240,6 @@ public final class WebScopeSPIManagerTest
     // End global scope and application scopes
     nPrev = AbstractWebScopeSPI.getEnd ();
     WebScopeManager.onGlobalEnd ();
-    assertEquals (nPrev + 6, AbstractWebScopeSPI.getEnd ());
+    assertEquals (nPrev + 3, AbstractWebScopeSPI.getEnd ());
   }
 }
