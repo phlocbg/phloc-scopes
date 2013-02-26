@@ -47,9 +47,9 @@ import com.phloc.scopes.web.domain.ISessionWebScope;
  * @author philip
  */
 @Immutable
-public final class ScopeSPIManager
+public final class WebScopeSPIManager
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (ScopeSPIManager.class);
+  private static final Logger s_aLogger = LoggerFactory.getLogger (WebScopeSPIManager.class);
 
   // non-web scopes
   private static final List <IGlobalScopeSPI> s_aGlobalSPIs = new ArrayList <IGlobalScopeSPI> ();
@@ -92,7 +92,7 @@ public final class ScopeSPIManager
       s_aRequestWebSPIs.add (aSPI);
   }
 
-  private ScopeSPIManager ()
+  private WebScopeSPIManager ()
   {}
 
   public static void onGlobalScopeBegin (@Nonnull final IGlobalScope aGlobalScope)
