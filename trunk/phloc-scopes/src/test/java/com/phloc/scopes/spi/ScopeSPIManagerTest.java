@@ -22,6 +22,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.phloc.scopes.ScopeUtils;
+import com.phloc.scopes.nonweb.domain.ISessionScope;
 import com.phloc.scopes.nonweb.mgr.ScopeManager;
 
 /**
@@ -130,6 +131,104 @@ public final class ScopeSPIManagerTest
     nPrev = AbstractScopeSPI.getEnd ();
     ScopeManager.onRequestEnd ();
     assertEquals (nPrev + 1, AbstractScopeSPI.getEnd ());
+
+    // End global scope and application scopes
+    nPrev = AbstractScopeSPI.getEnd ();
+    ScopeManager.onGlobalEnd ();
+    assertEquals (nPrev + 3, AbstractScopeSPI.getEnd ());
+  }
+
+  @Test
+  public void testNonWebSessionScopes ()
+  {
+    // Create global scope
+    int nPrev = AbstractScopeSPI.getBegin ();
+    ScopeManager.onGlobalBegin ("global");
+    assertEquals (nPrev + 1, AbstractScopeSPI.getBegin ());
+
+    // Create request scope
+    nPrev = AbstractScopeSPI.getBegin ();
+    ScopeManager.onRequestBegin ("appid", "scopeid", "sessionid");
+    assertEquals (nPrev + 1, AbstractScopeSPI.getBegin ());
+
+    // Create application scope
+    nPrev = AbstractScopeSPI.getBegin ();
+    ScopeManager.getApplicationScope ();
+    assertEquals (nPrev + 1, AbstractScopeSPI.getBegin ());
+
+    // Create second application scope
+    nPrev = AbstractScopeSPI.getBegin ();
+    ScopeManager.getApplicationScope ("any other blabla");
+    assertEquals (nPrev + 1, AbstractScopeSPI.getBegin ());
+
+    // Begin session scope
+    nPrev = AbstractScopeSPI.getBegin ();
+    final ISessionScope aSessionScope = ScopeManager.getSessionScope ();
+    assertEquals (nPrev + 1, AbstractScopeSPI.getBegin ());
+
+    // End request scope
+    nPrev = AbstractScopeSPI.getEnd ();
+    ScopeManager.onRequestEnd ();
+    assertEquals (nPrev + 1, AbstractScopeSPI.getEnd ());
+
+    // End session scope
+    nPrev = AbstractScopeSPI.getEnd ();
+    ScopeManager.destroySessionScope (aSessionScope);
+    assertEquals (nPrev + 1, AbstractScopeSPI.getEnd ());
+
+    // End global scope and application scopes
+    nPrev = AbstractScopeSPI.getEnd ();
+    ScopeManager.onGlobalEnd ();
+    assertEquals (nPrev + 3, AbstractScopeSPI.getEnd ());
+  }
+
+  @Test
+  public void testNonWebSessionApplicationScopes ()
+  {
+    // Create global scope
+    int nPrev = AbstractScopeSPI.getBegin ();
+    ScopeManager.onGlobalBegin ("global");
+    assertEquals (nPrev + 1, AbstractScopeSPI.getBegin ());
+
+    // Create request scope
+    nPrev = AbstractScopeSPI.getBegin ();
+    ScopeManager.onRequestBegin ("appid", "scopeid", "sessionid");
+    assertEquals (nPrev + 1, AbstractScopeSPI.getBegin ());
+
+    // Create application scope
+    nPrev = AbstractScopeSPI.getBegin ();
+    ScopeManager.getApplicationScope ();
+    assertEquals (nPrev + 1, AbstractScopeSPI.getBegin ());
+
+    // Create second application scope
+    nPrev = AbstractScopeSPI.getBegin ();
+    ScopeManager.getApplicationScope ("any other blabla");
+    assertEquals (nPrev + 1, AbstractScopeSPI.getBegin ());
+
+    // Begin session scope
+    nPrev = AbstractScopeSPI.getBegin ();
+    final ISessionScope aSessionScope = ScopeManager.getSessionScope ();
+    assertEquals (nPrev + 1, AbstractScopeSPI.getBegin ());
+
+    // Get session application scope
+    nPrev = AbstractScopeSPI.getBegin ();
+    ScopeManager.getSessionApplicationScope ();
+    assertEquals (nPrev + 1, AbstractScopeSPI.getBegin ());
+
+    // Get second session application scope
+    nPrev = AbstractScopeSPI.getBegin ();
+    ScopeManager.getSessionApplicationScope ("session web scope for testing");
+    assertEquals (nPrev + 1, AbstractScopeSPI.getBegin ());
+
+    // End request scope
+    nPrev = AbstractScopeSPI.getEnd ();
+    ScopeManager.onRequestEnd ();
+    assertEquals (nPrev + 1, AbstractScopeSPI.getEnd ());
+
+    // End session scope and session application scopes
+    nPrev = AbstractScopeSPI.getEnd ();
+    ScopeManager.destroySessionScope (aSessionScope);
+    assertEquals (nPrev + 3, AbstractScopeSPI.getEnd ());
 
     // End global scope and application scopes
     nPrev = AbstractScopeSPI.getEnd ();
