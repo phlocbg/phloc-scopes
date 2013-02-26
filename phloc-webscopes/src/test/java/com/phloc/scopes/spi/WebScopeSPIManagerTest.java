@@ -32,7 +32,7 @@ import com.phloc.web.mock.MockHttpServletResponse;
 import com.phloc.web.mock.MockServletContext;
 
 /**
- * Test class for class {@link WebScopeSPIManager}.
+ * Test class for class {@link ScopeSPIManager}.
  * 
  * @author philip
  */
