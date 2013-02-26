@@ -18,17 +18,17 @@
 package com.phloc.scopes.spi;
 
 import com.phloc.commons.annotations.IsSPIImplementation;
-import com.phloc.scopes.web.domain.IApplicationWebScope;
+import com.phloc.scopes.nonweb.domain.IApplicationScope;
 
 @IsSPIImplementation
-public final class MockApplicationWebScopeSPI extends AbstractWebScopeSPI implements IApplicationWebScopeSPI
+public final class MockApplicationScopeSPI extends AbstractWebScopeSPI implements IApplicationScopeSPI
 {
-  public void onApplicationWebScopeBegin (final IApplicationWebScope aScope)
+  public void onApplicationScopeBegin (final IApplicationScope aScope)
   {
     onBegin ();
   }
 
-  public void onApplicationWebScopeEnd (final IApplicationWebScope aScope)
+  public void onApplicationScopeEnd (final IApplicationScope aScope)
   {
     onEnd ();
   }
