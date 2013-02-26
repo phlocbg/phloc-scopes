@@ -19,16 +19,10 @@ package com.phloc.scopes.spi;
 
 import static org.junit.Assert.assertEquals;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-
 import org.junit.Test;
 
 import com.phloc.scopes.ScopeUtils;
 import com.phloc.scopes.nonweb.mgr.ScopeManager;
-import com.phloc.web.mock.MockHttpServletRequest;
-import com.phloc.web.mock.MockHttpServletResponse;
-import com.phloc.web.mock.MockServletContext;
 
 /**
  * Test class for class {@link ScopeSPIManager}.
