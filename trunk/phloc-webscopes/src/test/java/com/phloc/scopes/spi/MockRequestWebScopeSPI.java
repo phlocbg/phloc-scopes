@@ -21,7 +21,7 @@ import com.phloc.commons.annotations.IsSPIImplementation;
 import com.phloc.scopes.web.domain.IRequestWebScope;
 
 @IsSPIImplementation
-public final class MockRequestWebScopeSPI extends AbstractScopeSPI implements IRequestWebScopeSPI
+public final class MockRequestWebScopeSPI extends AbstractWebScopeSPI implements IRequestWebScopeSPI
 {
   public void onRequestWebScopeBegin (final IRequestWebScope aScope)
   {
