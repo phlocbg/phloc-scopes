@@ -15,38 +15,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.phloc.scopes.web.singleton;
+package com.phloc.scopes.spi;
 
-import javax.annotation.Nonnull;
+import com.phloc.commons.annotations.IsSPIImplementation;
+import com.phloc.scopes.nonweb.domain.ISessionScope;
 
-import com.phloc.commons.annotations.UsedViaReflection;
-
-/**
- * Mock global web singleton
- * 
- * @author philip
- */
-public final class MockGlobalWebSingleton extends GlobalWebSingleton
+@IsSPIImplementation
+public final class MockSessionScopeSPI extends AbstractScopeSPI implements ISessionScopeSPI
 {
-  static int s_nCtorCount = 0;
-  static int s_nDtorCount = 0;
-
-  @Deprecated
-  @UsedViaReflection
-  public MockGlobalWebSingleton ()
+  public void onSessionScopeBegin (final ISessionScope aScope)
   {
-    s_nCtorCount++;
+    onBegin ();
   }
 
-  @Nonnull
-  public static MockGlobalWebSingleton getInstance ()
+  public void onSessionScopeEnd (final ISessionScope aScope)
   {
-    return getGlobalSingleton (MockGlobalWebSingleton.class);
-  }
-
-  @Override
-  protected void onDestroy () throws Exception
-  {
-    s_nDtorCount++;
+    onEnd ();
   }
 }

@@ -40,13 +40,10 @@ import com.phloc.commons.annotations.ReturnsMutableCopy;
 import com.phloc.commons.collections.ContainerHelper;
 import com.phloc.commons.equals.EqualsUtils;
 import com.phloc.commons.idfactory.GlobalIDFactory;
-import com.phloc.commons.lang.GenericReflection;
-import com.phloc.commons.string.StringHelper;
 import com.phloc.commons.string.ToStringGenerator;
 import com.phloc.scopes.AbstractMapBasedScope;
 import com.phloc.scopes.ScopeUtils;
 import com.phloc.scopes.web.domain.IRequestWebScope;
-import com.phloc.web.CWeb;
 import com.phloc.web.fileupload.IFileItem;
 import com.phloc.web.servlet.request.RequestHelper;
 
@@ -264,16 +261,10 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
     return m_aHttpRequest.getMethod ();
   }
 
+  @Nullable
   public String getPathInfo ()
   {
-    // get path Info without the ;jsessionid... parameter
-    final String sPathInfo = m_aHttpRequest.getPathInfo ();
-    if (StringHelper.hasNoText (sPathInfo))
-      return sPathInfo;
-
-    // Strip session ID parameter
-    final int nIndex = sPathInfo.indexOf (';');
-    return nIndex == -1 ? sPathInfo : sPathInfo.substring (0, nIndex);
+    return RequestHelper.getPathInfo (m_aHttpRequest);
   }
 
   public String getPathTranslated ()
@@ -329,27 +320,9 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
   @Nonnull
   private StringBuilder _getFullServerPath ()
   {
-    final String sScheme = m_aHttpRequest.getScheme ();
-    final StringBuilder aSB = new StringBuilder (500);
-    aSB.append (sScheme).append ("://").append (m_aHttpRequest.getServerName ());
-    final int nPort = m_aHttpRequest.getServerPort ();
-    // append non-standard port
-    if (sScheme.equals ("http"))
-    {
-      // Do not print default HTTP port
-      if (nPort != CWeb.DEFAULT_PORT_HTTP)
-        aSB.append (':').append (nPort);
-    }
-    else
-      if (sScheme.equals ("https"))
-      {
-        // Do not print default HTTPS port
-        if (nPort != CWeb.DEFAULT_PORT_HTTPS)
-          aSB.append (':').append (nPort);
-      }
-      else
-        aSB.append (':').append (nPort);
-    return aSB;
+    return RequestHelper.getFullServerName (m_aHttpRequest.getScheme (),
+                                            m_aHttpRequest.getServerName (),
+                                            m_aHttpRequest.getServerPort ());
   }
 
   @Nonnull
@@ -408,11 +381,7 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
   @Nonnull
   public String getURL ()
   {
-    final StringBuffer aReqUrl = m_aHttpRequest.getRequestURL ();
-    final String sQueryString = m_aHttpRequest.getQueryString (); // d=789
-    if (StringHelper.hasText (sQueryString))
-      aReqUrl.append ('?').append (sQueryString);
-    return aReqUrl.toString ();
+    return RequestHelper.getURL (m_aHttpRequest);
   }
 
   @Nonnull
@@ -442,13 +411,13 @@ public class RequestWebScopeNoMultipart extends AbstractMapBasedScope implements
   @Nullable
   public Enumeration <String> getRequestHeaders (@Nullable final String sName)
   {
-    return GenericReflection.<Enumeration <?>, Enumeration <String>> uncheckedCast (m_aHttpRequest.getHeaders (sName));
+    return RequestHelper.getRequestHeaders (m_aHttpRequest, sName);
   }
 
   @Nullable
   public Enumeration <String> getRequestHeaderNames ()
   {
-    return GenericReflection.<Enumeration <?>, Enumeration <String>> uncheckedCast (m_aHttpRequest.getHeaderNames ());
+    return RequestHelper.getRequestHeaderNames (m_aHttpRequest);
   }
 
   @Nonnull
