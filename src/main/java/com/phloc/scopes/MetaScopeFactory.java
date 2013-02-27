@@ -22,8 +22,6 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 import com.phloc.scopes.nonweb.factory.DefaultScopeFactory;
 import com.phloc.scopes.nonweb.factory.IScopeFactory;
-import com.phloc.scopes.web.factory.DefaultWebScopeFactory;
-import com.phloc.scopes.web.factory.IWebScopeFactory;
 
 /**
  * The meta scope factory holding both the factory for non-web scopes as well as
@@ -35,7 +33,6 @@ import com.phloc.scopes.web.factory.IWebScopeFactory;
 public final class MetaScopeFactory
 {
   private static IScopeFactory s_aScopeFactory = new DefaultScopeFactory ();
-  private static IWebScopeFactory s_aWebScopeFactory = new DefaultWebScopeFactory ();
 
   private MetaScopeFactory ()
   {}
@@ -60,27 +57,5 @@ public final class MetaScopeFactory
   public static IScopeFactory getScopeFactory ()
   {
     return s_aScopeFactory;
-  }
-
-  /**
-   * Set the default web scope factory
-   * 
-   * @param aWebScopeFactory
-   *        The scope factory to use. May not be <code>null</code>.
-   */
-  public static void setWebScopeFactory (@Nonnull final IWebScopeFactory aWebScopeFactory)
-  {
-    if (aWebScopeFactory == null)
-      throw new NullPointerException ("webScopeFactory");
-    s_aWebScopeFactory = aWebScopeFactory;
-  }
-
-  /**
-   * @return The scope factory for web scopes. Never <code>null</code>.
-   */
-  @Nonnull
-  public static IWebScopeFactory getWebScopeFactory ()
-  {
-    return s_aWebScopeFactory;
   }
 }

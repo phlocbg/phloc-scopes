@@ -8,7 +8,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>phloc-scopes</artifactId>
-  <version>4.5.1-SNAPSHOT</version>
+  <version>5.0.0-SNAPSHOT</version>
   <packaging>bundle</packaging>
   <name>phloc-scopes</name>
   <url>http://repo.phloc.com/apidocs/phloc-scopes/${project.version}</url>
@@ -87,16 +87,6 @@
       <groupId>com.phloc</groupId>
       <artifactId>phloc-commons</artifactId>
       <version>3.9.6</version>
-    </dependency>
-    <dependency>
-      <groupId>com.phloc</groupId>
-      <artifactId>phloc-web</artifactId>
-      <version>5.0.1</version>
-    </dependency>
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>servlet-api</artifactId>
-      <scope>provided</scope>
     </dependency>
 
     <dependency>
