@@ -20,6 +20,7 @@
 -->
 <changelog xmlns="http://www.phloc.com/ns/changelog/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.phloc.com/ns/changelog/1.0 schemas/changelog-1.0.xsd" version="1.0" component="phloc-scopes">
+  <release date="2013-02-27" version="5.0.0" />
   <entry date="2013-02-27" category="api" action="remove">
     <change>
       <text locale="en">Moved all web-related scope handling to a new separate project phloc-webscopes</text>
