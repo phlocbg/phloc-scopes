@@ -140,7 +140,7 @@ public class ScopeSessionManager extends GlobalSingleton
    * the scope is destroyed.
    * 
    * @param aSessionScope
-   *        The session scope to be ended
+   *        The session scope to be ended. May not be <code>null</code>.
    */
   public void onScopeEnd (@Nonnull final ISessionScope aSessionScope)
   {

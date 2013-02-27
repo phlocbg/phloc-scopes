@@ -311,6 +311,20 @@ public final class ScopeManager
     return null;
   }
 
+  /**
+   * Manually destroy the passed session scope.
+   * 
+   * @param aSessionScope
+   *        The session scope to be destroyed. May not be <code>null</code>.
+   */
+  public static void destroySessionScope (@Nonnull final ISessionScope aSessionScope)
+  {
+    if (aSessionScope == null)
+      throw new NullPointerException ("sessionScope");
+
+    ScopeSessionManager.getInstance ().onScopeEnd (aSessionScope);
+  }
+
   // --- session application scope ---
 
   @Nonnull
