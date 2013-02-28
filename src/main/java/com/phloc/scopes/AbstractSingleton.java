@@ -220,8 +220,9 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
    * @param aScope
    *        The scope to be used. May not be <code>null</code>.
    * @param aClass
-   *        The class to be used.
-   * @return The singleton object.
+   *        The class to be used. May not be <code>null</code>. The class must
+   *        be public as needs to have a public no-argument constructor.
+   * @return The singleton object and never <code>null</code>.
    */
   @Nonnull
   protected static final <T extends AbstractSingleton> T getSingleton (@Nonnull final IScope aScope,
@@ -277,6 +278,18 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
     return aInstance;
   }
 
+  /**
+   * Get all singleton objects registered in the respective sub-class of this
+   * class.
+   * 
+   * @param aScope
+   *        The scope to use. May be <code>null</code> to avoid creating a new
+   *        scope.
+   * @param aDesiredClass
+   *        The desired sub-class of this class. May not be <code>null</code>.
+   * @return A non-<code>null</code> list with all instances of the passed class
+   *         in the passed scope.
+   */
   @Nonnull
   @ReturnsMutableCopy
   protected static final <T extends AbstractSingleton> List <T> getAllSingletons (@Nullable final IScope aScope,
@@ -287,12 +300,9 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
 
     final List <T> ret = new ArrayList <T> ();
     if (aScope != null)
-      for (final String sAttrName : aScope.getAllAttributeNames ())
-      {
-        final Object aScopeValue = aScope.getAttributeObject (sAttrName);
+      for (final Object aScopeValue : aScope.getAllAttributeValues ())
         if (aScopeValue != null && aDesiredClass.isAssignableFrom (aScopeValue.getClass ()))
           ret.add (aDesiredClass.cast (aScopeValue));
-      }
     return ret;
   }
 

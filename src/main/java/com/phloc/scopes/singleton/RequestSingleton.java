@@ -60,6 +60,15 @@ public abstract class RequestSingleton extends AbstractSingleton
     return _getStaticScope (true);
   }
 
+  /**
+   * Get the singleton object in the current request scope, using the passed
+   * class. If the singleton is not yet instantiated, a new instance is created.
+   * 
+   * @param aClass
+   *        The class to be used. May not be <code>null</code>. The class must
+   *        be public as needs to have a public no-argument constructor.
+   * @return The singleton object and never <code>null</code>.
+   */
   @Nonnull
   protected static final <T extends RequestSingleton> T getRequestSingleton (@Nonnull final Class <T> aClass)
   {
@@ -80,6 +89,12 @@ public abstract class RequestSingleton extends AbstractSingleton
     return isSingletonInstantiated (_getStaticScope (false), aClass);
   }
 
+  /**
+   * Get all singleton objects registered in the current request scope.
+   * 
+   * @return A non-<code>null</code> list with all instances of this class in
+   *         the current request scope.
+   */
   @Nonnull
   public static final List <RequestSingleton> getAllSingletons ()
   {

@@ -61,6 +61,15 @@ public abstract class ApplicationSingleton extends AbstractSingleton
     return _getStaticScope (true);
   }
 
+  /**
+   * Get the singleton object in the current application scope, using the passed
+   * class. If the singleton is not yet instantiated, a new instance is created.
+   * 
+   * @param aClass
+   *        The class to be used. May not be <code>null</code>. The class must
+   *        be public as needs to have a public no-argument constructor.
+   * @return The singleton object and never <code>null</code>.
+   */
   @Nonnull
   protected static final <T extends ApplicationSingleton> T getApplicationSingleton (@Nonnull final Class <T> aClass)
   {
@@ -81,6 +90,12 @@ public abstract class ApplicationSingleton extends AbstractSingleton
     return isSingletonInstantiated (_getStaticScope (false), aClass);
   }
 
+  /**
+   * Get all singleton objects registered in the current application scope.
+   * 
+   * @return A non-<code>null</code> list with all instances of this class in
+   *         the current application scope.
+   */
   @Nonnull
   public static final List <ApplicationSingleton> getAllSingletons ()
   {
