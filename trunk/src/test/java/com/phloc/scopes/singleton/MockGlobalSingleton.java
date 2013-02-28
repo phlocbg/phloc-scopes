@@ -15,34 +15,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.phloc.scopes.spi;
+package com.phloc.scopes.singleton;
 
 import javax.annotation.Nonnull;
 
-import com.phloc.commons.annotations.IsSPIInterface;
-import com.phloc.scopes.domain.ISessionScope;
+import com.phloc.commons.annotations.UsedViaReflection;
+import com.phloc.scopes.singleton.GlobalSingleton;
 
 /**
- * SPI for handling the session scope lifecycle. Is invoked only for web scopes.
+ * Mock global singleton
  * 
  * @author philip
  */
-@IsSPIInterface
-public interface ISessionScopeSPI
+public final class MockGlobalSingleton extends GlobalSingleton
 {
-  /**
-   * Called after the session scope was started
-   * 
-   * @param aSessionScope
-   *        The session scope object to be used
-   */
-  void onSessionScopeBegin (@Nonnull ISessionScope aSessionScope);
+  static int s_nCtorCount = 0;
+  static int s_nDtorCount = 0;
 
-  /**
-   * Called before the session scope is shut down
-   * 
-   * @param aSessionScope
-   *        The session scope object to be used
-   */
-  void onSessionScopeEnd (@Nonnull ISessionScope aSessionScope);
+  @Deprecated
+  @UsedViaReflection
+  public MockGlobalSingleton ()
+  {
+    s_nCtorCount++;
+  }
+
+  @Nonnull
+  public static MockGlobalSingleton getInstance ()
+  {
+    return getGlobalSingleton (MockGlobalSingleton.class);
+  }
+
+  @Override
+  protected void onDestroy () throws Exception
+  {
+    s_nDtorCount++;
+  }
 }

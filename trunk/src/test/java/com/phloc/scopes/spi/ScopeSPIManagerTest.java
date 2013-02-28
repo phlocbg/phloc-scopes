@@ -22,8 +22,8 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.phloc.scopes.ScopeUtils;
-import com.phloc.scopes.nonweb.domain.ISessionScope;
-import com.phloc.scopes.nonweb.mgr.ScopeManager;
+import com.phloc.scopes.domain.ISessionScope;
+import com.phloc.scopes.mgr.ScopeManager;
 
 /**
  * Test class for class {@link ScopeSPIManager}.

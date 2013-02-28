@@ -28,11 +28,11 @@ import org.slf4j.LoggerFactory;
 
 import com.phloc.commons.lang.ServiceLoaderUtils;
 import com.phloc.commons.mock.IMockException;
-import com.phloc.scopes.nonweb.domain.IApplicationScope;
-import com.phloc.scopes.nonweb.domain.IGlobalScope;
-import com.phloc.scopes.nonweb.domain.IRequestScope;
-import com.phloc.scopes.nonweb.domain.ISessionApplicationScope;
-import com.phloc.scopes.nonweb.domain.ISessionScope;
+import com.phloc.scopes.domain.IApplicationScope;
+import com.phloc.scopes.domain.IGlobalScope;
+import com.phloc.scopes.domain.IRequestScope;
+import com.phloc.scopes.domain.ISessionApplicationScope;
+import com.phloc.scopes.domain.ISessionScope;
 
 /**
  * This is an internal class, that triggers the SPI implementations registered

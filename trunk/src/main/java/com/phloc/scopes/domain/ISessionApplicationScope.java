@@ -15,21 +15,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.phloc.scopes.spi;
+package com.phloc.scopes.domain;
 
-import com.phloc.commons.annotations.IsSPIImplementation;
-import com.phloc.scopes.domain.IRequestScope;
+import com.phloc.scopes.IScope;
 
-@IsSPIImplementation
-public final class MockRequestScopeSPI extends AbstractScopeSPI implements IRequestScopeSPI
+/**
+ * Interface for a single session application scope object.
+ * 
+ * @author philip
+ */
+public interface ISessionApplicationScope extends IScope
 {
-  public void onRequestScopeBegin (final IRequestScope aScope)
-  {
-    onBegin ();
-  }
-
-  public void onRequestScopeEnd (final IRequestScope aScope)
-  {
-    onEnd ();
-  }
+  /* empty */
 }

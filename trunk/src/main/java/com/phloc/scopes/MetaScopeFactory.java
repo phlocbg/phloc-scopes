@@ -20,8 +20,8 @@ package com.phloc.scopes;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.NotThreadSafe;
 
-import com.phloc.scopes.nonweb.factory.DefaultScopeFactory;
-import com.phloc.scopes.nonweb.factory.IScopeFactory;
+import com.phloc.scopes.factory.DefaultScopeFactory;
+import com.phloc.scopes.factory.IScopeFactory;
 
 /**
  * The meta scope factory holding both the factory for non-web scopes as well as
