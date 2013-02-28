@@ -1,0 +1,2 @@
+com.phloc.scopes.spi.MockSessionApplicationScopeSPI
+com.phloc.scopes.spi.MockThrowingSessionApplicationScopeSPI
