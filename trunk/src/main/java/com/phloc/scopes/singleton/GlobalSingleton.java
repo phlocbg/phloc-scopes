@@ -64,6 +64,15 @@ public abstract class GlobalSingleton extends AbstractSingleton
     return getSingleton (_getStaticScope (true), aClass);
   }
 
+  /**
+   * Check if a singleton is already instantiated inside the current global
+   * scope
+   * 
+   * @param aClass
+   *        The class to be checked. May not be <code>null</code>.
+   * @return <code>true</code> if the singleton for the specified class is
+   *         already instantiated, <code>false</code> otherwise.
+   */
   public static final boolean isSingletonInstantiated (@Nonnull final Class <? extends GlobalSingleton> aClass)
   {
     return isSingletonInstantiated (_getStaticScope (false), aClass);

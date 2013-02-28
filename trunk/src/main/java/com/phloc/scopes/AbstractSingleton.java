@@ -164,9 +164,10 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
    * Check if a singleton is already instantiated inside a scope
    * 
    * @param aScope
-   *        The scope to check. May be <code>null</code>.
+   *        The scope to check. May be <code>null</code> to avoid constructing a
+   *        scope.
    * @param aClass
-   *        The class to be checked.
+   *        The class to be checked. May not be <code>null</code>.
    * @return <code>true</code> if the singleton for the specified class is
    *         already instantiated, <code>false</code> otherwise.
    */
