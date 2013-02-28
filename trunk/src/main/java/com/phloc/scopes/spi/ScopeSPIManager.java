@@ -17,7 +17,6 @@
  */
 package com.phloc.scopes.spi;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -26,6 +25,7 @@ import javax.annotation.concurrent.Immutable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.phloc.commons.annotations.PresentForCodeCoverage;
 import com.phloc.commons.lang.ServiceLoaderUtils;
 import com.phloc.commons.mock.IMockException;
 import com.phloc.scopes.domain.IApplicationScope;
@@ -37,7 +37,7 @@ import com.phloc.scopes.domain.ISessionScope;
 /**
  * This is an internal class, that triggers the SPI implementations registered
  * for scope lifecycle SPI implementations. <b>Never</b> call this class from
- * the outside!
+ * outside of this project!
  * 
  * @author philip
  */
@@ -47,33 +47,30 @@ public final class ScopeSPIManager
   private static final Logger s_aLogger = LoggerFactory.getLogger (ScopeSPIManager.class);
 
   // non-web scopes
-  private static final List <IGlobalScopeSPI> s_aGlobalSPIs = new ArrayList <IGlobalScopeSPI> ();
-  private static final List <IApplicationScopeSPI> s_aApplicationSPIs = new ArrayList <IApplicationScopeSPI> ();
-  private static final List <ISessionScopeSPI> s_aSessionSPIs = new ArrayList <ISessionScopeSPI> ();
-  private static final List <ISessionApplicationScopeSPI> s_aSessionApplicationSPIs = new ArrayList <ISessionApplicationScopeSPI> ();
-  private static final List <IRequestScopeSPI> s_aRequestSPIs = new ArrayList <IRequestScopeSPI> ();
+  private static final List <IGlobalScopeSPI> s_aGlobalSPIs;
+  private static final List <IApplicationScopeSPI> s_aApplicationSPIs;
+  private static final List <ISessionScopeSPI> s_aSessionSPIs;
+  private static final List <ISessionApplicationScopeSPI> s_aSessionApplicationSPIs;
+  private static final List <IRequestScopeSPI> s_aRequestSPIs;
 
   static
   {
-    // non-web scopes
-    for (final IGlobalScopeSPI aSPI : ServiceLoaderUtils.getAllSPIImplementations (IGlobalScopeSPI.class))
-      s_aGlobalSPIs.add (aSPI);
-    for (final IApplicationScopeSPI aSPI : ServiceLoaderUtils.getAllSPIImplementations (IApplicationScopeSPI.class))
-      s_aApplicationSPIs.add (aSPI);
-    for (final ISessionScopeSPI aSPI : ServiceLoaderUtils.getAllSPIImplementations (ISessionScopeSPI.class))
-      s_aSessionSPIs.add (aSPI);
-    for (final ISessionApplicationScopeSPI aSPI : ServiceLoaderUtils.getAllSPIImplementations (ISessionApplicationScopeSPI.class))
-      s_aSessionApplicationSPIs.add (aSPI);
-    for (final IRequestScopeSPI aSPI : ServiceLoaderUtils.getAllSPIImplementations (IRequestScopeSPI.class))
-      s_aRequestSPIs.add (aSPI);
+    // Register all listeners
+    s_aGlobalSPIs = ServiceLoaderUtils.getAllSPIImplementations (IGlobalScopeSPI.class);
+    s_aApplicationSPIs = ServiceLoaderUtils.getAllSPIImplementations (IApplicationScopeSPI.class);
+    s_aSessionSPIs = ServiceLoaderUtils.getAllSPIImplementations (ISessionScopeSPI.class);
+    s_aSessionApplicationSPIs = ServiceLoaderUtils.getAllSPIImplementations (ISessionApplicationScopeSPI.class);
+    s_aRequestSPIs = ServiceLoaderUtils.getAllSPIImplementations (IRequestScopeSPI.class);
   }
+
+  @PresentForCodeCoverage
+  private static final ScopeSPIManager s_aInstance = new ScopeSPIManager ();
 
   private ScopeSPIManager ()
   {}
 
   public static void onGlobalScopeBegin (@Nonnull final IGlobalScope aGlobalScope)
   {
-    // non-web scope
     for (final IGlobalScopeSPI aSPI : s_aGlobalSPIs)
       try
       {
@@ -88,7 +85,6 @@ public final class ScopeSPIManager
 
   public static void onGlobalScopeEnd (@Nonnull final IGlobalScope aGlobalScope)
   {
-    // non-web scope
     for (final IGlobalScopeSPI aSPI : s_aGlobalSPIs)
       try
       {
@@ -103,7 +99,6 @@ public final class ScopeSPIManager
 
   public static void onApplicationScopeBegin (@Nonnull final IApplicationScope aApplicationScope)
   {
-    // non-web scope
     for (final IApplicationScopeSPI aSPI : s_aApplicationSPIs)
       try
       {
@@ -120,7 +115,6 @@ public final class ScopeSPIManager
 
   public static void onApplicationScopeEnd (@Nonnull final IApplicationScope aApplicationScope)
   {
-    // non-web scope
     for (final IApplicationScopeSPI aSPI : s_aApplicationSPIs)
       try
       {
@@ -137,7 +131,6 @@ public final class ScopeSPIManager
 
   public static void onSessionScopeBegin (@Nonnull final ISessionScope aSessionScope)
   {
-    // non-web scope
     for (final ISessionScopeSPI aSPI : s_aSessionSPIs)
       try
       {
@@ -152,7 +145,6 @@ public final class ScopeSPIManager
 
   public static void onSessionScopeEnd (@Nonnull final ISessionScope aSessionScope)
   {
-    // non-web scope
     for (final ISessionScopeSPI aSPI : s_aSessionSPIs)
       try
       {
@@ -167,7 +159,6 @@ public final class ScopeSPIManager
 
   public static void onSessionApplicationScopeBegin (@Nonnull final ISessionApplicationScope aSessionApplicationScope)
   {
-    // non-web scope
     for (final ISessionApplicationScopeSPI aSPI : s_aSessionApplicationSPIs)
       try
       {
@@ -184,7 +175,6 @@ public final class ScopeSPIManager
 
   public static void onSessionApplicationScopeEnd (@Nonnull final ISessionApplicationScope aSessionApplicationScope)
   {
-    // non-web scope
     for (final ISessionApplicationScopeSPI aSPI : s_aSessionApplicationSPIs)
       try
       {
@@ -201,7 +191,6 @@ public final class ScopeSPIManager
 
   public static void onRequestScopeBegin (@Nonnull final IRequestScope aRequestScope)
   {
-    // non-web scope
     for (final IRequestScopeSPI aSPI : s_aRequestSPIs)
       try
       {
@@ -216,7 +205,6 @@ public final class ScopeSPIManager
 
   public static void onRequestScopeEnd (@Nonnull final IRequestScope aRequestScope)
   {
-    // non-web scope
     for (final IRequestScopeSPI aSPI : s_aRequestSPIs)
       try
       {

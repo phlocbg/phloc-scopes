@@ -23,9 +23,14 @@ import org.junit.rules.ExternalResource;
 
 import com.phloc.commons.annotations.OverrideOnDemand;
 
+/**
+ * Special JUnit test rule to initialize scopes correctly.
+ * 
+ * @author philip
+ */
 public class ScopeTestRule extends ExternalResource
 {
-  public static final File STORAGE_PATH = new File ("target/junittest").getAbsoluteFile ();
+  public static final File STORAGE_PATH = ScopeAwareTestSetup.STORAGE_PATH;
 
   @Override
   @OverrideOnDemand

@@ -35,7 +35,7 @@ public interface IApplicationScopeSPI
    * Called after the application scope was started
    * 
    * @param aApplicationScope
-   *        The application scope object to be used
+   *        The application scope object to be used. Never <code>null</code>.
    */
   void onApplicationScopeBegin (@Nonnull IApplicationScope aApplicationScope);
 
@@ -43,7 +43,7 @@ public interface IApplicationScopeSPI
    * Called before the application scope is shut down
    * 
    * @param aApplicationScope
-   *        The application scope object to be used
+   *        The application scope object to be used. Never <code>null</code>.
    */
   void onApplicationScopeEnd (@Nonnull IApplicationScope aApplicationScope);
 }
