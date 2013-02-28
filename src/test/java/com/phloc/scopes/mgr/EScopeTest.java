@@ -23,7 +23,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
 
-import com.phloc.scopes.mgr.EScope;
 import com.phloc.scopes.mock.ScopeTestRule;
 
 /**
@@ -41,7 +40,12 @@ public final class EScopeTest
   {
     for (final EScope eScope : EScope.values ())
     {
+      eScope.getScope (false);
       assertNotNull (eScope.getScope (true));
+      assertNotNull (eScope.getScope ());
+      // Now all scopes are present
+      assertNotNull (EScope.getScope (eScope, false));
+      assertNotNull (EScope.getScope (eScope, true));
     }
   }
 }

@@ -23,7 +23,8 @@ import com.phloc.commons.annotations.IsSPIInterface;
 import com.phloc.scopes.domain.ISessionScope;
 
 /**
- * SPI for handling the session scope lifecycle. Is invoked only for web scopes.
+ * SPI for handling the session scope lifecycle. Is invoked for non-web and web
+ * scopes.
  * 
  * @author philip
  */
@@ -34,7 +35,7 @@ public interface ISessionScopeSPI
    * Called after the session scope was started
    * 
    * @param aSessionScope
-   *        The session scope object to be used
+   *        The session scope object to be used. Never <code>null</code>.
    */
   void onSessionScopeBegin (@Nonnull ISessionScope aSessionScope);
 
@@ -42,7 +43,7 @@ public interface ISessionScopeSPI
    * Called before the session scope is shut down
    * 
    * @param aSessionScope
-   *        The session scope object to be used
+   *        The session scope object to be used. Never <code>null</code>.
    */
   void onSessionScopeEnd (@Nonnull ISessionScope aSessionScope);
 }

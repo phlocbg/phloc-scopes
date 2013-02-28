@@ -35,7 +35,7 @@ public interface IRequestScopeSPI
    * Called after the request scope was started
    * 
    * @param aRequestScope
-   *        The request scope object to be used
+   *        The request scope object to be used. Never <code>null</code>.
    */
   void onRequestScopeBegin (@Nonnull IRequestScope aRequestScope);
 
@@ -43,7 +43,7 @@ public interface IRequestScopeSPI
    * Called before the request scope is shut down
    * 
    * @param aRequestScope
-   *        The request scope object to be used
+   *        The request scope object to be used. Never <code>null</code>.
    */
   void onRequestScopeEnd (@Nonnull IRequestScope aRequestScope);
 }

@@ -21,30 +21,46 @@ import java.io.File;
 
 import javax.annotation.concurrent.Immutable;
 
+import com.phloc.commons.annotations.PresentForCodeCoverage;
 import com.phloc.scopes.mgr.ScopeManager;
 
 /**
- * Base class for all JUnit tests requiring correct scope handling.
+ * This class provides the initialization handling for scopes in unit tests.
  * 
  * @author philip
  */
 @Immutable
 public final class ScopeAwareTestSetup
 {
+  public static final String MOCK_GLOBAL_SCOPE_ID = "mock.global";
+  public static final String MOCK_APPLICATION_SCOPE_ID = "mock.appid";
+  public static final String MOCK_REQUEST_SCOPE_ID = "mock.request";
+  public static final String MOCK_SESSION_SCOPE_ID = "mock.session";
+
   public static final File STORAGE_PATH = new File ("target/junittest").getAbsoluteFile ();
+
+  @PresentForCodeCoverage
+  private static final ScopeAwareTestSetup s_aInstance = new ScopeAwareTestSetup ();
 
   private ScopeAwareTestSetup ()
   {}
 
+  /**
+   * Run this before tests are executed to initialize a global scope and a
+   * request.
+   */
   public static void setupScopeTests ()
   {
     // begin request
-    ScopeManager.onGlobalBegin ("mock.global");
+    ScopeManager.onGlobalBegin (MOCK_GLOBAL_SCOPE_ID);
 
     // begin request
-    ScopeManager.onRequestBegin ("mock.appid", "mock.request", "mock.session");
+    ScopeManager.onRequestBegin (MOCK_APPLICATION_SCOPE_ID, MOCK_REQUEST_SCOPE_ID, MOCK_SESSION_SCOPE_ID);
   }
 
+  /**
+   * Run this after your tests to shutdown the request and the global scope.
+   */
   public static void shutdownScopeTests ()
   {
     // end request
