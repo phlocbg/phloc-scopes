@@ -38,201 +38,271 @@ public final class ScopeSPIManagerTest
   }
 
   @Test
-  public void testNonWebGlobalScope ()
+  public void testGlobalScope ()
   {
     // Create global scope only
     int nPrev = AbstractScopeSPI.getBegin ();
+    int nPrevT = AbstractThrowingScopeSPI.getBegin ();
     ScopeManager.onGlobalBegin ("global");
     assertEquals (nPrev + 1, AbstractScopeSPI.getBegin ());
+    assertEquals (nPrevT + 1, AbstractThrowingScopeSPI.getBegin ());
 
     // End global scope
     nPrev = AbstractScopeSPI.getEnd ();
+    nPrevT = AbstractThrowingScopeSPI.getEnd ();
     ScopeManager.onGlobalEnd ();
     assertEquals (nPrev + 1, AbstractScopeSPI.getEnd ());
+    assertEquals (nPrevT + 1, AbstractThrowingScopeSPI.getEnd ());
   }
 
   @Test
-  public void testNonWebRequestScope ()
+  public void testRequestScope ()
   {
     // Create global scope
     int nPrev = AbstractScopeSPI.getBegin ();
+    int nPrevT = AbstractThrowingScopeSPI.getBegin ();
     ScopeManager.onGlobalBegin ("global");
     assertEquals (nPrev + 1, AbstractScopeSPI.getBegin ());
+    assertEquals (nPrevT + 1, AbstractThrowingScopeSPI.getBegin ());
 
     // Create request scope
     nPrev = AbstractScopeSPI.getBegin ();
+    nPrevT = AbstractThrowingScopeSPI.getBegin ();
     ScopeManager.onRequestBegin ("appid", "scopeid", "sessionid");
     assertEquals (nPrev + 1, AbstractScopeSPI.getBegin ());
+    assertEquals (nPrevT + 1, AbstractThrowingScopeSPI.getBegin ());
 
     // End request scope
     nPrev = AbstractScopeSPI.getEnd ();
+    nPrevT = AbstractThrowingScopeSPI.getEnd ();
     ScopeManager.onRequestEnd ();
     assertEquals (nPrev + 1, AbstractScopeSPI.getEnd ());
+    assertEquals (nPrevT + 1, AbstractThrowingScopeSPI.getEnd ());
 
     // End global scope
     nPrev = AbstractScopeSPI.getEnd ();
+    nPrevT = AbstractThrowingScopeSPI.getEnd ();
     ScopeManager.onGlobalEnd ();
     assertEquals (nPrev + 1, AbstractScopeSPI.getEnd ());
+    assertEquals (nPrevT + 1, AbstractThrowingScopeSPI.getEnd ());
   }
 
   @Test
-  public void testNonWebApplicationScope ()
+  public void testApplicationScope ()
   {
     // Create global scope
     int nPrev = AbstractScopeSPI.getBegin ();
+    int nPrevT = AbstractThrowingScopeSPI.getBegin ();
     ScopeManager.onGlobalBegin ("global");
     assertEquals (nPrev + 1, AbstractScopeSPI.getBegin ());
+    assertEquals (nPrevT + 1, AbstractThrowingScopeSPI.getBegin ());
 
     // Create request scope
     nPrev = AbstractScopeSPI.getBegin ();
+    nPrevT = AbstractThrowingScopeSPI.getBegin ();
     ScopeManager.onRequestBegin ("appid", "scopeid", "sessionid");
     assertEquals (nPrev + 1, AbstractScopeSPI.getBegin ());
+    assertEquals (nPrevT + 1, AbstractThrowingScopeSPI.getBegin ());
 
     // Create application scope
     nPrev = AbstractScopeSPI.getBegin ();
+    nPrevT = AbstractThrowingScopeSPI.getBegin ();
     ScopeManager.getApplicationScope ();
     assertEquals (nPrev + 1, AbstractScopeSPI.getBegin ());
+    assertEquals (nPrevT + 1, AbstractThrowingScopeSPI.getBegin ());
 
     // End request scope
     nPrev = AbstractScopeSPI.getEnd ();
+    nPrevT = AbstractThrowingScopeSPI.getEnd ();
     ScopeManager.onRequestEnd ();
     assertEquals (nPrev + 1, AbstractScopeSPI.getEnd ());
+    assertEquals (nPrevT + 1, AbstractThrowingScopeSPI.getEnd ());
 
     // End global scope and application scope
     nPrev = AbstractScopeSPI.getEnd ();
+    nPrevT = AbstractThrowingScopeSPI.getEnd ();
     ScopeManager.onGlobalEnd ();
     assertEquals (nPrev + 2, AbstractScopeSPI.getEnd ());
+    assertEquals (nPrev + 2, AbstractThrowingScopeSPI.getEnd ());
   }
 
   @Test
-  public void testNonWebApplicationScopes ()
+  public void testApplicationScopes ()
   {
     // Create global scope
     int nPrev = AbstractScopeSPI.getBegin ();
+    int nPrevT = AbstractThrowingScopeSPI.getBegin ();
     ScopeManager.onGlobalBegin ("global");
     assertEquals (nPrev + 1, AbstractScopeSPI.getBegin ());
+    assertEquals (nPrevT + 1, AbstractThrowingScopeSPI.getBegin ());
 
     // Create request scope
     nPrev = AbstractScopeSPI.getBegin ();
+    nPrevT = AbstractThrowingScopeSPI.getBegin ();
     ScopeManager.onRequestBegin ("appid", "scopeid", "sessionid");
     assertEquals (nPrev + 1, AbstractScopeSPI.getBegin ());
+    assertEquals (nPrevT + 1, AbstractThrowingScopeSPI.getBegin ());
 
     // Create application scope
     nPrev = AbstractScopeSPI.getBegin ();
+    nPrevT = AbstractThrowingScopeSPI.getBegin ();
     ScopeManager.getApplicationScope ();
     assertEquals (nPrev + 1, AbstractScopeSPI.getBegin ());
+    assertEquals (nPrevT + 1, AbstractThrowingScopeSPI.getBegin ());
 
     // Create second application scope
     nPrev = AbstractScopeSPI.getBegin ();
+    nPrevT = AbstractThrowingScopeSPI.getBegin ();
     ScopeManager.getApplicationScope ("any other blabla");
     assertEquals (nPrev + 1, AbstractScopeSPI.getBegin ());
+    assertEquals (nPrevT + 1, AbstractThrowingScopeSPI.getBegin ());
 
     // End request scope
     nPrev = AbstractScopeSPI.getEnd ();
+    nPrevT = AbstractThrowingScopeSPI.getEnd ();
     ScopeManager.onRequestEnd ();
     assertEquals (nPrev + 1, AbstractScopeSPI.getEnd ());
+    assertEquals (nPrevT + 1, AbstractThrowingScopeSPI.getEnd ());
 
     // End global scope and application scopes
     nPrev = AbstractScopeSPI.getEnd ();
+    nPrevT = AbstractThrowingScopeSPI.getEnd ();
     ScopeManager.onGlobalEnd ();
     assertEquals (nPrev + 3, AbstractScopeSPI.getEnd ());
+    assertEquals (nPrevT + 3, AbstractThrowingScopeSPI.getEnd ());
   }
 
   @Test
-  public void testNonWebSessionScopes ()
+  public void testSessionScopes ()
   {
     // Create global scope
     int nPrev = AbstractScopeSPI.getBegin ();
+    int nPrevT = AbstractThrowingScopeSPI.getBegin ();
     ScopeManager.onGlobalBegin ("global");
     assertEquals (nPrev + 1, AbstractScopeSPI.getBegin ());
+    assertEquals (nPrevT + 1, AbstractThrowingScopeSPI.getBegin ());
 
     // Create request scope
     nPrev = AbstractScopeSPI.getBegin ();
+    nPrevT = AbstractThrowingScopeSPI.getBegin ();
     ScopeManager.onRequestBegin ("appid", "scopeid", "sessionid");
     assertEquals (nPrev + 1, AbstractScopeSPI.getBegin ());
+    assertEquals (nPrevT + 1, AbstractThrowingScopeSPI.getBegin ());
 
     // Create application scope
     nPrev = AbstractScopeSPI.getBegin ();
+    nPrevT = AbstractThrowingScopeSPI.getBegin ();
     ScopeManager.getApplicationScope ();
     assertEquals (nPrev + 1, AbstractScopeSPI.getBegin ());
+    assertEquals (nPrevT + 1, AbstractThrowingScopeSPI.getBegin ());
 
     // Create second application scope
     nPrev = AbstractScopeSPI.getBegin ();
+    nPrevT = AbstractThrowingScopeSPI.getBegin ();
     ScopeManager.getApplicationScope ("any other blabla");
     assertEquals (nPrev + 1, AbstractScopeSPI.getBegin ());
+    assertEquals (nPrevT + 1, AbstractThrowingScopeSPI.getBegin ());
 
     // Begin session scope
     nPrev = AbstractScopeSPI.getBegin ();
+    nPrevT = AbstractThrowingScopeSPI.getBegin ();
     final ISessionScope aSessionScope = ScopeManager.getSessionScope ();
     assertEquals (nPrev + 1, AbstractScopeSPI.getBegin ());
+    assertEquals (nPrevT + 1, AbstractThrowingScopeSPI.getBegin ());
 
     // End request scope
     nPrev = AbstractScopeSPI.getEnd ();
+    nPrevT = AbstractThrowingScopeSPI.getEnd ();
     ScopeManager.onRequestEnd ();
     assertEquals (nPrev + 1, AbstractScopeSPI.getEnd ());
+    assertEquals (nPrevT + 1, AbstractThrowingScopeSPI.getEnd ());
 
     // End session scope
     nPrev = AbstractScopeSPI.getEnd ();
+    nPrevT = AbstractThrowingScopeSPI.getEnd ();
     ScopeManager.destroySessionScope (aSessionScope);
     assertEquals (nPrev + 1, AbstractScopeSPI.getEnd ());
+    assertEquals (nPrevT + 1, AbstractThrowingScopeSPI.getEnd ());
 
     // End global scope and application scopes
     nPrev = AbstractScopeSPI.getEnd ();
+    nPrevT = AbstractThrowingScopeSPI.getEnd ();
     ScopeManager.onGlobalEnd ();
     assertEquals (nPrev + 3, AbstractScopeSPI.getEnd ());
+    assertEquals (nPrevT + 3, AbstractThrowingScopeSPI.getEnd ());
   }
 
   @Test
-  public void testNonWebSessionApplicationScopes ()
+  public void testSessionApplicationScopes ()
   {
     // Create global scope
     int nPrev = AbstractScopeSPI.getBegin ();
+    int nPrevT = AbstractThrowingScopeSPI.getBegin ();
     ScopeManager.onGlobalBegin ("global");
     assertEquals (nPrev + 1, AbstractScopeSPI.getBegin ());
+    assertEquals (nPrevT + 1, AbstractThrowingScopeSPI.getBegin ());
 
     // Create request scope
     nPrev = AbstractScopeSPI.getBegin ();
+    nPrevT = AbstractThrowingScopeSPI.getBegin ();
     ScopeManager.onRequestBegin ("appid", "scopeid", "sessionid");
     assertEquals (nPrev + 1, AbstractScopeSPI.getBegin ());
+    assertEquals (nPrevT + 1, AbstractThrowingScopeSPI.getBegin ());
 
     // Create application scope
     nPrev = AbstractScopeSPI.getBegin ();
+    nPrevT = AbstractThrowingScopeSPI.getBegin ();
     ScopeManager.getApplicationScope ();
     assertEquals (nPrev + 1, AbstractScopeSPI.getBegin ());
+    assertEquals (nPrevT + 1, AbstractThrowingScopeSPI.getBegin ());
 
     // Create second application scope
     nPrev = AbstractScopeSPI.getBegin ();
+    nPrevT = AbstractThrowingScopeSPI.getBegin ();
     ScopeManager.getApplicationScope ("any other blabla");
     assertEquals (nPrev + 1, AbstractScopeSPI.getBegin ());
+    assertEquals (nPrevT + 1, AbstractThrowingScopeSPI.getBegin ());
 
     // Begin session scope
     nPrev = AbstractScopeSPI.getBegin ();
+    nPrevT = AbstractThrowingScopeSPI.getBegin ();
     final ISessionScope aSessionScope = ScopeManager.getSessionScope ();
     assertEquals (nPrev + 1, AbstractScopeSPI.getBegin ());
+    assertEquals (nPrevT + 1, AbstractThrowingScopeSPI.getBegin ());
 
     // Get session application scope
     nPrev = AbstractScopeSPI.getBegin ();
+    nPrevT = AbstractThrowingScopeSPI.getBegin ();
     ScopeManager.getSessionApplicationScope ();
     assertEquals (nPrev + 1, AbstractScopeSPI.getBegin ());
+    assertEquals (nPrevT + 1, AbstractThrowingScopeSPI.getBegin ());
 
     // Get second session application scope
     nPrev = AbstractScopeSPI.getBegin ();
+    nPrevT = AbstractThrowingScopeSPI.getBegin ();
     ScopeManager.getSessionApplicationScope ("session web scope for testing");
     assertEquals (nPrev + 1, AbstractScopeSPI.getBegin ());
+    assertEquals (nPrevT + 1, AbstractThrowingScopeSPI.getBegin ());
 
     // End request scope
     nPrev = AbstractScopeSPI.getEnd ();
+    nPrevT = AbstractThrowingScopeSPI.getEnd ();
     ScopeManager.onRequestEnd ();
     assertEquals (nPrev + 1, AbstractScopeSPI.getEnd ());
+    assertEquals (nPrevT + 1, AbstractThrowingScopeSPI.getEnd ());
 
     // End session scope and session application scopes
     nPrev = AbstractScopeSPI.getEnd ();
+    nPrevT = AbstractThrowingScopeSPI.getEnd ();
     ScopeManager.destroySessionScope (aSessionScope);
     assertEquals (nPrev + 3, AbstractScopeSPI.getEnd ());
+    assertEquals (nPrevT + 3, AbstractThrowingScopeSPI.getEnd ());
 
     // End global scope and application scopes
     nPrev = AbstractScopeSPI.getEnd ();
+    nPrevT = AbstractThrowingScopeSPI.getEnd ();
     ScopeManager.onGlobalEnd ();
     assertEquals (nPrev + 3, AbstractScopeSPI.getEnd ());
+    assertEquals (nPrevT + 3, AbstractThrowingScopeSPI.getEnd ());
   }
 }
