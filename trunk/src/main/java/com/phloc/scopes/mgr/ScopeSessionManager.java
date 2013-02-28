@@ -47,8 +47,8 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
  * Internal manager class for session scopes.<br>
- * This class is only non-final so that the deprecated WebScopeSessionManager
- * can be used as well!
+ * This class is only non-final so that the WebScopeSessionManager can be used
+ * for web scopes!
  * 
  * @author philip
  */
@@ -187,6 +187,23 @@ public class ScopeSessionManager extends GlobalSingleton
   }
 
   /**
+   * @return <code>true</code> if at least one session is present,
+   *         <code>false</code> otherwise
+   */
+  public boolean containsAnySession ()
+  {
+    m_aRWLock.readLock ().lock ();
+    try
+    {
+      return !m_aSessionScopes.isEmpty ();
+    }
+    finally
+    {
+      m_aRWLock.readLock ().unlock ();
+    }
+  }
+
+  /**
    * @return The number of managed session scopes. Always &ge; 0.
    */
   @Nonnegative
@@ -224,7 +241,7 @@ public class ScopeSessionManager extends GlobalSingleton
 
   private void _checkIfAnySessionsExist ()
   {
-    if (getSessionCount () > 0)
+    if (containsAnySession ())
     {
       m_aRWLock.writeLock ().lock ();
       try

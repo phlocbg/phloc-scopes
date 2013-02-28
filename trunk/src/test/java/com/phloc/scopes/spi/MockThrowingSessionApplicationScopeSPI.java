@@ -17,34 +17,19 @@
  */
 package com.phloc.scopes.spi;
 
+import com.phloc.commons.annotations.IsSPIImplementation;
+import com.phloc.scopes.domain.ISessionApplicationScope;
 
-/**
- * Abstract base class for all Mock SPI implementations
- * 
- * @author philip
- */
-public abstract class AbstractScopeSPI
+@IsSPIImplementation
+public final class MockThrowingSessionApplicationScopeSPI extends AbstractThrowingScopeSPI implements ISessionApplicationScopeSPI
 {
-  private static int s_nBegin = 0;
-  private static int s_nEnd = 0;
-
-  protected static final void onBegin ()
+  public void onSessionApplicationScopeBegin (final ISessionApplicationScope aScope)
   {
-    s_nBegin++;
+    onBegin ();
   }
 
-  public static final int getBegin ()
+  public void onSessionApplicationScopeEnd (final ISessionApplicationScope aScope)
   {
-    return s_nBegin;
-  }
-
-  protected static final void onEnd ()
-  {
-    s_nEnd++;
-  }
-
-  public static final int getEnd ()
-  {
-    return s_nEnd;
+    onEnd ();
   }
 }

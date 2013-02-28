@@ -17,13 +17,14 @@
  */
 package com.phloc.scopes.spi;
 
+import com.phloc.commons.mock.MockRuntimeException;
 
 /**
  * Abstract base class for all Mock SPI implementations
  * 
  * @author philip
  */
-public abstract class AbstractScopeSPI
+public abstract class AbstractThrowingScopeSPI
 {
   private static int s_nBegin = 0;
   private static int s_nEnd = 0;
@@ -31,6 +32,7 @@ public abstract class AbstractScopeSPI
   protected static final void onBegin ()
   {
     s_nBegin++;
+    throw new MockRuntimeException ();
   }
 
   public static final int getBegin ()
@@ -41,6 +43,7 @@ public abstract class AbstractScopeSPI
   protected static final void onEnd ()
   {
     s_nEnd++;
+    throw new MockRuntimeException ();
   }
 
   public static final int getEnd ()
