@@ -20,7 +20,7 @@ package com.phloc.scopes.spi;
 import javax.annotation.Nonnull;
 
 import com.phloc.commons.annotations.IsSPIInterface;
-import com.phloc.scopes.nonweb.domain.IGlobalScope;
+import com.phloc.scopes.domain.IGlobalScope;
 
 /**
  * SPI for handling the global scope lifecycle. Is invoked for non-web and web

@@ -15,21 +15,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.phloc.scopes.spi;
+package com.phloc.scopes.mock;
 
-import com.phloc.commons.annotations.IsSPIImplementation;
-import com.phloc.scopes.domain.IRequestScope;
+import java.io.File;
 
-@IsSPIImplementation
-public final class MockRequestScopeSPI extends AbstractScopeSPI implements IRequestScopeSPI
+import org.junit.rules.ExternalResource;
+
+import com.phloc.commons.annotations.OverrideOnDemand;
+
+public class ScopeTestRule extends ExternalResource
 {
-  public void onRequestScopeBegin (final IRequestScope aScope)
+  public static final File STORAGE_PATH = new File ("target/junittest").getAbsoluteFile ();
+
+  @Override
+  @OverrideOnDemand
+  public void before ()
   {
-    onBegin ();
+    ScopeAwareTestSetup.setupScopeTests ();
   }
 
-  public void onRequestScopeEnd (final IRequestScope aScope)
+  @Override
+  @OverrideOnDemand
+  public void after ()
   {
-    onEnd ();
+    ScopeAwareTestSetup.shutdownScopeTests ();
   }
 }

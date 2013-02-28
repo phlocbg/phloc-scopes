@@ -15,21 +15,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.phloc.scopes.spi;
+package com.phloc.scopes.mock;
 
-import com.phloc.commons.annotations.IsSPIImplementation;
-import com.phloc.scopes.domain.IRequestScope;
+import org.junit.Rule;
+import org.junit.rules.TestRule;
 
-@IsSPIImplementation
-public final class MockRequestScopeSPI extends AbstractScopeSPI implements IRequestScopeSPI
+import com.phloc.commons.annotations.DevelopersNote;
+import com.phloc.commons.mock.AbstractPhlocTestCase;
+
+/**
+ * Base class where the initialization of the scopes happens before each test
+ * execution.
+ * 
+ * @author philip
+ */
+@Deprecated
+@DevelopersNote ("It's preferred to use the rules directly in your test case class!")
+public abstract class AbstractScopeAwareTestCase extends AbstractPhlocTestCase
 {
-  public void onRequestScopeBegin (final IRequestScope aScope)
-  {
-    onBegin ();
-  }
-
-  public void onRequestScopeEnd (final IRequestScope aScope)
-  {
-    onEnd ();
-  }
+  @Rule
+  public final TestRule m_aScopeRule = new ScopeTestRule ();
 }

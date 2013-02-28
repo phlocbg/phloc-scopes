@@ -15,21 +15,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.phloc.scopes.spi;
+package com.phloc.scopes.mgr;
 
-import com.phloc.commons.annotations.IsSPIImplementation;
-import com.phloc.scopes.domain.IRequestScope;
+import static org.junit.Assert.assertNotNull;
 
-@IsSPIImplementation
-public final class MockRequestScopeSPI extends AbstractScopeSPI implements IRequestScopeSPI
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TestRule;
+
+import com.phloc.scopes.mgr.EScope;
+import com.phloc.scopes.mock.ScopeTestRule;
+
+/**
+ * Test class for class {@link EScope}.
+ * 
+ * @author philip
+ */
+public final class EScopeTest
 {
-  public void onRequestScopeBegin (final IRequestScope aScope)
-  {
-    onBegin ();
-  }
+  @Rule
+  public final TestRule m_aScopeRule = new ScopeTestRule ();
 
-  public void onRequestScopeEnd (final IRequestScope aScope)
+  @Test
+  public void testGetScope ()
   {
-    onEnd ();
+    for (final EScope eScope : EScope.values ())
+    {
+      assertNotNull (eScope.getScope (true));
+    }
   }
 }

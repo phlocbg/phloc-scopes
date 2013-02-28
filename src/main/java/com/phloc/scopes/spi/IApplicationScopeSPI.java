@@ -20,7 +20,7 @@ package com.phloc.scopes.spi;
 import javax.annotation.Nonnull;
 
 import com.phloc.commons.annotations.IsSPIInterface;
-import com.phloc.scopes.nonweb.domain.IApplicationScope;
+import com.phloc.scopes.domain.IApplicationScope;
 
 /**
  * SPI for handling the application scope lifecycle. Is invoked for non-web and

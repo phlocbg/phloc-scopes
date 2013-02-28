@@ -18,7 +18,7 @@
 package com.phloc.scopes.spi;
 
 import com.phloc.commons.annotations.IsSPIImplementation;
-import com.phloc.scopes.nonweb.domain.ISessionScope;
+import com.phloc.scopes.domain.ISessionScope;
 
 @IsSPIImplementation
 public final class MockSessionScopeSPI extends AbstractScopeSPI implements ISessionScopeSPI
