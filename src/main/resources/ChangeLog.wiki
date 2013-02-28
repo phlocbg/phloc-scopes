@@ -1,7 +1,10 @@
 #summary Change log of phloc-scopes
 = Change log =
 <wiki:comment>This content is generated. Do not modify!</wiki:comment>
-<table border="1" cellspacing="0"><thead><tr><th>Date</th><th>Action</th><th>Category</th><th>Incompatible?</th><th>Description</th></tr></thead><tbody><tr border="1"><td>2/27/13</td><td colspan="4">_Release *5.0.0*_</td></tr>
+<table border="1" cellspacing="0"><thead><tr><th>Date</th><th>Action</th><th>Category</th><th>Incompatible?</th><th>Description</th></tr></thead><tbody><tr border="1"><td>2/28/13</td><td colspan="4">_Release *6.0.0*_</td></tr>
+<tr><td>2/28/13</td><td>remove</td><td>api</td><td></td><td>Removed deprecated class AbstractScopeAwareTestCase</td></tr>
+<tr><td>2/28/13</td><td>change</td><td>api</td><td>*yes*</td><td>Removed "nonweb" from all package names</td></tr>
+<tr border="1"><td>2/27/13</td><td colspan="4">_Release *5.0.0*_</td></tr>
 <tr><td>2/27/13</td><td>remove</td><td>api</td><td></td><td>Moved all web-related scope handling to a new separate project [http://code.google.com/p/phloc-webbasics phloc-webscopes]</td></tr>
 <tr border="1"><td>2/27/13</td><td colspan="4">_Release *4.5.0*_</td></tr>
 <tr><td>2/26/13</td><td>update</td><td>api</td><td>*yes*</td><td>Using [http://code.google.com/p/phloc-webbasics phloc-web] 5.0.1 for all web-related stuff</td></tr>
