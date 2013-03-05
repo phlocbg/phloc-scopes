@@ -39,6 +39,7 @@ public final class ScopeAwareTestSetup
 
   public static final File STORAGE_PATH = new File ("target/junittest").getAbsoluteFile ();
 
+  @SuppressWarnings ("unused")
   @PresentForCodeCoverage
   private static final ScopeAwareTestSetup s_aInstance = new ScopeAwareTestSetup ();
 

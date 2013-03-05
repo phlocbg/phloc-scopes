@@ -63,6 +63,7 @@ public final class ScopeSPIManager
     s_aRequestSPIs = ServiceLoaderUtils.getAllSPIImplementations (IRequestScopeSPI.class);
   }
 
+  @SuppressWarnings ("unused")
   @PresentForCodeCoverage
   private static final ScopeSPIManager s_aInstance = new ScopeSPIManager ();
 
