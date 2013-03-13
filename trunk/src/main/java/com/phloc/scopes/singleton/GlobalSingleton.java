@@ -74,7 +74,7 @@ public abstract class GlobalSingleton extends AbstractSingleton
    *         <code>null</code> otherwise.
    */
   @Nullable
-  public static final GlobalSingleton getSingletonIfInstantiated (@Nonnull final Class <? extends GlobalSingleton> aClass)
+  public static final <T extends GlobalSingleton> T getSingletonIfInstantiated (@Nonnull final Class <T> aClass)
   {
     return getSingletonIfInstantiated (_getStaticScope (false), aClass);
   }
