@@ -21,6 +21,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.phloc.commons.annotations.MustImplementEqualsAndHashcode;
 import com.phloc.scopes.AbstractSingleton;
@@ -78,6 +79,21 @@ public abstract class SessionApplicationSingleton extends AbstractSingleton impl
   }
 
   /**
+   * Get the singleton object if it is already instantiated inside the current
+   * session application scope or <code>null</code> if it is not instantiated.
+   * 
+   * @param aClass
+   *        The class to be checked. May not be <code>null</code>.
+   * @return The singleton for the specified class is already instantiated,
+   *         <code>null</code> otherwise.
+   */
+  @Nullable
+  public static final SessionApplicationSingleton getSingletonIfInstantiated (@Nonnull final Class <? extends SessionApplicationSingleton> aClass)
+  {
+    return getSingletonIfInstantiated (_getStaticScope (false), aClass);
+  }
+
+  /**
    * Check if a singleton is already instantiated inside the current session
    * application scope
    * 
@@ -92,8 +108,8 @@ public abstract class SessionApplicationSingleton extends AbstractSingleton impl
   }
 
   /**
-   * Get all singleton objects registered in the current session application
-   * scope.
+   * Get all instantiated singleton objects registered in the current session
+   * application scope.
    * 
    * @return A non-<code>null</code> list with all instances of this class in
    *         the current session application scope.

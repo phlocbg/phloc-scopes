@@ -161,6 +161,34 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
   }
 
   /**
+   * Get the singleton object if it is already instantiated inside a scope or
+   * <code>null</code> if it is not instantiated.
+   * 
+   * @param aScope
+   *        The scope to check. May be <code>null</code> to avoid constructing a
+   *        scope.
+   * @param aClass
+   *        The class to be checked. May not be <code>null</code>.
+   * @return The singleton for the specified class is already instantiated,
+   *         <code>null</code> otherwise.
+   */
+  @Nullable
+  protected static final <T extends AbstractSingleton> T getSingletonIfInstantiated (@Nullable final IScope aScope,
+                                                                                     @Nonnull final Class <T> aClass)
+  {
+    if (aClass == null)
+      throw new NullPointerException ("class");
+
+    if (aScope == null)
+      return null;
+    final String sSingletonScopeKey = getSingletonScopeKey (aClass);
+    final Object aObject = aScope.getAttributeObject (sSingletonScopeKey);
+    if (aObject == null)
+      return null;
+    return aClass.cast (aObject);
+  }
+
+  /**
    * Check if a singleton is already instantiated inside a scope
    * 
    * @param aScope
@@ -174,14 +202,7 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
   protected static final boolean isSingletonInstantiated (@Nullable final IScope aScope,
                                                           @Nonnull final Class <? extends AbstractSingleton> aClass)
   {
-    if (aClass == null)
-      throw new NullPointerException ("class");
-
-    if (aScope == null)
-      return false;
-    final String sSingletonScopeKey = getSingletonScopeKey (aClass);
-    final AbstractSingleton aInstance = aClass.cast (aScope.getAttributeObject (sSingletonScopeKey));
-    return aInstance != null;
+    return getSingletonIfInstantiated (aScope, aClass) != null;
   }
 
   @Nonnull

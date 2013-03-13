@@ -76,6 +76,21 @@ public abstract class RequestSingleton extends AbstractSingleton
   }
 
   /**
+   * Get the singleton object if it is already instantiated inside the current
+   * request scope or <code>null</code> if it is not instantiated.
+   * 
+   * @param aClass
+   *        The class to be checked. May not be <code>null</code>.
+   * @return The singleton for the specified class is already instantiated,
+   *         <code>null</code> otherwise.
+   */
+  @Nullable
+  public static final RequestSingleton getSingletonIfInstantiated (@Nonnull final Class <? extends RequestSingleton> aClass)
+  {
+    return getSingletonIfInstantiated (_getStaticScope (false), aClass);
+  }
+
+  /**
    * Check if a singleton is already instantiated inside the current request
    * scope
    * 
@@ -90,7 +105,8 @@ public abstract class RequestSingleton extends AbstractSingleton
   }
 
   /**
-   * Get all singleton objects registered in the current request scope.
+   * Get all instantiated singleton objects registered in the current request
+   * scope.
    * 
    * @return A non-<code>null</code> list with all instances of this class in
    *         the current request scope.
