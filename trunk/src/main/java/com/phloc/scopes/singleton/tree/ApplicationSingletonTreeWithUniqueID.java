@@ -36,7 +36,7 @@ import com.phloc.scopes.singleton.ApplicationSingleton;
  * 
  * @author philip
  */
-public class ApplicationSingletonTreeWithUniqueID <KEYTYPE, VALUETYPE> extends ApplicationSingleton implements ITreeWithGlobalUniqueID <KEYTYPE, VALUETYPE, DefaultTreeItemWithID <KEYTYPE, VALUETYPE>>
+public abstract class ApplicationSingletonTreeWithUniqueID <KEYTYPE, VALUETYPE> extends ApplicationSingleton implements ITreeWithGlobalUniqueID <KEYTYPE, VALUETYPE, DefaultTreeItemWithID <KEYTYPE, VALUETYPE>>
 {
   protected final DefaultTreeWithGlobalUniqueID <KEYTYPE, VALUETYPE> m_aTree = new DefaultTreeWithGlobalUniqueID <KEYTYPE, VALUETYPE> ();
 

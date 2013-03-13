@@ -21,7 +21,6 @@ import javax.annotation.Nonnull;
 
 import com.phloc.commons.annotations.UsedViaReflection;
 import com.phloc.commons.hash.HashCodeGenerator;
-import com.phloc.scopes.singleton.SessionSingleton;
 
 public final class MockSessionSingleton extends SessionSingleton
 {
@@ -48,7 +47,7 @@ public final class MockSessionSingleton extends SessionSingleton
     return i;
   }
 
-  // For testing!
+  // For serialization testing!
   @Override
   public boolean equals (final Object o)
   {

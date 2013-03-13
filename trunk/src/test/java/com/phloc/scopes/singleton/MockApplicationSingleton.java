@@ -20,8 +20,6 @@ package com.phloc.scopes.singleton;
 import javax.annotation.Nonnull;
 
 import com.phloc.commons.annotations.UsedViaReflection;
-import com.phloc.commons.hash.HashCodeGenerator;
-import com.phloc.scopes.singleton.ApplicationSingleton;
 
 public final class MockApplicationSingleton extends ApplicationSingleton
 {
@@ -46,22 +44,5 @@ public final class MockApplicationSingleton extends ApplicationSingleton
   public int get ()
   {
     return i;
-  }
-
-  // For testing!
-  @Override
-  public boolean equals (final Object o)
-  {
-    if (o == this)
-      return true;
-    if (!(o instanceof MockApplicationSingleton))
-      return false;
-    return i == ((MockApplicationSingleton) o).i;
-  }
-
-  @Override
-  public int hashCode ()
-  {
-    return new HashCodeGenerator (this).append (i).getHashCode ();
   }
 }
