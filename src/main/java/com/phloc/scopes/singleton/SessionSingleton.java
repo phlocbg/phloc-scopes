@@ -77,7 +77,7 @@ public abstract class SessionSingleton extends AbstractSingleton implements Seri
    *         <code>null</code> otherwise.
    */
   @Nullable
-  public static final SessionSingleton getSingletonIfInstantiated (@Nonnull final Class <? extends SessionSingleton> aClass)
+  public static final <T extends SessionSingleton> T getSingletonIfInstantiated (@Nonnull final Class <T> aClass)
   {
     return getSingletonIfInstantiated (_getStaticScope (false), aClass);
   }
