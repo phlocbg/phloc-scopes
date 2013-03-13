@@ -22,10 +22,12 @@ import java.io.File;
 import javax.annotation.concurrent.Immutable;
 
 import com.phloc.commons.annotations.PresentForCodeCoverage;
+import com.phloc.commons.cleanup.CommonsCleanup;
 import com.phloc.scopes.mgr.ScopeManager;
 
 /**
- * This class provides the initialization handling for scopes in unit tests.
+ * This class provides the initialization handling for scopes in unit tests. It
+ * is independent of JUnit and can be used with any unit testing framework.
  * 
  * @author philip
  */
@@ -69,5 +71,8 @@ public final class ScopeAwareTestSetup
 
     // shutdown global context
     ScopeManager.onGlobalEnd ();
+
+    // Clean all phloc-commons stuff
+    CommonsCleanup.cleanup ();
   }
 }
