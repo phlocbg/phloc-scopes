@@ -28,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.phloc.commons.annotations.Nonempty;
+import com.phloc.commons.annotations.PresentForCodeCoverage;
 import com.phloc.commons.string.StringHelper;
 import com.phloc.scopes.MetaScopeFactory;
 import com.phloc.scopes.ScopeUtils;
@@ -62,13 +63,17 @@ public final class ScopeManager
    */
   private static final String REQ_APPLICATION_ID = "phloc.applicationscope";
 
-  private static Lock s_aGlobalLock = new ReentrantLock ();
+  private static final Lock s_aGlobalLock = new ReentrantLock ();
 
   /** Global scope */
   private static volatile IGlobalScope s_aGlobalScope;
 
   /** Request scope */
-  private static ThreadLocal <IRequestScope> s_aRequestScope = new ThreadLocal <IRequestScope> ();
+  private static final ThreadLocal <IRequestScope> s_aRequestScope = new ThreadLocal <IRequestScope> ();
+
+  @PresentForCodeCoverage
+  @SuppressWarnings ("unused")
+  private static final ScopeManager s_aInstance = new ScopeManager ();
 
   private ScopeManager ()
   {}

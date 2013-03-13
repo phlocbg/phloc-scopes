@@ -18,14 +18,16 @@
 package com.phloc.scopes.singleton;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
 
 import com.phloc.scopes.mock.ScopeTestRule;
-import com.phloc.scopes.singleton.SessionSingleton;
 
 /**
  * Test class for class {@link SessionSingleton}.<br>
@@ -39,9 +41,15 @@ public final class SessionSingletonTest
   public final TestRule m_aScopeRule = new ScopeTestRule ();
 
   @Test
-  public void testSerialize () throws Exception
+  public void testBasic () throws Exception
   {
+    assertTrue (SessionSingleton.getAllSingletons ().isEmpty ());
+    assertFalse (SessionSingleton.isSingletonInstantiated (MockSessionSingleton.class));
+    assertNull (SessionSingleton.getSingletonIfInstantiated (MockSessionSingleton.class));
+
     final MockSessionSingleton a = MockSessionSingleton.getInstance ();
+    assertTrue (SessionSingleton.isSingletonInstantiated (MockSessionSingleton.class));
+    assertSame (a, SessionSingleton.getSingletonIfInstantiated (MockSessionSingleton.class));
     assertEquals (0, a.get ());
     a.inc ();
     assertEquals (1, a.get ());
