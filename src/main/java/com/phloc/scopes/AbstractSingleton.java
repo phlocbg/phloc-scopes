@@ -125,21 +125,13 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
   protected void onDestroy () throws Exception
   {}
 
-  /*
-   * Implementation of IScopeDestructionAware
+  /**
+   * Implementation of {@link IScopeDestructionAware}. Calls the protected
+   * {@link #onDestroy()} method.
    */
   public final void onScopeDestruction () throws Exception
   {
     onDestroy ();
-  }
-
-  @Nonnull
-  protected abstract IScope getScope ();
-
-  @Nonnull
-  protected final String getScopeID ()
-  {
-    return getScope ().getID ();
   }
 
   /**

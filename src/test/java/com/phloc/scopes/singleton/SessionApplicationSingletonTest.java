@@ -27,6 +27,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
 
+import com.phloc.commons.mock.PhlocTestUtils;
 import com.phloc.scopes.mock.ScopeTestRule;
 
 /**
@@ -54,5 +55,7 @@ public final class SessionApplicationSingletonTest
     a.inc ();
     assertEquals (1, a.get ());
     assertSame (a, MockSessionApplicationSingleton.getInstance ());
+
+    PhlocTestUtils.testDefaultSerialization (a);
   }
 }
