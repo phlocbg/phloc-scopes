@@ -23,8 +23,6 @@ import com.phloc.commons.annotations.UsedViaReflection;
 
 public final class MockRequestSingletonTreeWithUniqueID extends RequestSingletonTreeWithUniqueID <String, String>
 {
-  private int i = 0;
-
   @Deprecated
   @UsedViaReflection
   public MockRequestSingletonTreeWithUniqueID ()
@@ -34,15 +32,5 @@ public final class MockRequestSingletonTreeWithUniqueID extends RequestSingleton
   public static MockRequestSingletonTreeWithUniqueID getInstance ()
   {
     return getRequestSingleton (MockRequestSingletonTreeWithUniqueID.class);
-  }
-
-  public void inc ()
-  {
-    i++;
-  }
-
-  public int get ()
-  {
-    return i;
   }
 }

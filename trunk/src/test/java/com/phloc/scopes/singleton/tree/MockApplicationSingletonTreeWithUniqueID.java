@@ -20,12 +20,9 @@ package com.phloc.scopes.singleton.tree;
 import javax.annotation.Nonnull;
 
 import com.phloc.commons.annotations.UsedViaReflection;
-import com.phloc.commons.hash.HashCodeGenerator;
 
 public final class MockApplicationSingletonTreeWithUniqueID extends ApplicationSingletonTreeWithUniqueID <String, String>
 {
-  private int i = 0;
-
   @Deprecated
   @UsedViaReflection
   public MockApplicationSingletonTreeWithUniqueID ()
@@ -35,32 +32,5 @@ public final class MockApplicationSingletonTreeWithUniqueID extends ApplicationS
   public static MockApplicationSingletonTreeWithUniqueID getInstance ()
   {
     return getApplicationSingleton (MockApplicationSingletonTreeWithUniqueID.class);
-  }
-
-  public void inc ()
-  {
-    i++;
-  }
-
-  public int get ()
-  {
-    return i;
-  }
-
-  // For testing!
-  @Override
-  public boolean equals (final Object o)
-  {
-    if (o == this)
-      return true;
-    if (!(o instanceof MockApplicationSingletonTreeWithUniqueID))
-      return false;
-    return i == ((MockApplicationSingletonTreeWithUniqueID) o).i;
-  }
-
-  @Override
-  public int hashCode ()
-  {
-    return new HashCodeGenerator (this).append (i).getHashCode ();
   }
 }

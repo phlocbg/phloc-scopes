@@ -28,25 +28,14 @@ import com.phloc.commons.annotations.UsedViaReflection;
  */
 public final class MockGlobalSingletonTreeWithUniqueID extends GlobalSingletonTreeWithUniqueID <String, String>
 {
-  static int s_nCtorCount = 0;
-  static int s_nDtorCount = 0;
-
   @Deprecated
   @UsedViaReflection
   public MockGlobalSingletonTreeWithUniqueID ()
-  {
-    s_nCtorCount++;
-  }
+  {}
 
   @Nonnull
   public static MockGlobalSingletonTreeWithUniqueID getInstance ()
   {
     return getGlobalSingleton (MockGlobalSingletonTreeWithUniqueID.class);
-  }
-
-  @Override
-  protected void onDestroy () throws Exception
-  {
-    s_nDtorCount++;
   }
 }
