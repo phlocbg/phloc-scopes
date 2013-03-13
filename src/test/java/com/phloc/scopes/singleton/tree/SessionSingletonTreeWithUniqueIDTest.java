@@ -19,6 +19,7 @@ package com.phloc.scopes.singleton.tree;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
@@ -28,6 +29,7 @@ import org.junit.Test;
 import org.junit.rules.TestRule;
 
 import com.phloc.commons.mock.PhlocTestUtils;
+import com.phloc.commons.tree.withid.DefaultTreeItemWithID;
 import com.phloc.scopes.mock.ScopeTestRule;
 import com.phloc.scopes.singleton.SessionSingleton;
 
@@ -50,14 +52,32 @@ public final class SessionSingletonTreeWithUniqueIDTest
     assertNull (SessionSingleton.getSingletonIfInstantiated (MockSessionSingletonTreeWithUniqueID.class));
 
     final MockSessionSingletonTreeWithUniqueID a = MockSessionSingletonTreeWithUniqueID.getInstance ();
+    assertNotNull (a);
     assertTrue (SessionSingleton.isSingletonInstantiated (MockSessionSingletonTreeWithUniqueID.class));
     assertSame (a, SessionSingleton.getSingletonIfInstantiated (MockSessionSingletonTreeWithUniqueID.class));
-    assertEquals (0, a.get ());
-    a.inc ();
-    assertEquals (1, a.get ());
-    assertSame (a, MockSessionSingletonTreeWithUniqueID.getInstance ());
+
+    final MockSessionSingletonTreeWithUniqueID b = MockSessionSingletonTreeWithUniqueID.getInstance ();
+    assertSame (a, b);
 
     if (false)
       PhlocTestUtils.testDefaultSerialization (a);
+
+    assertNotNull (a.getRootItem ());
+    assertFalse (a.hasChildren (a.getRootItem ()));
+    assertEquals (0, a.getChildCount (a.getRootItem ()));
+    final DefaultTreeItemWithID <String, String> aItem1 = a.getRootItem ().createChildItem ("id1", "value1");
+    assertSame (aItem1, a.getChildWithID (a.getRootItem (), "id1"));
+    assertEquals (1, a.getChildCount (a.getRootItem ()));
+    assertEquals (1, a.getChildren (a.getRootItem ()).size ());
+    assertSame (aItem1, a.getItemWithID ("id1"));
+    assertEquals (1, a.getAllItems ().size ());
+    final DefaultTreeItemWithID <String, String> aItem2 = aItem1.createChildItem ("id2", "value2");
+    assertEquals (2, a.getAllItems ().size ());
+    assertTrue (a.isItemSameOrDescendant (aItem1.getID (), aItem2.getID ()));
+    assertFalse (a.isItemSameOrDescendant (aItem2.getID (), aItem1.getID ()));
+    assertTrue (a.containsItemWithID (aItem1.getID ()));
+    assertEquals ("value1", a.getItemDataWithID (aItem1.getID ()));
+    assertEquals (2, a.getAllItemDatas ().size ());
+    assertTrue (a.removeItemWithID ("id2").isChanged ());
   }
 }

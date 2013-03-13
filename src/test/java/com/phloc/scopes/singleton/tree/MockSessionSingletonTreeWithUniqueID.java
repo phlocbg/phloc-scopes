@@ -24,8 +24,6 @@ import com.phloc.commons.hash.HashCodeGenerator;
 
 public final class MockSessionSingletonTreeWithUniqueID extends SessionSingletonTreeWithUniqueID <String, String>
 {
-  private int i = 0;
-
   @Deprecated
   @UsedViaReflection
   public MockSessionSingletonTreeWithUniqueID ()
@@ -37,30 +35,18 @@ public final class MockSessionSingletonTreeWithUniqueID extends SessionSingleton
     return getSessionSingleton (MockSessionSingletonTreeWithUniqueID.class);
   }
 
-  public void inc ()
-  {
-    i++;
-  }
-
-  public int get ()
-  {
-    return i;
-  }
-
   // For serialization testing!
   @Override
   public boolean equals (final Object o)
   {
     if (o == this)
       return true;
-    if (!(o instanceof MockSessionSingletonTreeWithUniqueID))
-      return false;
-    return i == ((MockSessionSingletonTreeWithUniqueID) o).i;
+    return o instanceof MockSessionSingletonTreeWithUniqueID;
   }
 
   @Override
   public int hashCode ()
   {
-    return new HashCodeGenerator (this).append (i).getHashCode ();
+    return new HashCodeGenerator (this).getHashCode ();
   }
 }
