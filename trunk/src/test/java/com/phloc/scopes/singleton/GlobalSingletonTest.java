@@ -18,8 +18,11 @@
 package com.phloc.scopes.singleton;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -28,7 +31,6 @@ import org.junit.Test;
 import org.junit.rules.TestRule;
 
 import com.phloc.scopes.mock.ScopeTestRule;
-import com.phloc.scopes.singleton.GlobalSingleton;
 
 /**
  * Test class for class {@link GlobalSingleton}.
@@ -55,10 +57,18 @@ public final class GlobalSingletonTest
   }
 
   @Test
-  public void testAll ()
+  public void testBasic ()
   {
+    assertTrue (GlobalSingleton.getAllSingletons ().isEmpty ());
+    assertFalse (GlobalSingleton.isSingletonInstantiated (MockGlobalSingleton.class));
+    assertNull (GlobalSingleton.getSingletonIfInstantiated (MockGlobalSingleton.class));
+
+    final MockGlobalSingleton a = MockGlobalSingleton.getInstance ();
+    assertNotNull (a);
+    assertTrue (GlobalSingleton.isSingletonInstantiated (MockGlobalSingleton.class));
+    assertSame (a, GlobalSingleton.getSingletonIfInstantiated (MockGlobalSingleton.class));
+
     assertNotNull (MockGlobalSingleton.getInstance ());
-    assertNotNull (MockGlobalSingleton.getInstance ());
-    assertSame (MockGlobalSingleton.getInstance (), MockGlobalSingleton.getInstance ());
+    assertSame (a, MockGlobalSingleton.getInstance ());
   }
 }
