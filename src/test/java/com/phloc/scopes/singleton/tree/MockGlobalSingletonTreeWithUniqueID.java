@@ -15,52 +15,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.phloc.scopes.singleton;
+package com.phloc.scopes.singleton.tree;
 
 import javax.annotation.Nonnull;
 
 import com.phloc.commons.annotations.UsedViaReflection;
-import com.phloc.commons.hash.HashCodeGenerator;
 
-public final class MockSessionApplicationSingleton extends SessionApplicationSingleton
+/**
+ * Mock global singleton
+ * 
+ * @author philip
+ */
+public final class MockGlobalSingletonTreeWithUniqueID extends GlobalSingletonTreeWithUniqueID <String, String>
 {
-  private int i = 0;
+  static int s_nCtorCount = 0;
+  static int s_nDtorCount = 0;
 
   @Deprecated
   @UsedViaReflection
-  public MockSessionApplicationSingleton ()
-  {}
+  public MockGlobalSingletonTreeWithUniqueID ()
+  {
+    s_nCtorCount++;
+  }
 
   @Nonnull
-  public static MockSessionApplicationSingleton getInstance ()
+  public static MockGlobalSingletonTreeWithUniqueID getInstance ()
   {
-    return getSessionApplicationSingleton (MockSessionApplicationSingleton.class);
-  }
-
-  public void inc ()
-  {
-    i++;
-  }
-
-  public int get ()
-  {
-    return i;
-  }
-
-  // For serialization testing!
-  @Override
-  public boolean equals (final Object o)
-  {
-    if (o == this)
-      return true;
-    if (!(o instanceof MockSessionApplicationSingleton))
-      return false;
-    return i == ((MockSessionApplicationSingleton) o).i;
+    return getGlobalSingleton (MockGlobalSingletonTreeWithUniqueID.class);
   }
 
   @Override
-  public int hashCode ()
+  protected void onDestroy () throws Exception
   {
-    return new HashCodeGenerator (this).append (i).getHashCode ();
+    s_nDtorCount++;
   }
 }

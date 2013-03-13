@@ -15,26 +15,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.phloc.scopes.singleton;
+package com.phloc.scopes.singleton.tree;
 
 import javax.annotation.Nonnull;
 
 import com.phloc.commons.annotations.UsedViaReflection;
-import com.phloc.commons.hash.HashCodeGenerator;
 
-public final class MockSessionApplicationSingleton extends SessionApplicationSingleton
+public final class MockRequestSingletonTreeWithUniqueID extends RequestSingletonTreeWithUniqueID <String, String>
 {
   private int i = 0;
 
   @Deprecated
   @UsedViaReflection
-  public MockSessionApplicationSingleton ()
+  public MockRequestSingletonTreeWithUniqueID ()
   {}
 
   @Nonnull
-  public static MockSessionApplicationSingleton getInstance ()
+  public static MockRequestSingletonTreeWithUniqueID getInstance ()
   {
-    return getSessionApplicationSingleton (MockSessionApplicationSingleton.class);
+    return getRequestSingleton (MockRequestSingletonTreeWithUniqueID.class);
   }
 
   public void inc ()
@@ -45,22 +44,5 @@ public final class MockSessionApplicationSingleton extends SessionApplicationSin
   public int get ()
   {
     return i;
-  }
-
-  // For serialization testing!
-  @Override
-  public boolean equals (final Object o)
-  {
-    if (o == this)
-      return true;
-    if (!(o instanceof MockSessionApplicationSingleton))
-      return false;
-    return i == ((MockSessionApplicationSingleton) o).i;
-  }
-
-  @Override
-  public int hashCode ()
-  {
-    return new HashCodeGenerator (this).append (i).getHashCode ();
   }
 }
