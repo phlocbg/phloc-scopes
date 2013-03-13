@@ -51,16 +51,6 @@ public abstract class RequestSingleton extends AbstractSingleton
   }
 
   /**
-   * @return The scope to be used for this type of singleton.
-   */
-  @Override
-  @Nonnull
-  protected final IRequestScope getScope ()
-  {
-    return _getStaticScope (true);
-  }
-
-  /**
    * Get the singleton object in the current request scope, using the passed
    * class. If the singleton is not yet instantiated, a new instance is created.
    * 

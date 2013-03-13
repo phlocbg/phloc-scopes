@@ -25,7 +25,6 @@ import org.junit.Test;
 
 import com.phloc.commons.mutable.MutableBoolean;
 import com.phloc.scopes.IScopeDestructionAware;
-import com.phloc.scopes.impl.GlobalScope;
 
 /**
  * Test class for class {@link GlobalScope}.

@@ -53,16 +53,6 @@ public abstract class SessionApplicationSingleton extends AbstractSingleton impl
   }
 
   /**
-   * @return The scope to be used for this type of singleton.
-   */
-  @Override
-  @Nonnull
-  protected final ISessionApplicationScope getScope ()
-  {
-    return _getStaticScope (true);
-  }
-
-  /**
    * Get the singleton object in the current session application scope, using
    * the passed class. If the singleton is not yet instantiated, a new instance
    * is created.
