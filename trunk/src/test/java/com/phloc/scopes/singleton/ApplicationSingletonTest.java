@@ -43,13 +43,13 @@ public final class ApplicationSingletonTest
   @Test
   public void testBasic () throws Exception
   {
-    assertTrue (ApplicationSingleton.getAllSingletons ().isEmpty ());
-    assertFalse (ApplicationSingleton.isSingletonInstantiated (MockApplicationSingleton.class));
-    assertNull (ApplicationSingleton.getSingletonIfInstantiated (MockApplicationSingleton.class));
+    assertTrue (ApplicationSingleton.getAllApplicationSingletons ().isEmpty ());
+    assertFalse (ApplicationSingleton.isApplicationSingletonInstantiated (MockApplicationSingleton.class));
+    assertNull (ApplicationSingleton.getApplicationSingletonIfInstantiated (MockApplicationSingleton.class));
 
     final MockApplicationSingleton a = MockApplicationSingleton.getInstance ();
-    assertTrue (ApplicationSingleton.isSingletonInstantiated (MockApplicationSingleton.class));
-    assertSame (a, ApplicationSingleton.getSingletonIfInstantiated (MockApplicationSingleton.class));
+    assertTrue (ApplicationSingleton.isApplicationSingletonInstantiated (MockApplicationSingleton.class));
+    assertSame (a, ApplicationSingleton.getApplicationSingletonIfInstantiated (MockApplicationSingleton.class));
     assertEquals (0, a.get ());
     a.inc ();
     assertEquals (1, a.get ());

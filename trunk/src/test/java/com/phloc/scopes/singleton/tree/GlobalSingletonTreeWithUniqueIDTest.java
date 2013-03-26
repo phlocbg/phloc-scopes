@@ -45,14 +45,14 @@ public final class GlobalSingletonTreeWithUniqueIDTest
   @Test
   public void testBasic ()
   {
-    assertTrue (GlobalSingleton.getAllSingletons ().isEmpty ());
-    assertFalse (GlobalSingleton.isSingletonInstantiated (MockGlobalSingletonTreeWithUniqueID.class));
-    assertNull (GlobalSingleton.getSingletonIfInstantiated (MockGlobalSingletonTreeWithUniqueID.class));
+    assertTrue (GlobalSingleton.getAllGlobalSingletons ().isEmpty ());
+    assertFalse (GlobalSingleton.isGlobalSingletonInstantiated (MockGlobalSingletonTreeWithUniqueID.class));
+    assertNull (GlobalSingleton.getGlobalSingletonIfInstantiated (MockGlobalSingletonTreeWithUniqueID.class));
 
     final MockGlobalSingletonTreeWithUniqueID a = MockGlobalSingletonTreeWithUniqueID.getInstance ();
     assertNotNull (a);
-    assertTrue (GlobalSingleton.isSingletonInstantiated (MockGlobalSingletonTreeWithUniqueID.class));
-    assertSame (a, GlobalSingleton.getSingletonIfInstantiated (MockGlobalSingletonTreeWithUniqueID.class));
+    assertTrue (GlobalSingleton.isGlobalSingletonInstantiated (MockGlobalSingletonTreeWithUniqueID.class));
+    assertSame (a, GlobalSingleton.getGlobalSingletonIfInstantiated (MockGlobalSingletonTreeWithUniqueID.class));
 
     final MockGlobalSingletonTreeWithUniqueID b = MockGlobalSingletonTreeWithUniqueID.getInstance ();
     assertSame (a, b);

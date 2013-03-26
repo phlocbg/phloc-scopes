@@ -43,13 +43,13 @@ public final class RequestSingletonTest
   @Test
   public void testBasic () throws Exception
   {
-    assertTrue (RequestSingleton.getAllSingletons ().isEmpty ());
-    assertFalse (RequestSingleton.isSingletonInstantiated (MockRequestSingleton.class));
-    assertNull (RequestSingleton.getSingletonIfInstantiated (MockRequestSingleton.class));
+    assertTrue (RequestSingleton.getAllRequestSingletons ().isEmpty ());
+    assertFalse (RequestSingleton.isRequestSingletonInstantiated (MockRequestSingleton.class));
+    assertNull (RequestSingleton.getRequestSingletonIfInstantiated (MockRequestSingleton.class));
 
     final MockRequestSingleton a = MockRequestSingleton.getInstance ();
-    assertTrue (RequestSingleton.isSingletonInstantiated (MockRequestSingleton.class));
-    assertSame (a, RequestSingleton.getSingletonIfInstantiated (MockRequestSingleton.class));
+    assertTrue (RequestSingleton.isRequestSingletonInstantiated (MockRequestSingleton.class));
+    assertSame (a, RequestSingleton.getRequestSingletonIfInstantiated (MockRequestSingleton.class));
     assertEquals (0, a.get ());
     a.inc ();
     assertEquals (1, a.get ());

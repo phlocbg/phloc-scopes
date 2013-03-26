@@ -20,6 +20,11 @@
 -->
 <changelog xmlns="http://www.phloc.com/ns/changelog/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.phloc.com/ns/changelog/1.0 schemas/changelog-1.0.xsd" version="1.0" component="phloc-scopes">
+  <entry date="2013-03-26" category="api" action="change">
+    <change>
+      <text locale="en">Fixed naming of singleton methods, so that the scope type is included in the method name</text>
+    </change>
+  </entry>
   <release date="2013-03-26" version="6.1.2" />
   <entry date="2013-03-25" category="api" action="add">
     <change>
