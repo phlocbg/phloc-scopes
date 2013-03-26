@@ -47,15 +47,15 @@ public final class SessionApplicationSingletonTreeWithUniqueIDTest
   @Test
   public void testBasic () throws Exception
   {
-    assertTrue (SessionApplicationSingleton.getAllSingletons ().isEmpty ());
-    assertFalse (SessionApplicationSingleton.isSingletonInstantiated (MockSessionApplicationSingletonTreeWithUniqueID.class));
-    assertNull (SessionApplicationSingleton.getSingletonIfInstantiated (MockSessionApplicationSingletonTreeWithUniqueID.class));
+    assertTrue (SessionApplicationSingleton.getAllSessionApplicationSingletons ().isEmpty ());
+    assertFalse (SessionApplicationSingleton.isSessionApplicationSingletonInstantiated (MockSessionApplicationSingletonTreeWithUniqueID.class));
+    assertNull (SessionApplicationSingleton.getSessionApplicationSingletonIfInstantiated (MockSessionApplicationSingletonTreeWithUniqueID.class));
 
     final MockSessionApplicationSingletonTreeWithUniqueID a = MockSessionApplicationSingletonTreeWithUniqueID.getInstance ();
     assertNotNull (a);
-    assertTrue (SessionApplicationSingleton.isSingletonInstantiated (MockSessionApplicationSingletonTreeWithUniqueID.class));
+    assertTrue (SessionApplicationSingleton.isSessionApplicationSingletonInstantiated (MockSessionApplicationSingletonTreeWithUniqueID.class));
     assertSame (a,
-                SessionApplicationSingleton.getSingletonIfInstantiated (MockSessionApplicationSingletonTreeWithUniqueID.class));
+                SessionApplicationSingleton.getSessionApplicationSingletonIfInstantiated (MockSessionApplicationSingletonTreeWithUniqueID.class));
 
     final MockSessionApplicationSingletonTreeWithUniqueID b = MockSessionApplicationSingletonTreeWithUniqueID.getInstance ();
     assertSame (a, b);

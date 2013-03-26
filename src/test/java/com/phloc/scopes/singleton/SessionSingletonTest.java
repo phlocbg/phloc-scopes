@@ -44,13 +44,13 @@ public final class SessionSingletonTest
   @Test
   public void testBasic () throws Exception
   {
-    assertTrue (SessionSingleton.getAllSingletons ().isEmpty ());
-    assertFalse (SessionSingleton.isSingletonInstantiated (MockSessionSingleton.class));
-    assertNull (SessionSingleton.getSingletonIfInstantiated (MockSessionSingleton.class));
+    assertTrue (SessionSingleton.getAllSessionSingletons ().isEmpty ());
+    assertFalse (SessionSingleton.isSessionSingletonInstantiated (MockSessionSingleton.class));
+    assertNull (SessionSingleton.getSessionSingletonIfInstantiated (MockSessionSingleton.class));
 
     final MockSessionSingleton a = MockSessionSingleton.getInstance ();
-    assertTrue (SessionSingleton.isSingletonInstantiated (MockSessionSingleton.class));
-    assertSame (a, SessionSingleton.getSingletonIfInstantiated (MockSessionSingleton.class));
+    assertTrue (SessionSingleton.isSessionSingletonInstantiated (MockSessionSingleton.class));
+    assertSame (a, SessionSingleton.getSessionSingletonIfInstantiated (MockSessionSingleton.class));
     assertEquals (0, a.get ());
     a.inc ();
     assertEquals (1, a.get ());

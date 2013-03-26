@@ -46,14 +46,14 @@ public final class RequestSingletonTreeWithUniqueIDTest
   @Test
   public void testBasic () throws Exception
   {
-    assertTrue (RequestSingleton.getAllSingletons ().isEmpty ());
-    assertFalse (RequestSingleton.isSingletonInstantiated (MockRequestSingletonTreeWithUniqueID.class));
-    assertNull (RequestSingleton.getSingletonIfInstantiated (MockRequestSingletonTreeWithUniqueID.class));
+    assertTrue (RequestSingleton.getAllRequestSingletons ().isEmpty ());
+    assertFalse (RequestSingleton.isRequestSingletonInstantiated (MockRequestSingletonTreeWithUniqueID.class));
+    assertNull (RequestSingleton.getRequestSingletonIfInstantiated (MockRequestSingletonTreeWithUniqueID.class));
 
     final MockRequestSingletonTreeWithUniqueID a = MockRequestSingletonTreeWithUniqueID.getInstance ();
     assertNotNull (a);
-    assertTrue (RequestSingleton.isSingletonInstantiated (MockRequestSingletonTreeWithUniqueID.class));
-    assertSame (a, RequestSingleton.getSingletonIfInstantiated (MockRequestSingletonTreeWithUniqueID.class));
+    assertTrue (RequestSingleton.isRequestSingletonInstantiated (MockRequestSingletonTreeWithUniqueID.class));
+    assertSame (a, RequestSingleton.getRequestSingletonIfInstantiated (MockRequestSingletonTreeWithUniqueID.class));
 
     final MockRequestSingletonTreeWithUniqueID b = MockRequestSingletonTreeWithUniqueID.getInstance ();
     assertSame (a, b);

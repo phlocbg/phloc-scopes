@@ -47,14 +47,14 @@ public final class SessionSingletonTreeWithUniqueIDTest
   @Test
   public void testBasic () throws Exception
   {
-    assertTrue (SessionSingleton.getAllSingletons ().isEmpty ());
-    assertFalse (SessionSingleton.isSingletonInstantiated (MockSessionSingletonTreeWithUniqueID.class));
-    assertNull (SessionSingleton.getSingletonIfInstantiated (MockSessionSingletonTreeWithUniqueID.class));
+    assertTrue (SessionSingleton.getAllSessionSingletons ().isEmpty ());
+    assertFalse (SessionSingleton.isSessionSingletonInstantiated (MockSessionSingletonTreeWithUniqueID.class));
+    assertNull (SessionSingleton.getSessionSingletonIfInstantiated (MockSessionSingletonTreeWithUniqueID.class));
 
     final MockSessionSingletonTreeWithUniqueID a = MockSessionSingletonTreeWithUniqueID.getInstance ();
     assertNotNull (a);
-    assertTrue (SessionSingleton.isSingletonInstantiated (MockSessionSingletonTreeWithUniqueID.class));
-    assertSame (a, SessionSingleton.getSingletonIfInstantiated (MockSessionSingletonTreeWithUniqueID.class));
+    assertTrue (SessionSingleton.isSessionSingletonInstantiated (MockSessionSingletonTreeWithUniqueID.class));
+    assertSame (a, SessionSingleton.getSessionSingletonIfInstantiated (MockSessionSingletonTreeWithUniqueID.class));
 
     final MockSessionSingletonTreeWithUniqueID b = MockSessionSingletonTreeWithUniqueID.getInstance ();
     assertSame (a, b);

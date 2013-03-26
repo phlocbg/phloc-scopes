@@ -59,14 +59,14 @@ public final class GlobalSingletonTest
   @Test
   public void testBasic ()
   {
-    assertTrue (GlobalSingleton.getAllSingletons ().isEmpty ());
-    assertFalse (GlobalSingleton.isSingletonInstantiated (MockGlobalSingleton.class));
-    assertNull (GlobalSingleton.getSingletonIfInstantiated (MockGlobalSingleton.class));
+    assertTrue (GlobalSingleton.getAllGlobalSingletons ().isEmpty ());
+    assertFalse (GlobalSingleton.isGlobalSingletonInstantiated (MockGlobalSingleton.class));
+    assertNull (GlobalSingleton.getGlobalSingletonIfInstantiated (MockGlobalSingleton.class));
 
     final MockGlobalSingleton a = MockGlobalSingleton.getInstance ();
     assertNotNull (a);
-    assertTrue (GlobalSingleton.isSingletonInstantiated (MockGlobalSingleton.class));
-    assertSame (a, GlobalSingleton.getSingletonIfInstantiated (MockGlobalSingleton.class));
+    assertTrue (GlobalSingleton.isGlobalSingletonInstantiated (MockGlobalSingleton.class));
+    assertSame (a, GlobalSingleton.getGlobalSingletonIfInstantiated (MockGlobalSingleton.class));
 
     assertNotNull (MockGlobalSingleton.getInstance ());
     assertSame (a, MockGlobalSingleton.getInstance ());

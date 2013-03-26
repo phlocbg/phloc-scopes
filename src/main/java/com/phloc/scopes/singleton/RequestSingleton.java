@@ -73,9 +73,26 @@ public abstract class RequestSingleton extends AbstractSingleton
    *        The class to be checked. May not be <code>null</code>.
    * @return The singleton for the specified class is already instantiated,
    *         <code>null</code> otherwise.
+   * @deprecated Use {@link #getRequestSingletonIfInstantiated(Class)} instead
    */
+  @Deprecated
   @Nullable
   public static final <T extends RequestSingleton> T getSingletonIfInstantiated (@Nonnull final Class <T> aClass)
+  {
+    return getRequestSingletonIfInstantiated (aClass);
+  }
+
+  /**
+   * Get the singleton object if it is already instantiated inside the current
+   * request scope or <code>null</code> if it is not instantiated.
+   * 
+   * @param aClass
+   *        The class to be checked. May not be <code>null</code>.
+   * @return The singleton for the specified class is already instantiated,
+   *         <code>null</code> otherwise.
+   */
+  @Nullable
+  public static final <T extends RequestSingleton> T getRequestSingletonIfInstantiated (@Nonnull final Class <T> aClass)
   {
     return getSingletonIfInstantiated (_getStaticScope (false), aClass);
   }
@@ -88,8 +105,24 @@ public abstract class RequestSingleton extends AbstractSingleton
    *        The class to be checked. May not be <code>null</code>.
    * @return <code>true</code> if the singleton for the specified class is
    *         already instantiated, <code>false</code> otherwise.
+   * @deprecated Use {@link #isRequestSingletonInstantiated(Class)} instead
    */
+  @Deprecated
   public static final boolean isSingletonInstantiated (@Nonnull final Class <? extends RequestSingleton> aClass)
+  {
+    return isRequestSingletonInstantiated (aClass);
+  }
+
+  /**
+   * Check if a singleton is already instantiated inside the current request
+   * scope
+   * 
+   * @param aClass
+   *        The class to be checked. May not be <code>null</code>.
+   * @return <code>true</code> if the singleton for the specified class is
+   *         already instantiated, <code>false</code> otherwise.
+   */
+  public static final boolean isRequestSingletonInstantiated (@Nonnull final Class <? extends RequestSingleton> aClass)
   {
     return isSingletonInstantiated (_getStaticScope (false), aClass);
   }
@@ -100,9 +133,24 @@ public abstract class RequestSingleton extends AbstractSingleton
    * 
    * @return A non-<code>null</code> list with all instances of this class in
    *         the current request scope.
+   * @deprecated Use {@link #getAllRequestSingletons()} instead
    */
+  @Deprecated
   @Nonnull
   public static final List <RequestSingleton> getAllSingletons ()
+  {
+    return getAllRequestSingletons ();
+  }
+
+  /**
+   * Get all instantiated singleton objects registered in the current request
+   * scope.
+   * 
+   * @return A non-<code>null</code> list with all instances of this class in
+   *         the current request scope.
+   */
+  @Nonnull
+  public static final List <RequestSingleton> getAllRequestSingletons ()
   {
     return getAllSingletons (_getStaticScope (false), RequestSingleton.class);
   }

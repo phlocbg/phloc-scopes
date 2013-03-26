@@ -45,14 +45,14 @@ public final class ApplicationSingletonTreeWithUniqueIDTest
   @Test
   public void testBasic () throws Exception
   {
-    assertTrue (ApplicationSingleton.getAllSingletons ().isEmpty ());
-    assertFalse (ApplicationSingleton.isSingletonInstantiated (MockApplicationSingletonTreeWithUniqueID.class));
-    assertNull (ApplicationSingleton.getSingletonIfInstantiated (MockApplicationSingletonTreeWithUniqueID.class));
+    assertTrue (ApplicationSingleton.getAllApplicationSingletons ().isEmpty ());
+    assertFalse (ApplicationSingleton.isApplicationSingletonInstantiated (MockApplicationSingletonTreeWithUniqueID.class));
+    assertNull (ApplicationSingleton.getApplicationSingletonIfInstantiated (MockApplicationSingletonTreeWithUniqueID.class));
 
     final MockApplicationSingletonTreeWithUniqueID a = MockApplicationSingletonTreeWithUniqueID.getInstance ();
     assertNotNull (a);
-    assertTrue (ApplicationSingleton.isSingletonInstantiated (MockApplicationSingletonTreeWithUniqueID.class));
-    assertSame (a, ApplicationSingleton.getSingletonIfInstantiated (MockApplicationSingletonTreeWithUniqueID.class));
+    assertTrue (ApplicationSingleton.isApplicationSingletonInstantiated (MockApplicationSingletonTreeWithUniqueID.class));
+    assertSame (a, ApplicationSingleton.getApplicationSingletonIfInstantiated (MockApplicationSingletonTreeWithUniqueID.class));
 
     final MockApplicationSingletonTreeWithUniqueID b = MockApplicationSingletonTreeWithUniqueID.getInstance ();
     assertSame (a, b);
