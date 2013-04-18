@@ -23,8 +23,8 @@
        
   <scm>
     <url>http://code.google.com/p/phloc-scopes/source/browse/</url>
-    <connection>scm:svn:http://phloc-scopes.googlecode.com/svn/trunk</connection>
-    <developerConnection>scm:svn:https://phloc-scopes.googlecode.com/svn/trunk</developerConnection>
+    <connection>scm:svn:http://phloc-scopes.googlecode.com/svn/trunk/phloc-scopes</connection>
+    <developerConnection>scm:svn:https://phloc-scopes.googlecode.com/svn/trunk/phloc-scopes</developerConnection>
   </scm>
 
   <organization>
