@@ -29,7 +29,7 @@ import com.phloc.scopes.IScopeDestructionAware;
 /**
  * Test class for class {@link GlobalScope}.
  * 
- * @author philip
+ * @author Philip Helger
  */
 public final class GlobalScopeTest
 {

@@ -28,7 +28,7 @@ import com.phloc.scopes.mock.ScopeTestRule;
 /**
  * Test class for class {@link EScope}.
  * 
- * @author philip
+ * @author Philip Helger
  */
 public final class EScopeTest
 {

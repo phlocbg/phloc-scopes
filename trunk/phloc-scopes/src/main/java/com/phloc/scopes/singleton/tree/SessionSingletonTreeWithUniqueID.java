@@ -36,7 +36,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
  * {@link SessionSingleton} wrapping a {@link DefaultTreeWithGlobalUniqueID}
  * with the same API.
  * 
- * @author philip
+ * @author Philip Helger
  */
 @SuppressFBWarnings ("SE_BAD_FIELD")
 public abstract class SessionSingletonTreeWithUniqueID <KEYTYPE, VALUETYPE> extends SessionSingleton implements ITreeWithGlobalUniqueID <KEYTYPE, VALUETYPE, DefaultTreeItemWithID <KEYTYPE, VALUETYPE>>

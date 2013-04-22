@@ -22,7 +22,7 @@ package com.phloc.scopes;
  * object implementing this interface is added into a scope, this destruction
  * method is automatically called!
  * 
- * @author philip
+ * @author Philip Helger
  */
 public interface IScopeDestructionAware
 {

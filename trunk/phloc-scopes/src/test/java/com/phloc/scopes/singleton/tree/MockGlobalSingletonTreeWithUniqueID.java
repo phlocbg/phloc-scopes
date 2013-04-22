@@ -24,7 +24,7 @@ import com.phloc.commons.annotations.UsedViaReflection;
 /**
  * Mock global singleton
  * 
- * @author philip
+ * @author Philip Helger
  */
 public final class MockGlobalSingletonTreeWithUniqueID extends GlobalSingletonTreeWithUniqueID <String, String>
 {

@@ -28,7 +28,7 @@ import com.phloc.scopes.mgr.ScopeManager;
 /**
  * Test class for class {@link ScopeSPIManager}.
  * 
- * @author philip
+ * @author Philip Helger
  */
 public final class ScopeSPIManagerTest
 {

@@ -36,7 +36,7 @@ import com.phloc.scopes.singleton.RequestSingleton;
  * Test class for class {@link RequestSingleton}.<br>
  * Note: must reside here for Mock* stuff!
  * 
- * @author philip
+ * @author Philip Helger
  */
 public final class RequestSingletonTreeWithUniqueIDTest
 {

@@ -26,7 +26,7 @@ import com.phloc.scopes.domain.IApplicationScope;
  * SPI for handling the application scope lifecycle. Is invoked for non-web and
  * web scopes.
  * 
- * @author philip
+ * @author Philip Helger
  */
 @IsSPIInterface
 public interface IApplicationScopeSPI

@@ -46,7 +46,7 @@ import com.phloc.commons.string.ToStringGenerator;
 /**
  * Base class for all singletons.
  * 
- * @author philip
+ * @author Philip Helger
  */
 public abstract class AbstractSingleton implements IScopeDestructionAware
 {

@@ -44,7 +44,7 @@ import com.phloc.scopes.spi.ScopeSPIManager;
 /**
  * Default implementation of the {@link ISessionScope} interface
  * 
- * @author philip
+ * @author Philip Helger
  */
 @ThreadSafe
 public class SessionScope extends AbstractMapBasedScope implements ISessionScope

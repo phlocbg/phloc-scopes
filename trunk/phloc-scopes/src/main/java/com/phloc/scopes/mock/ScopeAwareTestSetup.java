@@ -29,7 +29,7 @@ import com.phloc.scopes.mgr.ScopeManager;
  * This class provides the initialization handling for scopes in unit tests. It
  * is independent of JUnit and can be used with any unit testing framework.
  * 
- * @author philip
+ * @author Philip Helger
  */
 @Immutable
 public final class ScopeAwareTestSetup

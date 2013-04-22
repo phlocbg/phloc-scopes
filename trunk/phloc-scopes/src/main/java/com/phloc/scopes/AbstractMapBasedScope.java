@@ -41,7 +41,7 @@ import com.phloc.commons.string.ToStringGenerator;
 /**
  * Abstract scope implementation based on a Map containing the attribute values.
  * 
- * @author philip
+ * @author Philip Helger
  */
 @ThreadSafe
 public abstract class AbstractMapBasedScope extends MapBasedAttributeContainerThreadSafe implements IScope

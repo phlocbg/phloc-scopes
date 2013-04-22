@@ -48,7 +48,7 @@ import com.phloc.scopes.spi.ScopeSPIManager;
  * <li>request</li>
  * </ul>
  * 
- * @author philip
+ * @author Philip Helger
  */
 @ThreadSafe
 public final class ScopeManager

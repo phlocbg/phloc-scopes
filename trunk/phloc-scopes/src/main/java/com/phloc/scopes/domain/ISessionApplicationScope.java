@@ -22,7 +22,7 @@ import com.phloc.scopes.IScope;
 /**
  * Interface for a single session application scope object.
  * 
- * @author philip
+ * @author Philip Helger
  */
 public interface ISessionApplicationScope extends IScope
 {

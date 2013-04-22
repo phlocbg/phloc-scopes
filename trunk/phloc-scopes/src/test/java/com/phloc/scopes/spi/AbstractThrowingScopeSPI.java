@@ -22,7 +22,7 @@ import com.phloc.commons.mock.MockRuntimeException;
 /**
  * Abstract base class for all Mock SPI implementations
  * 
- * @author philip
+ * @author Philip Helger
  */
 public abstract class AbstractThrowingScopeSPI
 {

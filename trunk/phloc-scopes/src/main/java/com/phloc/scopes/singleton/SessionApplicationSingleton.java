@@ -33,7 +33,7 @@ import com.phloc.scopes.mgr.ScopeManager;
  * application non-web scope.
  * 
  * @see com.phloc.scopes.mgr.EScope#SESSION_APPLICATION
- * @author philip
+ * @author Philip Helger
  */
 @MustImplementEqualsAndHashcode
 public abstract class SessionApplicationSingleton extends AbstractSingleton implements Serializable

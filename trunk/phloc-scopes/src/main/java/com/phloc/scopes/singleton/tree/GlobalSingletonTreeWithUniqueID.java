@@ -34,7 +34,7 @@ import com.phloc.scopes.singleton.GlobalSingleton;
  * {@link GlobalSingleton} wrapping a {@link DefaultTreeWithGlobalUniqueID} with
  * the same API.
  * 
- * @author philip
+ * @author Philip Helger
  */
 public abstract class GlobalSingletonTreeWithUniqueID <KEYTYPE, VALUETYPE> extends GlobalSingleton implements ITreeWithGlobalUniqueID <KEYTYPE, VALUETYPE, DefaultTreeItemWithID <KEYTYPE, VALUETYPE>>
 {

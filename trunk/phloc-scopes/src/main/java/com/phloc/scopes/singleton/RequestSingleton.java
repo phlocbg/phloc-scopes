@@ -32,7 +32,7 @@ import com.phloc.scopes.mgr.ScopeManager;
  * in the same object.
  * 
  * @see com.phloc.scopes.mgr.EScope#REQUEST
- * @author philip
+ * @author Philip Helger
  */
 public abstract class RequestSingleton extends AbstractSingleton
 {

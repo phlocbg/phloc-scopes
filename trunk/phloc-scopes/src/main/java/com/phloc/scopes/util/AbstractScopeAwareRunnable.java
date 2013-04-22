@@ -12,7 +12,7 @@ import com.phloc.scopes.mock.ScopeAwareTestSetup;
 /**
  * Abstract implementation of {@link Runnable} that handles WebScopes correctly.
  * 
- * @author philip
+ * @author Philip Helger
  */
 public abstract class AbstractScopeAwareRunnable implements INonThrowingRunnable
 {

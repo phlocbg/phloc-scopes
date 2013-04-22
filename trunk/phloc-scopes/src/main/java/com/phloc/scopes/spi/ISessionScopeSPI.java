@@ -26,7 +26,7 @@ import com.phloc.scopes.domain.ISessionScope;
  * SPI for handling the session scope lifecycle. Is invoked for non-web and web
  * scopes.
  * 
- * @author philip
+ * @author Philip Helger
  */
 @IsSPIInterface
 public interface ISessionScopeSPI

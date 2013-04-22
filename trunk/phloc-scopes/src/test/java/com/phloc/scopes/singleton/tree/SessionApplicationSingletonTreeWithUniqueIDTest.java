@@ -37,7 +37,7 @@ import com.phloc.scopes.singleton.SessionApplicationSingleton;
  * Test class for class {@link SessionApplicationSingleton}.<br>
  * Note: must reside here for Mock* stuff!
  * 
- * @author philip
+ * @author Philip Helger
  */
 public final class SessionApplicationSingletonTreeWithUniqueIDTest
 {
