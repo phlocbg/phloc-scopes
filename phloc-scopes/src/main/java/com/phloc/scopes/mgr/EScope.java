@@ -26,7 +26,7 @@ import com.phloc.scopes.IScope;
  * This enumeration defines all the possible non-web scopes including some
  * utility methods on it.
  * 
- * @author philip
+ * @author Philip Helger
  */
 public enum EScope
 {

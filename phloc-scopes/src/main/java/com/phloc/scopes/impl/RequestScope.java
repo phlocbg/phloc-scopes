@@ -37,7 +37,7 @@ import com.phloc.scopes.domain.IRequestScope;
 /**
  * Default implementation for non-web request scopes.
  * 
- * @author philip
+ * @author Philip Helger
  */
 public class RequestScope extends AbstractMapBasedScope implements IRequestScope
 {

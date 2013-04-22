@@ -39,7 +39,7 @@ import com.phloc.scopes.domain.ISessionScope;
  * for scope lifecycle SPI implementations. <b>Never</b> call this class from
  * outside of this project!
  * 
- * @author philip
+ * @author Philip Helger
  */
 @Immutable
 public final class ScopeSPIManager

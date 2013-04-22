@@ -28,7 +28,7 @@ import org.slf4j.Logger;
 /**
  * Global scope utility methods that don't nicely fit somewhere else.
  * 
- * @author philip
+ * @author Philip Helger
  */
 @ThreadSafe
 public final class ScopeUtils

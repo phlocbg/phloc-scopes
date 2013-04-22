@@ -35,7 +35,7 @@ import com.phloc.scopes.singleton.GlobalSingleton;
 /**
  * Test class for class {@link GlobalSingleton}.
  * 
- * @author philip
+ * @author Philip Helger
  */
 public final class GlobalSingletonTreeWithUniqueIDTest
 {

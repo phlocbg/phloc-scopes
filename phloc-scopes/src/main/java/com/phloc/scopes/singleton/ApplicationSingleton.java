@@ -33,7 +33,7 @@ import com.phloc.scopes.mgr.ScopeManager;
  * and non-web scopes.
  * 
  * @see com.phloc.scopes.mgr.EScope#APPLICATION
- * @author philip
+ * @author Philip Helger
  */
 public abstract class ApplicationSingleton extends AbstractSingleton
 {

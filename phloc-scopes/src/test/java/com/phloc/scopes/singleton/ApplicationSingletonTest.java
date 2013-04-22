@@ -33,7 +33,7 @@ import com.phloc.scopes.mock.ScopeTestRule;
  * Test class for class {@link ApplicationSingleton}.<br>
  * Note: must reside here for Mock* stuff!
  * 
- * @author philip
+ * @author Philip Helger
  */
 public final class ApplicationSingletonTest
 {

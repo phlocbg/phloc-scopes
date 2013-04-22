@@ -31,7 +31,7 @@ import com.phloc.scopes.domain.IApplicationScope;
 /**
  * Represents a single "application scope".
  * 
- * @author philip
+ * @author Philip Helger
  */
 @ThreadSafe
 public class ApplicationScope extends AbstractMapBasedScope implements IApplicationScope

@@ -22,7 +22,7 @@ import com.phloc.scopes.IScope;
 /**
  * Interface for a single application scope object.
  * 
- * @author philip
+ * @author Philip Helger
  */
 public interface IApplicationScope extends IScope
 {

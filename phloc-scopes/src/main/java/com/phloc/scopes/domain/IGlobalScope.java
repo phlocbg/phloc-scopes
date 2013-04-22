@@ -28,7 +28,7 @@ import com.phloc.scopes.IScope;
 /**
  * Interface for a single global scope object.
  * 
- * @author philip
+ * @author Philip Helger
  */
 public interface IGlobalScope extends IScope
 {

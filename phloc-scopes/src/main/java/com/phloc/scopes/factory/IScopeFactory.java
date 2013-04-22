@@ -29,7 +29,7 @@ import com.phloc.scopes.domain.ISessionScope;
 /**
  * Interface for a non-web scope factory.
  * 
- * @author philip
+ * @author Philip Helger
  */
 public interface IScopeFactory
 {

@@ -34,7 +34,7 @@ import com.phloc.scopes.singleton.RequestSingleton;
  * {@link RequestSingleton} wrapping a {@link DefaultTreeWithGlobalUniqueID}
  * with the same API.
  * 
- * @author philip
+ * @author Philip Helger
  */
 public abstract class RequestSingletonTreeWithUniqueID <KEYTYPE, VALUETYPE> extends RequestSingleton implements ITreeWithGlobalUniqueID <KEYTYPE, VALUETYPE, DefaultTreeItemWithID <KEYTYPE, VALUETYPE>>
 {

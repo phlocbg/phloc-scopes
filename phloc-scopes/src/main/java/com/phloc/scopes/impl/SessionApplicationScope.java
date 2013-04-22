@@ -33,7 +33,7 @@ import com.phloc.scopes.domain.ISessionApplicationScope;
  * specific to the selected application within the global scope and to the
  * current user session.
  * 
- * @author philip
+ * @author Philip Helger
  */
 @ThreadSafe
 public class SessionApplicationScope extends AbstractMapBasedScope implements ISessionApplicationScope

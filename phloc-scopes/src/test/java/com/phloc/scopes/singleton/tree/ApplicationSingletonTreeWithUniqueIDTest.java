@@ -35,7 +35,7 @@ import com.phloc.scopes.singleton.ApplicationSingleton;
 /**
  * Test class for class {@link ApplicationSingletonTreeWithUniqueID}.
  * 
- * @author philip
+ * @author Philip Helger
  */
 public final class ApplicationSingletonTreeWithUniqueIDTest
 {

@@ -25,7 +25,7 @@ import com.phloc.scopes.singleton.GlobalSingleton;
 /**
  * Mock global singleton
  * 
- * @author philip
+ * @author Philip Helger
  */
 public final class MockGlobalSingleton extends GlobalSingleton
 {

@@ -27,7 +27,7 @@ import com.phloc.scopes.factory.IScopeFactory;
  * The meta scope factory holding both the factory for non-web scopes as well as
  * the factory for web-scopes.
  * 
- * @author philip
+ * @author Philip Helger
  */
 @NotThreadSafe
 public final class MetaScopeFactory

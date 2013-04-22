@@ -46,7 +46,7 @@ import com.phloc.scopes.spi.ScopeSPIManager;
  * Note: for synchronization issues, this class stores the attributes in a
  * separate map.
  * 
- * @author philip
+ * @author Philip Helger
  */
 @ThreadSafe
 public class GlobalScope extends AbstractMapBasedScope implements IGlobalScope

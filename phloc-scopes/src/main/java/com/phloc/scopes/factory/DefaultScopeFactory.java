@@ -35,7 +35,7 @@ import com.phloc.scopes.impl.SessionScope;
 /**
  * Standalone version of the scope factory. No dependencies to Web components.
  * 
- * @author philip
+ * @author Philip Helger
  */
 @NotThreadSafe
 public class DefaultScopeFactory implements IScopeFactory

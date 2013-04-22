@@ -26,7 +26,7 @@ import com.phloc.commons.annotations.OverrideOnDemand;
 /**
  * Special JUnit test rule to initialize scopes correctly.
  * 
- * @author philip
+ * @author Philip Helger
  */
 public class ScopeTestRule extends ExternalResource
 {

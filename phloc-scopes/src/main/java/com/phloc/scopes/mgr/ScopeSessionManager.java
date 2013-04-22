@@ -50,7 +50,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
  * This class is only non-final so that the WebScopeSessionManager can be used
  * for web scopes!
  * 
- * @author philip
+ * @author Philip Helger
  */
 @ThreadSafe
 public class ScopeSessionManager extends GlobalSingleton
