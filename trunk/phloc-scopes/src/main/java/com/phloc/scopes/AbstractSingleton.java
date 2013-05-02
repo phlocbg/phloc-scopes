@@ -54,6 +54,9 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
   private static final Logger s_aLogger = LoggerFactory.getLogger (AbstractSingleton.class);
   private static final IStatisticsHandlerKeyedCounter s_aStatsCounterInstantiate = StatisticsManager.getKeyedCounterHandler (AbstractSingleton.class);
 
+  private boolean m_bInDestruction = false;
+  private boolean m_bDestroyed = false;
+
   @Deprecated
   @UsedViaReflection ("For Serializable interface implementation in derived classes!")
   protected AbstractSingleton ()
@@ -131,7 +134,29 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
    */
   public final void onScopeDestruction () throws Exception
   {
+    m_bInDestruction = true;
     onDestroy ();
+    m_bDestroyed = true;
+    m_bInDestruction = false;
+  }
+
+  /**
+   * @return <code>true</code> if this singleton is currently in the phase of
+   *         destruction, <code>false</code> if it is active or already
+   *         destroyed.
+   */
+  public final boolean isInDestruction ()
+  {
+    return m_bInDestruction;
+  }
+
+  /**
+   * @return <code>true</code> if this singleton was already destroyed,
+   *         <code>false</code> if it is active.
+   */
+  public final boolean isDestroyed ()
+  {
+    return m_bDestroyed;
   }
 
   /**
