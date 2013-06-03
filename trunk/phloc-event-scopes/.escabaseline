@@ -1,0 +1,68 @@
+# Enerjy Software baseline data (files=26, problems=41).
+path: /phloc-events/src/main/java/com/phloc/event/async/dispatch/impl/parallel/AsyncParallelDispatcherRunner.java
+problem: JAVA0166:JAVA0166 Generic exception 'java.lang.Throwable' caught
+path: /phloc-events/src/main/java/com/phloc/event/async/dispatch/impl/queue/AsyncQueueDispatcherThread.java
+problem: JAVA0128:JAVA0128 Public constructor 'AsyncQueueDispatcherThread' in non-public class
+problem: JAVA0166:JAVA0166 Generic exception 'java.lang.Throwable' caught
+path: /phloc-events/src/main/java/com/phloc/event/async/dispatch/impl/serial/AsyncSerialDispatcherThread.java
+problem: JAVA0166:JAVA0166 Generic exception 'java.lang.Throwable' caught
+path: /phloc-events/src/main/java/com/phloc/event/async/mgr/impl/AbstractAsynchronousMulticastEventManager.java
+problem: JAVA0011:JAVA0011 Abstract class 'AbstractAsynchronousMulticastEventManager' does not contain an abstract method
+problem: JAVA0016:JAVA0016 Abstract class 'AbstractAsynchronousMulticastEventManager' contains public constructor
+path: /phloc-events/src/main/java/com/phloc/event/async/mgr/impl/AbstractAsynchronousUnicastEventManager.java
+problem: JAVA0011:JAVA0011 Abstract class 'AbstractAsynchronousUnicastEventManager' does not contain an abstract method
+problem: JAVA0016:JAVA0016 Abstract class 'AbstractAsynchronousUnicastEventManager' contains public constructor
+path: /phloc-events/src/main/java/com/phloc/event/impl/AbstractEventDispatcher.java
+problem: JAVA0011:JAVA0011 Abstract class 'AbstractEventDispatcher' does not contain an abstract method
+problem: JAVA0016:JAVA0016 Abstract class 'AbstractEventDispatcher' contains public constructor
+path: /phloc-events/src/main/java/com/phloc/event/impl/AbstractEventObserver.java
+problem: JAVA0011:JAVA0011 Abstract class 'AbstractEventObserver' does not contain an abstract method
+problem: JAVA0173:JAVA0173 Unused method parameter 'bWithReturnValue'
+problem: JAVA0016:JAVA0016 Abstract class 'AbstractEventObserver' contains public constructor
+problem: JAVA0016:JAVA0016 Abstract class 'AbstractEventObserver' contains public constructor
+path: /phloc-events/src/main/java/com/phloc/event/impl/AbstractOnlyOnceEventObserver.java
+problem: JAVA0011:JAVA0011 Abstract class 'AbstractOnlyOnceEventObserver' does not contain an abstract method
+problem: JAVA0016:JAVA0016 Abstract class 'AbstractOnlyOnceEventObserver' contains public constructor
+problem: JAVA0016:JAVA0016 Abstract class 'AbstractOnlyOnceEventObserver' contains public constructor
+path: /phloc-events/src/main/java/com/phloc/event/impl/BaseEvent.java
+problem: JAVA0005:JAVA0005 Imports not in specified order
+path: /phloc-events/src/main/java/com/phloc/event/impl/EventType.java
+problem: JAVA0005:JAVA0005 Imports not in specified order
+problem: JAVA0128:JAVA0128 Public constructor 'EventType' in non-public class
+path: /phloc-events/src/main/java/com/phloc/event/impl/crud/CRUDEventType.java
+problem: JAVA0005:JAVA0005 Imports not in specified order
+path: /phloc-events/src/main/java/com/phloc/event/impl/helper/AbstractEventHelper.java
+problem: JAVA0011:JAVA0011 Abstract class 'AbstractEventHelper' does not contain an abstract method
+problem: JAVA0014:JAVA0014 Class 'AbstractEventHelper' with only static members has non-private constructor
+path: /phloc-events/src/main/java/com/phloc/event/observerqueue/impl/EventObserverQueueOrderedSet.java
+problem: JAVA0057:JAVA0057 Unnecessary default constructor 'EventObserverQueueOrderedSet'
+path: /phloc-events/src/main/java/com/phloc/event/observerqueue/impl/EventObserverQueueSingleElement.java
+problem: JAVA0057:JAVA0057 Unnecessary default constructor 'EventObserverQueueSingleElement'
+path: /phloc-events/src/main/java/com/phloc/event/observerqueue/impl/EventObserverQueueWeakSet.java
+problem: JAVA0057:JAVA0057 Unnecessary default constructor 'EventObserverQueueWeakSet'
+path: /phloc-events/src/main/java/com/phloc/event/resultaggregator/impl/DispatchResultAggregatorBooleanAnd.java
+problem: JAVA0057:JAVA0057 Unnecessary default constructor 'DispatchResultAggregatorBooleanAnd'
+path: /phloc-events/src/main/java/com/phloc/event/resultaggregator/impl/DispatchResultAggregatorBooleanOr.java
+problem: JAVA0057:JAVA0057 Unnecessary default constructor 'DispatchResultAggregatorBooleanOr'
+path: /phloc-events/src/main/java/com/phloc/event/resultaggregator/impl/DispatchResultAggregatorUseAll.java
+problem: JAVA0057:JAVA0057 Unnecessary default constructor 'DispatchResultAggregatorUseAll'
+path: /phloc-events/src/main/java/com/phloc/event/resultaggregator/impl/DispatchResultAggregatorUseFirst.java
+problem: JAVA0057:JAVA0057 Unnecessary default constructor 'DispatchResultAggregatorUseFirst'
+path: /phloc-events/src/main/java/com/phloc/event/resultaggregator/impl/DispatchResultAggregatorUseLast.java
+problem: JAVA0057:JAVA0057 Unnecessary default constructor 'DispatchResultAggregatorUseLast'
+path: /phloc-events/src/main/java/com/phloc/event/scopes/MainEventManager.java
+problem: JAVA0128:JAVA0128 Public constructor 'MainEventManager' in non-public class
+path: /phloc-events/src/main/java/com/phloc/event/sync/dispatch/impl/SynchronousEventDispatcher.java
+problem: JAVA0177:JAVA0177 Variable declaration 'aDispatchResult' missing initializer
+problem: JAVA0166:JAVA0166 Generic exception 'java.lang.Throwable' caught
+path: /phloc-events/src/main/java/com/phloc/event/sync/mgr/impl/AbstractSynchronousMulticastEventManager.java
+problem: JAVA0011:JAVA0011 Abstract class 'AbstractSynchronousMulticastEventManager' does not contain an abstract method
+problem: JAVA0016:JAVA0016 Abstract class 'AbstractSynchronousMulticastEventManager' contains public constructor
+path: /phloc-events/src/main/java/com/phloc/event/sync/mgr/impl/AbstractSynchronousUnicastEventManager.java
+problem: JAVA0011:JAVA0011 Abstract class 'AbstractSynchronousUnicastEventManager' does not contain an abstract method
+problem: JAVA0016:JAVA0016 Abstract class 'AbstractSynchronousUnicastEventManager' contains public constructor
+path: /phloc-events/src/test/java/com/phloc/event/impl/helper/AsynchronousEventHelperTest.java
+problem: JAVA0128:JAVA0128 Public constructor 'MockAsyncObserver' in non-public class
+problem: JAVA0128:JAVA0128 Public constructor 'MockAsyncObserverOnlyOnce' in non-public class
+path: /phloc-events/src/test/java/com/phloc/event/scopes/ScopedEventManagerTest.java
+problem: JAVA0128:JAVA0128 Public constructor 'MockCountingObserver' in non-public class
