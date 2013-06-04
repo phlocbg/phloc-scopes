@@ -184,7 +184,7 @@
 <tr><td>3/22/12</td><td>change</td><td>api</td><td>*yes*</td><td>Total change of package structure to clearly reflect the changes between web and nonweb</td></tr>
 <tr border="1"><td>3/20/12</td><td colspan="4">_Release *3.0.0*_</td></tr>
 <tr><td>3/19/12</td><td>change</td><td>tech</td><td>*yes*</td><td>The SessionWebScope no longer directly operates on the HTTP Session but on a Map</td></tr>
-<tr><td>3/19/12</td><td>change</td><td>api</td><td>*yes*</td><td>Swapped the dependency direction between phloc-events and [http://code.google.com/p/phloc-scopes phloc-scopes]</td></tr>
+<tr><td>3/19/12</td><td>change</td><td>api</td><td>*yes*</td><td>Swapped the dependency direction between [http://code.google.com/p/phloc-commons phloc-events] and [http://code.google.com/p/phloc-scopes phloc-scopes]</td></tr>
 <tr><td>3/19/12</td><td>add</td><td>api</td><td></td><td>Moved the web scopes + manager to this project</td></tr>
 <tr><td>3/19/12</td><td>add</td><td>api</td><td></td><td>Added isValid and isInDestruction methods into IScope</td></tr>
 <tr border="1"><td>3/14/12</td><td colspan="4">_Release *2.8.0*_</td></tr>

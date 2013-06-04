@@ -13,7 +13,7 @@
 <tr border="1"><td>3/22/12</td><td colspan="4">_Release *2.7.1*_</td></tr>
 <tr><td>3/22/12</td><td>change</td><td>api</td><td></td><td>Updated to [http://code.google.com/p/phloc-scopes phloc-scopes] 3.5.0</td></tr>
 <tr border="1"><td>3/20/12</td><td colspan="4">_Release *2.7.0*_</td></tr>
-<tr><td>3/19/12</td><td>change</td><td>api</td><td>*yes*</td><td>Inverted the dependency between [http://code.google.com/p/phloc-scopes phloc-scopes] and phloc-events</td></tr>
+<tr><td>3/19/12</td><td>change</td><td>api</td><td>*yes*</td><td>Inverted the dependency between [http://code.google.com/p/phloc-scopes phloc-scopes] and [http://code.google.com/p/phloc-commons phloc-events]</td></tr>
 <tr border="1"><td>3/14/12</td><td colspan="4">_Release *2.6.0*_</td></tr>
 <tr><td>3/14/12</td><td>change</td><td>api</td><td>*yes*</td><td>IEventObserverQueueFactory, ISynchronousEventDispatcherFactory and IAsynchronousEventDispatcherFactory now inherits from IFactory</td></tr>
 <tr><td>3/14/12</td><td>change</td><td>api</td><td>*yes*</td><td>Made DefaultEventObserverQueueFactory final and a singleton</td></tr>
