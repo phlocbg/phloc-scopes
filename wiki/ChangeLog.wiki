@@ -3,6 +3,10 @@
 = Change log =
 <wiki:comment>This content is generated. Do not modify!</wiki:comment>
 <table border="1" cellspacing="0"><thead><tr><th>Date</th><th>Action</th><th>Category</th><th>Incompatible?</th><th>Description</th></tr></thead><tbody>
+<tr border="1"><td>8/29/13</td><td colspan="4">_Release *6.1.4*_</td></tr>
+<tr><td>8/28/13</td><td>update</td><td>tech</td><td></td><td>Updated to [http://code.google.com/p/phloc-commons phloc-commons] 4.0.9</td></tr>
+<tr><td>5/3/13</td><td>add</td><td>api</td><td></td><td>Added public methods isDestroyed() and isInDestruction() to AbstractSingleton</td></tr>
+<tr><td>4/17/13</td><td>update</td><td>tech</td><td></td><td>Updated to [http://code.google.com/p/phloc-commons phloc-commons] 4.0.3</td></tr>
 <tr border="1"><td>3/27/13</td><td colspan="4">_Release *6.1.3*_</td></tr>
 <tr><td>3/26/13</td><td>change</td><td>api</td><td></td><td>Fixed naming of singleton methods, so that the scope type is included in the method name</td></tr>
 <tr border="1"><td>3/26/13</td><td colspan="4">_Release *6.1.2*_</td></tr>
@@ -183,7 +187,7 @@
 <tr><td>3/22/12</td><td>change</td><td>api</td><td>*yes*</td><td>Total change of package structure to clearly reflect the changes between web and nonweb</td></tr>
 <tr border="1"><td>3/20/12</td><td colspan="4">_Release *3.0.0*_</td></tr>
 <tr><td>3/19/12</td><td>change</td><td>tech</td><td>*yes*</td><td>The SessionWebScope no longer directly operates on the HTTP Session but on a Map</td></tr>
-<tr><td>3/19/12</td><td>change</td><td>api</td><td>*yes*</td><td>Swapped the dependency direction between phloc-events and [http://code.google.com/p/phloc-scopes phloc-scopes]</td></tr>
+<tr><td>3/19/12</td><td>change</td><td>api</td><td>*yes*</td><td>Swapped the dependency direction between [http://code.google.com/p/phloc-commons phloc-events] and [http://code.google.com/p/phloc-scopes phloc-scopes]</td></tr>
 <tr><td>3/19/12</td><td>add</td><td>api</td><td></td><td>Moved the web scopes + manager to this project</td></tr>
 <tr><td>3/19/12</td><td>add</td><td>api</td><td></td><td>Added isValid and isInDestruction methods into IScope</td></tr>
 <tr border="1"><td>3/14/12</td><td colspan="4">_Release *2.8.0*_</td></tr>
