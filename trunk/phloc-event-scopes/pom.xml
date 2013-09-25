@@ -87,7 +87,7 @@
     <dependency>
       <groupId>com.phloc</groupId>
       <artifactId>phloc-commons</artifactId>
-      <version>4.0.10</version>
+      <version>4.0.11</version>
     </dependency>
     <dependency>
       <groupId>com.phloc</groupId>
@@ -98,6 +98,11 @@
       <groupId>com.phloc</groupId>
       <artifactId>phloc-scopes</artifactId>
       <version>6.1.4</version>
+    </dependency>
+    <dependency>
+      <groupId>com.phloc</groupId>
+      <artifactId>phloc-web</artifactId>
+      <version>5.2.0</version>
     </dependency>
     <dependency>
       <groupId>com.phloc</groupId>
