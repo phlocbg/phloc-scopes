@@ -221,6 +221,10 @@ public abstract class AbstractMapBasedScope extends MapBasedAttributeContainerTh
   @Override
   public String toString ()
   {
-    return ToStringGenerator.getDerived (super.toString ()).append ("scopeID", m_sScopeID).toString ();
+    return ToStringGenerator.getDerived (super.toString ())
+                            .append ("scopeID", m_sScopeID)
+                            .append ("inDestruction", m_bInDestruction)
+                            .append ("destroyed", m_bDestroyed)
+                            .toString ();
   }
 }
