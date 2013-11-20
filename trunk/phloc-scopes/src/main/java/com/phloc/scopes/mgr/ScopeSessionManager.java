@@ -147,15 +147,17 @@ public class ScopeSessionManager extends GlobalSingleton
     if (aSessionScope == null)
       throw new NullPointerException ("sessionScope");
 
-    final String sSessionID = aSessionScope.getID ();
-
-    m_aRWLock.writeLock ().lock ();
-    try
+    // Only handle scopes that are not yet destructed
+    if (aSessionScope.isValid ())
     {
-      // Only if we're not just in destruction of exactly this session
-      if (m_aSessionsInDestruction.add (sSessionID))
+      final String sSessionID = aSessionScope.getID ();
+
+      boolean bCanDestroyScope = true;
+      m_aRWLock.writeLock ().lock ();
+      try
       {
-        try
+        // Only if we're not just in destruction of exactly this session
+        if (m_aSessionsInDestruction.add (sSessionID))
         {
           // Remove from map
           final ISessionScope aRemovedScope = m_aSessionScopes.remove (sSessionID);
@@ -165,7 +167,21 @@ public class ScopeSessionManager extends GlobalSingleton
             s_aLogger.error ("  Scope to be removed: " + aSessionScope);
             s_aLogger.error ("  Removed scope:       " + aRemovedScope);
           }
+          bCanDestroyScope = true;
+        }
+        else
+          s_aLogger.info ("Already destructing session '" + sSessionID + "'");
+      }
+      finally
+      {
+        m_aRWLock.writeLock ().unlock ();
+      }
 
+      if (bCanDestroyScope)
+      {
+        // Destroy scope outside of write lock
+        try
+        {
           // Invoke SPIs
           ScopeSPIManager.onSessionScopeEnd (aSessionScope);
 
@@ -174,15 +190,18 @@ public class ScopeSessionManager extends GlobalSingleton
         }
         finally
         {
-          m_aSessionsInDestruction.remove (sSessionID);
+          // Remove from "in destruction" list
+          m_aRWLock.writeLock ().lock ();
+          try
+          {
+            m_aSessionsInDestruction.remove (sSessionID);
+          }
+          finally
+          {
+            m_aRWLock.writeLock ().unlock ();
+          }
         }
       }
-      else
-        s_aLogger.info ("Already destructing session '" + sSessionID + "'");
-    }
-    finally
-    {
-      m_aRWLock.writeLock ().unlock ();
     }
   }
 
