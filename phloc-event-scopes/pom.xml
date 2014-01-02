@@ -8,7 +8,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>phloc-event-scopes</artifactId>
-  <version>2.7.8</version>
+  <version>2.7.9-SNAPSHOT</version>
   <packaging>bundle</packaging>
   <name>phloc-event-scopes</name>
   <description>phloc in-process event library</description>
@@ -23,9 +23,9 @@
   </licenses>
        
   <scm>
-    <url>http://code.google.com/p/phloc-scopes/source/browse/tags/phloc-event-scopes-2.7.8</url>
-    <connection>scm:svn:http://phloc-scopes.googlecode.com/svn/tags/phloc-event-scopes-2.7.8</connection>
-    <developerConnection>scm:svn:https://phloc-scopes.googlecode.com/svn/tags/phloc-event-scopes-2.7.8</developerConnection>
+    <url>http://code.google.com/p/phloc-scopes/source/browse/</url>
+    <connection>scm:svn:http://phloc-scopes.googlecode.com/svn/trunk/phloc-event-scopes</connection>
+    <developerConnection>scm:svn:https://phloc-scopes.googlecode.com/svn/trunk/phloc-event-scopes</developerConnection>
   </scm>
 
   <organization>
