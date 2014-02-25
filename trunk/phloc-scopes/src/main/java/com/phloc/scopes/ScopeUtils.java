@@ -21,6 +21,7 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.annotation.Nonnull;
+import javax.annotation.concurrent.GuardedBy;
 import javax.annotation.concurrent.ThreadSafe;
 
 import org.slf4j.Logger;
@@ -34,15 +35,31 @@ import org.slf4j.Logger;
 public final class ScopeUtils
 {
   private static final boolean DEFAULT_DEBUG_LIFE_CYCLE = false;
+  private static final boolean DEFAULT_DEBUG_GLOBAL_SCOPE = false;
+  private static final boolean DEFAULT_DEBUG_APPLICATION_SCOPE = false;
+  private static final boolean DEFAULT_DEBUG_SESSION_SCOPE = false;
+  private static final boolean DEFAULT_DEBUG_SESSION_APPLICATION_SCOPE = false;
+  private static final boolean DEFAULT_DEBUG_REQUEST_SCOPE = false;
 
   private static final ReadWriteLock s_aRWLock = new ReentrantReadWriteLock ();
-  private static boolean s_bLifeCycleDebugging = DEFAULT_DEBUG_LIFE_CYCLE;
+  @GuardedBy ("s_aRWLock")
+  private static boolean s_bDebugLifeCycle = DEFAULT_DEBUG_LIFE_CYCLE;
+  @GuardedBy ("s_aRWLock")
+  private static boolean s_bDebugGlobalScope = DEFAULT_DEBUG_GLOBAL_SCOPE;
+  @GuardedBy ("s_aRWLock")
+  private static boolean s_bDebugApplicationScope = DEFAULT_DEBUG_APPLICATION_SCOPE;
+  @GuardedBy ("s_aRWLock")
+  private static boolean s_bDebugSessionScope = DEFAULT_DEBUG_SESSION_SCOPE;
+  @GuardedBy ("s_aRWLock")
+  private static boolean s_bDebugSessionApplicationScope = DEFAULT_DEBUG_SESSION_APPLICATION_SCOPE;
+  @GuardedBy ("s_aRWLock")
+  private static boolean s_bDebugRequestScope = DEFAULT_DEBUG_REQUEST_SCOPE;
 
   private ScopeUtils ()
   {}
 
   /**
-   * Enable or disable scope life cycle debugging.
+   * Enable or disable scope life cycle debugging for all scopes.
    * 
    * @param bDebugLifeCycle
    *        <code>true</code> if the scope life cycle should be debugged,
@@ -53,7 +70,7 @@ public final class ScopeUtils
     s_aRWLock.writeLock ().lock ();
     try
     {
-      s_bLifeCycleDebugging = bDebugLifeCycle;
+      s_bDebugLifeCycle = bDebugLifeCycle;
     }
     finally
     {
@@ -62,8 +79,8 @@ public final class ScopeUtils
   }
 
   /**
-   * @return <code>true</code> if scope life cycle debugging is enabled,
-   *         <code>false</code> if it is disabled. The default value is
+   * @return <code>true</code> if life cycle debugging for all scopes is
+   *         enabled, <code>false</code> if it is disabled. The default value is
    *         disabled.
    */
   public static boolean isLifeCycleDebuggingEnabled ()
@@ -71,7 +88,201 @@ public final class ScopeUtils
     s_aRWLock.readLock ().lock ();
     try
     {
-      return s_bLifeCycleDebugging;
+      return s_bDebugLifeCycle;
+    }
+    finally
+    {
+      s_aRWLock.readLock ().unlock ();
+    }
+  }
+
+  /**
+   * Enable or disable global scope life cycle debugging.
+   * 
+   * @param bDebugScope
+   *        <code>true</code> if the global scope life cycle should be debugged,
+   *        <code>false</code> to disable it. By default is is disabled.
+   */
+  public static void setDebugGlobalScopeEnabled (final boolean bDebugScope)
+  {
+    s_aRWLock.writeLock ().lock ();
+    try
+    {
+      s_bDebugGlobalScope = bDebugScope;
+    }
+    finally
+    {
+      s_aRWLock.writeLock ().unlock ();
+    }
+  }
+
+  /**
+   * @return <code>true</code> if global scope life cycle debugging is enabled,
+   *         <code>false</code> if it is disabled. The default value is
+   *         disabled.
+   */
+  public static boolean isDebugGlobalScopeEnabled ()
+  {
+    s_aRWLock.readLock ().lock ();
+    try
+    {
+      return s_bDebugGlobalScope;
+    }
+    finally
+    {
+      s_aRWLock.readLock ().unlock ();
+    }
+  }
+
+  /**
+   * Enable or disable application scope life cycle debugging.
+   * 
+   * @param bDebugScope
+   *        <code>true</code> if the application scope life cycle should be
+   *        debugged, <code>false</code> to disable it. By default is is
+   *        disabled.
+   */
+  public static void setDebugApplicationScopeEnabled (final boolean bDebugScope)
+  {
+    s_aRWLock.writeLock ().lock ();
+    try
+    {
+      s_bDebugApplicationScope = bDebugScope;
+    }
+    finally
+    {
+      s_aRWLock.writeLock ().unlock ();
+    }
+  }
+
+  /**
+   * @return <code>true</code> if application scope life cycle debugging is
+   *         enabled, <code>false</code> if it is disabled. The default value is
+   *         disabled.
+   */
+  public static boolean isDebugApplicationScopeEnabled ()
+  {
+    s_aRWLock.readLock ().lock ();
+    try
+    {
+      return s_bDebugApplicationScope;
+    }
+    finally
+    {
+      s_aRWLock.readLock ().unlock ();
+    }
+  }
+
+  /**
+   * Enable or disable session scope life cycle debugging.
+   * 
+   * @param bDebugScope
+   *        <code>true</code> if the session scope life cycle should be
+   *        debugged, <code>false</code> to disable it. By default is is
+   *        disabled.
+   */
+  public static void setDebugSessionScopeEnabled (final boolean bDebugScope)
+  {
+    s_aRWLock.writeLock ().lock ();
+    try
+    {
+      s_bDebugSessionScope = bDebugScope;
+    }
+    finally
+    {
+      s_aRWLock.writeLock ().unlock ();
+    }
+  }
+
+  /**
+   * @return <code>true</code> if session scope life cycle debugging is enabled,
+   *         <code>false</code> if it is disabled. The default value is
+   *         disabled.
+   */
+  public static boolean isDebugSessionScopeEnabled ()
+  {
+    s_aRWLock.readLock ().lock ();
+    try
+    {
+      return s_bDebugSessionScope;
+    }
+    finally
+    {
+      s_aRWLock.readLock ().unlock ();
+    }
+  }
+
+  /**
+   * Enable or disable session application scope life cycle debugging.
+   * 
+   * @param bDebugScope
+   *        <code>true</code> if the session application scope life cycle should
+   *        be debugged, <code>false</code> to disable it. By default is is
+   *        disabled.
+   */
+  public static void setDebugSessionApplicationScopeEnabled (final boolean bDebugScope)
+  {
+    s_aRWLock.writeLock ().lock ();
+    try
+    {
+      s_bDebugSessionApplicationScope = bDebugScope;
+    }
+    finally
+    {
+      s_aRWLock.writeLock ().unlock ();
+    }
+  }
+
+  /**
+   * @return <code>true</code> if session application scope life cycle debugging
+   *         is enabled, <code>false</code> if it is disabled. The default value
+   *         is disabled.
+   */
+  public static boolean isDebugSessionApplicationScopeEnabled ()
+  {
+    s_aRWLock.readLock ().lock ();
+    try
+    {
+      return s_bDebugSessionApplicationScope;
+    }
+    finally
+    {
+      s_aRWLock.readLock ().unlock ();
+    }
+  }
+
+  /**
+   * Enable or disable request scope life cycle debugging.
+   * 
+   * @param bDebugScope
+   *        <code>true</code> if the request scope life cycle should be
+   *        debugged, <code>false</code> to disable it. By default is is
+   *        disabled.
+   */
+  public static void setDebugRequestScopeEnabled (final boolean bDebugScope)
+  {
+    s_aRWLock.writeLock ().lock ();
+    try
+    {
+      s_bDebugRequestScope = bDebugScope;
+    }
+    finally
+    {
+      s_aRWLock.writeLock ().unlock ();
+    }
+  }
+
+  /**
+   * @return <code>true</code> if request scope life cycle debugging is enabled,
+   *         <code>false</code> if it is disabled. The default value is
+   *         disabled.
+   */
+  public static boolean isDebugRequestScopeEnabled ()
+  {
+    s_aRWLock.readLock ().lock ();
+    try
+    {
+      return s_bDebugRequestScope;
     }
     finally
     {
@@ -88,8 +299,79 @@ public final class ScopeUtils
    * @return <code>true</code> if scope creation/deletion should be logged,
    *         <code>false</code> otherwise.
    */
+  @Deprecated
   public static boolean debugScopeLifeCycle (@Nonnull final Logger aLogger)
   {
     return isLifeCycleDebuggingEnabled () && aLogger.isInfoEnabled ();
+  }
+
+  /**
+   * This is a just a helper method to determine whether global scope
+   * creation/deletion issues should be logged or not.
+   * 
+   * @param aLogger
+   *        The logger to check.
+   * @return <code>true</code> if global scope creation/deletion should be
+   *         logged, <code>false</code> otherwise.
+   */
+  public static boolean debugGlobalScopeLifeCycle (@Nonnull final Logger aLogger)
+  {
+    return (isLifeCycleDebuggingEnabled () || isDebugGlobalScopeEnabled ()) && aLogger.isInfoEnabled ();
+  }
+
+  /**
+   * This is a just a helper method to determine whether application scope
+   * creation/deletion issues should be logged or not.
+   * 
+   * @param aLogger
+   *        The logger to check.
+   * @return <code>true</code> if application scope creation/deletion should be
+   *         logged, <code>false</code> otherwise.
+   */
+  public static boolean debugApplicationScopeLifeCycle (@Nonnull final Logger aLogger)
+  {
+    return (isLifeCycleDebuggingEnabled () || isDebugApplicationScopeEnabled ()) && aLogger.isInfoEnabled ();
+  }
+
+  /**
+   * This is a just a helper method to determine whether session scope
+   * creation/deletion issues should be logged or not.
+   * 
+   * @param aLogger
+   *        The logger to check.
+   * @return <code>true</code> if session scope creation/deletion should be
+   *         logged, <code>false</code> otherwise.
+   */
+  public static boolean debugSessionScopeLifeCycle (@Nonnull final Logger aLogger)
+  {
+    return (isLifeCycleDebuggingEnabled () || isDebugSessionScopeEnabled ()) && aLogger.isInfoEnabled ();
+  }
+
+  /**
+   * This is a just a helper method to determine whether global session
+   * application creation/deletion issues should be logged or not.
+   * 
+   * @param aLogger
+   *        The logger to check.
+   * @return <code>true</code> if session application scope creation/deletion
+   *         should be logged, <code>false</code> otherwise.
+   */
+  public static boolean debugSessionApplicationScopeLifeCycle (@Nonnull final Logger aLogger)
+  {
+    return (isLifeCycleDebuggingEnabled () || isDebugSessionApplicationScopeEnabled ()) && aLogger.isInfoEnabled ();
+  }
+
+  /**
+   * This is a just a helper method to determine whether request scope
+   * creation/deletion issues should be logged or not.
+   * 
+   * @param aLogger
+   *        The logger to check.
+   * @return <code>true</code> if request scope creation/deletion should be
+   *         logged, <code>false</code> otherwise.
+   */
+  public static boolean debugRequestScopeLifeCycle (@Nonnull final Logger aLogger)
+  {
+    return (isLifeCycleDebuggingEnabled () || isDebugRequestScopeEnabled ()) && aLogger.isInfoEnabled ();
   }
 }

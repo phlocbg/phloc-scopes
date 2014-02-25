@@ -44,7 +44,7 @@ public class SessionApplicationScope extends AbstractMapBasedScope implements IS
   {
     super (sScopeID);
 
-    if (ScopeUtils.debugScopeLifeCycle (s_aLogger))
+    if (ScopeUtils.debugSessionApplicationScopeLifeCycle (s_aLogger))
       s_aLogger.info ("Created session application scope '" + sScopeID + "'");
   }
 
@@ -54,7 +54,7 @@ public class SessionApplicationScope extends AbstractMapBasedScope implements IS
   @Override
   protected void postDestroy ()
   {
-    if (ScopeUtils.debugScopeLifeCycle (s_aLogger))
+    if (ScopeUtils.debugSessionApplicationScopeLifeCycle (s_aLogger))
       s_aLogger.info ("Destroyed session application scope '" + getID () + "'");
   }
 }

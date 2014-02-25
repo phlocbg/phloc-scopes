@@ -20,6 +20,11 @@
 -->
 <changelog xmlns="http://www.phloc.com/ns/changelog/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.phloc.com/ns/changelog/1.0 schemas/changelog-1.0.xsd" version="1.0" component="phloc-scopes">
+  <entry date="2014-02-25" category="api" action="update" >
+    <change>
+      <text locale="en">ScopeUtils has now the possibility to enable/disable logging for certain scope types only</text>
+    </change>
+  </entry>
   <release date="2014-01-02" version="6.1.5" />
   <entry date="2014-01-02" category="tech" action="update" >
     <change>

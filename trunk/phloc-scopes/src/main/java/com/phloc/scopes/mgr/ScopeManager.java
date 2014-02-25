@@ -22,6 +22,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.concurrent.GuardedBy;
 import javax.annotation.concurrent.ThreadSafe;
 
 import org.slf4j.Logger;
@@ -66,6 +67,7 @@ public final class ScopeManager
   private static final Lock s_aGlobalLock = new ReentrantLock ();
 
   /** Global scope */
+  @GuardedBy ("s_aGlobalLock")
   private static volatile IGlobalScope s_aGlobalScope;
 
   /** Request scope */
@@ -100,7 +102,7 @@ public final class ScopeManager
       s_aGlobalScope = aGlobalScope;
 
       aGlobalScope.initScope ();
-      if (ScopeUtils.debugScopeLifeCycle (s_aLogger))
+      if (ScopeUtils.debugGlobalScopeLifeCycle (s_aLogger))
         s_aLogger.info ("Global scope '" + aGlobalScope.getID () + "' initialized!");
 
       // Invoke SPIs
@@ -176,7 +178,7 @@ public final class ScopeManager
         s_aGlobalScope = null;
 
         // done
-        if (ScopeUtils.debugScopeLifeCycle (s_aLogger))
+        if (ScopeUtils.debugGlobalScopeLifeCycle (s_aLogger))
           s_aLogger.info ("Global scope '" + sDestroyedScopeID + "' shut down!");
       }
       else

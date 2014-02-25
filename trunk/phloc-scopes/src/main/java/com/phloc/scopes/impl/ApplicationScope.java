@@ -48,7 +48,7 @@ public class ApplicationScope extends AbstractMapBasedScope implements IApplicat
   {
     super (sScopeID);
 
-    if (ScopeUtils.debugScopeLifeCycle (s_aLogger))
+    if (ScopeUtils.debugApplicationScopeLifeCycle (s_aLogger))
       s_aLogger.info ("Created application scope '" + sScopeID + "'");
   }
 
@@ -58,7 +58,7 @@ public class ApplicationScope extends AbstractMapBasedScope implements IApplicat
   @Override
   protected void postDestroy ()
   {
-    if (ScopeUtils.debugScopeLifeCycle (s_aLogger))
+    if (ScopeUtils.debugApplicationScopeLifeCycle (s_aLogger))
       s_aLogger.info ("Destroyed application scope '" + getID () + "'");
   }
 }
