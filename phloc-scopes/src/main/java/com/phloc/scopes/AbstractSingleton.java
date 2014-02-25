@@ -54,6 +54,8 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
   private static final Logger s_aLogger = LoggerFactory.getLogger (AbstractSingleton.class);
   private static final IStatisticsHandlerKeyedCounter s_aStatsCounterInstantiate = StatisticsManager.getKeyedCounterHandler (AbstractSingleton.class);
 
+  private boolean m_bInInstantiation = false;
+  private boolean m_bInstantiated = false;
   private boolean m_bInDestruction = false;
   private boolean m_bDestroyed = false;
 
@@ -119,6 +121,25 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
   {}
 
   /**
+   * @return <code>true</code> if this singleton is currently in the phase of
+   *         instantiation, <code>false</code> if it is instantiated or already
+   *         destroyed.
+   */
+  public final boolean isInInstantiation ()
+  {
+    return m_bInInstantiation;
+  }
+
+  /**
+   * @return <code>true</code> if this singleton was already instantiated,
+   *         <code>false</code> if it is active.
+   */
+  public final boolean isInstantiated ()
+  {
+    return m_bInstantiated;
+  }
+
+  /**
    * Called when the singleton is destroyed. Perform all cleanup in this method.
    * 
    * @throws Exception
@@ -134,6 +155,12 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
    */
   public final void onScopeDestruction () throws Exception
   {
+    if (isInInstantiation ())
+      s_aLogger.warn ("Object currently in instantiation is now destroyed: " + toString ());
+    else
+      if (!isInstantiated ())
+        s_aLogger.warn ("Object not instantiated is now destroyed: " + toString ());
+
     m_bInDestruction = true;
     onDestroy ();
     m_bDestroyed = true;
@@ -198,6 +225,7 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
 
     if (aScope == null)
       return null;
+
     final String sSingletonScopeKey = getSingletonScopeKey (aClass);
     final Object aObject = aScope.getAttributeObject (sSingletonScopeKey);
     if (aObject == null)
@@ -311,7 +339,13 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
       // Call outside the sync block, and after the instance was registered in
       // the scope
       if (aFinalWasInstantiated.booleanValue ())
+      {
+        aInstance.m_bInInstantiation = true;
+        // Invoke virtual method
         aInstance.onAfterInstantiation ();
+        aInstance.m_bInstantiated = true;
+        aInstance.m_bInInstantiation = false;
+      }
     }
     return aInstance;
   }
@@ -348,6 +382,10 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
   @Nonnull
   public String toString ()
   {
-    return new ToStringGenerator (this).toString ();
+    return new ToStringGenerator (this).append ("inInstantiation", m_bInInstantiation)
+                                       .append ("instantiated", m_bInstantiated)
+                                       .append ("inDestruction", m_bInDestruction)
+                                       .append ("destroyed", m_bDestroyed)
+                                       .toString ();
   }
 }

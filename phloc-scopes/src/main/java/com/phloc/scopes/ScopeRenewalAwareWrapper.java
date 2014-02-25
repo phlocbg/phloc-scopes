@@ -30,7 +30,7 @@ import com.phloc.commons.mutable.Wrapper;
 /**
  * This is a wrapper around any object that is scope renewal aware.
  * 
- * @author Philip
+ * @author Philip Helger
  * @param <DATATYPE>
  *        The type of object to be wrapped. Must implement {@link Serializable}.
  */
