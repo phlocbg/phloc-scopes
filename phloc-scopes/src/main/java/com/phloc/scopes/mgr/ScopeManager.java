@@ -330,7 +330,7 @@ public final class ScopeManager
         aSSM.onScopeBegin (aSessionScope);
       }
 
-      // We're done
+      // We're done - maybe null
       return aSessionScope;
     }
 
