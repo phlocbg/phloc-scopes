@@ -76,25 +76,6 @@ public abstract class SessionApplicationSingleton extends AbstractSingleton impl
    *        The class to be checked. May not be <code>null</code>.
    * @return The singleton for the specified class is already instantiated,
    *         <code>null</code> otherwise.
-   * @deprecated Use
-   *             {@link #getSessionApplicationSingletonIfInstantiated(Class)}
-   *             instead
-   */
-  @Deprecated
-  @Nullable
-  public static final <T extends SessionApplicationSingleton> T getSingletonIfInstantiated (@Nonnull final Class <T> aClass)
-  {
-    return getSessionApplicationSingletonIfInstantiated (aClass);
-  }
-
-  /**
-   * Get the singleton object if it is already instantiated inside the current
-   * session application scope or <code>null</code> if it is not instantiated.
-   * 
-   * @param aClass
-   *        The class to be checked. May not be <code>null</code>.
-   * @return The singleton for the specified class is already instantiated,
-   *         <code>null</code> otherwise.
    */
   @Nullable
   public static final <T extends SessionApplicationSingleton> T getSessionApplicationSingletonIfInstantiated (@Nonnull final Class <T> aClass)
@@ -110,42 +91,10 @@ public abstract class SessionApplicationSingleton extends AbstractSingleton impl
    *        The class to be checked. May not be <code>null</code>.
    * @return <code>true</code> if the singleton for the specified class is
    *         already instantiated, <code>false</code> otherwise.
-   * @deprecated Use {@link #isSessionApplicationSingletonInstantiated(Class)}
-   *             instead
-   */
-  @Deprecated
-  public static final boolean isSingletonInstantiated (@Nonnull final Class <? extends SessionApplicationSingleton> aClass)
-  {
-    return isSessionApplicationSingletonInstantiated (aClass);
-  }
-
-  /**
-   * Check if a singleton is already instantiated inside the current session
-   * application scope
-   * 
-   * @param aClass
-   *        The class to be checked. May not be <code>null</code>.
-   * @return <code>true</code> if the singleton for the specified class is
-   *         already instantiated, <code>false</code> otherwise.
    */
   public static final boolean isSessionApplicationSingletonInstantiated (@Nonnull final Class <? extends SessionApplicationSingleton> aClass)
   {
     return isSingletonInstantiated (_getStaticScope (false), aClass);
-  }
-
-  /**
-   * Get all instantiated singleton objects registered in the current session
-   * application scope.
-   * 
-   * @return A non-<code>null</code> list with all instances of this class in
-   *         the current session application scope.
-   * @deprecated Use {@link #getAllSessionApplicationSingletons()} instead
-   */
-  @Deprecated
-  @Nonnull
-  public static final List <SessionApplicationSingleton> getAllSingletons ()
-  {
-    return getAllSessionApplicationSingletons ();
   }
 
   /**
