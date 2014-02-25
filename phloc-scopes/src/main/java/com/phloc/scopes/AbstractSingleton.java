@@ -282,7 +282,8 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
   }
 
   @Nonnull
-  private static <T> T _instantiateSingleton (@Nonnull final Class <T> aClass, @Nonnull final IScope aScope)
+  private static <T extends AbstractSingleton> T _instantiateSingleton (@Nonnull final Class <T> aClass,
+                                                                        @Nonnull final IScope aScope)
   {
     // create new object in passed scope
     try
@@ -302,7 +303,8 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
         AccessController.doPrivileged (new PrivilegedActionAccessibleObjectSetAccessible (aCtor));
 
       // Invoke default ctor
-      return aCtor.newInstance ((Object []) null);
+      final T ret = aCtor.newInstance ((Object []) null);
+      return ret;
     }
     catch (final Throwable t)
     {
@@ -367,8 +369,8 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
         }
       });
 
-      // Call outside the sync block, and after the instance was registered in
-      // the scope
+      // Call outside the scope sync block, and after the instance was
+      // registered in the scope
       if (aFinalWasInstantiated.booleanValue ())
       {
         aInstance.m_bInInstantiation = true;
@@ -386,9 +388,13 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
       }
     }
 
-    // Just a small note in case we're returning an incomplete object
-    if (aInstance.isInInstantiation ())
-      s_aLogger.warn ("Singleton is not yet ready - still in instantiation: " + aInstance.toString ());
+    if (false)
+    {
+      // Just a small note in case we're returning an incomplete object
+      if (aInstance.isInInstantiation ())
+        s_aLogger.warn ("Singleton is not yet ready - still in instantiation: " + aInstance.toString ());
+    }
+
     return aInstance;
   }
 

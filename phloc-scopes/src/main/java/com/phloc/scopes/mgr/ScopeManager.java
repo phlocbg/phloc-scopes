@@ -284,6 +284,14 @@ public final class ScopeManager
 
   // --- session scope ---
 
+  /**
+   * Get the current session scope, based on the current request scope.
+   * 
+   * @return Never <code>null</code>.
+   * @throws IllegalStateException
+   *         If no request scope is present or if the underlying request scope
+   *         does not have a session ID.
+   */
   @Nonnull
   public static ISessionScope getSessionScope ()
   {
@@ -381,6 +389,8 @@ public final class ScopeManager
                                                                      final boolean bCreateIfNotExisting)
   {
     final ISessionScope aSessionScope = getSessionScope (bCreateIfNotExisting);
+    // Session scope may only be null if bCreateIfNotExisting is false, else an
+    // exception was already thrown in getSessionScope
     return aSessionScope == null ? null : aSessionScope.getSessionApplicationScope (sApplicationID,
                                                                                     bCreateIfNotExisting);
   }
@@ -498,7 +508,7 @@ public final class ScopeManager
    */
   public static void onRequestEnd ()
   {
-    final IRequestScope aRequestScope = s_aRequestScope.get ();
+    final IRequestScope aRequestScope = getRequestScopeOrNull ();
     try
     {
       // Do we have something to destroy?
