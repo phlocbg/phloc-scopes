@@ -37,7 +37,7 @@ import com.phloc.commons.id.IHasID;
  * <li>Request scope - for each user request</li><br>
  * IMPORTANT: implementations of {@link IScope} must be thread safe!
  * 
- * @author Philip
+ * @author Philip Helger
  */
 public interface IScope extends IAttributeContainer, IHasID <String>
 {
