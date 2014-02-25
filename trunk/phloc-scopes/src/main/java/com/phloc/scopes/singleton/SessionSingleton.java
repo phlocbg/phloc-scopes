@@ -44,6 +44,10 @@ public abstract class SessionSingleton extends AbstractSingleton implements Seri
   }
 
   /**
+   * @param bCreateIfNotExisting
+   *        <code>true</code> to create a new scope, if none is present yet,
+   *        <code>false</code> to return <code>null</code> if either no request
+   *        scope or no session scope is present.
    * @return The scope to be used for this type of singleton.
    */
   @Nonnull

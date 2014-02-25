@@ -41,6 +41,9 @@ public abstract class GlobalSingleton extends AbstractSingleton
   }
 
   /**
+   * @param bMustBePresent
+   *        <code>true</code> if a global scope must be present,
+   *        <code>false</code> if it is optional
    * @return The scope to be used for this type of singleton.
    */
   @Nonnull

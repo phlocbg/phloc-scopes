@@ -17,8 +17,12 @@
  */
 package com.phloc.scopes;
 
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
 import javax.annotation.Nonnull;
-import javax.annotation.concurrent.NotThreadSafe;
+import javax.annotation.concurrent.GuardedBy;
+import javax.annotation.concurrent.ThreadSafe;
 
 import com.phloc.scopes.factory.DefaultScopeFactory;
 import com.phloc.scopes.factory.IScopeFactory;
@@ -29,9 +33,11 @@ import com.phloc.scopes.factory.IScopeFactory;
  * 
  * @author Philip Helger
  */
-@NotThreadSafe
+@ThreadSafe
 public final class MetaScopeFactory
 {
+  private static final ReadWriteLock s_aRWLock = new ReentrantReadWriteLock ();
+  @GuardedBy ("s_aRWLock")
   private static IScopeFactory s_aScopeFactory = new DefaultScopeFactory ();
 
   private MetaScopeFactory ()
@@ -47,7 +53,16 @@ public final class MetaScopeFactory
   {
     if (aScopeFactory == null)
       throw new NullPointerException ("scopeFactory");
-    s_aScopeFactory = aScopeFactory;
+
+    s_aRWLock.writeLock ().lock ();
+    try
+    {
+      s_aScopeFactory = aScopeFactory;
+    }
+    finally
+    {
+      s_aRWLock.writeLock ().unlock ();
+    }
   }
 
   /**
@@ -56,6 +71,14 @@ public final class MetaScopeFactory
   @Nonnull
   public static IScopeFactory getScopeFactory ()
   {
-    return s_aScopeFactory;
+    s_aRWLock.readLock ().lock ();
+    try
+    {
+      return s_aScopeFactory;
+    }
+    finally
+    {
+      s_aRWLock.readLock ().unlock ();
+    }
   }
 }

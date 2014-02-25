@@ -43,6 +43,10 @@ public abstract class ApplicationSingleton extends AbstractSingleton
   }
 
   /**
+   * @param bCreateIfNotExisting
+   *        <code>true</code> to create a new scope, if none is present yet,
+   *        <code>false</code> to return <code>null</code> if either no global
+   *        scope or no application scope is present.
    * @return The scope to be used for this type of singleton.
    */
   @Nullable
