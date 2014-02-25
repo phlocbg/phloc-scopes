@@ -28,6 +28,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.concurrent.GuardedBy;
 import javax.annotation.concurrent.ThreadSafe;
 
 import org.slf4j.Logger;
@@ -67,7 +68,9 @@ public class ScopeSessionManager extends GlobalSingleton
   private final ReadWriteLock m_aRWLock = new ReentrantReadWriteLock ();
   private final Map <String, ISessionScope> m_aSessionScopes = new HashMap <String, ISessionScope> ();
   private final Set <String> m_aSessionsInDestruction = new HashSet <String> ();
+  @GuardedBy ("m_aRWLock")
   private boolean m_bDestroyAllSessionsOnScopeEnd = DEFAULT_DESTROY_ALL_SESSIONS_ON_SCOPE_END;
+  @GuardedBy ("m_aRWLock")
   private boolean m_bEndAllSessionsOnScopeEnd = DEFAULT_END_ALL_SESSIONS_ON_SCOPE_END;
 
   @Deprecated
@@ -107,6 +110,15 @@ public class ScopeSessionManager extends GlobalSingleton
     }
   }
 
+  /**
+   * Register the passed session scope in the internal map, call the
+   * {@link ISessionScope #initScope()} method and finally invoke the SPIs for
+   * the new scope.
+   * 
+   * @param aSessionScope
+   *        The session scope that was just created. May not be
+   *        <code>null</code>.
+   */
   public void onScopeBegin (@Nonnull final ISessionScope aSessionScope)
   {
     if (aSessionScope == null)
@@ -278,6 +290,10 @@ public class ScopeSessionManager extends GlobalSingleton
     }
   }
 
+  /**
+   * Destroy all known session scopes. After this method it is ensured that the
+   * internal session map is empty.
+   */
   public void destroyAllSessions ()
   {
     // destroy all session scopes (make a copy, because we're invalidating
