@@ -98,6 +98,9 @@ public class SessionScope extends AbstractMapBasedScope implements ISessionScope
   public EContinue selfDestruct ()
   {
     // Nothing to do here!
+
+    // Note: don't call ScopeSessionManager.onScopeEnd here. This must be done
+    // manually if this method returns "CONTINUE".
     return EContinue.CONTINUE;
   }
 

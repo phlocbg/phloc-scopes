@@ -290,6 +290,21 @@ public final class ScopeManager
     return getSessionScope (ScopeManager.DEFAULT_CREATE_SCOPE);
   }
 
+  /**
+   * Get the current session scope, based on the current request scope.
+   * 
+   * @param bCreateIfNotExisting
+   *        <code>true</code> to create a new scope, if none is present yet,
+   *        <code>false</code> to return <code>null</code> if either no request
+   *        scope or no session scope is present.
+   * @return <code>null</code> if bCreateIfNotExisting is <code>false</code> and
+   *         either no request scope or no session scope is present, the
+   *         {@link ISessionScope} otherwise.
+   * @throws IllegalStateException
+   *         if bCreateIfNotExisting is <code>true</code> but no request scope
+   *         is present. This exception is also thrown if the underlying request
+   *         scope does not have a session ID.
+   */
   @Nullable
   public static ISessionScope getSessionScope (final boolean bCreateIfNotExisting)
   {
@@ -298,8 +313,10 @@ public final class ScopeManager
     {
       final ScopeSessionManager aSSM = ScopeSessionManager.getInstance ();
 
-      // Check if a matching session scope is present
+      // Get the session ID from the underlying request
       final String sSessionID = aRequestScope.getSessionID (bCreateIfNotExisting);
+
+      // Check if a matching session scope is present
       ISessionScope aSessionScope = aSSM.getSessionScopeOfID (sSessionID);
       if (aSessionScope == null && bCreateIfNotExisting)
       {
@@ -313,12 +330,15 @@ public final class ScopeManager
         aSSM.onScopeBegin (aSessionScope);
       }
 
+      // We're done
       return aSessionScope;
     }
 
     // If we want a session scope, we expect the return value to be non-null!
     if (bCreateIfNotExisting)
       throw new IllegalStateException ("No request scope is present, so no session scope can be created!");
+
+    // No request scope present and no need to create a session
     return null;
   }
 
