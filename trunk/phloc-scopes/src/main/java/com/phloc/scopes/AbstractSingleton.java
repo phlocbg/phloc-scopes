@@ -119,6 +119,11 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
   protected void onAfterInstantiation ()
   {}
 
+  final void setInInstantiation (final boolean bInInstantiation)
+  {
+    m_bInInstantiation = bInInstantiation;
+  }
+
   /**
    * @return <code>true</code> if this singleton is currently in the phase of
    *         instantiation, <code>false</code> if it is instantiated or already
@@ -127,6 +132,11 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
   public final boolean isInInstantiation ()
   {
     return m_bInInstantiation;
+  }
+
+  final void setInstantiated (final boolean bInstantiated)
+  {
+    m_bInstantiated = bInstantiated;
   }
 
   /**
@@ -373,17 +383,17 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
       // registered in the scope
       if (aFinalWasInstantiated.booleanValue ())
       {
-        aInstance.m_bInInstantiation = true;
+        aInstance.setInInstantiation (true);
         try
         {
           // Invoke virtual method
           aInstance.onAfterInstantiation ();
-          aInstance.m_bInstantiated = true;
+          aInstance.setInstantiated (true);
         }
         finally
         {
           // Ensure field is reset even in case of an exception
-          aInstance.m_bInInstantiation = false;
+          aInstance.setInInstantiation (false);
         }
       }
     }
