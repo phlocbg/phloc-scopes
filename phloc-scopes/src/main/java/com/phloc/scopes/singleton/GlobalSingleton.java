@@ -72,23 +72,6 @@ public abstract class GlobalSingleton extends AbstractSingleton
    *        The class to be checked. May not be <code>null</code>.
    * @return The singleton for the specified class is already instantiated,
    *         <code>null</code> otherwise.
-   * @deprecated Use {@link #getGlobalSingletonIfInstantiated(Class)} instead
-   */
-  @Deprecated
-  @Nullable
-  public static final <T extends GlobalSingleton> T getSingletonIfInstantiated (@Nonnull final Class <T> aClass)
-  {
-    return getGlobalSingletonIfInstantiated (aClass);
-  }
-
-  /**
-   * Get the singleton object if it is already instantiated inside the current
-   * global scope or <code>null</code> if it is not instantiated.
-   * 
-   * @param aClass
-   *        The class to be checked. May not be <code>null</code>.
-   * @return The singleton for the specified class is already instantiated,
-   *         <code>null</code> otherwise.
    */
   @Nullable
   public static final <T extends GlobalSingleton> T getGlobalSingletonIfInstantiated (@Nonnull final Class <T> aClass)
@@ -104,41 +87,10 @@ public abstract class GlobalSingleton extends AbstractSingleton
    *        The class to be checked. May not be <code>null</code>.
    * @return <code>true</code> if the singleton for the specified class is
    *         already instantiated, <code>false</code> otherwise.
-   * @deprecated Use {@link #isGlobalSingletonInstantiated(Class)} instead
-   */
-  @Deprecated
-  public static final boolean isSingletonInstantiated (@Nonnull final Class <? extends GlobalSingleton> aClass)
-  {
-    return isGlobalSingletonInstantiated (aClass);
-  }
-
-  /**
-   * Check if a singleton is already instantiated inside the current global
-   * scope
-   * 
-   * @param aClass
-   *        The class to be checked. May not be <code>null</code>.
-   * @return <code>true</code> if the singleton for the specified class is
-   *         already instantiated, <code>false</code> otherwise.
    */
   public static final boolean isGlobalSingletonInstantiated (@Nonnull final Class <? extends GlobalSingleton> aClass)
   {
     return isSingletonInstantiated (_getStaticScope (false), aClass);
-  }
-
-  /**
-   * Get all instantiated singleton objects registered in the current global
-   * scope.
-   * 
-   * @return A non-<code>null</code> list with all instances of this class in
-   *         the current global scope.
-   * @deprecated Use {@link #getAllGlobalSingletons()} instead
-   */
-  @Deprecated
-  @Nonnull
-  public static final List <GlobalSingleton> getAllSingletons ()
-  {
-    return getAllGlobalSingletons ();
   }
 
   /**
