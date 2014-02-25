@@ -201,6 +201,15 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
   }
 
   /**
+   * @return <code>true</code> if the object is instantiated and neither in
+   *         destruction nor destroyed.
+   */
+  public final boolean isUsableObject ()
+  {
+    return isInstantiated () && !isInDestruction () && !isDestroyed ();
+  }
+
+  /**
    * Create the key which is used to reference the object within the scope.
    * 
    * @param aClass
@@ -237,14 +246,22 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
     if (aClass == null)
       throw new NullPointerException ("class");
 
-    if (aScope == null)
-      return null;
-
-    final String sSingletonScopeKey = getSingletonScopeKey (aClass);
-    final Object aObject = aScope.getAttributeObject (sSingletonScopeKey);
-    if (aObject == null)
-      return null;
-    return aClass.cast (aObject);
+    if (aScope != null)
+    {
+      final String sSingletonScopeKey = getSingletonScopeKey (aClass);
+      final Object aObject = aScope.getAttributeObject (sSingletonScopeKey);
+      if (aObject != null)
+      {
+        // Object is in the scope
+        final T aCastedObject = aClass.cast (aObject);
+        if (aCastedObject.isUsableObject ())
+        {
+          // Object has finished initialization
+          return aCastedObject;
+        }
+      }
+    }
+    return null;
   }
 
   /**
@@ -315,7 +332,7 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
 
     final String sSingletonScopeKey = getSingletonScopeKey (aClass);
 
-    // check if contained in passed scope
+    // check if already contained in passed scope
     T aInstance = aClass.cast (aScope.getAttributeObject (sSingletonScopeKey));
     if (aInstance == null)
     {
