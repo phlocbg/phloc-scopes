@@ -83,8 +83,7 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
     {
       boolean bFound = false;
 
-      // check if this method is called indirectly via the
-      // correct method...
+      // check if this method is called indirectly via the correct method
       for (final StackTraceElement aStackTraceElement : Thread.currentThread ().getStackTrace ())
       {
         final String sMethodName = aStackTraceElement.getMethodName ();
@@ -155,16 +154,31 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
    */
   public final void onScopeDestruction () throws Exception
   {
+    // Check init state
     if (isInInstantiation ())
       s_aLogger.warn ("Object currently in instantiation is now destroyed: " + toString ());
     else
       if (!isInstantiated ())
         s_aLogger.warn ("Object not instantiated is now destroyed: " + toString ());
 
+    // Check destruction state
+    if (isInDestruction ())
+      s_aLogger.error ("Object already in destruction is now destroyed again: " + toString ());
+    else
+      if (isDestroyed ())
+        s_aLogger.error ("Object already destroyed is now destroyed again: " + toString ());
+
     m_bInDestruction = true;
-    onDestroy ();
-    m_bDestroyed = true;
-    m_bInDestruction = false;
+    try
+    {
+      onDestroy ();
+      m_bDestroyed = true;
+    }
+    finally
+    {
+      // Ensure field is reset even in case of an exception
+      m_bInDestruction = false;
+    }
   }
 
   /**
@@ -341,12 +355,23 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
       if (aFinalWasInstantiated.booleanValue ())
       {
         aInstance.m_bInInstantiation = true;
-        // Invoke virtual method
-        aInstance.onAfterInstantiation ();
-        aInstance.m_bInstantiated = true;
-        aInstance.m_bInInstantiation = false;
+        try
+        {
+          // Invoke virtual method
+          aInstance.onAfterInstantiation ();
+          aInstance.m_bInstantiated = true;
+        }
+        finally
+        {
+          // Ensure field is reset even in case of an exception
+          aInstance.m_bInInstantiation = false;
+        }
       }
     }
+
+    // Just a small note in case we're returning an incomplete object
+    if (aInstance.isInInstantiation ())
+      s_aLogger.warn ("Singleton is not yet ready - still in instantiation: " + aInstance.toString ());
     return aInstance;
   }
 
