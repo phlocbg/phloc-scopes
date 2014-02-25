@@ -52,7 +52,7 @@ public class RequestScope extends AbstractMapBasedScope implements IRequestScope
     m_sSessionID = sSessionID;
 
     // done initialization
-    if (ScopeUtils.debugScopeLifeCycle (s_aLogger))
+    if (ScopeUtils.debugRequestScopeLifeCycle (s_aLogger))
       s_aLogger.info ("Created request scope '" + sScopeID + "'");
   }
 
@@ -76,7 +76,7 @@ public class RequestScope extends AbstractMapBasedScope implements IRequestScope
   @Override
   protected void postDestroy ()
   {
-    if (ScopeUtils.debugScopeLifeCycle (s_aLogger))
+    if (ScopeUtils.debugRequestScopeLifeCycle (s_aLogger))
       s_aLogger.info ("Destroyed request scope '" + getID () + "'");
   }
 

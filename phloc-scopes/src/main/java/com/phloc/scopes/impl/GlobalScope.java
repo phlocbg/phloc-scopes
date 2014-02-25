@@ -59,7 +59,7 @@ public class GlobalScope extends AbstractMapBasedScope implements IGlobalScope
   {
     super (sScopeID);
 
-    if (ScopeUtils.debugScopeLifeCycle (s_aLogger))
+    if (ScopeUtils.debugGlobalScopeLifeCycle (s_aLogger))
       s_aLogger.info ("Created global scope '" + getID () + "'");
   }
 
@@ -91,7 +91,7 @@ public class GlobalScope extends AbstractMapBasedScope implements IGlobalScope
   @Override
   protected void postDestroy ()
   {
-    if (ScopeUtils.debugScopeLifeCycle (s_aLogger))
+    if (ScopeUtils.debugGlobalScopeLifeCycle (s_aLogger))
       s_aLogger.info ("Destroyed global scope '" + getID () + "'");
   }
 
