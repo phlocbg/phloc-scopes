@@ -119,7 +119,7 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
   protected void onAfterInstantiation ()
   {}
 
-  final void setInInstantiation (final boolean bInInstantiation)
+  protected final void setInInstantiation (final boolean bInInstantiation)
   {
     m_bInInstantiation = bInInstantiation;
   }
@@ -134,7 +134,7 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
     return m_bInInstantiation;
   }
 
-  final void setInstantiated (final boolean bInstantiated)
+  protected final void setInstantiated (final boolean bInstantiated)
   {
     m_bInstantiated = bInstantiated;
   }
@@ -146,6 +146,35 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
   public final boolean isInstantiated ()
   {
     return m_bInstantiated;
+  }
+
+  protected final void setInDestruction (final boolean bInDestruction)
+  {
+    m_bInDestruction = bInDestruction;
+  }
+
+  /**
+   * @return <code>true</code> if this singleton is currently in the phase of
+   *         destruction, <code>false</code> if it is active or already
+   *         destroyed.
+   */
+  public final boolean isInDestruction ()
+  {
+    return m_bInDestruction;
+  }
+
+  protected final void setDestroyed (final boolean bDestroyed)
+  {
+    m_bDestroyed = bDestroyed;
+  }
+
+  /**
+   * @return <code>true</code> if this singleton was already destroyed,
+   *         <code>false</code> if it is active.
+   */
+  public final boolean isDestroyed ()
+  {
+    return m_bDestroyed;
   }
 
   /**
@@ -178,36 +207,17 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
       if (isDestroyed ())
         s_aLogger.error ("Object already destroyed is now destroyed again: " + toString ());
 
-    m_bInDestruction = true;
+    setInDestruction (true);
     try
     {
       onDestroy ();
-      m_bDestroyed = true;
+      setDestroyed (true);
     }
     finally
     {
       // Ensure field is reset even in case of an exception
-      m_bInDestruction = false;
+      setInDestruction (false);
     }
-  }
-
-  /**
-   * @return <code>true</code> if this singleton is currently in the phase of
-   *         destruction, <code>false</code> if it is active or already
-   *         destroyed.
-   */
-  public final boolean isInDestruction ()
-  {
-    return m_bInDestruction;
-  }
-
-  /**
-   * @return <code>true</code> if this singleton was already destroyed,
-   *         <code>false</code> if it is active.
-   */
-  public final boolean isDestroyed ()
-  {
-    return m_bDestroyed;
   }
 
   /**
