@@ -17,7 +17,9 @@
  */
 package com.phloc.scopes;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.lang.reflect.Constructor;
 import java.security.AccessController;
 import java.util.ArrayList;
@@ -63,6 +65,22 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
   @UsedViaReflection ("For Serializable interface implementation in derived classes!")
   protected AbstractSingleton ()
   {}
+
+  protected final void writeAbstractSingletonFields (@Nonnull final ObjectOutputStream aOOS) throws IOException
+  {
+    aOOS.writeBoolean (m_bInInstantiation);
+    aOOS.writeBoolean (m_bInstantiated);
+    aOOS.writeBoolean (m_bInDestruction);
+    aOOS.writeBoolean (m_bDestroyed);
+  }
+
+  protected final void readAbstractSingletonFields (@Nonnull final ObjectInputStream aOIS) throws IOException
+  {
+    m_bInInstantiation = aOIS.readBoolean ();
+    m_bInstantiated = aOIS.readBoolean ();
+    m_bInDestruction = aOIS.readBoolean ();
+    m_bDestroyed = aOIS.readBoolean ();
+  }
 
   /**
    * Ctor.
