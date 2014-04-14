@@ -52,7 +52,8 @@ public class RequestScope extends AbstractMapBasedScope implements IRequestScope
 
     // done initialization
     if (ScopeUtils.debugRequestScopeLifeCycle (s_aLogger))
-      s_aLogger.info ("Created request scope '" + sScopeID + "' of class " + CGStringHelper.getClassLocalName (this));
+      s_aLogger.info ("Created request scope '" + sScopeID + "' of class " + CGStringHelper.getClassLocalName (this),
+                      ScopeUtils.getDebugStackTrace ());
   }
 
   @Nonnull
@@ -76,7 +77,8 @@ public class RequestScope extends AbstractMapBasedScope implements IRequestScope
   protected void postDestroy ()
   {
     if (ScopeUtils.debugRequestScopeLifeCycle (s_aLogger))
-      s_aLogger.info ("Destroyed request scope '" + getID () + "' of class " + CGStringHelper.getClassLocalName (this));
+      s_aLogger.info ("Destroyed request scope '" + getID () + "' of class " + CGStringHelper.getClassLocalName (this),
+                      ScopeUtils.getDebugStackTrace ());
   }
 
   @Nullable
