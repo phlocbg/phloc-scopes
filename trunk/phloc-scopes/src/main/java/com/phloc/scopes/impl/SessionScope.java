@@ -34,6 +34,7 @@ import com.phloc.commons.annotations.ReturnsMutableCopy;
 import com.phloc.commons.collections.ContainerHelper;
 import com.phloc.commons.lang.CGStringHelper;
 import com.phloc.commons.state.EContinue;
+import com.phloc.commons.string.StringHelper;
 import com.phloc.commons.string.ToStringGenerator;
 import com.phloc.scopes.AbstractMapBasedScope;
 import com.phloc.scopes.MetaScopeFactory;
@@ -106,6 +107,37 @@ public class SessionScope extends AbstractMapBasedScope implements ISessionScope
   }
 
   @Nonnull
+  @Nonempty
+  private String _getApplicationScopeIDPrefix ()
+  {
+    return getID () + '.';
+  }
+
+  @Nonnull
+  @Nonempty
+  public String createApplicationScopeID (@Nonnull @Nonempty final String sApplicationID)
+  {
+    ValueEnforcer.notEmpty (sApplicationID, "ApplicationID");
+
+    // To make the ID unique, prepend the application ID with this scope ID
+    return _getApplicationScopeIDPrefix () + sApplicationID;
+  }
+
+  @Nullable
+  public String getApplicationIDFromApplicationScopeID (@Nullable final String sApplicationScopeID)
+  {
+    if (StringHelper.hasNoText (sApplicationScopeID))
+      return null;
+
+    final String sPrefix = _getApplicationScopeIDPrefix ();
+    if (sApplicationScopeID.startsWith (sPrefix))
+      return sApplicationScopeID.substring (sPrefix.length ());
+
+    // Not a valid application scope ID
+    return null;
+  }
+
+  @Nonnull
   protected ISessionApplicationScope createSessionApplicationScope (@Nonnull @Nonempty final String sApplicationID)
   {
     return MetaScopeFactory.getScopeFactory ().createSessionApplicationScope (sApplicationID);
@@ -117,8 +149,8 @@ public class SessionScope extends AbstractMapBasedScope implements ISessionScope
   {
     ValueEnforcer.notEmpty (sApplicationID, "ApplicationID");
 
-    // To make the ID unique, prepend the application ID with this scope ID
-    final String sAppScopeID = getID () + '.' + sApplicationID;
+    final String sAppScopeID = createApplicationScopeID (sApplicationID);
+
     ISessionApplicationScope aSessionAppScope;
 
     // Try with read-lock only
