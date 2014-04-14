@@ -32,6 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.phloc.commons.GlobalDebug;
+import com.phloc.commons.ValueEnforcer;
 import com.phloc.commons.annotations.OverrideOnDemand;
 import com.phloc.commons.annotations.ReturnsMutableCopy;
 import com.phloc.commons.annotations.UsedViaReflection;
@@ -42,7 +43,6 @@ import com.phloc.commons.mutable.MutableBoolean;
 import com.phloc.commons.priviledged.PrivilegedActionAccessibleObjectSetAccessible;
 import com.phloc.commons.stats.IStatisticsHandlerKeyedCounter;
 import com.phloc.commons.stats.StatisticsManager;
-import com.phloc.commons.string.StringHelper;
 import com.phloc.commons.string.ToStringGenerator;
 
 /**
@@ -66,6 +66,16 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
   protected AbstractSingleton ()
   {}
 
+  /**
+   * Write the internal status variables to the passed
+   * {@link ObjectOutputStream}. This can be used to make singletons
+   * serializable.
+   * 
+   * @param aOOS
+   *        The output stream to write to. May not be <code>null</code>.
+   * @throws IOException
+   *         In case writing failed
+   */
   protected final void writeAbstractSingletonFields (@Nonnull final ObjectOutputStream aOOS) throws IOException
   {
     aOOS.writeBoolean (m_bInInstantiation);
@@ -74,6 +84,16 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
     aOOS.writeBoolean (m_bDestroyed);
   }
 
+  /**
+   * Set all internal status variables to the values read from the specified
+   * {@link ObjectInputStream}. This can be used to make singletons
+   * serializable.
+   * 
+   * @param aOIS
+   *        The input stream to read from. May not be <code>null</code>.
+   * @throws IOException
+   *         In case reading failed
+   */
   protected final void readAbstractSingletonFields (@Nonnull final ObjectInputStream aOIS) throws IOException
   {
     m_bInInstantiation = aOIS.readBoolean ();
@@ -92,8 +112,7 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
   @UsedViaReflection
   protected AbstractSingleton (@Nonnull final String sRequiredMethodName)
   {
-    if (StringHelper.hasNoText (sRequiredMethodName))
-      throw new IllegalArgumentException ("requiredMethodName");
+    ValueEnforcer.notEmpty (sRequiredMethodName, "RequiredMethodName");
 
     // Check the call stack to avoid manual instantiation
     // Only required while developing
@@ -258,8 +277,7 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
   @Nonnull
   public static String getSingletonScopeKey (@Nonnull final Class <? extends AbstractSingleton> aClass)
   {
-    if (aClass == null)
-      throw new NullPointerException ("class");
+    ValueEnforcer.notNull (aClass, "Class");
 
     // Preallocate some bytes
     return new StringBuilder (DEFAULT_KEY_LENGTH).append ("singleton.").append (aClass.getName ()).toString ();
@@ -281,8 +299,7 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
   protected static final <T extends AbstractSingleton> T getSingletonIfInstantiated (@Nullable final IScope aScope,
                                                                                      @Nonnull final Class <T> aClass)
   {
-    if (aClass == null)
-      throw new NullPointerException ("class");
+    ValueEnforcer.notNull (aClass, "Class");
 
     if (aScope != null)
     {
@@ -333,6 +350,7 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
       if (!ClassHelper.isInstancableClass (aClass))
         throw new IllegalStateException ("Class " + aClass + " is not instancable!");
 
+      // Find the now-argument constructor
       final Constructor <T> aCtor = aClass.getDeclaredConstructor ((Class <?> []) null);
 
       // Ubuntu: java.security.AccessControlException: access denied
@@ -365,10 +383,8 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
   protected static final <T extends AbstractSingleton> T getSingleton (@Nonnull final IScope aScope,
                                                                        @Nonnull final Class <T> aClass)
   {
-    if (aScope == null)
-      throw new NullPointerException ("scope");
-    if (aClass == null)
-      throw new NullPointerException ("class");
+    ValueEnforcer.notNull (aScope, "aScope");
+    ValueEnforcer.notNull (aClass, "Class");
 
     final String sSingletonScopeKey = getSingletonScopeKey (aClass);
 
@@ -453,8 +469,7 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
   protected static final <T extends AbstractSingleton> List <T> getAllSingletons (@Nullable final IScope aScope,
                                                                                   @Nonnull final Class <T> aDesiredClass)
   {
-    if (aDesiredClass == null)
-      throw new NullPointerException ("desiredClass");
+    ValueEnforcer.notNull (aDesiredClass, "DesiredClass");
 
     final List <T> ret = new ArrayList <T> ();
     if (aScope != null)

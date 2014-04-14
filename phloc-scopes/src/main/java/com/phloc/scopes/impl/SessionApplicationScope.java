@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.phloc.commons.annotations.Nonempty;
+import com.phloc.commons.lang.CGStringHelper;
 import com.phloc.scopes.AbstractMapBasedScope;
 import com.phloc.scopes.ScopeUtils;
 import com.phloc.scopes.domain.ISessionApplicationScope;
@@ -45,7 +46,10 @@ public class SessionApplicationScope extends AbstractMapBasedScope implements IS
     super (sScopeID);
 
     if (ScopeUtils.debugSessionApplicationScopeLifeCycle (s_aLogger))
-      s_aLogger.info ("Created session application scope '" + sScopeID + "'");
+      s_aLogger.info ("Created session application scope '" +
+                      sScopeID +
+                      "' of class " +
+                      CGStringHelper.getClassLocalName (this));
   }
 
   public void initScope ()
@@ -55,6 +59,9 @@ public class SessionApplicationScope extends AbstractMapBasedScope implements IS
   protected void postDestroy ()
   {
     if (ScopeUtils.debugSessionApplicationScopeLifeCycle (s_aLogger))
-      s_aLogger.info ("Destroyed session application scope '" + getID () + "'");
+      s_aLogger.info ("Destroyed session application scope '" +
+                      getID () +
+                      "' of class " +
+                      CGStringHelper.getClassLocalName (this));
   }
 }

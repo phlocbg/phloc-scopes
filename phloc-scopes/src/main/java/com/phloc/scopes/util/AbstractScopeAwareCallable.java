@@ -22,9 +22,9 @@ import java.util.concurrent.Callable;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.phloc.commons.ValueEnforcer;
 import com.phloc.commons.annotations.Nonempty;
 import com.phloc.commons.callback.INonThrowingCallable;
-import com.phloc.commons.string.StringHelper;
 import com.phloc.commons.string.ToStringGenerator;
 import com.phloc.scopes.mgr.ScopeManager;
 import com.phloc.scopes.mock.ScopeAwareTestSetup;
@@ -44,25 +44,42 @@ public abstract class AbstractScopeAwareCallable <DATATYPE> implements INonThrow
 
   public AbstractScopeAwareCallable ()
   {
-    this (ScopeManager.getApplicationScope ().getID (),
-          ScopeAwareTestSetup.MOCK_REQUEST_SCOPE_ID,
-          ScopeAwareTestSetup.MOCK_SESSION_SCOPE_ID);
+    this (ScopeManager.getApplicationScope ().getID ());
+  }
+
+  public AbstractScopeAwareCallable (@Nonnull @Nonempty final String sApplicationID)
+  {
+    this (sApplicationID, ScopeAwareTestSetup.MOCK_REQUEST_SCOPE_ID, ScopeAwareTestSetup.MOCK_SESSION_SCOPE_ID);
   }
 
   public AbstractScopeAwareCallable (@Nonnull @Nonempty final String sApplicationID,
                                      @Nonnull @Nonempty final String sRequestID,
                                      @Nonnull @Nonempty final String sSessionID)
   {
-    if (StringHelper.hasNoText (sApplicationID))
-      throw new IllegalArgumentException ("applicationID");
-    if (StringHelper.hasNoText (sRequestID))
-      throw new IllegalArgumentException ("requestID");
-    if (StringHelper.hasNoText (sSessionID))
-      throw new IllegalArgumentException ("sessionID");
+    m_sApplicationID = ValueEnforcer.notEmpty (sApplicationID, "ApplicationID");
+    m_sRequestID = ValueEnforcer.notEmpty (sRequestID, "RequestID");
+    m_sSessionID = ValueEnforcer.notEmpty (sSessionID, "SessionID");
+  }
 
-    m_sApplicationID = sApplicationID;
-    m_sRequestID = sRequestID;
-    m_sSessionID = sSessionID;
+  @Nonnull
+  @Nonempty
+  public String getApplicationID ()
+  {
+    return m_sApplicationID;
+  }
+
+  @Nonnull
+  @Nonempty
+  public String getRequestID ()
+  {
+    return m_sRequestID;
+  }
+
+  @Nonnull
+  @Nonempty
+  public String getSessionID ()
+  {
+    return m_sSessionID;
   }
 
   /**

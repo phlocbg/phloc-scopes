@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.concurrent.GuardedBy;
 import javax.annotation.concurrent.ThreadSafe;
 
+import com.phloc.commons.ValueEnforcer;
 import com.phloc.scopes.factory.DefaultScopeFactory;
 import com.phloc.scopes.factory.IScopeFactory;
 
@@ -51,8 +52,7 @@ public final class MetaScopeFactory
    */
   public static void setScopeFactory (@Nonnull final IScopeFactory aScopeFactory)
   {
-    if (aScopeFactory == null)
-      throw new NullPointerException ("scopeFactory");
+    ValueEnforcer.notNull (aScopeFactory, "ScopeFactory");
 
     s_aRWLock.writeLock ().lock ();
     try

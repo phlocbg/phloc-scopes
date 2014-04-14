@@ -34,12 +34,14 @@ import javax.annotation.concurrent.ThreadSafe;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.phloc.commons.ValueEnforcer;
 import com.phloc.commons.annotations.ReturnsMutableCopy;
 import com.phloc.commons.annotations.UsedViaReflection;
 import com.phloc.commons.collections.ContainerHelper;
 import com.phloc.commons.state.EChange;
 import com.phloc.commons.stats.IStatisticsHandlerCounter;
 import com.phloc.commons.stats.StatisticsManager;
+import com.phloc.commons.string.StringHelper;
 import com.phloc.scopes.domain.ISessionScope;
 import com.phloc.scopes.singleton.GlobalSingleton;
 import com.phloc.scopes.spi.ScopeSPIManager;
@@ -93,12 +95,15 @@ public class ScopeSessionManager extends GlobalSingleton
    * further actions are taken.
    * 
    * @param sScopeID
-   *        The ID to be resolved.
+   *        The ID to be resolved. May be <code>null</code>.
    * @return <code>null</code> if no such scope exists.
    */
   @Nullable
   public ISessionScope getSessionScopeOfID (@Nullable final String sScopeID)
   {
+    if (StringHelper.hasNoText (sScopeID))
+      return null;
+
     m_aRWLock.readLock ().lock ();
     try
     {
@@ -121,8 +126,7 @@ public class ScopeSessionManager extends GlobalSingleton
    */
   public void onScopeBegin (@Nonnull final ISessionScope aSessionScope)
   {
-    if (aSessionScope == null)
-      throw new NullPointerException ("sessionScope");
+    ValueEnforcer.notNull (aSessionScope, "SessionScope");
 
     final String sSessionID = aSessionScope.getID ();
     m_aRWLock.writeLock ().lock ();
@@ -156,8 +160,7 @@ public class ScopeSessionManager extends GlobalSingleton
    */
   public void onScopeEnd (@Nonnull final ISessionScope aSessionScope)
   {
-    if (aSessionScope == null)
-      throw new NullPointerException ("sessionScope");
+    ValueEnforcer.notNull (aSessionScope, "SessionScope");
 
     // Only handle scopes that are not yet destructed
     if (aSessionScope.isValid ())
