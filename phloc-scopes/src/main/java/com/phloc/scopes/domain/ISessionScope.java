@@ -46,6 +46,34 @@ public interface ISessionScope extends IScope
   EContinue selfDestruct ();
 
   /**
+   * Create the unique ID, under which a session application scope will be
+   * created within this scope. The default implementation is
+   * <code>getID () + "." + sApplicationID</code>.
+   * 
+   * @param sApplicationID
+   *        The application ID to be used. May neither be <code>null</code> nor
+   *        empty.
+   * @return The application scope ID to be used.
+   * @see #getApplicationIDFromApplicationScopeID(String) to get the application
+   *      ID from an application scope ID (reverse operation)
+   */
+  @Nonnull
+  @Nonempty
+  String createApplicationScopeID (@Nonnull @Nonempty String sApplicationID);
+
+  /**
+   * Extract the application ID from an application scope ID.
+   * 
+   * @param sApplicationScopeID
+   *        The application scope ID to use. May be <code>null</code>.
+   * @return <code>null</code> if no application ID could be extracted
+   * @see #createApplicationScopeID(String) To creation an application scope ID
+   *      from an application ID
+   */
+  @Nullable
+  String getApplicationIDFromApplicationScopeID (@Nullable String sApplicationScopeID);
+
+  /**
    * Create an application specific scope within the session.
    * 
    * @param sApplicationID
