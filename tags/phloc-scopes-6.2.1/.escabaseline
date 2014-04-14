@@ -1,0 +1,933 @@
+# Enerjy Software baseline data (files=121, problems=811).
+path: /phloc-scopes/src/main/java/com/phloc/scopes/AbstractMapBasedScope.java
+problem: JAVA0011:JAVA0011 Abstract class 'AbstractMapBasedScope' does not contain an abstract method
+problem: JAVA0054:JAVA0054 Inheritance depth 4 exceeds maximum 3
+problem: JAVA0016:JAVA0016 Abstract class 'AbstractMapBasedScope' contains public constructor
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0166:JAVA0166 Generic exception 'java.lang.Throwable' caught
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+path: /phloc-scopes/src/main/java/com/phloc/scopes/AbstractSingleton.java
+problem: JAVA0077:JAVA0077 Private field 's_aStatsCounterInstantiate' not used in declaring class
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0160:JAVA0160 Method 'onDestroy' does not throw specified exception 'java.lang.Exception'
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0018:JAVA0018 Method name '_instantiateSingleton' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0166:JAVA0166 Generic exception 'java.lang.Throwable' caught
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+path: /phloc-scopes/src/main/java/com/phloc/scopes/IScopeDestructionAware.java
+problem: JAVA0115:JAVA0115 Incorrect javadoc: no @throws or @exception tag for 'Exception'
+path: /phloc-scopes/src/main/java/com/phloc/scopes/MetaScopeFactory.java
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+path: /phloc-scopes/src/main/java/com/phloc/scopes/ScopeRenewalAwareWrapper.java
+problem: JAVA0044:JAVA0044 Serializable class 'ScopeRenewalAwareWrapper' with no instance variables
+problem: JAVA0234:JAVA0234 Class 'ScopeRenewalAwareWrapper' is Serializable but does not define serialVersionUID
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+path: /phloc-scopes/src/main/java/com/phloc/scopes/nonweb/factory/DefaultScopeFactory.java
+problem: JAVA0057:JAVA0057 Unnecessary default constructor 'DefaultScopeFactory'
+path: /phloc-scopes/src/main/java/com/phloc/scopes/nonweb/impl/ApplicationScope.java
+problem: JAVA0054:JAVA0054 Inheritance depth 5 exceeds maximum 3
+problem: JAVA0234:JAVA0234 Class 'ApplicationScope' is Serializable but does not define serialVersionUID
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+path: /phloc-scopes/src/main/java/com/phloc/scopes/nonweb/impl/GlobalScope.java
+problem: JAVA0054:JAVA0054 Inheritance depth 5 exceeds maximum 3
+problem: JAVA0234:JAVA0234 Class 'GlobalScope' is Serializable but does not define serialVersionUID
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0177:JAVA0177 Variable declaration 'aAppScope' missing initializer
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+path: /phloc-scopes/src/main/java/com/phloc/scopes/nonweb/impl/RequestScope.java
+problem: JAVA0054:JAVA0054 Inheritance depth 5 exceeds maximum 3
+problem: JAVA0234:JAVA0234 Class 'RequestScope' is Serializable but does not define serialVersionUID
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+path: /phloc-scopes/src/main/java/com/phloc/scopes/nonweb/impl/SessionApplicationScope.java
+problem: JAVA0054:JAVA0054 Inheritance depth 5 exceeds maximum 3
+problem: JAVA0234:JAVA0234 Class 'SessionApplicationScope' is Serializable but does not define serialVersionUID
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+path: /phloc-scopes/src/main/java/com/phloc/scopes/nonweb/impl/SessionScope.java
+problem: JAVA0054:JAVA0054 Inheritance depth 5 exceeds maximum 3
+problem: JAVA0234:JAVA0234 Class 'SessionScope' is Serializable but does not define serialVersionUID
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0177:JAVA0177 Variable declaration 'aSessionAppScope' missing initializer
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+path: /phloc-scopes/src/main/java/com/phloc/scopes/nonweb/mgr/ScopeManager.java
+problem: JAVA0136:JAVA0136 26 methods defined in class 'ScopeManager' (maximum: 20)
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'DEFAULT_CREATE_SCOPE'
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0018:JAVA0018 Method name '_destroyRequestScope' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+path: /phloc-scopes/src/main/java/com/phloc/scopes/nonweb/mgr/ScopeSessionManager.java
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'DEFAULT_DESTROY_ALL_SESSIONS_ON_SCOPE_END'
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'DEFAULT_END_ALL_SESSIONS_ON_SCOPE_END'
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0057:JAVA0057 Unnecessary default constructor 'ScopeSessionManager'
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0018:JAVA0018 Method name '_checkIfAnySessionsExist' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0018:JAVA0018 Method name '_endAllSessionScopes' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+path: /phloc-scopes/src/main/java/com/phloc/scopes/nonweb/mock/AbstractScopeAwareTestCase.java
+problem: JAVA0011:JAVA0011 Abstract class 'AbstractScopeAwareTestCase' does not contain an abstract method
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'm_aScopeRule'
+path: /phloc-scopes/src/main/java/com/phloc/scopes/nonweb/mock/ScopeAwareTestSetup.java
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'STORAGE_PATH'
+path: /phloc-scopes/src/main/java/com/phloc/scopes/nonweb/mock/ScopeTestRule.java
+problem: JAVA0118:JAVA0118 Missing javadoc: type 'ScopeTestRule'
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'STORAGE_PATH'
+path: /phloc-scopes/src/main/java/com/phloc/scopes/nonweb/singleton/ApplicationSingleton.java
+problem: JAVA0011:JAVA0011 Abstract class 'ApplicationSingleton' does not contain an abstract method
+problem: JAVA0018:JAVA0018 Method name '_getStaticScope' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'bCreateIfNotExisting'
+path: /phloc-scopes/src/main/java/com/phloc/scopes/nonweb/singleton/GlobalSingleton.java
+problem: JAVA0011:JAVA0011 Abstract class 'GlobalSingleton' does not contain an abstract method
+problem: JAVA0018:JAVA0018 Method name '_getStaticScope' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'bMustBePresent'
+path: /phloc-scopes/src/main/java/com/phloc/scopes/nonweb/singleton/RequestSingleton.java
+problem: JAVA0011:JAVA0011 Abstract class 'RequestSingleton' does not contain an abstract method
+problem: JAVA0018:JAVA0018 Method name '_getStaticScope' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'bMustBePresent'
+path: /phloc-scopes/src/main/java/com/phloc/scopes/nonweb/singleton/SessionApplicationSingleton.java
+problem: JAVA0011:JAVA0011 Abstract class 'SessionApplicationSingleton' does not contain an abstract method
+problem: JAVA0018:JAVA0018 Method name '_getStaticScope' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'bCreateIfNotExisting'
+path: /phloc-scopes/src/main/java/com/phloc/scopes/nonweb/singleton/SessionSingleton.java
+problem: JAVA0011:JAVA0011 Abstract class 'SessionSingleton' does not contain an abstract method
+problem: JAVA0018:JAVA0018 Method name '_getStaticScope' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'bCreateIfNotExisting'
+path: /phloc-scopes/src/main/java/com/phloc/scopes/nonweb/singleton/tree/ApplicationSingletonTreeWithUniqueID.java
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0057:JAVA0057 Unnecessary default constructor 'ApplicationSingletonTreeWithUniqueID'
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+path: /phloc-scopes/src/main/java/com/phloc/scopes/nonweb/singleton/tree/GlobalSingletonTreeWithUniqueID.java
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0057:JAVA0057 Unnecessary default constructor 'GlobalSingletonTreeWithUniqueID'
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+path: /phloc-scopes/src/main/java/com/phloc/scopes/nonweb/singleton/tree/RequestSingletonTreeWithUniqueID.java
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0057:JAVA0057 Unnecessary default constructor 'RequestSingletonTreeWithUniqueID'
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+path: /phloc-scopes/src/main/java/com/phloc/scopes/nonweb/singleton/tree/SessionApplicationSingletonTreeWithUniqueID.java
+problem: JAVA0234:JAVA0234 Class 'SessionApplicationSingletonTreeWithUniqueID' is Serializable but does not define serialVersionUID
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0057:JAVA0057 Unnecessary default constructor 'SessionApplicationSingletonTreeWithUniqueID'
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+path: /phloc-scopes/src/main/java/com/phloc/scopes/nonweb/singleton/tree/SessionSingletonTreeWithUniqueID.java
+problem: JAVA0234:JAVA0234 Class 'SessionSingletonTreeWithUniqueID' is Serializable but does not define serialVersionUID
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0057:JAVA0057 Unnecessary default constructor 'SessionSingletonTreeWithUniqueID'
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+path: /phloc-scopes/src/main/java/com/phloc/scopes/spi/ScopeSPIManager.java
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0166:JAVA0166 Generic exception 'java.lang.Throwable' caught
+problem: JAVA0166:JAVA0166 Generic exception 'java.lang.Throwable' caught
+problem: JAVA0166:JAVA0166 Generic exception 'java.lang.Throwable' caught
+problem: JAVA0166:JAVA0166 Generic exception 'java.lang.Throwable' caught
+problem: JAVA0166:JAVA0166 Generic exception 'java.lang.Throwable' caught
+problem: JAVA0166:JAVA0166 Generic exception 'java.lang.Throwable' caught
+problem: JAVA0166:JAVA0166 Generic exception 'java.lang.Throwable' caught
+problem: JAVA0166:JAVA0166 Generic exception 'java.lang.Throwable' caught
+problem: JAVA0166:JAVA0166 Generic exception 'java.lang.Throwable' caught
+problem: JAVA0166:JAVA0166 Generic exception 'java.lang.Throwable' caught
+problem: JAVA0166:JAVA0166 Generic exception 'java.lang.Throwable' caught
+problem: JAVA0166:JAVA0166 Generic exception 'java.lang.Throwable' caught
+problem: JAVA0166:JAVA0166 Generic exception 'java.lang.Throwable' caught
+problem: JAVA0166:JAVA0166 Generic exception 'java.lang.Throwable' caught
+problem: JAVA0166:JAVA0166 Generic exception 'java.lang.Throwable' caught
+problem: JAVA0166:JAVA0166 Generic exception 'java.lang.Throwable' caught
+problem: JAVA0166:JAVA0166 Generic exception 'java.lang.Throwable' caught
+problem: JAVA0166:JAVA0166 Generic exception 'java.lang.Throwable' caught
+problem: JAVA0166:JAVA0166 Generic exception 'java.lang.Throwable' caught
+problem: JAVA0166:JAVA0166 Generic exception 'java.lang.Throwable' caught
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/domain/IRequestWebScopeWithoutResponse.java
+problem: JAVA0136:JAVA0136 31 methods defined in class 'IRequestWebScopeWithoutResponse' (maximum: 20)
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/factory/DefaultWebScopeFactory.java
+problem: JAVA0005:JAVA0005 Imports not in specified order
+problem: JAVA0234:JAVA0234 Class 'ConstantContextPathProvider' is Serializable but does not define serialVersionUID
+problem: JAVA0128:JAVA0128 Public constructor 'ConstantContextPathProvider' in non-public class
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0234:JAVA0234 Class 'ContextPathProviderFromRequest' is Serializable but does not define serialVersionUID
+problem: JAVA0128:JAVA0128 Public constructor 'ContextPathProviderFromRequest' in non-public class
+problem: JAVA0057:JAVA0057 Unnecessary default constructor 'DefaultWebScopeFactory'
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0166:JAVA0166 Generic exception 'java.lang.Exception' caught
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/fileupload/AbstractFileUploadBase.java
+problem: JAVA0136:JAVA0136 21 methods defined in class 'AbstractFileUploadBase' (maximum: 20)
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0166:JAVA0166 Generic exception 'java.lang.Throwable' caught
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0018:JAVA0018 Method name '_getFileName' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0130:JAVA0130 Non-static method '_getFileName' does not use instance fields
+problem: JAVA0018:JAVA0018 Method name '_getFieldName' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0130:JAVA0130 Non-static method '_getFieldName' does not use instance fields
+problem: JAVA0123:JAVA0123 Use all three components of for loop
+problem: JAVA0018:JAVA0018 Method name '_parseEndOfLine' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0130:JAVA0130 Non-static method '_parseEndOfLine' does not use instance fields
+problem: JAVA0123:JAVA0123 Use all three components of for loop
+problem: JAVA0018:JAVA0018 Method name '_parseHeaderLine' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0130:JAVA0130 Non-static method '_parseHeaderLine' does not use instance fields
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0123:JAVA0123 Use all three components of for loop
+problem: JAVA0177:JAVA0177 Variable declaration 'nextPart' missing initializer
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0011:JAVA0011 Abstract class 'SizeException' does not contain an abstract method
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'pFileName'
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'pFieldName'
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/fileupload/FileItemResource.java
+problem: JAVA0234:JAVA0234 Class 'FileItemResource' is Serializable but does not define serialVersionUID
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/fileupload/FileUpload.java
+problem: JAVA0058:JAVA0058 Constructor 'FileUpload' calls super()
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/fileupload/FileUploadException.java
+problem: JAVA0234:JAVA0234 Class 'FileUploadException' is Serializable but does not define serialVersionUID
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/fileupload/IFileItemIterator.java
+problem: JAVA0113:JAVA0113 Incorrect javadoc: no @author tag
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/fileupload/IFileItemStream.java
+problem: JAVA0113:JAVA0113 Incorrect javadoc: no @author tag
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/fileupload/IProgressListener.java
+problem: JAVA0113:JAVA0113 Incorrect javadoc: no @author tag
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/fileupload/IProgressListenerProvider.java
+problem: JAVA0118:JAVA0118 Missing javadoc: type 'IProgressListenerProvider'
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/fileupload/InvalidFileNameException.java
+problem: JAVA0051:JAVA0051 Class 'InvalidFileNameException' derives from java.lang.RuntimeException
+problem: JAVA0113:JAVA0113 Incorrect javadoc: no @author tag
+problem: JAVA0234:JAVA0234 Class 'InvalidFileNameException' is Serializable but does not define serialVersionUID
+problem: JAVA0110:JAVA0110 Incorrect javadoc: no @return tag
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/fileupload/MultipartStream.java
+problem: JAVA0062:JAVA0062 Public class 'ProgressNotifier' missing public member or protected constructor
+problem: JAVA0018:JAVA0018 Method name '_notifyListener' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0177:JAVA0177 Variable declaration 'b' missing initializer
+problem: JAVA0160:JAVA0160 Method 'readBodyData' does not throw specified exception 'com.phloc.scopes.web.fileupload.MultipartStream.MalformedStreamException'
+problem: JAVA0009:JAVA0009 Protected member 'findByte' in final class 'MultipartStream'
+problem: JAVA0009:JAVA0009 Protected member 'findSeparator' in final class 'MultipartStream'
+problem: JAVA0177:JAVA0177 Variable declaration 'first' missing initializer
+problem: JAVA0234:JAVA0234 Class 'MalformedStreamException' is Serializable but does not define serialVersionUID
+problem: JAVA0058:JAVA0058 Constructor 'MalformedStreamException' calls super()
+problem: JAVA0234:JAVA0234 Class 'IllegalBoundaryException' is Serializable but does not define serialVersionUID
+problem: JAVA0058:JAVA0058 Constructor 'IllegalBoundaryException' calls super()
+problem: JAVA0018:JAVA0018 Method name '_findSeparator' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0123:JAVA0123 Use all three components of for loop
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0018:JAVA0018 Method name '_makeAvailable' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0123:JAVA0123 Use all three components of for loop
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/fileupload/ParameterParser.java
+problem: JAVA0057:JAVA0057 Unnecessary default constructor 'ParameterParser'
+problem: JAVA0018:JAVA0018 Method name '_hasChar' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0018:JAVA0018 Method name '_getToken' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0018:JAVA0018 Method name '_parseToken' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0177:JAVA0177 Variable declaration 'ch' missing initializer
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0018:JAVA0018 Method name '_parseQuotedToken' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0177:JAVA0177 Variable declaration 'ch' missing initializer
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/fileupload/ProgressListenerProvider.java
+problem: JAVA0118:JAVA0118 Missing javadoc: type 'ProgressListenerProvider'
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/fileupload/io/AbstractThresholdingOutputStream.java
+problem: JAVA0016:JAVA0016 Abstract class 'AbstractThresholdingOutputStream' contains public constructor
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/fileupload/io/DeferredFileOutputStream.java
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/fileupload/io/DiskFileItem.java
+problem: JAVA0100:JAVA0100 Class contains 9 non-final fields (maximum: 8)
+problem: JAVA0136:JAVA0136 26 methods defined in class 'DiskFileItem' (maximum: 20)
+problem: JAVA0138:JAVA0138 6 parameters defined for method 'DiskFileItem' (maximum: 5)
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0110:JAVA0110 Incorrect javadoc: no @return tag
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0018:JAVA0018 Method name '_getUniqueId' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0177:JAVA0177 Variable declaration 'current' missing initializer
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/fileupload/io/DiskFileItemFactory.java
+problem: JAVA0018:JAVA0018 Method name '_addTempFile' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0177:JAVA0177 Variable declaration 'aTempFiles' missing initializer
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/fileupload/servlet/ServletFileUpload.java
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/fileupload/util/AbstractLimitedInputStream.java
+problem: JAVA0113:JAVA0113 Incorrect javadoc: no @author tag
+problem: JAVA0016:JAVA0016 Abstract class 'AbstractLimitedInputStream' contains public constructor
+problem: JAVA0018:JAVA0018 Method name '_checkLimit' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/fileupload/util/FileItemHeadersImpl.java
+problem: JAVA0234:JAVA0234 Class 'FileItemHeadersImpl' is Serializable but does not define serialVersionUID
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/fileupload/util/ICloseable.java
+problem: JAVA0113:JAVA0113 Incorrect javadoc: no @author tag
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/fileupload/util/Streams.java
+problem: JAVA0113:JAVA0113 Incorrect javadoc: no @author tag
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0123:JAVA0123 Use all three components of for loop
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/impl/ApplicationWebScope.java
+problem: JAVA0054:JAVA0054 Inheritance depth 6 exceeds maximum 3
+problem: JAVA0234:JAVA0234 Class 'ApplicationWebScope' is Serializable but does not define serialVersionUID
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/impl/GlobalWebScope.java
+problem: JAVA0054:JAVA0054 Inheritance depth 6 exceeds maximum 3
+problem: JAVA0118:JAVA0118 Missing javadoc: type 'IContextPathProvider'
+problem: JAVA0018:JAVA0018 Method name '_createScopeID' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/impl/RequestWebScope.java
+problem: JAVA0054:JAVA0054 Inheritance depth 6 exceeds maximum 3
+problem: JAVA0234:JAVA0234 Class 'RequestWebScope' is Serializable but does not define serialVersionUID
+problem: JAVA0057:JAVA0057 Unnecessary default constructor 'GlobalDiskFileItemFactory'
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0018:JAVA0018 Method name '_isMultipartContent' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0018:JAVA0018 Method name '_getFactory' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0130:JAVA0130 Non-static method '_getFactory' does not use instance fields
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0049:JAVA0049 Nested block at depth '6' (maximum: '5')
+problem: JAVA0049:JAVA0049 Nested block at depth '6' (maximum: '5')
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0166:JAVA0166 Generic exception 'java.lang.RuntimeException' caught
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/impl/RequestWebScopeNoMultipart.java
+problem: JAVA0054:JAVA0054 Inheritance depth 5 exceeds maximum 3
+problem: JAVA0136:JAVA0136 48 methods defined in class 'RequestWebScopeNoMultipart' (maximum: 20)
+problem: JAVA0018:JAVA0018 Method name '_createScopeID' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0018:JAVA0018 Method name '_getFullServerPath' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/impl/SessionApplicationWebScope.java
+problem: JAVA0054:JAVA0054 Inheritance depth 6 exceeds maximum 3
+problem: JAVA0234:JAVA0234 Class 'SessionApplicationWebScope' is Serializable but does not define serialVersionUID
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/impl/SessionWebScope.java
+problem: JAVA0054:JAVA0054 Inheritance depth 6 exceeds maximum 3
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0166:JAVA0166 Generic exception 'java.lang.RuntimeException' caught
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/impl/SessionWebScopeActivator.java
+problem: JAVA0234:JAVA0234 Class 'SessionWebScopeActivator' is Serializable but does not define serialVersionUID
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/mgr/WebScopeManager.java
+problem: JAVA0136:JAVA0136 27 methods defined in class 'WebScopeManager' (maximum: 20)
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'DEFAULT_SESSION_PASSIVATION_ALLOWED'
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/mgr/WebScopeSessionHelper.java
+problem: JAVA0018:JAVA0018 Method name '_getSessionApplicationScopeValues' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0018:JAVA0018 Method name '_restoreScopeAttributes' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/mgr/WebScopeSessionManager.java
+problem: JAVA0054:JAVA0054 Inheritance depth 4 exceeds maximum 3
+problem: JAVA0057:JAVA0057 Unnecessary default constructor 'WebScopeSessionManager'
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/mock/AbstractWebScopeAwareTestCase.java
+problem: JAVA0011:JAVA0011 Abstract class 'AbstractWebScopeAwareTestCase' does not contain an abstract method
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'm_aWebScope'
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/mock/MockEventListenerList.java
+problem: JAVA0057:JAVA0057 Unnecessary default constructor 'MockEventListenerList'
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/mock/MockHttpServletRequest.java
+problem: JAVA0100:JAVA0100 Class contains 31 non-final fields (maximum: 8)
+problem: JAVA0136:JAVA0136 111 methods defined in class 'MockHttpServletRequest' (maximum: 20)
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'DEFAULT_INVOKE_HTTP_LISTENER'
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'DEFAULT_PROTOCOL'
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'DEFAULT_SCHEME'
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'DEFAULT_SERVER_ADDR'
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'DEFAULT_SERVER_NAME'
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'DEFAULT_SERVER_PORT'
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'DEFAULT_REMOTE_ADDR'
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'DEFAULT_REMOTE_HOST'
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'DEFAULT_METHOD'
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'bInvokeHttpListeners'
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0110:JAVA0110 Incorrect javadoc: no @return tag
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0110:JAVA0110 Incorrect javadoc: no @return tag
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0110:JAVA0110 Incorrect javadoc: no @return tag
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'sName'
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'sValue'
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'sName'
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'aValues'
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'aParams'
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'sName'
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'sValue'
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'sName'
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'aValues'
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'aParams'
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'sName'
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'aLocale'
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0018:JAVA0018 Method name '_unifyHeaderName' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'sName'
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'aValue'
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0064:JAVA0064 1 variation of identifier name 'isRequestedSessionIdFromUrl' (maximum: 0)
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/mock/MockHttpServletResponse.java
+problem: JAVA0100:JAVA0100 Class contains 14 non-final fields (maximum: 8)
+problem: JAVA0136:JAVA0136 59 methods defined in class 'MockHttpServletResponse' (maximum: 20)
+problem: JAVA0137:JAVA0137 Non-abstract class 'MockHttpServletResponse' missing constructor
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'DEFAULT_SERVER_PORT'
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'bOutputStreamAccessAllowed'
+problem: JAVA0110:JAVA0110 Incorrect javadoc: no @return tag
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'bWriterAccessAllowed'
+problem: JAVA0110:JAVA0110 Incorrect javadoc: no @return tag
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0018:JAVA0018 Method name '_setCommittedIfBufferSizeExceeded' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0018:JAVA0018 Method name '_unifyHeaderName' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0110:JAVA0110 Incorrect javadoc: no @return tag
+problem: JAVA0110:JAVA0110 Incorrect javadoc: no @return tag
+problem: JAVA0064:JAVA0064 1 variation of identifier name 'encodeUrl' (maximum: 0)
+problem: JAVA0064:JAVA0064 1 variation of identifier name 'encodeRedirectUrl' (maximum: 0)
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0018:JAVA0018 Method name '_setHeaderValue' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0018:JAVA0018 Method name '_addHeaderValue' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0018:JAVA0018 Method name '_doAddHeaderValue' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0128:JAVA0128 Public constructor 'ResponsePrintWriter' in non-public class
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/mock/MockHttpSession.java
+problem: JAVA0136:JAVA0136 27 methods defined in class 'MockHttpSession' (maximum: 20)
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'SESSION_COOKIE_NAME'
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/mock/MockRequestDispatcher.java
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0110:JAVA0110 Incorrect javadoc: no @return tag
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'aResponse'
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/mock/MockServletConfig.java
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/mock/MockServletContext.java
+problem: JAVA0136:JAVA0136 37 methods defined in class 'MockServletContext' (maximum: 20)
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'SERVLET_SPEC_MAJOR_VERSION'
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'SERVLET_SPEC_MINOR_VERSION'
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'DEFAULT_SERVLET_CONTEXT_NAME'
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'DEFAULT_SERVLET_CONTEXT_PATH'
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'aInitParams'
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0009:JAVA0009 Protected member 'getResourceLocation' in final class 'MockServletContext'
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/mock/MockServletRequestListener.java
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/mock/OfflineHttpServletRequest.java
+problem: JAVA0058:JAVA0058 Constructor 'OfflineHttpServletRequest' calls super()
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/mock/WebScopeAwareTestSetup.java
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'MOCK_CONTEXT'
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/mock/WebScopeTestInit.java
+problem: JAVA0118:JAVA0118 Missing javadoc: type 'WebScopeTestInit'
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/mock/WebScopeTestRule.java
+problem: JAVA0118:JAVA0118 Missing javadoc: type 'WebScopeTestRule'
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'MOCK_CONTEXT_PATH'
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/servlet/AbstractScopeAwareFilter.java
+problem: JAVA0173:JAVA0173 Unused method parameter 'aFilterConfig'
+problem: JAVA0173:JAVA0173 Unused method parameter 'aFilterConfig'
+problem: JAVA0160:JAVA0160 Method 'onInit' does not throw specified exception 'javax.servlet.ServletException'
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0115:JAVA0115 Incorrect javadoc: no @throws or @exception tag for 'IOException'
+problem: JAVA0115:JAVA0115 Incorrect javadoc: no @throws or @exception tag for 'ServletException'
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/servlet/AbstractScopeAwareHttpServlet.java
+problem: JAVA0011:JAVA0011 Abstract class 'AbstractScopeAwareHttpServlet' does not contain an abstract method
+problem: JAVA0136:JAVA0136 21 methods defined in class 'AbstractScopeAwareHttpServlet' (maximum: 20)
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0160:JAVA0160 Method 'onInit' does not throw specified exception 'javax.servlet.ServletException'
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0018:JAVA0018 Method name '_ensureResponseCharset' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0173:JAVA0173 Unused method parameter 'aRequestScope'
+problem: JAVA0173:JAVA0173 Unused method parameter 'aRequestScope'
+problem: JAVA0173:JAVA0173 Unused method parameter 'aRequestScope'
+problem: JAVA0173:JAVA0173 Unused method parameter 'aRequestScope'
+problem: JAVA0173:JAVA0173 Unused method parameter 'aRequestScope'
+problem: JAVA0173:JAVA0173 Unused method parameter 'aRequestScope'
+problem: JAVA0173:JAVA0173 Unused method parameter 'aRequestScope'
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/servlet/RequestScopeInitializer.java
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/singleton/ApplicationWebSingleton.java
+problem: JAVA0011:JAVA0011 Abstract class 'ApplicationWebSingleton' does not contain an abstract method
+problem: JAVA0018:JAVA0018 Method name '_getStaticScope' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'bCreateIfNotExisting'
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/singleton/GlobalWebSingleton.java
+problem: JAVA0011:JAVA0011 Abstract class 'GlobalWebSingleton' does not contain an abstract method
+problem: JAVA0018:JAVA0018 Method name '_getStaticScope' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'bMustBePresent'
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/singleton/RequestWebSingleton.java
+problem: JAVA0011:JAVA0011 Abstract class 'RequestWebSingleton' does not contain an abstract method
+problem: JAVA0018:JAVA0018 Method name '_getStaticScope' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'bMustBePresent'
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/singleton/SessionApplicationWebSingleton.java
+problem: JAVA0011:JAVA0011 Abstract class 'SessionApplicationWebSingleton' does not contain an abstract method
+problem: JAVA0018:JAVA0018 Method name '_getStaticScope' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'bCreateIfNotExisting'
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/singleton/SessionWebSingleton.java
+problem: JAVA0011:JAVA0011 Abstract class 'SessionWebSingleton' does not contain an abstract method
+problem: JAVA0018:JAVA0018 Method name '_getStaticScope' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'bCreateIfNotExisting'
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/util/RequestFieldData.java
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+path: /phloc-scopes/src/main/java/com/phloc/scopes/web/util/SessionBackedRequestFieldData.java
+problem: JAVA0018:JAVA0018 Method name '_getSessionFieldName' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0018:JAVA0018 Method name '_init' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+path: /phloc-scopes/src/test/java/com/phloc/scopes/nonweb/mgr/EScopeTest.java
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'm_aScopeRule'
+path: /phloc-scopes/src/test/java/com/phloc/scopes/nonweb/singleton/ApplicationSingletonTest.java
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'm_aScopeRule'
+problem: JAVA0160:JAVA0160 Method 'testSerialize' does not throw specified exception 'java.lang.Exception'
+path: /phloc-scopes/src/test/java/com/phloc/scopes/nonweb/singleton/GlobalSingletonTest.java
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'm_aScopeRule'
+path: /phloc-scopes/src/test/java/com/phloc/scopes/nonweb/singleton/MockApplicationSingleton.java
+problem: JAVA0118:JAVA0118 Missing javadoc: type 'MockApplicationSingleton'
+problem: JAVA0057:JAVA0057 Unnecessary default constructor 'MockApplicationSingleton'
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+path: /phloc-scopes/src/test/java/com/phloc/scopes/nonweb/singleton/MockRequestSingleton.java
+problem: JAVA0118:JAVA0118 Missing javadoc: type 'MockRequestSingleton'
+problem: JAVA0057:JAVA0057 Unnecessary default constructor 'MockRequestSingleton'
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+path: /phloc-scopes/src/test/java/com/phloc/scopes/nonweb/singleton/MockSessionApplicationSingleton.java
+problem: JAVA0118:JAVA0118 Missing javadoc: type 'MockSessionApplicationSingleton'
+problem: JAVA0234:JAVA0234 Class 'MockSessionApplicationSingleton' is Serializable but does not define serialVersionUID
+problem: JAVA0057:JAVA0057 Unnecessary default constructor 'MockSessionApplicationSingleton'
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+path: /phloc-scopes/src/test/java/com/phloc/scopes/nonweb/singleton/MockSessionSingleton.java
+problem: JAVA0118:JAVA0118 Missing javadoc: type 'MockSessionSingleton'
+problem: JAVA0234:JAVA0234 Class 'MockSessionSingleton' is Serializable but does not define serialVersionUID
+problem: JAVA0057:JAVA0057 Unnecessary default constructor 'MockSessionSingleton'
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+path: /phloc-scopes/src/test/java/com/phloc/scopes/nonweb/singleton/RequestSingletonTest.java
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'm_aScopeRule'
+problem: JAVA0160:JAVA0160 Method 'testSerialize' does not throw specified exception 'java.lang.Exception'
+path: /phloc-scopes/src/test/java/com/phloc/scopes/nonweb/singleton/SessionApplicationSingletonTest.java
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'm_aScopeRule'
+problem: JAVA0160:JAVA0160 Method 'testSerialize' does not throw specified exception 'java.lang.Exception'
+path: /phloc-scopes/src/test/java/com/phloc/scopes/nonweb/singleton/SessionSingletonTest.java
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'm_aScopeRule'
+problem: JAVA0160:JAVA0160 Method 'testSerialize' does not throw specified exception 'java.lang.Exception'
+path: /phloc-scopes/src/test/java/com/phloc/scopes/spi/AbstractScopeSPI.java
+problem: JAVA0011:JAVA0011 Abstract class 'AbstractScopeSPI' does not contain an abstract method
+problem: JAVA0014:JAVA0014 Class 'AbstractScopeSPI' with only static members has non-private constructor
+path: /phloc-scopes/src/test/java/com/phloc/scopes/spi/MockApplicationScopeSPI.java
+problem: JAVA0118:JAVA0118 Missing javadoc: type 'MockApplicationScopeSPI'
+path: /phloc-scopes/src/test/java/com/phloc/scopes/spi/MockApplicationWebScopeSPI.java
+problem: JAVA0118:JAVA0118 Missing javadoc: type 'MockApplicationWebScopeSPI'
+path: /phloc-scopes/src/test/java/com/phloc/scopes/spi/MockGlobalScopeSPI.java
+problem: JAVA0118:JAVA0118 Missing javadoc: type 'MockGlobalScopeSPI'
+path: /phloc-scopes/src/test/java/com/phloc/scopes/spi/MockGlobalWebScopeSPI.java
+problem: JAVA0118:JAVA0118 Missing javadoc: type 'MockGlobalWebScopeSPI'
+path: /phloc-scopes/src/test/java/com/phloc/scopes/spi/MockRequestScopeSPI.java
+problem: JAVA0118:JAVA0118 Missing javadoc: type 'MockRequestScopeSPI'
+path: /phloc-scopes/src/test/java/com/phloc/scopes/spi/MockRequestWebScopeSPI.java
+problem: JAVA0118:JAVA0118 Missing javadoc: type 'MockRequestWebScopeSPI'
+path: /phloc-scopes/src/test/java/com/phloc/scopes/spi/MockSessionApplicationWebScopeSPI.java
+problem: JAVA0118:JAVA0118 Missing javadoc: type 'MockSessionApplicationWebScopeSPI'
+path: /phloc-scopes/src/test/java/com/phloc/scopes/spi/MockSessionWebScopeSPI.java
+problem: JAVA0118:JAVA0118 Missing javadoc: type 'MockSessionWebScopeSPI'
+path: /phloc-scopes/src/test/java/com/phloc/scopes/spi/ScopeSPIManagerTest.java
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0076:JAVA0076 Use of magic number '6'
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0076:JAVA0076 Use of magic number '6'
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0264:JAVA0264 Integer math in long context - check for overflow
+problem: JAVA0076:JAVA0076 Use of magic number '6'
+path: /phloc-scopes/src/test/java/com/phloc/scopes/web/fileupload/AbstractFileUploadTestCase.java
+problem: JAVA0011:JAVA0011 Abstract class 'AbstractFileUploadTestCase' does not contain an abstract method
+problem: JAVA0113:JAVA0113 Incorrect javadoc: no @author tag
+path: /phloc-scopes/src/test/java/com/phloc/scopes/web/fileupload/FuncTestStreaming.java
+problem: JAVA0113:JAVA0113 Incorrect javadoc: no @author tag
+problem: JAVA0115:JAVA0115 Incorrect javadoc: no @throws or @exception tag for 'IOException'
+problem: JAVA0115:JAVA0115 Incorrect javadoc: no @throws or @exception tag for 'FileUploadException'
+problem: JAVA0076:JAVA0076 Use of magic number '16'
+problem: JAVA0076:JAVA0076 Use of magic number '16384'
+problem: JAVA0076:JAVA0076 Use of magic number '32'
+problem: JAVA0076:JAVA0076 Use of magic number '16'
+problem: JAVA0115:JAVA0115 Incorrect javadoc: no @throws or @exception tag for 'IOException'
+problem: JAVA0115:JAVA0115 Incorrect javadoc: no @throws or @exception tag for 'FileUploadException'
+problem: JAVA0076:JAVA0076 Use of magic number '11'
+problem: JAVA0115:JAVA0115 Incorrect javadoc: no @throws or @exception tag for 'IOException'
+problem: JAVA0115:JAVA0115 Incorrect javadoc: no @throws or @exception tag for 'IOException'
+problem: JAVA0115:JAVA0115 Incorrect javadoc: no @throws or @exception tag for 'FileUploadException'
+problem: JAVA0018:JAVA0018 Method name '_parseUploadToIterator' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0130:JAVA0130 Non-static method '_parseUploadToIterator' does not use instance fields
+problem: JAVA0018:JAVA0018 Method name '_parseUploadToList' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0018:JAVA0018 Method name '_parseUploadToList' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0130:JAVA0130 Non-static method '_parseUploadToList' does not use instance fields
+problem: JAVA0018:JAVA0018 Method name '_getHeader' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0018:JAVA0018 Method name '_getFooter' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0018:JAVA0018 Method name '_newShortRequest' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0018:JAVA0018 Method name '_newRequest' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0076:JAVA0076 Use of magic number '16'
+problem: JAVA0076:JAVA0076 Use of magic number '16384'
+problem: JAVA0076:JAVA0076 Use of magic number '32'
+problem: JAVA0076:JAVA0076 Use of magic number '16'
+problem: JAVA0115:JAVA0115 Incorrect javadoc: no @throws or @exception tag for 'Exception'
+path: /phloc-scopes/src/test/java/com/phloc/scopes/web/fileupload/IProgressListenerTest.java
+problem: JAVA0113:JAVA0113 Incorrect javadoc: no @author tag
+problem: JAVA0115:JAVA0115 Incorrect javadoc: no @throws or @exception tag for 'Exception'
+problem: JAVA0076:JAVA0076 Use of magic number '16384'
+problem: JAVA0018:JAVA0018 Method name '_runTest' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0130:JAVA0130 Non-static method '_runTest' does not use instance fields
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0076:JAVA0076 Use of magic number '16384'
+path: /phloc-scopes/src/test/java/com/phloc/scopes/web/fileupload/MockHttpServletRequestFactory.java
+problem: JAVA0014:JAVA0014 Class 'MockHttpServletRequestFactory' with only static members has non-private constructor
+path: /phloc-scopes/src/test/java/com/phloc/scopes/web/fileupload/MultipartStreamTest.java
+problem: JAVA0068:JAVA0068 Modifiers not declared in recommended order
+problem: JAVA0160:JAVA0160 Method 'testThreeParamConstructor' does not throw specified exception 'java.lang.Exception'
+problem: JAVA0160:JAVA0160 Method 'testTwoParamConstructor' does not throw specified exception 'java.lang.Exception'
+path: /phloc-scopes/src/test/java/com/phloc/scopes/web/fileupload/io/DiskFileItemTest.java
+problem: JAVA0113:JAVA0113 Incorrect javadoc: no @author tag
+problem: JAVA0166:JAVA0166 Generic exception 'java.lang.Exception' caught
+problem: JAVA0166:JAVA0166 Generic exception 'java.lang.Exception' caught
+problem: JAVA0166:JAVA0166 Generic exception 'java.lang.Exception' caught
+problem: JAVA0018:JAVA0018 Method name '_compareFileItems' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0130:JAVA0130 Non-static method '_compareFileItems' does not use instance fields
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'origItem'
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'newItem'
+problem: JAVA0018:JAVA0018 Method name '_compareBytes' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0130:JAVA0130 Non-static method '_compareBytes' does not use instance fields
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'text'
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'origBytes'
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'newBytes'
+problem: JAVA0018:JAVA0018 Method name '_createContentBytes' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0110:JAVA0110 Incorrect javadoc: no @return tag
+problem: JAVA0130:JAVA0130 Non-static method '_createContentBytes' does not use instance fields
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'size'
+problem: JAVA0018:JAVA0018 Method name '_createFileItem' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0110:JAVA0110 Incorrect javadoc: no @return tag
+problem: JAVA0130:JAVA0130 Non-static method '_createFileItem' does not use instance fields
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'contentBytes'
+problem: JAVA0018:JAVA0018 Method name '_serializeDeserialize' does not have required form: (<uppercase>|<lowercase>)(<uppercase>|<lowercase>|<underscore>|<digit>)*
+problem: JAVA0110:JAVA0110 Incorrect javadoc: no @return tag
+problem: JAVA0130:JAVA0130 Non-static method '_serializeDeserialize' does not use instance fields
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'target'
+problem: JAVA0166:JAVA0166 Generic exception 'java.lang.Exception' caught
+problem: JAVA0166:JAVA0166 Generic exception 'java.lang.Exception' caught
+path: /phloc-scopes/src/test/java/com/phloc/scopes/web/fileupload/servlet/FuncTestSizes.java
+problem: JAVA0113:JAVA0113 Incorrect javadoc: no @author tag
+problem: JAVA0115:JAVA0115 Incorrect javadoc: no @throws or @exception tag for 'IOException'
+problem: JAVA0115:JAVA0115 Incorrect javadoc: no @throws or @exception tag for 'FileUploadException'
+problem: JAVA0076:JAVA0076 Use of magic number '16'
+problem: JAVA0076:JAVA0076 Use of magic number '16384'
+problem: JAVA0076:JAVA0076 Use of magic number '32'
+problem: JAVA0076:JAVA0076 Use of magic number '16'
+problem: JAVA0076:JAVA0076 Use of magic number '16'
+problem: JAVA0076:JAVA0076 Use of magic number '16384'
+problem: JAVA0076:JAVA0076 Use of magic number '32'
+problem: JAVA0076:JAVA0076 Use of magic number '16'
+problem: JAVA0115:JAVA0115 Incorrect javadoc: no @throws or @exception tag for 'IOException'
+problem: JAVA0115:JAVA0115 Incorrect javadoc: no @throws or @exception tag for 'FileUploadException'
+problem: JAVA0076:JAVA0076 Use of magic number '10240'
+problem: JAVA0076:JAVA0076 Use of magic number '10240'
+problem: JAVA0076:JAVA0076 Use of magic number '10240'
+problem: JAVA0076:JAVA0076 Use of magic number '30'
+problem: JAVA0076:JAVA0076 Use of magic number '30'
+path: /phloc-scopes/src/test/java/com/phloc/scopes/web/fileupload/servlet/ServletFileUploadTest.java
+problem: JAVA0115:JAVA0115 Incorrect javadoc: no @throws or @exception tag for 'UnsupportedEncodingException'
+problem: JAVA0115:JAVA0115 Incorrect javadoc: no @throws or @exception tag for 'FileUploadException'
+problem: JAVA0115:JAVA0115 Incorrect javadoc: no @throws or @exception tag for 'UnsupportedEncodingException'
+problem: JAVA0115:JAVA0115 Incorrect javadoc: no @throws or @exception tag for 'FileUploadException'
+problem: JAVA0115:JAVA0115 Incorrect javadoc: no @throws or @exception tag for 'Exception'
+problem: JAVA0115:JAVA0115 Incorrect javadoc: no @throws or @exception tag for 'IOException'
+problem: JAVA0115:JAVA0115 Incorrect javadoc: no @throws or @exception tag for 'FileUploadException'
+path: /phloc-scopes/src/test/java/com/phloc/scopes/web/fileupload/util/FileItemHeadersImplTest.java
+problem: JAVA0160:JAVA0160 Method 'testFileItemHeaders' does not throw specified exception 'java.lang.Exception'
+problem: JAVA0177:JAVA0177 Variable declaration 'headerValueEnumeration' missing initializer
+path: /phloc-scopes/src/test/java/com/phloc/scopes/web/mgr/WebScopeSessionHelperTest.java
+problem: JAVA0118:JAVA0118 Missing javadoc: type 'MockScopeRenewalAware'
+problem: JAVA0234:JAVA0234 Class 'MockScopeRenewalAware' is Serializable but does not define serialVersionUID
+problem: JAVA0166:JAVA0166 Generic exception 'java.lang.Exception' caught
+problem: JAVA0035:JAVA0035 Missing braces in for statement
+problem: JAVA0035:JAVA0035 Missing braces in for statement
+path: /phloc-scopes/src/test/java/com/phloc/scopes/web/singleton/ApplicationWebSingletonTest.java
+problem: JAVA0160:JAVA0160 Method 'testSerialize' does not throw specified exception 'java.lang.Exception'
+path: /phloc-scopes/src/test/java/com/phloc/scopes/web/singleton/MockApplicationWebSingleton.java
+problem: JAVA0118:JAVA0118 Missing javadoc: type 'MockApplicationWebSingleton'
+problem: JAVA0057:JAVA0057 Unnecessary default constructor 'MockApplicationWebSingleton'
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+path: /phloc-scopes/src/test/java/com/phloc/scopes/web/singleton/MockRequestWebSingleton.java
+problem: JAVA0118:JAVA0118 Missing javadoc: type 'MockRequestWebSingleton'
+problem: JAVA0057:JAVA0057 Unnecessary default constructor 'MockRequestWebSingleton'
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+path: /phloc-scopes/src/test/java/com/phloc/scopes/web/singleton/MockSessionApplicationWebSingleton.java
+problem: JAVA0118:JAVA0118 Missing javadoc: type 'MockSessionApplicationWebSingleton'
+problem: JAVA0234:JAVA0234 Class 'MockSessionApplicationWebSingleton' is Serializable but does not define serialVersionUID
+problem: JAVA0057:JAVA0057 Unnecessary default constructor 'MockSessionApplicationWebSingleton'
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+path: /phloc-scopes/src/test/java/com/phloc/scopes/web/singleton/MockSessionWebSingleton.java
+problem: JAVA0118:JAVA0118 Missing javadoc: type 'MockSessionWebSingleton'
+problem: JAVA0234:JAVA0234 Class 'MockSessionWebSingleton' is Serializable but does not define serialVersionUID
+problem: JAVA0057:JAVA0057 Unnecessary default constructor 'MockSessionWebSingleton'
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+path: /phloc-scopes/src/test/java/com/phloc/scopes/web/singleton/RequestWebSingletonTest.java
+problem: JAVA0160:JAVA0160 Method 'testSerialize' does not throw specified exception 'java.lang.Exception'
+path: /phloc-scopes/src/test/java/com/phloc/scopes/web/singleton/SessionApplicationWebSingletonTest.java
+problem: JAVA0160:JAVA0160 Method 'testSerialize' does not throw specified exception 'java.lang.Exception'
+path: /phloc-scopes/src/test/java/com/phloc/scopes/web/singleton/SessionWebSingletonTest.java
+problem: JAVA0160:JAVA0160 Method 'testSerialize' does not throw specified exception 'java.lang.Exception'
