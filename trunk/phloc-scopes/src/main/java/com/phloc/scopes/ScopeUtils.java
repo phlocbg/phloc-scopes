@@ -21,6 +21,7 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.concurrent.GuardedBy;
 import javax.annotation.concurrent.ThreadSafe;
 
@@ -34,12 +35,13 @@ import org.slf4j.Logger;
 @ThreadSafe
 public final class ScopeUtils
 {
-  private static final boolean DEFAULT_DEBUG_LIFE_CYCLE = false;
-  private static final boolean DEFAULT_DEBUG_GLOBAL_SCOPE = false;
-  private static final boolean DEFAULT_DEBUG_APPLICATION_SCOPE = false;
-  private static final boolean DEFAULT_DEBUG_SESSION_SCOPE = false;
-  private static final boolean DEFAULT_DEBUG_SESSION_APPLICATION_SCOPE = false;
-  private static final boolean DEFAULT_DEBUG_REQUEST_SCOPE = false;
+  public static final boolean DEFAULT_DEBUG_LIFE_CYCLE = false;
+  public static final boolean DEFAULT_DEBUG_GLOBAL_SCOPE = false;
+  public static final boolean DEFAULT_DEBUG_APPLICATION_SCOPE = false;
+  public static final boolean DEFAULT_DEBUG_SESSION_SCOPE = false;
+  public static final boolean DEFAULT_DEBUG_SESSION_APPLICATION_SCOPE = false;
+  public static final boolean DEFAULT_DEBUG_REQUEST_SCOPE = false;
+  public static final boolean DEFAULT_DEBUG_WITH_STACK_TRACE = false;
 
   private static final ReadWriteLock s_aRWLock = new ReentrantReadWriteLock ();
   @GuardedBy ("s_aRWLock")
@@ -54,6 +56,8 @@ public final class ScopeUtils
   private static boolean s_bDebugSessionApplicationScope = DEFAULT_DEBUG_SESSION_APPLICATION_SCOPE;
   @GuardedBy ("s_aRWLock")
   private static boolean s_bDebugRequestScope = DEFAULT_DEBUG_REQUEST_SCOPE;
+  @GuardedBy ("s_aRWLock")
+  private static boolean s_bDebugWithStackTrace = DEFAULT_DEBUG_WITH_STACK_TRACE;
 
   private ScopeUtils ()
   {}
@@ -291,6 +295,43 @@ public final class ScopeUtils
   }
 
   /**
+   * Enable or disable stack traces when debugging scopes.
+   * 
+   * @param bDebugWithStackTrace
+   *        <code>true</code> to enable stack traces, <code>false</code> to
+   *        disable them. By default is is disabled.
+   */
+  public static void setDebugWithStackTrace (final boolean bDebugWithStackTrace)
+  {
+    s_aRWLock.writeLock ().lock ();
+    try
+    {
+      s_bDebugWithStackTrace = bDebugWithStackTrace;
+    }
+    finally
+    {
+      s_aRWLock.writeLock ().unlock ();
+    }
+  }
+
+  /**
+   * @return <code>true</code> if stack traces should be logged,
+   *         <code>false</code> if not. The default value is disabled.
+   */
+  public static boolean isDebugWithStackTrace ()
+  {
+    s_aRWLock.readLock ().lock ();
+    try
+    {
+      return s_bDebugWithStackTrace;
+    }
+    finally
+    {
+      s_aRWLock.readLock ().unlock ();
+    }
+  }
+
+  /**
    * This is a just a helper method to determine whether scope creation/deletion
    * issues should be logged or not.
    * 
@@ -373,5 +414,16 @@ public final class ScopeUtils
   public static boolean debugRequestScopeLifeCycle (@Nonnull final Logger aLogger)
   {
     return (isLifeCycleDebuggingEnabled () || isDebugRequestScopeEnabled ()) && aLogger.isInfoEnabled ();
+  }
+
+  /**
+   * @return An exception with the current stack trace or <code>null</code> if
+   *         {@link #isDebugWithStackTrace()} is <code>false</code>
+   * @see #isDebugWithStackTrace()
+   */
+  @Nullable
+  public static Throwable getDebugStackTrace ()
+  {
+    return isDebugWithStackTrace () ? new Exception () : null;
   }
 }

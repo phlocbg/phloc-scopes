@@ -102,7 +102,7 @@ public final class ScopeManager
 
       aGlobalScope.initScope ();
       if (ScopeUtils.debugGlobalScopeLifeCycle (s_aLogger))
-        s_aLogger.info ("Global scope '" + aGlobalScope.getID () + "' initialized!");
+        s_aLogger.info ("Global scope '" + aGlobalScope.getID () + "' initialized!", ScopeUtils.getDebugStackTrace ());
 
       // Invoke SPIs
       ScopeSPIManager.onGlobalScopeBegin (aGlobalScope);
@@ -178,7 +178,7 @@ public final class ScopeManager
 
         // done
         if (ScopeUtils.debugGlobalScopeLifeCycle (s_aLogger))
-          s_aLogger.info ("Global scope '" + sDestroyedScopeID + "' shut down!");
+          s_aLogger.info ("Global scope '" + sDestroyedScopeID + "' shut down!", ScopeUtils.getDebugStackTrace ());
       }
       else
         s_aLogger.warn ("No global scope present that could be shut down!");
