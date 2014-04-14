@@ -2,6 +2,7 @@
 = Change log =
 <wiki:comment>This content is generated. Do not modify!</wiki:comment>
 <table border="1" cellspacing="0"><thead><tr><th>Date</th><th>Action</th><th>Category</th><th>Incompatible?</th><th>Description</th></tr></thead><tbody>
+<tr border="1"><td>4/14/14</td><td colspan="4">_Release *6.2.0*_</td></tr>
 <tr border="1"><td>2/28/14</td><td colspan="4">_Release *6.1.8*_</td></tr>
 <tr><td>2/28/14</td><td>fix</td><td>tech</td><td></td><td>Improved automatic serialization handling for SessionSingleton and SessionApplicationSingleton</td></tr>
 <tr border="1"><td>2/27/14</td><td colspan="4">_Release *6.1.7*_</td></tr>
