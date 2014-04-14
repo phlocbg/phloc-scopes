@@ -8,7 +8,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>phloc-scopes</artifactId>
-  <version>6.2.1-SNAPSHOT</version>
+  <version>6.2.1</version>
   <packaging>bundle</packaging>
   <name>phloc-scopes</name>
   <url>http://repo.phloc.com/apidocs/phloc-scopes/${project.version}</url>
@@ -22,9 +22,9 @@
   </licenses>
        
   <scm>
-    <url>http://code.google.com/p/phloc-scopes/source/browse/</url>
-    <connection>scm:svn:http://phloc-scopes.googlecode.com/svn/trunk/phloc-scopes</connection>
-    <developerConnection>scm:svn:https://phloc-scopes.googlecode.com/svn/trunk/phloc-scopes</developerConnection>
+    <url>http://code.google.com/p/phloc-scopes/source/browse/tags/phloc-scopes-6.2.1</url>
+    <connection>scm:svn:http://phloc-scopes.googlecode.com/svn/tags/phloc-scopes-6.2.1</connection>
+    <developerConnection>scm:svn:https://phloc-scopes.googlecode.com/svn/tags/phloc-scopes-6.2.1</developerConnection>
   </scm>
 
   <organization>
