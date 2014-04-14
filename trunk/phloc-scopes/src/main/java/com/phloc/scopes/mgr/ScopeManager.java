@@ -28,9 +28,9 @@ import javax.annotation.concurrent.ThreadSafe;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.phloc.commons.ValueEnforcer;
 import com.phloc.commons.annotations.Nonempty;
 import com.phloc.commons.annotations.PresentForCodeCoverage;
-import com.phloc.commons.string.StringHelper;
 import com.phloc.scopes.MetaScopeFactory;
 import com.phloc.scopes.ScopeUtils;
 import com.phloc.scopes.domain.IApplicationScope;
@@ -90,8 +90,7 @@ public final class ScopeManager
    */
   public static void setGlobalScope (@Nonnull final IGlobalScope aGlobalScope)
   {
-    if (aGlobalScope == null)
-      throw new NullPointerException ("globalScope");
+    ValueEnforcer.notNull (aGlobalScope, "GlobalScope");
 
     s_aGlobalLock.lock ();
     try
@@ -358,8 +357,7 @@ public final class ScopeManager
    */
   public static void destroySessionScope (@Nonnull final ISessionScope aSessionScope)
   {
-    if (aSessionScope == null)
-      throw new NullPointerException ("sessionScope");
+    ValueEnforcer.notNull (aSessionScope, "SessionScope");
 
     ScopeSessionManager.getInstance ().onScopeEnd (aSessionScope);
   }
@@ -409,10 +407,8 @@ public final class ScopeManager
   public static void setAndInitRequestScope (@Nonnull @Nonempty final String sApplicationID,
                                              @Nonnull final IRequestScope aRequestScope)
   {
-    if (StringHelper.hasNoText (sApplicationID))
-      throw new IllegalArgumentException ("applicationID");
-    if (aRequestScope == null)
-      throw new NullPointerException ("requestScope");
+    ValueEnforcer.notEmpty (sApplicationID, "ApplicationID");
+    ValueEnforcer.notNull (aRequestScope, "RequestScope");
     if (!isGlobalScopePresent ())
       throw new IllegalStateException ("No global context present! May be the global context listener is not installed?");
 

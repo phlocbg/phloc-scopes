@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.phloc.commons.annotations.Nonempty;
+import com.phloc.commons.lang.CGStringHelper;
 import com.phloc.scopes.AbstractMapBasedScope;
 import com.phloc.scopes.ScopeUtils;
 import com.phloc.scopes.domain.IApplicationScope;
@@ -49,7 +50,10 @@ public class ApplicationScope extends AbstractMapBasedScope implements IApplicat
     super (sScopeID);
 
     if (ScopeUtils.debugApplicationScopeLifeCycle (s_aLogger))
-      s_aLogger.info ("Created application scope '" + sScopeID + "'");
+      s_aLogger.info ("Created application scope '" +
+                      sScopeID +
+                      "' of class " +
+                      CGStringHelper.getClassLocalName (this));
   }
 
   public void initScope ()
@@ -59,6 +63,9 @@ public class ApplicationScope extends AbstractMapBasedScope implements IApplicat
   protected void postDestroy ()
   {
     if (ScopeUtils.debugApplicationScopeLifeCycle (s_aLogger))
-      s_aLogger.info ("Destroyed application scope '" + getID () + "'");
+      s_aLogger.info ("Destroyed application scope '" +
+                      getID () +
+                      "' of class " +
+                      CGStringHelper.getClassLocalName (this));
   }
 }

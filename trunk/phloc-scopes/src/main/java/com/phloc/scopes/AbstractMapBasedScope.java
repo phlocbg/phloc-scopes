@@ -27,6 +27,7 @@ import javax.annotation.concurrent.ThreadSafe;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.phloc.commons.ValueEnforcer;
 import com.phloc.commons.annotations.Nonempty;
 import com.phloc.commons.annotations.OverrideOnDemand;
 import com.phloc.commons.annotations.ReturnsMutableCopy;
@@ -35,7 +36,6 @@ import com.phloc.commons.callback.INonThrowingCallableWithParameter;
 import com.phloc.commons.callback.INonThrowingRunnableWithParameter;
 import com.phloc.commons.collections.attrs.MapBasedAttributeContainerThreadSafe;
 import com.phloc.commons.hash.HashCodeGenerator;
-import com.phloc.commons.string.StringHelper;
 import com.phloc.commons.string.ToStringGenerator;
 
 /**
@@ -56,9 +56,7 @@ public abstract class AbstractMapBasedScope extends MapBasedAttributeContainerTh
 
   public AbstractMapBasedScope (@Nonnull @Nonempty final String sScopeID)
   {
-    if (StringHelper.hasNoText (sScopeID))
-      throw new IllegalArgumentException ("scopeID");
-    m_sScopeID = sScopeID;
+    m_sScopeID = ValueEnforcer.notEmpty (sScopeID, "ScopeID");
   }
 
   @Nonnull
@@ -173,8 +171,7 @@ public abstract class AbstractMapBasedScope extends MapBasedAttributeContainerTh
   @Nullable
   public final <T> T runAtomic (@Nonnull final INonThrowingCallableWithParameter <T, IScope> aCallable)
   {
-    if (aCallable == null)
-      throw new NullPointerException ("callable");
+    ValueEnforcer.notNull (aCallable, "Callable");
 
     m_aRWLock.writeLock ().lock ();
     try

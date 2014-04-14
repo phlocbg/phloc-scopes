@@ -25,10 +25,11 @@ import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.phloc.commons.ValueEnforcer;
 import com.phloc.commons.annotations.Nonempty;
 import com.phloc.commons.collections.ContainerHelper;
 import com.phloc.commons.equals.EqualsUtils;
-import com.phloc.commons.string.StringHelper;
+import com.phloc.commons.lang.CGStringHelper;
 import com.phloc.commons.string.ToStringGenerator;
 import com.phloc.scopes.AbstractMapBasedScope;
 import com.phloc.scopes.ScopeUtils;
@@ -47,13 +48,11 @@ public class RequestScope extends AbstractMapBasedScope implements IRequestScope
   public RequestScope (@Nonnull @Nonempty final String sScopeID, @Nonnull @Nonempty final String sSessionID)
   {
     super (sScopeID);
-    if (StringHelper.hasNoText (sSessionID))
-      throw new IllegalArgumentException ("sessionID");
-    m_sSessionID = sSessionID;
+    m_sSessionID = ValueEnforcer.notEmpty (sSessionID, "SessionID");
 
     // done initialization
     if (ScopeUtils.debugRequestScopeLifeCycle (s_aLogger))
-      s_aLogger.info ("Created request scope '" + sScopeID + "'");
+      s_aLogger.info ("Created request scope '" + sScopeID + "' of class " + CGStringHelper.getClassLocalName (this));
   }
 
   @Nonnull
@@ -77,7 +76,7 @@ public class RequestScope extends AbstractMapBasedScope implements IRequestScope
   protected void postDestroy ()
   {
     if (ScopeUtils.debugRequestScopeLifeCycle (s_aLogger))
-      s_aLogger.info ("Destroyed request scope '" + getID () + "'");
+      s_aLogger.info ("Destroyed request scope '" + getID () + "' of class " + CGStringHelper.getClassLocalName (this));
   }
 
   @Nullable

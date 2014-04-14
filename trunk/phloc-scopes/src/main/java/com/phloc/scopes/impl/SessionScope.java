@@ -28,11 +28,12 @@ import javax.annotation.concurrent.ThreadSafe;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.phloc.commons.ValueEnforcer;
 import com.phloc.commons.annotations.Nonempty;
 import com.phloc.commons.annotations.ReturnsMutableCopy;
 import com.phloc.commons.collections.ContainerHelper;
+import com.phloc.commons.lang.CGStringHelper;
 import com.phloc.commons.state.EContinue;
-import com.phloc.commons.string.StringHelper;
 import com.phloc.commons.string.ToStringGenerator;
 import com.phloc.scopes.AbstractMapBasedScope;
 import com.phloc.scopes.MetaScopeFactory;
@@ -59,7 +60,7 @@ public class SessionScope extends AbstractMapBasedScope implements ISessionScope
 
     // Sessions are always displayed to see what's happening
     if (ScopeUtils.debugSessionScopeLifeCycle (s_aLogger))
-      s_aLogger.info ("Created session scope '" + getID () + "'");
+      s_aLogger.info ("Created session scope '" + getID () + "' of class " + CGStringHelper.getClassLocalName (this));
   }
 
   public void initScope ()
@@ -91,7 +92,7 @@ public class SessionScope extends AbstractMapBasedScope implements ISessionScope
   protected void postDestroy ()
   {
     if (ScopeUtils.debugSessionScopeLifeCycle (s_aLogger))
-      s_aLogger.info ("Destroyed session scope '" + getID () + "'");
+      s_aLogger.info ("Destroyed session scope '" + getID () + "' of class " + CGStringHelper.getClassLocalName (this));
   }
 
   @Nonnull
@@ -114,8 +115,7 @@ public class SessionScope extends AbstractMapBasedScope implements ISessionScope
   public ISessionApplicationScope getSessionApplicationScope (@Nonnull @Nonempty final String sApplicationID,
                                                               final boolean bCreateIfNotExisting)
   {
-    if (StringHelper.hasNoText (sApplicationID))
-      throw new IllegalArgumentException ("applicationID");
+    ValueEnforcer.notEmpty (sApplicationID, "ApplicationID");
 
     // To make the ID unique, prepend the application ID with this scope ID
     final String sAppScopeID = getID () + '.' + sApplicationID;
@@ -161,10 +161,8 @@ public class SessionScope extends AbstractMapBasedScope implements ISessionScope
   public void restoreSessionApplicationScope (@Nonnull @Nonempty final String sScopeID,
                                               @Nonnull final ISessionApplicationScope aScope)
   {
-    if (StringHelper.hasNoText (sScopeID))
-      throw new IllegalArgumentException ("applicationID");
-    if (aScope == null)
-      throw new NullPointerException ("scope");
+    ValueEnforcer.notEmpty (sScopeID, "ScopeID");
+    ValueEnforcer.notNull (aScope, "Scope");
 
     m_aRWLock.writeLock ().lock ();
     try
