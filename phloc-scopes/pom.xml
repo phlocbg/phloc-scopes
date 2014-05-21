@@ -27,7 +27,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>phloc-scopes</artifactId>
-  <version>6.2.2-SNAPSHOT</version>
+  <version>6.3.0</version>
   <packaging>bundle</packaging>
   <name>phloc-scopes</name>
   <description>Library for handling scopes in a generic way</description>
@@ -42,9 +42,9 @@
   </licenses>
        
   <scm>
-    <url>http://code.google.com/p/phloc-scopes/source/browse/</url>
-    <connection>scm:svn:http://phloc-scopes.googlecode.com/svn/trunk/phloc-scopes</connection>
-    <developerConnection>scm:svn:https://phloc-scopes.googlecode.com/svn/trunk/phloc-scopes</developerConnection>
+    <url>http://code.google.com/p/phloc-scopes/source/browse/tags/phloc-scopes-6.3.0</url>
+    <connection>scm:svn:http://phloc-scopes.googlecode.com/svn/tags/phloc-scopes-6.3.0</connection>
+    <developerConnection>scm:svn:https://phloc-scopes.googlecode.com/svn/tags/phloc-scopes-6.3.0</developerConnection>
   </scm>
 
   <organization>
