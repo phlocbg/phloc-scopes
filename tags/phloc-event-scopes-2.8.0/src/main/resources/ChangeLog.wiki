@@ -1,0 +1,29 @@
+#summary Change log of phloc-events
+= Change log =
+<wiki:comment>This content is generated. Do not modify!</wiki:comment>
+<table border="1" cellspacing="0"><thead><tr><th>Date</th><th>Action</th><th>Category</th><th>Incompatible?</th><th>Description</th></tr></thead><tbody>
+<tr border="1"><td>6/16/14</td><td colspan="4">_Release *2.8.0*_</td></tr>
+<tr><td>6/16/14</td><td>update</td><td>tech</td><td></td><td>Prepared for Maven central deployment</td></tr>
+<tr border="1"><td>6/16/14</td><td colspan="4">_Release *2.7.9*_</td></tr>
+<tr><td>6/16/14</td><td>update</td><td>tech</td><td></td><td>Avoiding IllegalArgumentException when acquiring an optional scope that is not available.</td></tr>
+<tr border="1"><td>1/2/14</td><td colspan="4">_Release *2.7.8*_</td></tr>
+<tr><td>1/2/14</td><td>update</td><td>tech</td><td></td><td>Updated to [http://code.google.com/p/phloc-commons phloc-commons] 4.1.0</td></tr>
+<tr border="1"><td>6/3/13</td><td colspan="4">_Release *2.7.7*_</td></tr>
+<tr><td>6/3/13</td><td>update</td><td>tech</td><td></td><td>Prepared for OSS release</td></tr>
+<tr border="1"><td>4/3/13</td><td colspan="4">_Release *2.7.6*_</td></tr>
+<tr><td>9/10/12</td><td>add</td><td>api</td><td></td><td>Added class EventObserverQueue(SingleElement|WeakSet)</td></tr>
+<tr><td>9/10/12</td><td>remove</td><td>api</td><td></td><td>Removed classes EventObserverQueue(Set|List|FactoryNewInstance)</td></tr>
+<tr border="1"><td>9/6/12</td><td colspan="4">_Release *2.7.5*_</td></tr>
+<tr border="1"><td>6/5/12</td><td colspan="4">_Release *2.7.2*_</td></tr>
+<tr><td>6/5/12</td><td>change</td><td>api</td><td></td><td>Changed IEventObserverQueue API to use a getAllObservers method instead of Iterable</td></tr>
+<tr border="1"><td>3/22/12</td><td colspan="4">_Release *2.7.1*_</td></tr>
+<tr><td>3/22/12</td><td>change</td><td>api</td><td></td><td>Updated to [http://code.google.com/p/phloc-scopes phloc-scopes] 3.5.0</td></tr>
+<tr border="1"><td>3/20/12</td><td colspan="4">_Release *2.7.0*_</td></tr>
+<tr><td>3/19/12</td><td>change</td><td>api</td><td>*yes*</td><td>Inverted the dependency between [http://code.google.com/p/phloc-scopes phloc-scopes] and [http://code.google.com/p/phloc-commons phloc-events]</td></tr>
+<tr border="1"><td>3/14/12</td><td colspan="4">_Release *2.6.0*_</td></tr>
+<tr><td>3/14/12</td><td>change</td><td>api</td><td>*yes*</td><td>IEventObserverQueueFactory, ISynchronousEventDispatcherFactory and IAsynchronousEventDispatcherFactory now inherits from IFactory</td></tr>
+<tr><td>3/14/12</td><td>change</td><td>api</td><td>*yes*</td><td>Made DefaultEventObserverQueueFactory final and a singleton</td></tr>
+<tr><td>3/14/12</td><td>change</td><td>api</td><td>*yes*</td><td>Made all static creation methods from the `*`EventHelper classes public</td></tr>
+<tr border="1"><td>1/21/12</td><td colspan="4">_Release *2.5.2*_</td></tr>
+<tr border="1"><td>10/6/11</td><td colspan="4">_Release *2.5.1*_</td></tr>
+</tbody></table>
