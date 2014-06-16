@@ -62,7 +62,8 @@ public enum EScope
    *        if <code>false</code> and the scope is not existing,
    *        <code>null</code> will be returned. This parameter is only used in
    *        application scopes.
-   * @return The matching IScope.
+   * @return The matching {@link IScope} or <code>null</code> if
+   *         bCreateIfNotExisting is <code>false</code> and no scope is present
    * @throws IllegalArgumentException
    *         If an illegal enumeration value is passed.
    */
@@ -72,7 +73,7 @@ public enum EScope
     switch (eScope)
     {
       case GLOBAL:
-        return ScopeManager.getGlobalScope ();
+        return bCreateIfNotExisting ? ScopeManager.getGlobalScope () : ScopeManager.getGlobalScopeOrNull ();
       case APPLICATION:
         return ScopeManager.getApplicationScope (bCreateIfNotExisting);
       case SESSION:
@@ -80,7 +81,7 @@ public enum EScope
       case SESSION_APPLICATION:
         return ScopeManager.getSessionApplicationScope (bCreateIfNotExisting);
       case REQUEST:
-        return ScopeManager.getRequestScope ();
+        return bCreateIfNotExisting ? ScopeManager.getRequestScope () : ScopeManager.getRequestScopeOrNull ();
       default:
         throw new IllegalArgumentException ("Unknown scope: " + eScope);
     }
