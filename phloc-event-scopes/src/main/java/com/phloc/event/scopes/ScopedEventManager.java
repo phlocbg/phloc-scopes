@@ -52,8 +52,13 @@ public final class ScopedEventManager
     {
       return eScope.getScope (bCreateIfNotExisting);
     }
-    catch (final IllegalArgumentException ex)
+    catch (final RuntimeException ex)
     {
+      if (bCreateIfNotExisting)
+      {
+        // Scope was required - rethrow
+        throw ex;
+      }
       return null;
     }
   }
