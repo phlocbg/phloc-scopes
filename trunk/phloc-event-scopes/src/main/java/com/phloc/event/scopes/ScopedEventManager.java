@@ -23,6 +23,7 @@ import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.phloc.commons.ValueEnforcer;
 import com.phloc.commons.state.EChange;
 import com.phloc.event.IEvent;
 import com.phloc.event.IEventObserver;
@@ -45,10 +46,22 @@ public final class ScopedEventManager
   {}
 
   @Nullable
+  private static IScope _getScope (@Nonnull final EScope eScope, final boolean bCreateIfNotExisting)
+  {
+    try
+    {
+      return eScope.getScope (bCreateIfNotExisting);
+    }
+    catch (final IllegalArgumentException ex)
+    {
+      return null;
+    }
+  }
+
+  @Nullable
   private static MainEventManager _getEventMgr (@Nonnull final IScope aScope)
   {
-    if (aScope == null)
-      throw new NullPointerException ("scope");
+    ValueEnforcer.notNull (aScope, "Scope");
 
     return aScope.getCastedAttribute (ATTR_EVENT_MANAGER);
   }
@@ -56,8 +69,7 @@ public final class ScopedEventManager
   @Nonnull
   private static MainEventManager _getOrCreateEventMgr (@Nonnull final IScope aScope)
   {
-    if (aScope == null)
-      throw new NullPointerException ("scope");
+    ValueEnforcer.notNull (aScope, "Scope");
 
     // Does the scope already contain an event manager?
     MainEventManager aEventMgr = _getEventMgr (aScope);
@@ -75,11 +87,11 @@ public final class ScopedEventManager
   @Nonnull
   public static EChange registerObserver (@Nonnull final EScope eScope, final IEventObserver aObserver)
   {
-    IScope aScope = eScope.getScope (false);
+    IScope aScope = _getScope (eScope, false);
     if (aScope == null)
     {
       s_aLogger.warn ("Creating scope of type " + eScope + " because of event observer registration");
-      aScope = eScope.getScope ();
+      aScope = _getScope (eScope, true);
     }
     return registerObserver (aScope, aObserver);
   }
@@ -93,7 +105,7 @@ public final class ScopedEventManager
   @Nonnull
   public static EChange unregisterObserver (@Nonnull final EScope eScope, @Nonnull final IEventObserver aObserver)
   {
-    final IScope aScope = eScope.getScope (false);
+    final IScope aScope = _getScope (eScope, false);
     if (aScope != null)
     {
       final MainEventManager aEventMgr = _getEventMgr (aScope);
@@ -130,7 +142,7 @@ public final class ScopedEventManager
     for (final EScope eCurrentScope : EScope.values ())
     {
       // get current instance of scope
-      final IScope aScope = eCurrentScope.getScope (false);
+      final IScope aScope = _getScope (eCurrentScope, false);
       if (aScope != null)
       {
         // get event manager (may be null)
