@@ -63,6 +63,15 @@ public interface IRequestScope extends IScope
   @Nullable
   List <String> getAttributeValues (@Nullable String sName);
 
+  /**
+   * Get a list of all attribute values with the same name.
+   * 
+   * @param sName
+   *        The name of the attribute to query.
+   * @param aDefault
+   *        The default value to be returned, if no such attribute is present.
+   * @return <code>adefault</code> if no such attribute value exists
+   */
   @Nullable
   List <String> getAttributeValues (@Nullable String sName, @Nullable List <String> aDefault);
 
