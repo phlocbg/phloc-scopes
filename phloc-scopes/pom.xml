@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright (C) 2006-2014 phloc systems
+    Copyright (C) 2006-2015 phloc systems
     http://www.phloc.com
     office[at]phloc[dot]com
 
@@ -22,7 +22,7 @@
   <parent>
     <groupId>com.phloc</groupId>
     <artifactId>parent-pom</artifactId>
-    <version>23.2</version>
+    <version>24.0</version>
     <relativePath>../phloc-parent-pom/pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
@@ -31,7 +31,7 @@
   <packaging>bundle</packaging>
   <name>phloc-scopes</name>
   <description>Library for handling scopes in a generic way</description>
-  <url>http://repo.phloc.com/apidocs/phloc-scopes/${project.version}</url>
+  <url>https://github.com/phlocbg/phloc-scopes/tree/master/phloc-scopes</url>
      
   <licenses>
     <license>
@@ -42,12 +42,13 @@
   </licenses>
        
   <scm>
-    <url>http://code.google.com/p/phloc-scopes/source/browse/</url>
-    <connection>scm:svn:http://phloc-scopes.googlecode.com/svn/trunk/phloc-scopes</connection>
-    <developerConnection>scm:svn:https://phloc-scopes.googlecode.com/svn/trunk/phloc-scopes</developerConnection>
-  </scm>
+    <connection>scm:git:https://github.com/phlocbg/phloc-scopes</connection>
+    <developerConnection>scm:git:https://github.com/phlocbg/phloc-scopes</developerConnection>
+  <url>http://github.com/phlocbg/phloc-scopes</url>
+    <tag>HEAD</tag>
 
-  <organization>
+</scm>
+<organization>
     <name>phloc systems</name>
     <url>http://www.phloc.com</url>
   </organization>
@@ -66,9 +67,8 @@
     <dependency>
       <groupId>com.phloc</groupId>
       <artifactId>phloc-commons</artifactId>
-      <version>4.3.6</version>
+      <version>4.4.0</version>
     </dependency>
-
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
