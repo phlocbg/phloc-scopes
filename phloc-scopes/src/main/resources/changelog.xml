@@ -20,6 +20,15 @@
 -->
 <changelog xmlns="http://www.phloc.com/ns/changelog/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.phloc.com/ns/changelog/1.0 schemas/changelog-1.0.xsd" version="1.0" component="phloc-scopes">
+
+
+  <release date="2020-03-24" version="6.4.1" />
+  <entry date="2020-03-24" category="tech" action="change">
+    <change>
+      <text locale="en">Improve scope cleanup on destroyAllSessions (SCP-1)</text>
+    </change>
+  </entry>
+  <release date="2015-10-28" version="6.4.0" />
   <release date="2014-05-21" version="6.3.0" />
   <entry date="2014-05-21" category="tech" action="change">
     <change>

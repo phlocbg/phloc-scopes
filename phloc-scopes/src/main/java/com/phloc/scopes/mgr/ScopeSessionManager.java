@@ -20,6 +20,7 @@ package com.phloc.scopes.mgr;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -60,9 +61,9 @@ public class ScopeSessionManager extends GlobalSingleton
 {
   public static final boolean DEFAULT_DESTROY_ALL_SESSIONS_ON_SCOPE_END = true;
   public static final boolean DEFAULT_END_ALL_SESSIONS_ON_SCOPE_END = true;
-  private static final Logger s_aLogger = LoggerFactory.getLogger (ScopeSessionManager.class);
+  private static final Logger LOG = LoggerFactory.getLogger (ScopeSessionManager.class);
   private static final IStatisticsHandlerCounter s_aUniqueSessionCounter = StatisticsManager.getCounterHandler (ScopeSessionManager.class.getName () +
-                                                                                                                "$UNIQUE_SESSIONS");
+                                                                                                                "$UNIQUE_SESSIONS"); //$NON-NLS-1$
 
   private static volatile ScopeSessionManager s_aInstance = null;
 
@@ -104,14 +105,14 @@ public class ScopeSessionManager extends GlobalSingleton
     if (StringHelper.hasNoText (sScopeID))
       return null;
 
-    m_aRWLock.readLock ().lock ();
+    this.m_aRWLock.readLock ().lock ();
     try
     {
-      return m_aSessionScopes.get (sScopeID);
+      return this.m_aSessionScopes.get (sScopeID);
     }
     finally
     {
-      m_aRWLock.readLock ().unlock ();
+      this.m_aRWLock.readLock ().unlock ();
     }
   }
 
@@ -126,18 +127,18 @@ public class ScopeSessionManager extends GlobalSingleton
    */
   public void onScopeBegin (@Nonnull final ISessionScope aSessionScope)
   {
-    ValueEnforcer.notNull (aSessionScope, "SessionScope");
+    ValueEnforcer.notNull (aSessionScope, "SessionScope"); //$NON-NLS-1$
 
     final String sSessionID = aSessionScope.getID ();
-    m_aRWLock.writeLock ().lock ();
+    this.m_aRWLock.writeLock ().lock ();
     try
     {
-      if (m_aSessionScopes.put (sSessionID, aSessionScope) != null)
-        s_aLogger.error ("Overwriting session scope with ID '" + sSessionID + "'");
+      if (this.m_aSessionScopes.put (sSessionID, aSessionScope) != null)
+        LOG.error ("Overwriting session scope with ID '" + sSessionID + "'"); //$NON-NLS-1$ //$NON-NLS-2$
     }
     finally
     {
-      m_aRWLock.writeLock ().unlock ();
+      this.m_aRWLock.writeLock ().unlock ();
     }
 
     // Init the scope after it was registered
@@ -160,7 +161,7 @@ public class ScopeSessionManager extends GlobalSingleton
    */
   public void onScopeEnd (@Nonnull final ISessionScope aSessionScope)
   {
-    ValueEnforcer.notNull (aSessionScope, "SessionScope");
+    ValueEnforcer.notNull (aSessionScope, "SessionScope"); //$NON-NLS-1$
 
     // Only handle scopes that are not yet destructed
     if (aSessionScope.isValid ())
@@ -168,28 +169,28 @@ public class ScopeSessionManager extends GlobalSingleton
       final String sSessionID = aSessionScope.getID ();
 
       boolean bCanDestroyScope = true;
-      m_aRWLock.writeLock ().lock ();
+      this.m_aRWLock.writeLock ().lock ();
       try
       {
         // Only if we're not just in destruction of exactly this session
-        if (m_aSessionsInDestruction.add (sSessionID))
+        if (this.m_aSessionsInDestruction.add (sSessionID))
         {
           // Remove from map
-          final ISessionScope aRemovedScope = m_aSessionScopes.remove (sSessionID);
+          final ISessionScope aRemovedScope = this.m_aSessionScopes.remove (sSessionID);
           if (aRemovedScope != aSessionScope)
           {
-            s_aLogger.error ("Ending an unknown session with ID '" + sSessionID + "'");
-            s_aLogger.error ("  Scope to be removed: " + aSessionScope);
-            s_aLogger.error ("  Removed scope:       " + aRemovedScope);
+            LOG.error ("Ending an unknown session with ID '" + sSessionID + "'"); //$NON-NLS-1$ //$NON-NLS-2$
+            LOG.error ("  Scope to be removed: " + aSessionScope); //$NON-NLS-1$
+            LOG.error ("  Removed scope:       " + aRemovedScope); //$NON-NLS-1$
           }
           bCanDestroyScope = true;
         }
         else
-          s_aLogger.info ("Already destructing session '" + sSessionID + "'");
+          LOG.info ("Already destructing session '" + sSessionID + "'"); //$NON-NLS-1$ //$NON-NLS-2$
       }
       finally
       {
-        m_aRWLock.writeLock ().unlock ();
+        this.m_aRWLock.writeLock ().unlock ();
       }
 
       if (bCanDestroyScope)
@@ -206,14 +207,14 @@ public class ScopeSessionManager extends GlobalSingleton
         finally
         {
           // Remove from "in destruction" list
-          m_aRWLock.writeLock ().lock ();
+          this.m_aRWLock.writeLock ().lock ();
           try
           {
-            m_aSessionsInDestruction.remove (sSessionID);
+            this.m_aSessionsInDestruction.remove (sSessionID);
           }
           finally
           {
-            m_aRWLock.writeLock ().unlock ();
+            this.m_aRWLock.writeLock ().unlock ();
           }
         }
       }
@@ -226,14 +227,14 @@ public class ScopeSessionManager extends GlobalSingleton
    */
   public boolean containsAnySession ()
   {
-    m_aRWLock.readLock ().lock ();
+    this.m_aRWLock.readLock ().lock ();
     try
     {
-      return !m_aSessionScopes.isEmpty ();
+      return !this.m_aSessionScopes.isEmpty ();
     }
     finally
     {
-      m_aRWLock.readLock ().unlock ();
+      this.m_aRWLock.readLock ().unlock ();
     }
   }
 
@@ -243,14 +244,14 @@ public class ScopeSessionManager extends GlobalSingleton
   @Nonnegative
   public int getSessionCount ()
   {
-    m_aRWLock.readLock ().lock ();
+    this.m_aRWLock.readLock ().lock ();
     try
     {
-      return m_aSessionScopes.size ();
+      return this.m_aSessionScopes.size ();
     }
     finally
     {
-      m_aRWLock.readLock ().unlock ();
+      this.m_aRWLock.readLock ().unlock ();
     }
   }
 
@@ -262,33 +263,40 @@ public class ScopeSessionManager extends GlobalSingleton
   @ReturnsMutableCopy
   public Collection <? extends ISessionScope> getAllSessionScopes ()
   {
-    m_aRWLock.readLock ().lock ();
+    this.m_aRWLock.readLock ().lock ();
     try
     {
-      return ContainerHelper.newList (m_aSessionScopes.values ());
+      return ContainerHelper.newList (this.m_aSessionScopes.values ());
     }
     finally
     {
-      m_aRWLock.readLock ().unlock ();
+      this.m_aRWLock.readLock ().unlock ();
     }
   }
 
-  private void _checkIfAnySessionsExist ()
+  private void checkIfAnySessionsExist (final Collection <? extends ISessionScope> aScopes)
   {
     if (containsAnySession ())
     {
-      m_aRWLock.writeLock ().lock ();
+      final List <String> aResidual = ContainerHelper.newList ();
+      this.m_aRWLock.writeLock ().lock ();
       try
       {
-        s_aLogger.error ("The following " +
-                         m_aSessionScopes.size () +
-                         " session scopes are left over: " +
-                         m_aSessionScopes);
-        m_aSessionScopes.clear ();
+        for (final ISessionScope aScope : aScopes)
+        {
+          if (this.m_aSessionScopes.remove (aScope.getID ()) != null)
+          {
+            aResidual.add (aScope.getID ());
+          }
+        }
       }
       finally
       {
-        m_aRWLock.writeLock ().unlock ();
+        this.m_aRWLock.writeLock ().unlock ();
+        if (!aResidual.isEmpty ())
+        {
+          LOG.error ("Removed {} left over session scopes: {}", String.valueOf (aResidual.size ()), aResidual); //$NON-NLS-1$
+        }
       }
     }
   }
@@ -301,7 +309,9 @@ public class ScopeSessionManager extends GlobalSingleton
   {
     // destroy all session scopes (make a copy, because we're invalidating
     // the sessions internally!)
-    for (final ISessionScope aSessionScope : getAllSessionScopes ())
+    final Collection <? extends ISessionScope> aAllScopes = getAllSessionScopes ();
+
+    for (final ISessionScope aSessionScope : aAllScopes)
     {
       // Unfortunately we need a special handling here
       if (aSessionScope.selfDestruct ().isContinue ())
@@ -313,84 +323,84 @@ public class ScopeSessionManager extends GlobalSingleton
     }
 
     // Sanity check in case something went wrong
-    _checkIfAnySessionsExist ();
+    checkIfAnySessionsExist (aAllScopes);
   }
 
   /**
    * Remove all existing session scopes, and invoke the destruction methods on
    * the contained objects.
    */
-  private void _endAllSessionScopes ()
+  private void endAllSessionScopes ()
   {
     // end all session scopes without destroying the underlying sessions (make a
     // copy, because we're invalidating the sessions!)
-    for (final ISessionScope aSessionScope : getAllSessionScopes ())
+    final Collection <? extends ISessionScope> aAllScopes = getAllSessionScopes ();
+    for (final ISessionScope aSessionScope : aAllScopes)
     {
       // Remove from map
       onScopeEnd (aSessionScope);
     }
-
     // Sanity check in case something went wrong
-    _checkIfAnySessionsExist ();
+    checkIfAnySessionsExist (aAllScopes);
   }
 
   public boolean isDestroyAllSessionsOnScopeEnd ()
   {
-    m_aRWLock.readLock ().lock ();
+    this.m_aRWLock.readLock ().lock ();
     try
     {
-      return m_bDestroyAllSessionsOnScopeEnd;
+      return this.m_bDestroyAllSessionsOnScopeEnd;
     }
     finally
     {
-      m_aRWLock.readLock ().unlock ();
+      this.m_aRWLock.readLock ().unlock ();
     }
   }
 
   @Nonnull
   public EChange setDestroyAllSessionsOnScopeEnd (final boolean bDestroyAllSessionsOnScopeEnd)
   {
-    m_aRWLock.writeLock ().lock ();
+    this.m_aRWLock.writeLock ().lock ();
     try
     {
-      if (m_bDestroyAllSessionsOnScopeEnd == bDestroyAllSessionsOnScopeEnd)
+      if (this.m_bDestroyAllSessionsOnScopeEnd == bDestroyAllSessionsOnScopeEnd)
         return EChange.UNCHANGED;
-      m_bDestroyAllSessionsOnScopeEnd = bDestroyAllSessionsOnScopeEnd;
+      this.m_bDestroyAllSessionsOnScopeEnd = bDestroyAllSessionsOnScopeEnd;
       return EChange.CHANGED;
     }
     finally
     {
-      m_aRWLock.writeLock ().unlock ();
+      this.m_aRWLock.writeLock ().unlock ();
     }
   }
 
   public boolean isEndAllSessionsOnScopeEnd ()
   {
-    m_aRWLock.readLock ().lock ();
+    this.m_aRWLock.readLock ().lock ();
     try
     {
-      return m_bEndAllSessionsOnScopeEnd;
+      return this.m_bEndAllSessionsOnScopeEnd;
     }
     finally
     {
-      m_aRWLock.readLock ().unlock ();
+      this.m_aRWLock.readLock ().unlock ();
     }
   }
 
   @Nonnull
   public EChange setEndAllSessionsOnScopeEnd (final boolean bEndAllSessionsOnScopeEnd)
   {
-    m_aRWLock.writeLock ().lock ();
+    this.m_aRWLock.writeLock ().lock ();
     try
     {
-      if (m_bEndAllSessionsOnScopeEnd == bEndAllSessionsOnScopeEnd)
+      if (this.m_bEndAllSessionsOnScopeEnd == bEndAllSessionsOnScopeEnd)
         return EChange.UNCHANGED;
-      m_bEndAllSessionsOnScopeEnd = bEndAllSessionsOnScopeEnd;
+      this.m_bEndAllSessionsOnScopeEnd = bEndAllSessionsOnScopeEnd;
       return EChange.CHANGED;
     }
     finally
     {
-      m_aRWLock.writeLock ().unlock ();
+      this.m_aRWLock.writeLock ().unlock ();
     }
   }
 
@@ -402,7 +412,7 @@ public class ScopeSessionManager extends GlobalSingleton
       destroyAllSessions ();
     else
       if (isEndAllSessionsOnScopeEnd ())
-        _endAllSessionScopes ();
+        endAllSessionScopes ();
     s_aInstance = null;
   }
 }
