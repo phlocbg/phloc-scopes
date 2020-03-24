@@ -31,13 +31,13 @@ import com.phloc.scopes.mgr.ScopeManager;
  * The global scope is identical for web scope and non-web scope applications.
  * 
  * @see com.phloc.scopes.mgr.EScope#GLOBAL
- * @author Philip Helger
+ * @author Boris Gregorcic
  */
 public abstract class GlobalSingleton extends AbstractSingleton
 {
   protected GlobalSingleton ()
   {
-    super ("getGlobalSingleton");
+    super ("getGlobalSingleton"); //$NON-NLS-1$
   }
 
   /**
@@ -56,6 +56,8 @@ public abstract class GlobalSingleton extends AbstractSingleton
    * Get the singleton object in the current global scope, using the passed
    * class. If the singleton is not yet instantiated, a new instance is created.
    * 
+   * @param <T>
+   *        The type of the singleton class
    * @param aClass
    *        The class to be used. May not be <code>null</code>. The class must
    *        be public as needs to have a public no-argument constructor.
@@ -71,6 +73,8 @@ public abstract class GlobalSingleton extends AbstractSingleton
    * Get the singleton object if it is already instantiated inside the current
    * global scope or <code>null</code> if it is not instantiated.
    * 
+   * @param <T>
+   *        The type of the singleton class
    * @param aClass
    *        The class to be checked. May not be <code>null</code>.
    * @return The singleton for the specified class is already instantiated,

@@ -30,14 +30,20 @@ import com.phloc.commons.id.IHasID;
 
 /**
  * This interface is used for all the common stuff of a scope. The following
- * types of scopes are present: <li>Global scope - once and only once</li> <li>
- * Application context - scope for an application (e.g. pDAF3 Config and View
- * application)</li> <li>Session scope - for each user created session</li> <li>
- * Session application context - scope for an application within a session</li>
- * <li>Request scope - for each user request</li><br>
+ * types of scopes are present:
+ * <ul>
+ * <li>Global scope - once and only once</li>
+ * <li>Application context - scope for an application (e.g. pDAF3 Config and
+ * View application)</li>
+ * <li>Session scope - for each user created session</li>
+ * <li>Session application context - scope for an application within a
+ * session</li>
+ * <li>Request scope - for each user request</li>
+ * </ul>
+ * <br>
  * IMPORTANT: implementations of {@link IScope} must be thread safe!
  * 
- * @author Philip Helger
+ * @author Boris Gregorcic
  */
 public interface IScope extends IAttributeContainer, IHasID <String>
 {
@@ -54,6 +60,7 @@ public interface IScope extends IAttributeContainer, IHasID <String>
    * 
    * @return the non-null ID of this context.
    */
+  @Override
   String getID ();
 
   /**
@@ -93,9 +100,11 @@ public interface IScope extends IAttributeContainer, IHasID <String>
   /**
    * Perform stuff as a single action. All actions are executed in a write-lock!
    * 
+   * @param <T>
+   *        The return type of the passed callback
    * @param aCallable
    *        The action to be executed. May not be <code>null</code>.
-   * @return The result from the callable. May be <code>null</code>.
+   * @return The result from the callback. May be <code>null</code>.
    */
   @Nullable
   <T> T runAtomic (@Nonnull INonThrowingCallableWithParameter <T, IScope> aCallable);

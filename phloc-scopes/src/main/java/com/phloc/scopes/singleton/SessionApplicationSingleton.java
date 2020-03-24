@@ -36,14 +36,14 @@ import com.phloc.scopes.mgr.ScopeManager;
  * application non-web scope.
  * 
  * @see com.phloc.scopes.mgr.EScope#SESSION_APPLICATION
- * @author Philip Helger
+ * @author Boris Gregorcic
  */
 @MustImplementEqualsAndHashcode
 public abstract class SessionApplicationSingleton extends AbstractSingleton implements Serializable
 {
   protected SessionApplicationSingleton ()
   {
-    super ("getSessionApplicationSingleton");
+    super ("getSessionApplicationSingleton"); //$NON-NLS-1$
   }
 
   private void writeObject (@Nonnull final ObjectOutputStream aOOS) throws IOException
@@ -64,7 +64,7 @@ public abstract class SessionApplicationSingleton extends AbstractSingleton impl
    * @return The scope to be used for this type of singleton.
    */
   @Nonnull
-  private static ISessionApplicationScope _getStaticScope (final boolean bCreateIfNotExisting)
+  private static ISessionApplicationScope getStaticScope (final boolean bCreateIfNotExisting)
   {
     return ScopeManager.getSessionApplicationScope (bCreateIfNotExisting);
   }
@@ -74,6 +74,8 @@ public abstract class SessionApplicationSingleton extends AbstractSingleton impl
    * the passed class. If the singleton is not yet instantiated, a new instance
    * is created.
    * 
+   * @param <T>
+   *        The type of the singleton class
    * @param aClass
    *        The class to be used. May not be <code>null</code>. The class must
    *        be public as needs to have a public no-argument constructor.
@@ -82,13 +84,15 @@ public abstract class SessionApplicationSingleton extends AbstractSingleton impl
   @Nonnull
   protected static final <T extends SessionApplicationSingleton> T getSessionApplicationSingleton (@Nonnull final Class <T> aClass)
   {
-    return getSingleton (_getStaticScope (true), aClass);
+    return getSingleton (getStaticScope (true), aClass);
   }
 
   /**
    * Get the singleton object if it is already instantiated inside the current
    * session application scope or <code>null</code> if it is not instantiated.
    * 
+   * @param <T>
+   *        The type of the singleton class
    * @param aClass
    *        The class to be checked. May not be <code>null</code>.
    * @return The singleton for the specified class is already instantiated,
@@ -97,7 +101,7 @@ public abstract class SessionApplicationSingleton extends AbstractSingleton impl
   @Nullable
   public static final <T extends SessionApplicationSingleton> T getSessionApplicationSingletonIfInstantiated (@Nonnull final Class <T> aClass)
   {
-    return getSingletonIfInstantiated (_getStaticScope (false), aClass);
+    return getSingletonIfInstantiated (getStaticScope (false), aClass);
   }
 
   /**
@@ -111,7 +115,7 @@ public abstract class SessionApplicationSingleton extends AbstractSingleton impl
    */
   public static final boolean isSessionApplicationSingletonInstantiated (@Nonnull final Class <? extends SessionApplicationSingleton> aClass)
   {
-    return isSingletonInstantiated (_getStaticScope (false), aClass);
+    return isSingletonInstantiated (getStaticScope (false), aClass);
   }
 
   /**
@@ -124,6 +128,6 @@ public abstract class SessionApplicationSingleton extends AbstractSingleton impl
   @Nonnull
   public static final List <SessionApplicationSingleton> getAllSessionApplicationSingletons ()
   {
-    return getAllSingletons (_getStaticScope (false), SessionApplicationSingleton.class);
+    return getAllSingletons (getStaticScope (false), SessionApplicationSingleton.class);
   }
 }

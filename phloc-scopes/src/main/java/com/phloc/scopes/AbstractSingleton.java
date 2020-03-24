@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Constructor;
-import java.security.AccessController;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +39,6 @@ import com.phloc.commons.callback.INonThrowingCallableWithParameter;
 import com.phloc.commons.exceptions.LoggedRuntimeException;
 import com.phloc.commons.lang.ClassHelper;
 import com.phloc.commons.mutable.MutableBoolean;
-import com.phloc.commons.priviledged.PrivilegedActionAccessibleObjectSetAccessible;
 import com.phloc.commons.stats.IStatisticsHandlerKeyedCounter;
 import com.phloc.commons.stats.StatisticsManager;
 import com.phloc.commons.string.ToStringGenerator;
@@ -48,13 +46,13 @@ import com.phloc.commons.string.ToStringGenerator;
 /**
  * Base class for all singletons.
  * 
- * @author Philip Helger
+ * @author Boris Gregorcic
  */
 public abstract class AbstractSingleton implements IScopeDestructionAware
 {
   private static final int DEFAULT_KEY_LENGTH = 255;
   private static final Logger s_aLogger = LoggerFactory.getLogger (AbstractSingleton.class);
-  private static final IStatisticsHandlerKeyedCounter s_aStatsCounterInstantiate = StatisticsManager.getKeyedCounterHandler (AbstractSingleton.class);
+  static final IStatisticsHandlerKeyedCounter s_aStatsCounterInstantiate = StatisticsManager.getKeyedCounterHandler (AbstractSingleton.class);
 
   private boolean m_bInInstantiation = false;
   private boolean m_bInstantiated = false;
@@ -78,10 +76,10 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
    */
   protected final void writeAbstractSingletonFields (@Nonnull final ObjectOutputStream aOOS) throws IOException
   {
-    aOOS.writeBoolean (m_bInInstantiation);
-    aOOS.writeBoolean (m_bInstantiated);
-    aOOS.writeBoolean (m_bInDestruction);
-    aOOS.writeBoolean (m_bDestroyed);
+    aOOS.writeBoolean (this.m_bInInstantiation);
+    aOOS.writeBoolean (this.m_bInstantiated);
+    aOOS.writeBoolean (this.m_bInDestruction);
+    aOOS.writeBoolean (this.m_bDestroyed);
   }
 
   /**
@@ -96,10 +94,10 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
    */
   protected final void readAbstractSingletonFields (@Nonnull final ObjectInputStream aOIS) throws IOException
   {
-    m_bInInstantiation = aOIS.readBoolean ();
-    m_bInstantiated = aOIS.readBoolean ();
-    m_bInDestruction = aOIS.readBoolean ();
-    m_bDestroyed = aOIS.readBoolean ();
+    this.m_bInInstantiation = aOIS.readBoolean ();
+    this.m_bInstantiated = aOIS.readBoolean ();
+    this.m_bInDestruction = aOIS.readBoolean ();
+    this.m_bDestroyed = aOIS.readBoolean ();
   }
 
   /**
@@ -112,7 +110,7 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
   @UsedViaReflection
   protected AbstractSingleton (@Nonnull final String sRequiredMethodName)
   {
-    ValueEnforcer.notEmpty (sRequiredMethodName, "RequiredMethodName");
+    ValueEnforcer.notEmpty (sRequiredMethodName, "RequiredMethodName"); //$NON-NLS-1$
 
     // Check the call stack to avoid manual instantiation
     // Only required while developing
@@ -132,7 +130,7 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
 
         // Special handling when deserializing from a stream
         if (aStackTraceElement.getClassName ().equals (ObjectInputStream.class.getName ()) &&
-            sMethodName.equals ("readOrdinaryObject"))
+            sMethodName.equals ("readOrdinaryObject")) //$NON-NLS-1$
         {
           bFound = true;
           break;
@@ -140,11 +138,11 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
       }
 
       if (!bFound)
-        throw new IllegalStateException ("You cannot instantiate the class " +
+        throw new IllegalStateException ("You cannot instantiate the class " + //$NON-NLS-1$
                                          getClass ().getName () +
-                                         " manually! Use the method " +
+                                         " manually! Use the method " + //$NON-NLS-1$
                                          sRequiredMethodName +
-                                         " instead!");
+                                         " instead!"); //$NON-NLS-1$
     }
   }
 
@@ -154,11 +152,13 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
    */
   @OverrideOnDemand
   protected void onAfterInstantiation ()
-  {}
+  {
+    // empty by default
+  }
 
   protected final void setInInstantiation (final boolean bInInstantiation)
   {
-    m_bInInstantiation = bInInstantiation;
+    this.m_bInInstantiation = bInInstantiation;
   }
 
   /**
@@ -168,12 +168,12 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
    */
   public final boolean isInInstantiation ()
   {
-    return m_bInInstantiation;
+    return this.m_bInInstantiation;
   }
 
   protected final void setInstantiated (final boolean bInstantiated)
   {
-    m_bInstantiated = bInstantiated;
+    this.m_bInstantiated = bInstantiated;
   }
 
   /**
@@ -182,12 +182,12 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
    */
   public final boolean isInstantiated ()
   {
-    return m_bInstantiated;
+    return this.m_bInstantiated;
   }
 
   protected final void setInDestruction (final boolean bInDestruction)
   {
-    m_bInDestruction = bInDestruction;
+    this.m_bInDestruction = bInDestruction;
   }
 
   /**
@@ -197,12 +197,12 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
    */
   public final boolean isInDestruction ()
   {
-    return m_bInDestruction;
+    return this.m_bInDestruction;
   }
 
   protected final void setDestroyed (final boolean bDestroyed)
   {
-    m_bDestroyed = bDestroyed;
+    this.m_bDestroyed = bDestroyed;
   }
 
   /**
@@ -211,7 +211,7 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
    */
   public final boolean isDestroyed ()
   {
-    return m_bDestroyed;
+    return this.m_bDestroyed;
   }
 
   /**
@@ -222,27 +222,30 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
    */
   @OverrideOnDemand
   protected void onDestroy () throws Exception
-  {}
+  {
+    // empty by default
+  }
 
   /**
    * Implementation of {@link IScopeDestructionAware}. Calls the protected
    * {@link #onDestroy()} method.
    */
+  @Override
   public final void onScopeDestruction () throws Exception
   {
     // Check init state
     if (isInInstantiation ())
-      s_aLogger.warn ("Object currently in instantiation is now destroyed: " + toString ());
+      s_aLogger.warn ("Object currently in instantiation is now destroyed: " + toString ()); //$NON-NLS-1$
     else
       if (!isInstantiated ())
-        s_aLogger.warn ("Object not instantiated is now destroyed: " + toString ());
+        s_aLogger.warn ("Object not instantiated is now destroyed: " + toString ()); //$NON-NLS-1$
 
     // Check destruction state
     if (isInDestruction ())
-      s_aLogger.error ("Object already in destruction is now destroyed again: " + toString ());
+      s_aLogger.error ("Object already in destruction is now destroyed again: " + toString ()); //$NON-NLS-1$
     else
       if (isDestroyed ())
-        s_aLogger.error ("Object already destroyed is now destroyed again: " + toString ());
+        s_aLogger.error ("Object already destroyed is now destroyed again: " + toString ()); //$NON-NLS-1$
 
     setInDestruction (true);
     try
@@ -277,16 +280,18 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
   @Nonnull
   public static String getSingletonScopeKey (@Nonnull final Class <? extends AbstractSingleton> aClass)
   {
-    ValueEnforcer.notNull (aClass, "Class");
+    ValueEnforcer.notNull (aClass, "Class"); //$NON-NLS-1$
 
     // Preallocate some bytes
-    return new StringBuilder (DEFAULT_KEY_LENGTH).append ("singleton.").append (aClass.getName ()).toString ();
+    return new StringBuilder (DEFAULT_KEY_LENGTH).append ("singleton.").append (aClass.getName ()).toString (); //$NON-NLS-1$
   }
 
   /**
    * Get the singleton object if it is already instantiated inside a scope or
    * <code>null</code> if it is not instantiated.
    * 
+   * @param <T>
+   *        The type of the singleton class
    * @param aScope
    *        The scope to check. May be <code>null</code> to avoid constructing a
    *        scope.
@@ -299,7 +304,7 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
   protected static final <T extends AbstractSingleton> T getSingletonIfInstantiated (@Nullable final IScope aScope,
                                                                                      @Nonnull final Class <T> aClass)
   {
-    ValueEnforcer.notNull (aClass, "Class");
+    ValueEnforcer.notNull (aClass, "Class"); //$NON-NLS-1$
 
     if (aScope != null)
     {
@@ -337,26 +342,21 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
   }
 
   @Nonnull
-  private static <T extends AbstractSingleton> T _instantiateSingleton (@Nonnull final Class <T> aClass,
-                                                                        @Nonnull final IScope aScope)
+  protected static <T extends AbstractSingleton> T _instantiateSingleton (@Nonnull final Class <T> aClass,
+                                                                          @Nonnull final IScope aScope)
   {
     // create new object in passed scope
     try
     {
       if (s_aLogger.isDebugEnabled ())
-        s_aLogger.debug ("Created singleton for '" + aClass + "' in scope " + aScope.toString ());
+        s_aLogger.debug ("Created singleton for '" + aClass + "' in scope " + aScope.toString ()); //$NON-NLS-1$ //$NON-NLS-2$
 
       // Check if class is public, non-abstract etc.
       if (!ClassHelper.isInstancableClass (aClass))
-        throw new IllegalStateException ("Class " + aClass + " is not instancable!");
+        throw new IllegalStateException ("Class " + aClass + " is not instancable!"); //$NON-NLS-1$ //$NON-NLS-2$
 
       // Find the now-argument constructor
       final Constructor <T> aCtor = aClass.getDeclaredConstructor ((Class <?> []) null);
-
-      // Ubuntu: java.security.AccessControlException: access denied
-      // (java.lang.reflect.ReflectPermission suppressAccessChecks)
-      if (false)
-        AccessController.doPrivileged (new PrivilegedActionAccessibleObjectSetAccessible (aCtor));
 
       // Invoke default ctor
       final T ret = aCtor.newInstance ((Object []) null);
@@ -372,6 +372,8 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
    * Get the singleton object in the passed scope, using the passed class. If
    * the singleton is not yet instantiated, a new instance is created.
    * 
+   * @param <T>
+   *        The type of the singleton class
    * @param aScope
    *        The scope to be used. May not be <code>null</code>.
    * @param aClass
@@ -383,8 +385,8 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
   protected static final <T extends AbstractSingleton> T getSingleton (@Nonnull final IScope aScope,
                                                                        @Nonnull final Class <T> aClass)
   {
-    ValueEnforcer.notNull (aScope, "aScope");
-    ValueEnforcer.notNull (aClass, "Class");
+    ValueEnforcer.notNull (aScope, "aScope"); //$NON-NLS-1$
+    ValueEnforcer.notNull (aClass, "Class"); //$NON-NLS-1$
 
     final String sSingletonScopeKey = getSingletonScopeKey (aClass);
 
@@ -398,6 +400,7 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
       // Safe instantiation:
       aInstance = aScope.runAtomic (new INonThrowingCallableWithParameter <T, IScope> ()
       {
+        @Override
         public T call (@Nullable final IScope aInnerScope)
         {
           // try to resolve again in case it was set in the meantime
@@ -441,14 +444,6 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
         }
       }
     }
-
-    if (false)
-    {
-      // Just a small note in case we're returning an incomplete object
-      if (aInstance.isInInstantiation ())
-        s_aLogger.warn ("Singleton is not yet ready - still in instantiation: " + aInstance.toString ());
-    }
-
     return aInstance;
   }
 
@@ -456,6 +451,8 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
    * Get all singleton objects registered in the respective sub-class of this
    * class.
    * 
+   * @param <T>
+   *        The type of the singleton class
    * @param aScope
    *        The scope to use. May be <code>null</code> to avoid creating a new
    *        scope.
@@ -469,9 +466,9 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
   protected static final <T extends AbstractSingleton> List <T> getAllSingletons (@Nullable final IScope aScope,
                                                                                   @Nonnull final Class <T> aDesiredClass)
   {
-    ValueEnforcer.notNull (aDesiredClass, "DesiredClass");
+    ValueEnforcer.notNull (aDesiredClass, "DesiredClass"); //$NON-NLS-1$
 
-    final List <T> ret = new ArrayList <T> ();
+    final List <T> ret = new ArrayList <> ();
     if (aScope != null)
       for (final Object aScopeValue : aScope.getAllAttributeValues ())
         if (aScopeValue != null && aDesiredClass.isAssignableFrom (aScopeValue.getClass ()))
@@ -483,10 +480,10 @@ public abstract class AbstractSingleton implements IScopeDestructionAware
   @Nonnull
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("inInstantiation", m_bInInstantiation)
-                                       .append ("instantiated", m_bInstantiated)
-                                       .append ("inDestruction", m_bInDestruction)
-                                       .append ("destroyed", m_bDestroyed)
+    return new ToStringGenerator (this).append ("inInstantiation", this.m_bInInstantiation) //$NON-NLS-1$
+                                       .append ("instantiated", this.m_bInstantiated) //$NON-NLS-1$
+                                       .append ("inDestruction", this.m_bInDestruction) //$NON-NLS-1$
+                                       .append ("destroyed", this.m_bDestroyed) //$NON-NLS-1$
                                        .toString ();
   }
 }

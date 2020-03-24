@@ -22,13 +22,16 @@ package com.phloc.scopes;
  * object implementing this interface is added into a scope, this destruction
  * method is automatically called!
  * 
- * @author Philip Helger
+ * @author Boris Gregorcic
  */
 public interface IScopeDestructionAware
 {
   /**
    * Called before the owning scope is destroyed. You may perform some cleanup
    * work in here.
+   * 
+   * @throws Exception
+   *         in case something goes wrong
    */
   void onScopeDestruction () throws Exception;
 }

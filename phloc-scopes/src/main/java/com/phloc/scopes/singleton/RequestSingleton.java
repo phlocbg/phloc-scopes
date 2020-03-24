@@ -32,13 +32,13 @@ import com.phloc.scopes.mgr.ScopeManager;
  * in the same object.
  * 
  * @see com.phloc.scopes.mgr.EScope#REQUEST
- * @author Philip Helger
+ * @author Boris Gregorcic
  */
 public abstract class RequestSingleton extends AbstractSingleton
 {
   protected RequestSingleton ()
   {
-    super ("getRequestSingleton");
+    super ("getRequestSingleton"); //$NON-NLS-1$
   }
 
   /**
@@ -48,7 +48,7 @@ public abstract class RequestSingleton extends AbstractSingleton
    * @return The scope to be used for this type of singleton.
    */
   @Nullable
-  private static IRequestScope _getStaticScope (final boolean bMustBePresent)
+  private static IRequestScope getStaticScope (final boolean bMustBePresent)
   {
     return bMustBePresent ? ScopeManager.getRequestScope () : ScopeManager.getRequestScopeOrNull ();
   }
@@ -57,6 +57,8 @@ public abstract class RequestSingleton extends AbstractSingleton
    * Get the singleton object in the current request scope, using the passed
    * class. If the singleton is not yet instantiated, a new instance is created.
    * 
+   * @param <T>
+   *        The type of the singleton class
    * @param aClass
    *        The class to be used. May not be <code>null</code>. The class must
    *        be public as needs to have a public no-argument constructor.
@@ -65,13 +67,15 @@ public abstract class RequestSingleton extends AbstractSingleton
   @Nonnull
   protected static final <T extends RequestSingleton> T getRequestSingleton (@Nonnull final Class <T> aClass)
   {
-    return getSingleton (_getStaticScope (true), aClass);
+    return getSingleton (getStaticScope (true), aClass);
   }
 
   /**
    * Get the singleton object if it is already instantiated inside the current
    * request scope or <code>null</code> if it is not instantiated.
    * 
+   * @param <T>
+   *        The type of the singleton class
    * @param aClass
    *        The class to be checked. May not be <code>null</code>.
    * @return The singleton for the specified class is already instantiated,
@@ -80,7 +84,7 @@ public abstract class RequestSingleton extends AbstractSingleton
   @Nullable
   public static final <T extends RequestSingleton> T getRequestSingletonIfInstantiated (@Nonnull final Class <T> aClass)
   {
-    return getSingletonIfInstantiated (_getStaticScope (false), aClass);
+    return getSingletonIfInstantiated (getStaticScope (false), aClass);
   }
 
   /**
@@ -94,7 +98,7 @@ public abstract class RequestSingleton extends AbstractSingleton
    */
   public static final boolean isRequestSingletonInstantiated (@Nonnull final Class <? extends RequestSingleton> aClass)
   {
-    return isSingletonInstantiated (_getStaticScope (false), aClass);
+    return isSingletonInstantiated (getStaticScope (false), aClass);
   }
 
   /**
@@ -107,6 +111,6 @@ public abstract class RequestSingleton extends AbstractSingleton
   @Nonnull
   public static final List <RequestSingleton> getAllRequestSingletons ()
   {
-    return getAllSingletons (_getStaticScope (false), RequestSingleton.class);
+    return getAllSingletons (getStaticScope (false), RequestSingleton.class);
   }
 }

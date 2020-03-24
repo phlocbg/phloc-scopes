@@ -27,7 +27,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>phloc-scopes</artifactId>
-  <version>6.4.1-SNAPSHOT</version>
+  <version>6.4.2-SNAPSHOT</version>
   <packaging>bundle</packaging>
   <name>phloc-scopes</name>
   <description>Library for handling scopes in a generic way</description>

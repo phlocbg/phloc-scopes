@@ -33,13 +33,13 @@ import com.phloc.scopes.mgr.ScopeManager;
  * and non-web scopes.
  * 
  * @see com.phloc.scopes.mgr.EScope#APPLICATION
- * @author Philip Helger
+ * @author Boris Gregorcic
  */
 public abstract class ApplicationSingleton extends AbstractSingleton
 {
   protected ApplicationSingleton ()
   {
-    super ("getApplicationSingleton");
+    super ("getApplicationSingleton"); //$NON-NLS-1$
   }
 
   /**
@@ -50,7 +50,7 @@ public abstract class ApplicationSingleton extends AbstractSingleton
    * @return The scope to be used for this type of singleton.
    */
   @Nullable
-  private static IApplicationScope _getStaticScope (final boolean bCreateIfNotExisting)
+  private static IApplicationScope getStaticScope (final boolean bCreateIfNotExisting)
   {
     return ScopeManager.getApplicationScope (bCreateIfNotExisting);
   }
@@ -59,6 +59,8 @@ public abstract class ApplicationSingleton extends AbstractSingleton
    * Get the singleton object in the current application scope, using the passed
    * class. If the singleton is not yet instantiated, a new instance is created.
    * 
+   * @param <T>
+   *        The type of the singleton class
    * @param aClass
    *        The class to be used. May not be <code>null</code>. The class must
    *        be public as needs to have a public no-argument constructor.
@@ -67,13 +69,15 @@ public abstract class ApplicationSingleton extends AbstractSingleton
   @Nonnull
   protected static final <T extends ApplicationSingleton> T getApplicationSingleton (@Nonnull final Class <T> aClass)
   {
-    return getSingleton (_getStaticScope (true), aClass);
+    return getSingleton (getStaticScope (true), aClass);
   }
 
   /**
    * Get the singleton object if it is already instantiated inside the current
    * application scope or <code>null</code> if it is not instantiated.
    * 
+   * @param <T>
+   *        The type of the singleton class
    * @param aClass
    *        The class to be checked. May not be <code>null</code>.
    * @return The singleton for the specified class is already instantiated,
@@ -82,7 +86,7 @@ public abstract class ApplicationSingleton extends AbstractSingleton
   @Nullable
   public static final <T extends ApplicationSingleton> T getApplicationSingletonIfInstantiated (@Nonnull final Class <T> aClass)
   {
-    return getSingletonIfInstantiated (_getStaticScope (false), aClass);
+    return getSingletonIfInstantiated (getStaticScope (false), aClass);
   }
 
   /**
@@ -96,7 +100,7 @@ public abstract class ApplicationSingleton extends AbstractSingleton
    */
   public static final boolean isApplicationSingletonInstantiated (@Nonnull final Class <? extends ApplicationSingleton> aClass)
   {
-    return isSingletonInstantiated (_getStaticScope (false), aClass);
+    return isSingletonInstantiated (getStaticScope (false), aClass);
   }
 
   /**
@@ -109,6 +113,6 @@ public abstract class ApplicationSingleton extends AbstractSingleton
   @Nonnull
   public static final List <ApplicationSingleton> getAllApplicationSingletons ()
   {
-    return getAllSingletons (_getStaticScope (false), ApplicationSingleton.class);
+    return getAllSingletons (getStaticScope (false), ApplicationSingleton.class);
   }
 }
