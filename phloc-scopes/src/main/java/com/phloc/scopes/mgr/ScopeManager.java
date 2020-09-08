@@ -49,20 +49,20 @@ import com.phloc.scopes.spi.ScopeSPIManager;
  * <li>request</li>
  * </ul>
  * 
- * @author Philip Helger
+ * @author Boris Gregorcic
  */
 @ThreadSafe
 public final class ScopeManager
 {
   public static final boolean DEFAULT_CREATE_SCOPE = true;
 
-  private static final Logger s_aLogger = LoggerFactory.getLogger (ScopeManager.class);
+  private static final Logger LOG = LoggerFactory.getLogger (ScopeManager.class);
 
   /**
    * The name of the attribute used to store the application scope in the
    * current request
    */
-  private static final String REQ_APPLICATION_ID = "phloc.applicationscope";
+  private static final String REQ_APPLICATION_ID = "phloc.applicationscope"; //$NON-NLS-1$
 
   private static final Lock s_aGlobalLock = new ReentrantLock ();
 
@@ -71,7 +71,7 @@ public final class ScopeManager
   private static volatile IGlobalScope s_aGlobalScope;
 
   /** Request scope */
-  private static final ThreadLocal <IRequestScope> s_aRequestScope = new ThreadLocal <IRequestScope> ();
+  private static final ThreadLocal <IRequestScope> s_aRequestScope = new ThreadLocal <> ();
 
   @PresentForCodeCoverage
   @SuppressWarnings ("unused")
@@ -90,19 +90,19 @@ public final class ScopeManager
    */
   public static void setGlobalScope (@Nonnull final IGlobalScope aGlobalScope)
   {
-    ValueEnforcer.notNull (aGlobalScope, "GlobalScope");
+    ValueEnforcer.notNull (aGlobalScope, "GlobalScope"); //$NON-NLS-1$
 
     s_aGlobalLock.lock ();
     try
     {
       if (s_aGlobalScope != null)
-        throw new IllegalStateException ("Another global scope is already present");
+        throw new IllegalStateException ("Another global scope is already present"); //$NON-NLS-1$
 
       s_aGlobalScope = aGlobalScope;
 
       aGlobalScope.initScope ();
-      if (ScopeUtils.debugGlobalScopeLifeCycle (s_aLogger))
-        s_aLogger.info ("Global scope '" + aGlobalScope.getID () + "' initialized!", ScopeUtils.getDebugStackTrace ());
+      if (ScopeUtils.debugGlobalScopeLifeCycle (LOG))
+        LOG.info ("Global scope '" + aGlobalScope.getID () + "' initialized!", ScopeUtils.getDebugStackTrace ()); //$NON-NLS-1$ //$NON-NLS-2$
 
       // Invoke SPIs
       ScopeSPIManager.onGlobalScopeBegin (aGlobalScope);
@@ -148,7 +148,7 @@ public final class ScopeManager
   {
     final IGlobalScope aGlobalScope = getGlobalScopeOrNull ();
     if (aGlobalScope == null)
-      throw new IllegalStateException ("No global scope object has been set!");
+      throw new IllegalStateException ("No global scope object has been set!"); //$NON-NLS-1$
     return aGlobalScope;
   }
 
@@ -177,11 +177,11 @@ public final class ScopeManager
         s_aGlobalScope = null;
 
         // done
-        if (ScopeUtils.debugGlobalScopeLifeCycle (s_aLogger))
-          s_aLogger.info ("Global scope '" + sDestroyedScopeID + "' shut down!", ScopeUtils.getDebugStackTrace ());
+        if (ScopeUtils.debugGlobalScopeLifeCycle (LOG))
+          LOG.info ("Global scope '" + sDestroyedScopeID + "' shut down!", ScopeUtils.getDebugStackTrace ()); //$NON-NLS-1$ //$NON-NLS-2$
       }
       else
-        s_aLogger.warn ("No global scope present that could be shut down!");
+        LOG.warn ("No global scope present that could be shut down!"); //$NON-NLS-1$
     }
     finally
     {
@@ -216,7 +216,7 @@ public final class ScopeManager
   {
     final String ret = getRequestApplicationID (getRequestScope ());
     if (ret == null)
-      throw new IllegalStateException ("Weird state - no appid!");
+      throw new IllegalStateException ("Weird state - no appid!"); //$NON-NLS-1$
     return ret;
   }
 
@@ -328,7 +328,7 @@ public final class ScopeManager
       if (aSessionScope == null && bCreateIfNotExisting)
       {
         if (sSessionID == null)
-          throw new IllegalStateException ("Cannot create a SessionScope without a known session ID!");
+          throw new IllegalStateException ("Cannot create a SessionScope without a known session ID!"); //$NON-NLS-1$
 
         // Create a new session scope
         aSessionScope = MetaScopeFactory.getScopeFactory ().createSessionScope (sSessionID);
@@ -343,7 +343,7 @@ public final class ScopeManager
 
     // If we want a session scope, we expect the return value to be non-null!
     if (bCreateIfNotExisting)
-      throw new IllegalStateException ("No request scope is present, so no session scope can be created!");
+      throw new IllegalStateException ("No request scope is present, so no session scope can be created!"); //$NON-NLS-1$
 
     // No request scope present and no need to create a session
     return null;
@@ -357,7 +357,7 @@ public final class ScopeManager
    */
   public static void destroySessionScope (@Nonnull final ISessionScope aSessionScope)
   {
-    ValueEnforcer.notNull (aSessionScope, "SessionScope");
+    ValueEnforcer.notNull (aSessionScope, "SessionScope"); //$NON-NLS-1$
 
     ScopeSessionManager.getInstance ().onScopeEnd (aSessionScope);
   }
@@ -389,8 +389,8 @@ public final class ScopeManager
     final ISessionScope aSessionScope = getSessionScope (bCreateIfNotExisting);
     // Session scope may only be null if bCreateIfNotExisting is false, else an
     // exception was already thrown in getSessionScope
-    return aSessionScope == null ? null : aSessionScope.getSessionApplicationScope (sApplicationID,
-                                                                                    bCreateIfNotExisting);
+    return aSessionScope == null ? null
+                                 : aSessionScope.getSessionApplicationScope (sApplicationID, bCreateIfNotExisting);
   }
 
   // --- request scope ---
@@ -407,44 +407,49 @@ public final class ScopeManager
   public static void setAndInitRequestScope (@Nonnull @Nonempty final String sApplicationID,
                                              @Nonnull final IRequestScope aRequestScope)
   {
-    ValueEnforcer.notEmpty (sApplicationID, "ApplicationID");
-    ValueEnforcer.notNull (aRequestScope, "RequestScope");
+    ValueEnforcer.notEmpty (sApplicationID, "ApplicationID"); //$NON-NLS-1$
+    ValueEnforcer.notNull (aRequestScope, "RequestScope"); //$NON-NLS-1$
     if (!isGlobalScopePresent ())
-      throw new IllegalStateException ("No global context present! May be the global context listener is not installed?");
+      throw new IllegalStateException ("No global context present! May be the global context listener is not installed?"); //$NON-NLS-1$
 
     // Happens if an internal redirect happens in a web-application (e.g. for
     // 404 page)
     final IRequestScope aExistingRequestScope = s_aRequestScope.get ();
     if (aExistingRequestScope != null)
     {
-      s_aLogger.warn ("A request scope is already present - will overwrite it: " + aExistingRequestScope.toString ());
+      LOG.warn ("A request scope is already present - will overwrite it: {}", aExistingRequestScope); //$NON-NLS-1$
       if (aExistingRequestScope.isValid ())
       {
         // The scope shall be destroyed here, as this is most probably a
         // programming error!
-        s_aLogger.warn ("Destroying the old request scope before the new one gets initialized!");
+        LOG.warn ("Destroying the old request scope before the new one gets initialized!"); //$NON-NLS-1$
         _destroyRequestScope (aExistingRequestScope);
       }
     }
 
     // set request context
     s_aRequestScope.set (aRequestScope);
-
-    // assign the application ID to the current request
-    if (aRequestScope.setAttribute (REQ_APPLICATION_ID, sApplicationID).isUnchanged ())
+    try
     {
-      s_aLogger.warn ("Failed to set the application ID '" +
-                      sApplicationID +
-                      "' into the request scope '" +
-                      aRequestScope.getID () +
-                      "'");
+      // assign the application ID to the current request
+      if (aRequestScope.setAttribute (REQ_APPLICATION_ID, sApplicationID).isUnchanged ())
+      {
+        LOG.warn ("Failed to set the application ID '{}' into the request scope '{}'", //$NON-NLS-1$
+                  sApplicationID,
+                  aRequestScope.getID ());
+      }
+      // Now init the scope
+      aRequestScope.initScope ();
+
+      // call SPIs
+      ScopeSPIManager.onRequestScopeBegin (aRequestScope);
     }
-
-    // Now init the scope
-    aRequestScope.initScope ();
-
-    // call SPIs
-    ScopeSPIManager.onRequestScopeBegin (aRequestScope);
+    catch (final Exception aEx)
+    {
+      LOG.error ("Removing request scope after error in initializtation", aEx); //$NON-NLS-1$
+      onRequestEnd ();
+      throw aEx;
+    }
   }
 
   @Nonnull
@@ -486,7 +491,7 @@ public final class ScopeManager
   {
     final IRequestScope aScope = getRequestScopeOrNull ();
     if (aScope == null)
-      throw new IllegalStateException ("No request scope is available.");
+      throw new IllegalStateException ("No request scope is available."); //$NON-NLS-1$
     return aScope;
   }
 
@@ -516,7 +521,7 @@ public final class ScopeManager
       {
         // Happens after an internal redirect happened in a web-application
         // (e.g. for 404 page) for the original scope
-        s_aLogger.warn ("No request scope present that could be ended!");
+        LOG.warn ("No request scope present that could be ended!"); //$NON-NLS-1$
       }
     }
     finally
