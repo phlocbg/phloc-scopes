@@ -21,7 +21,12 @@
 <changelog xmlns="http://www.phloc.com/ns/changelog/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.phloc.com/ns/changelog/1.0 schemas/changelog-1.0.xsd" version="1.0" component="phloc-scopes">
 
-
+  <release date="2021-09-23" version="6.4.4" />
+  <entry date="2021-09-23" category="tech" action="change">
+    <change>
+      <text locale="en">Improve error handling on request creation (throwable) (SCP-3)</text>
+    </change>
+  </entry>
   <release date="2020-09-08" version="6.4.3" />
   <entry date="2020-09-08" category="tech" action="change">
     <change>

@@ -444,7 +444,7 @@ public final class ScopeManager
       // call SPIs
       ScopeSPIManager.onRequestScopeBegin (aRequestScope);
     }
-    catch (final Exception aEx)
+    catch (final Throwable aEx)
     {
       LOG.error ("Removing request scope after error in initializtation", aEx); //$NON-NLS-1$
       onRequestEnd ();
